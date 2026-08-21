@@ -121,6 +121,6 @@ $codex-task-router
 
 ## 버전 상태
 
-현재 상태는 `v6-candidate`입니다.
+현재 상태는 공식 `v6` Release입니다.
 
-main 병합 전 설치 구조, Manifest, 문서, 개인 정보 노출 여부, 기존 v5 호환성을 검증한 뒤 v6로 확정하는 것을 권장합니다.
+설치 구조, Manifest, 문서, 개인 정보 노출 여부, 기존 v5 호환성 및 Windows 설치/제거 E2E 검증을 완료한 뒤 main에 병합하고 v6로 확정했습니다.
