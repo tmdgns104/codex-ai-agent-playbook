@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+KIT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GLOBAL_AGENTS="$HOME/.codex/AGENTS.md"
 SKILLS_DIR="$HOME/.agents/skills"
-SKILLS=("ai-agent-development-playbook" "human-readable-code" "human-centered-project-builder" "guide-ppt-creator")
+SKILLS_SOURCE_ROOT="$KIT_ROOT/.agents/skills"
 
 BEGIN='<!-- BEGIN AI_AGENT_PLAYBOOK_KIT -->'
 END='<!-- END AI_AGENT_PLAYBOOK_KIT -->'
@@ -21,9 +22,11 @@ p.write_text(text + ("\n" if text else ""), encoding="utf-8")
 PY
 fi
 
-for skill in "${SKILLS[@]}"; do
-  rm -rf "$SKILLS_DIR/$skill"
-  echo "Removed skill: $skill"
+for source in "$SKILLS_SOURCE_ROOT"/*; do
+  [ -d "$source" ] || continue
+  skill_name="$(basename "$source")"
+  rm -rf "$SKILLS_DIR/$skill_name"
+  echo "Removed skill: $skill_name"
 done
 
 echo "Uninstall complete."
