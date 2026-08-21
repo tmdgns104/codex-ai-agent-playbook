@@ -1,0 +1,21 @@
+{
+  "name": "Guide Deck Neutral",
+  "aspect_ratio": "16:9",
+  "principles": [
+    "one primary message per slide",
+    "high contrast",
+    "consistent margins",
+    "editable diagrams where practical",
+    "use visuals only when they improve comprehension"
+  ],
+  "recommended_font_behavior": {
+    "title": "large, bold, concise",
+    "body": "presentation-readable, avoid dense paragraphs",
+    "code": "monospace and large enough to read"
+  },
+  "layout_tokens": {
+    "outer_margin": "consistent on every slide",
+    "title_zone": "fixed across standard slides",
+    "content_grid": "prefer 1-column, 2-column, or diagram-led layouts"
+  }
+}
