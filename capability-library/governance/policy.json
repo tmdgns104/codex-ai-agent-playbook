@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "skill_soft_warning_bytes": 20000,
+  "required_protected_case_ids": [
+    "jwt-exact-3",
+    "max-selected-3",
+    "llm-unavailable-control-plane"
+  ],
+  "human_gate_change_types": [
+    "trigger-expand",
+    "permission-expand",
+    "split",
+    "merge",
+    "archive",
+    "core-promote",
+    "core-demote",
+    "executable-resource-add"
+  ],
+  "broad_trigger_terms": [
+    "api",
+    "error",
+    "version",
+    "performance",
+    "test",
+    "bug",
+    "pr",
+    "git",
+    "latest",
+    "quality"
+  ],
+  "routing_fixture_mode": "centralized_or_local",
+  "delete_automation_allowed": false,
+  "llm_provider_required_for_control_plane": false
+}
