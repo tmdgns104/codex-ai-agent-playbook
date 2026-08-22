@@ -1,6 +1,6 @@
 # V8.2-SKILL-004 - Skill Evolver
 
-상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
+상태: **COMPLETE - VERIFIED**
 
 선행 조건:
 
@@ -17,151 +17,17 @@ ACTIVE vN stays immutable
 Evidence -> Proposal -> Candidate vN+1 -> Audit -> Regression -> Promotion
 ```
 
-## 구현 내용
+## 구현 요약
 
-### 1. Repeated Evidence Gate
+`harness/skills/evolver.py`는 동일 Skill/problem bucket에서 서로 다른 task fingerprint 기반 반복 Evidence를 요구합니다. 일반 evolution은 2건 이상이어야 하며, 단일 severe safety/correctness signal은 자동 수정이 아니라 REVIEW만 생성합니다.
 
-추가:
+전체 SKILL.md 자유 재작성은 금지하고 exact replacement를 최대 2개, 변경 비율 0.35 이하로 제한합니다. Candidate는 `.playbook-state/candidates/<proposal-id>/`에만 생성하며 ACTIVE vN은 Candidate validation/promotion 전까지 immutable입니다.
 
-```text
-harness/skills/evolver.py
-```
+Candidate proposal은 `change_type=modify`, `base_hash=ACTIVE vN package hash`, `base_version=vN`, `proposed_version=vN+1`, non-empty Evidence refs를 가집니다. source/license는 ACTIVE registry provenance와 일치해야 합니다.
 
-일반 evolution은 동일 Skill/problem bucket에서 **서로 다른 task fingerprint 2건 이상**이 있어야 Candidate 생성이 가능합니다.
+기존 routing fixture는 보존하고 관측 문제용 positive/negative regression을 추가합니다. trigger/permission expansion은 Human Gate이며 registry delta가 있는 Candidate는 package-only promotion을 허용하지 않습니다.
 
-지원 Evidence:
-
-- verification_failure
-- user_correction
-- routing_false_positive
-- routing_false_negative
-
-repeated workaround / missing workflow step은 위 Evidence의 `issue_code`로 grouping합니다.
-
-단일 safety/correctness 심각 Evidence는 자동 evolution이 아니라 `REVIEW` signal만 생성합니다.
-
-### 2. Bounded Minimal Change
-
-전체 SKILL.md 자유 재작성 대신 exact replacement edit만 허용합니다.
-
-Governance policy:
-
-```text
-evolution_min_distinct_evidence = 2
-evolution_max_content_edits = 2
-evolution_max_changed_fraction = 0.35
-```
-
-각 edit는 `old/new/reason`을 가져야 하며 `old`가 ACTIVE content에서 정확히 한 번만 일치해야 합니다.
-
-따라서:
-
-- unrelated whole-file rewrite
-- 대규모 style cleanup
-- Evidence와 무관한 재작성
-
-을 deterministic하게 차단합니다.
-
-### 3. Candidate vN+1
-
-Candidate는 반드시:
-
-```text
-.playbook-state/candidates/<proposal-id>/
-```
-
-아래에 생성합니다.
-
-ACTIVE package를 먼저 복사한 뒤 Candidate 안의 `SKILL.md`만 bounded edit로 변경합니다.
-
-Proposal:
-
-```text
-change_type = modify
-base_hash = ACTIVE vN package hash
-base_version = vN
-proposed_version = vN+1
-evidence_refs = repeated verified evidence
-```
-
-source/license는 ACTIVE registry provenance와 일치해야 합니다.
-
-### 4. Routing Regression Preservation
-
-ACTIVE package에 기존 local routing fixture가 있으면 Candidate에 byte-for-byte 보존합니다.
-
-새 관측 문제에 대해서는 Candidate root의 `routing.json`에 최소:
-
-```text
-positive 1+
-negative 1+
-```
-
-regression을 추가합니다.
-
-### 5. Candidate Audit
-
-`harness/quality/skill_audit.py`를 확장했습니다.
-
-Creator Candidate:
-
-```text
-change_type=create
-positive 2+ / negative 1+
-```
-
-Evolver Candidate:
-
-```text
-change_type=modify
-base_hash matches current ACTIVE
-non-empty evidence_refs
-observed_pattern / root_cause / expected_behavior required
-positive 1+ / negative 1+
-```
-
-기존 Library Audit exit contract는 변경하지 않았습니다.
-
-### 6. Human Gate
-
-trigger 또는 permission 추가는 기존 `proposal.py` contract에 따라 `requires_human_gate=true`입니다.
-
-Evolver는 registry delta를 package-only promotion에 몰래 적용하지 않습니다. trigger/permission delta가 있으면 Lifecycle Integration 단계 전까지 promotion을 차단합니다.
-
-### 7. Safe Promotion / History
-
-low-risk Candidate에서 registry delta가 없고 다음 조건이 모두 충족될 때만 기존 `promote_package()`를 사용합니다.
-
-- Candidate audit/validation PASS
-- protected regression PASS
-- base hash 일치
-- required Human Gate 승인
-- same-skill writer lock 획득
-
-Candidate root의 governance metadata:
-
-```text
-proposal.json
-routing.json
-```
-
-는 ACTIVE package에 복사하지 않습니다. 단, Skill package 내부의 `tests/routing.json` 같은 기존 fixture는 보존합니다.
-
-성공한 promotion은 local runtime history에 기록합니다.
-
-```text
-.playbook-state/history/promotion-history.jsonl
-```
-
-기록:
-
-- proposal id
-- skill id
-- base/new hash
-- base/promoted version
-- evidence refs
-- timestamp
-- promoted status
+low-risk Candidate promotion은 기존 Governance의 validation, protected regression, base hash, lock, Human Gate를 재사용합니다. 성공한 promotion은 `.playbook-state/history/promotion-history.jsonl`에 기록합니다. Candidate root의 `proposal.json`/`routing.json` governance metadata는 ACTIVE package로 복사하지 않습니다.
 
 ## 변경 파일
 
@@ -176,72 +42,60 @@ tasks/V8_2-SKILL-004.md
 
 Global `.codex/AGENTS.md`, ACTIVE registry, Router scoring, Optional Skill content는 변경하지 않았습니다.
 
-## Windows Verification
+## Actual Windows Evidence
 
-먼저 SKILL-004 focused test:
+2026-08-23 실제 Windows Repository에서 확인:
 
-```cmd
-python harness\skills\test_evolver.py
+```text
+Skill Evolver focused tests     13/13 PASS
+Skill Creator regression        13/13 PASS
+Skill Audit unit tests           6/6 PASS
+Governance focused tests        12/12 PASS
+Event Store tests                6/6 PASS
+Proposal Queue tests             7/7 PASS
+Real skill_audit.py              WARN-only / no FAIL
+Capability Router               28/28 PASS
+Capability Manager              12/12 PASS
+Skill Materializer              10/10 PASS
+Discovery Bridge                10/10 PASS
+Playbook Launcher               12/12 PASS
+Installed Launcher               2/2 PASS
+Harness Audit                   PASS / warnings 0
+STRICT Quality Gate             PASS / ERRORLEVEL 0
+Quality Gate changed/untracked   0
+Global AGENTS.md                 4579 bytes unchanged
+working tree                    clean
 ```
 
-그 다음 Creator/Governance/Audit regression:
+`skill_audit.py` WARN은 기존 trigger overlap / broad-trigger review signal이며 SKILL-004 신규 FAIL은 없습니다.
 
-```cmd
-python harness\skills\test_creator.py
-python harness\skills\test_governance.py
-python harness\skills\test_events.py
-python harness\skills\test_queue.py
-python harness\quality\test_skill_audit.py
-python harness\quality\skill_audit.py --root .
-```
+## Acceptance Criteria Result
 
-Router/Activation protected regression:
+1. ACTIVE content unchanged during evolution — PASS
+2. evidence refs required for modify proposal — PASS
+3. weak single observation does not force normal auto evolution — PASS
+4. repeated evidence can create minimal proposal — PASS
+5. candidate vN+1 base hash points to ACTIVE vN — PASS
+6. unrelated rewrite bounded/rejected by policy — PASS
+7. existing routing fixture preserved — PASS
+8. new regression fixture generated — PASS
+9. candidate audit path verified — PASS
+10. protected regression preserved — PASS
+11. permission expansion forces Human Gate — PASS
+12. trigger expansion forces Human Gate — PASS
+13. failed validation leaves ACTIVE vN unchanged — PASS
+14. low-risk atomic promotion through Governance Gate — PASS
+15. promotion history recorded — PASS
+16. V8.1/V8.2 regressions — PASS
+17. Harness Audit — PASS
+18. STRICT Quality Gate — PASS
+19. final working tree clean — PASS
+20. duplicate fingerprint cannot inflate Evidence — PASS
+21. severe single Evidence becomes REVIEW — PASS
+22. ACTIVE provenance match required — PASS
+23. Candidate governance metadata excluded from ACTIVE package — PASS
+24. Global `.codex/AGENTS.md` unchanged — PASS
 
-```cmd
-python harness\router\test_capability_router.py
-python harness\activation\test_capability_manager.py
-python harness\activation\test_skill_materializer.py
-python harness\activation\test_discovery_bridge.py
-python harness\activation\test_playbook_launch.py
-python harness\activation\test_installed_launcher.py
-```
+## 완료
 
-마지막:
-
-```cmd
-python harness\security\harness_audit.py --root .
-python harness\quality\quality_gate.py --repo . --profile strict --verify "python harness\security\harness_audit.py --root ."
-echo %ERRORLEVEL%
-git status --short
-```
-
-## Acceptance Criteria
-
-1. ACTIVE content is unchanged during evolution
-2. evidence refs required for modify proposal
-3. weak single observation does not force normal auto evolution
-4. repeated evidence can create minimal proposal
-5. candidate vN+1 base hash points to ACTIVE vN
-6. unrelated rewrite is rejected/warned by policy
-7. existing routing fixture preserved
-8. new regression fixture generated for observed problem
-9. candidate audit PASS required
-10. protected regression PASS required
-11. permission expansion forces Human Gate
-12. trigger expansion forces Human Gate
-13. failed validation leaves ACTIVE vN unchanged
-14. successful low-risk candidate can be promoted atomically through Governance Gate
-15. promotion history recorded
-16. V8.1/V8.2 regressions PASS
-17. Harness Audit PASS
-18. STRICT Quality Gate PASS
-19. final working tree clean
-20. duplicate task fingerprint cannot inflate repeated Evidence count
-21. severe single Evidence becomes REVIEW, not automatic evolution
-22. ACTIVE registry provenance must match Candidate source/license
-23. candidate governance metadata is not copied into ACTIVE package
-24. Global `.codex/AGENTS.md` remains unchanged
-
-## 완료 조건
-
-구현은 완료했습니다. 실제 Windows Evidence 확인 전 `COMPLETE - VERIFIED`로 표시하지 않습니다.
+**COMPLETE - VERIFIED**. 다음 Task는 `V8_2-SKILL-005` Skill Curator입니다.
