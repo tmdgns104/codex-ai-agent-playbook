@@ -3,11 +3,14 @@
 
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
 from queue import ProposalQueue, QueueError, validate_queue_transition
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def sample_item() -> dict:
@@ -80,6 +83,27 @@ class ProposalQueueTests(unittest.TestCase):
                 updated_at="2026-08-22T15:02:00Z",
             )
             self.assertEqual(returned["status"], "waiting_for_analysis")
+
+    def test_protected_llm_unavailable_contract_is_executable(self) -> None:
+        fixture_path = ROOT / "evaluation" / "self-managing" / "protected-routing.json"
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        case = next(item for item in fixture["cases"] if item["id"] == "llm-unavailable-control-plane")
+        self.assertTrue(case["semantic_analysis_required"])
+        self.assertFalse(case["llm_available"])
+        self.assertEqual(case["expected_queue_status"], "waiting_for_analysis")
+        self.assertFalse(case["active_skill_mutation"])
+        self.assertTrue(case["governance_continues"])
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            active = root / "active" / "SKILL.md"
+            active.parent.mkdir(parents=True)
+            active.write_text("ACTIVE v1\n", encoding="utf-8")
+            before = active.read_bytes()
+            queue = ProposalQueue(root / ".playbook-state")
+            queue.enqueue(sample_item())
+            self.assertEqual(queue.current()["queue-1"]["status"], case["expected_queue_status"])
+            self.assertEqual(active.read_bytes(), before)
 
 
 if __name__ == "__main__":
