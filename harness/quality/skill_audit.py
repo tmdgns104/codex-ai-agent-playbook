@@ -20,9 +20,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-ROOT_FROM_SCRIPT = Path(__file__).resolve().parents[2]
-ROUTER_DIR = ROOT_FROM_SCRIPT / "harness" / "router"
-SKILLS_DIR = ROOT_FROM_SCRIPT / "harness" / "skills"
+HARNESS_ROOT = Path(__file__).resolve().parents[1]
+ROUTER_DIR = HARNESS_ROOT / "router"
+SKILLS_DIR = HARNESS_ROOT / "skills"
 for import_dir in (ROUTER_DIR, SKILLS_DIR):
     if str(import_dir) not in sys.path:
         sys.path.insert(0, str(import_dir))
@@ -42,6 +42,7 @@ OBVIOUS_SECRET = re.compile(
 )
 EXECUTABLE_SUFFIXES = {".py", ".sh", ".ps1", ".bat", ".cmd", ".exe"}
 UNKNOWN_SOURCE_VALUES = {"", "unknown", "unverified", "unspecified"}
+PACKAGE_CANDIDATE_TYPES = {"create", "modify", "compress", "extract-reference"}
 
 
 @dataclass(frozen=True)
@@ -93,6 +94,28 @@ def _json(path: Path) -> dict[str, Any]:
 
 def _text(path: Path) -> str:
     return path.read_text(encoding="utf-8", errors="replace")
+
+
+def _central_router_test_path(root: Path) -> Path:
+    """Resolve the central Router test in repository or installed layout."""
+    root = root.resolve()
+    candidates = (
+        root / "harness" / "router" / "test_capability_router.py",
+        root / "playbook-harness" / "router" / "test_capability_router.py",
+    )
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    return candidates[0]
+
+
+def _always_discovered_roots(root: Path) -> list[Path]:
+    """Return discovery roots relevant to repository and installed layouts."""
+    root = root.resolve()
+    roots = [root / ".agents" / "skills"]
+    if (root / "playbook-harness").is_dir():
+        roots.append(root.parent / ".agents" / "skills")
+    return roots
 
 
 def relative_link_failures(skill_dir: Path, content: str) -> list[str]:
@@ -165,7 +188,7 @@ def _find_active_skill(root: Path, skill_id: str) -> Path | None:
 
 
 def audit_candidate(candidate_dir: Path, *, root: Path | None = None) -> AuditReport:
-    """Audit one runtime Creator or Evolver Candidate before promotion."""
+    """Audit one runtime package Candidate before promotion."""
     candidate_dir = candidate_dir.resolve()
     root = root.resolve() if root is not None else None
     report = AuditReport()
@@ -184,8 +207,12 @@ def audit_candidate(candidate_dir: Path, *, root: Path | None = None) -> AuditRe
 
     skill_id = str(proposal.get("skill_id", ""))
     change_type = proposal.get("change_type")
-    if change_type not in {"create", "modify"}:
-        report.add("FAIL", "candidate-change-type", "Candidate proposal must use change_type=create or modify")
+    if change_type not in PACKAGE_CANDIDATE_TYPES:
+        report.add(
+            "FAIL",
+            "candidate-change-type",
+            "Package Candidate proposal must use create, modify, compress, or extract-reference",
+        )
 
     for field_name in ("source_id", "license", "provenance"):
         value = str(proposal.get(field_name, "")).strip()
@@ -296,8 +323,8 @@ def audit_library(root: Path, *, max_skill_bytes: int | None = None) -> AuditRep
     registry = _json(root / "capability-library" / "registry.json")
     capabilities = registry.get("capabilities", [])
     optional_skills = [item for item in capabilities if isinstance(item, dict) and item.get("type") == "skill"]
-    always_discovered = root / ".agents" / "skills"
-    central_router_tests = root / "harness" / "router" / "test_capability_router.py"
+    discovered_roots = _always_discovered_roots(root)
+    central_router_tests = _central_router_test_path(root)
     central_test_text = _text(central_router_tests) if central_router_tests.exists() else ""
 
     for item in optional_skills:
@@ -315,7 +342,7 @@ def audit_library(root: Path, *, max_skill_bytes: int | None = None) -> AuditRep
         report.add("INFO", "skill-size", f"{capability_id}: SKILL.md {size} bytes")
         if size > warning_bytes:
             report.add("WARN", "skill-size", f"{capability_id}: SKILL.md exceeds soft warning {warning_bytes} bytes ({size})")
-        if (always_discovered / capability_id).exists():
+        if any((discovery_root / capability_id).exists() for discovery_root in discovered_roots):
             report.add("FAIL", "optional-isolation", f"{capability_id}: leaked into .agents/skills")
 
         scripts_dir = skill_dir / "scripts"
