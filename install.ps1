@@ -13,6 +13,9 @@ $SourceAgents = Join-Path $KitRoot ".codex\AGENTS.md"
 $SkillsDir = Join-Path $HOME ".agents\skills"
 $SkillsSourceRoot = Join-Path $KitRoot ".agents\skills"
 
+$HarnessSourceRoot = Join-Path $KitRoot "harness"
+$HarnessTargetRoot = Join-Path $GlobalCodexDir "playbook-harness"
+
 $BackupBase = Join-Path $GlobalCodexDir "playbook-backups"
 $script:RunBackup = $null
 
@@ -145,6 +148,23 @@ Get-ChildItem -LiteralPath $SkillsSourceRoot -Directory | ForEach-Object {
         Copy-Item -LiteralPath $source -Destination $target -Recurse -Force
         Write-Host "INSTALLED skill '$skillName'"
     }
+}
+
+$harnessSame = Test-DirectoryEqual -Source $HarnessSourceRoot -Target $HarnessTargetRoot
+if ($harnessSame -and -not $Force) {
+    Write-Host "OK       playbook harness"
+}
+else {
+    if (Test-Path -LiteralPath $HarnessTargetRoot) {
+        $harnessBackupRoot = Join-Path (Get-RunBackup) "harness"
+        New-Item -ItemType Directory -Force -Path $harnessBackupRoot | Out-Null
+        Copy-Item -LiteralPath $HarnessTargetRoot -Destination (Join-Path $harnessBackupRoot "playbook-harness") -Recurse -Force
+        Remove-Item -LiteralPath $HarnessTargetRoot -Recurse -Force
+        Write-Host "BACKUP   playbook harness"
+    }
+
+    Copy-Item -LiteralPath $HarnessSourceRoot -Destination $HarnessTargetRoot -Recurse -Force
+    Write-Host "INSTALLED playbook harness"
 }
 
 Write-Host ""

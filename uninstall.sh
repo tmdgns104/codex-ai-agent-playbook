@@ -3,6 +3,7 @@ set -euo pipefail
 
 KIT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GLOBAL_AGENTS="$HOME/.codex/AGENTS.md"
+GLOBAL_HARNESS="$HOME/.codex/playbook-harness"
 SKILLS_DIR="$HOME/.agents/skills"
 SKILLS_SOURCE_ROOT="$KIT_ROOT/.agents/skills"
 
@@ -28,5 +29,10 @@ for source in "$SKILLS_SOURCE_ROOT"/*; do
   rm -rf "$SKILLS_DIR/$skill_name"
   echo "Removed skill: $skill_name"
 done
+
+if [ -d "$GLOBAL_HARNESS" ]; then
+  rm -rf "$GLOBAL_HARNESS"
+  echo "Removed playbook harness"
+fi
 
 echo "Uninstall complete."

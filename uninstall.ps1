@@ -2,6 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $KitRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $GlobalAgents = Join-Path $HOME ".codex\AGENTS.md"
+$GlobalHarness = Join-Path $HOME ".codex\playbook-harness"
 $SkillsDir = Join-Path $HOME ".agents\skills"
 $SkillsSourceRoot = Join-Path $KitRoot ".agents\skills"
 
@@ -23,6 +24,11 @@ Get-ChildItem -Path $SkillsSourceRoot -Directory | ForEach-Object {
         Remove-Item -Recurse -Force $target
         Write-Host "Removed skill '$skillName'"
     }
+}
+
+if (Test-Path -LiteralPath $GlobalHarness) {
+    Remove-Item -LiteralPath $GlobalHarness -Recurse -Force
+    Write-Host "Removed playbook harness"
 }
 
 Write-Host "Uninstall complete."

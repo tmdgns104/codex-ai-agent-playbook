@@ -1,0 +1,8 @@
+{
+  "name": "STRICT",
+  "description": "High-consequence or hard-to-verify changes requiring explicit evidence.",
+  "max_changed_files_warning": 80,
+  "scan_conflict_markers": true,
+  "scan_secrets": true,
+  "verification_required": true
+}
