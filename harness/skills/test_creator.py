@@ -175,6 +175,26 @@ class CandidateTests(unittest.TestCase):
             self.assertEqual(result["result"], "WAIT")
             self.assertFalse((state / "candidates").exists())
 
+    def test_duplicate_same_task_fingerprint_does_not_count_as_two_gaps(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            state = Path(temp) / ".playbook-state"
+            result = create_candidate(
+                state_root=state,
+                spec=creator_spec(),
+                events=[gap("gap-1", "same task"), gap("gap-2", "same task")],
+            )
+            self.assertEqual(result["result"], "WAIT")
+            self.assertFalse((state / "candidates").exists())
+
+    def test_creator_rejects_candidate_write_outside_playbook_state(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with self.assertRaises(CreatorError):
+                create_candidate(
+                    state_root=Path(temp) / "capability-library",
+                    spec=creator_spec(),
+                    events=[gap("gap-1", "task a"), gap("gap-2", "task b")],
+                )
+
 
 if __name__ == "__main__":
     unittest.main()
