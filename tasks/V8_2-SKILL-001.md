@@ -1,6 +1,6 @@
 # V8.2-SKILL-001 - High-Value Optional Skill Expansion Batch 1
 
-상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
+상태: **COMPLETE - VERIFIED**
 
 선행 조건:
 
@@ -92,58 +92,101 @@ tasks/V8_2-SKILL-001.md
 
 Global `.codex/AGENTS.md`와 Core `.agents/skills/`는 변경하지 않았습니다.
 
-## Windows Verification 필요
+## Windows Verification Evidence
 
-먼저 focused tests:
+2026-08-22 실제 Windows Repository에서 다음 Evidence를 확인했습니다.
 
-```cmd
+```text
 python harness\router\test_registry.py
+-> Ran 6 tests / OK
+
 python harness\router\test_optional_skills.py
+-> Ran 6 tests / OK
+
 python harness\router\test_capability_router.py
-```
+-> Ran 28 tests / OK
 
-그 다음 V8.1 activation regression:
-
-```cmd
 python harness\activation\test_capability_manager.py
+-> Ran 12 tests / OK
+
 python harness\activation\test_skill_materializer.py
+-> Ran 10 tests / OK
+
 python harness\activation\test_discovery_bridge.py
+-> Ran 10 tests / OK
+
 python harness\activation\test_playbook_launch.py
+-> Ran 12 tests / OK
+
 python harness\activation\test_installed_launcher.py
+-> Ran 2 tests / OK
 ```
 
-마지막:
+Harness Audit:
 
-```cmd
-python harness\security\harness_audit.py --root .
-python harness\quality\quality_gate.py --repo . --profile strict --verify "python harness\security\harness_audit.py --root ."
-echo %ERRORLEVEL%
+```text
+PASS global AGENTS.md size: 4579 bytes
+PASS skill metadata checked: 7 skills
+PASS capability sources
+PASS capability registry
+PASS optional skill integrity: 10 skills
+PASS harness Python syntax
+PASS MANIFEST covers managed files
+INFO warnings: 0
+RESULT PASS
+```
+
+STRICT Quality Gate:
+
+```text
+PASS unstaged diff whitespace
+PASS staged diff whitespace
+PASS unresolved Git conflicts
+INFO changed/untracked files: 0
+PASS conflict-marker scan
+PASS suspicious-secret scan
+PASS verification: harness_audit.py
+RESULT PASS
+ERRORLEVEL=0
+```
+
+Final repository state:
+
+```text
 git status --short
+-> no output
 ```
+
+검증 중 발견된 기존 Optional Skill 공통 계약 불일치는 최소 수정했습니다.
+
+- `root-cause-debugging`: `Handoff` / `Stop`을 `Stop / Handoff` 공통 섹션으로 정규화
+- `code-review`: `Stop / Handoff` 규칙 추가
+
+두 수정 후 Optional Skill integrity regression이 PASS했습니다.
 
 ## Acceptance Criteria
 
-1. Optional Skill 6개 추가
-2. Registry / sources provenance valid
-3. Optional Skill total 10개
-4. Core Skill 7개 변경 없음
-5. Global `.codex/AGENTS.md` 변경 없음
-6. 각 새 Skill에 Evidence / Stop-Handoff 규칙 포함
-7. Router가 각 새 Skill의 명확한 positive case를 선택
-8. 각 새 Skill의 대표 negative case에서 false activation 없음
-9. 기존 JWT exact-3 regression 유지
-10. total selection <= 3 유지
-11. Registry tests PASS
-12. Router tests PASS
-13. Optional Skill integrity tests PASS
-14. Activation/materializer/discovery/launcher regression PASS
-15. Harness Audit PASS
-16. STRICT Quality Gate PASS
-17. final working tree clean
+1. Optional Skill 6개 추가 — PASS
+2. Registry / sources provenance valid — PASS
+3. Optional Skill total 10개 — PASS
+4. Core Skill 7개 변경 없음 — PASS
+5. Global `.codex/AGENTS.md` 변경 없음 — PASS
+6. 각 새 Skill에 Evidence / Stop-Handoff 규칙 포함 — PASS
+7. Router가 각 새 Skill의 명확한 positive case를 선택 — PASS
+8. 각 새 Skill의 대표 negative case에서 false activation 없음 — PASS
+9. 기존 JWT exact-3 regression 유지 — PASS
+10. total selection <= 3 유지 — PASS
+11. Registry tests PASS — PASS
+12. Router tests PASS — PASS
+13. Optional Skill integrity tests PASS — PASS
+14. Activation/materializer/discovery/launcher regression PASS — PASS
+15. Harness Audit PASS — PASS
+16. STRICT Quality Gate PASS — PASS
+17. final working tree clean — PASS
 
 ## 완료 후 순서
 
-Batch 1 Windows Evidence가 모두 PASS하면 바로 Skill Batch 2를 추가하지 않습니다.
+Batch 1이 **COMPLETE - VERIFIED** 되었으므로 바로 Skill Batch 2를 추가하지 않습니다.
 
 다음 순서를 먼저 완료합니다.
 
