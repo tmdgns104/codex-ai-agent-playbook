@@ -28,7 +28,7 @@ for import_dir in (ROUTER_DIR, SKILLS_DIR):
         sys.path.insert(0, str(import_dir))
 
 from lifecycle import LifecycleError, load_lifecycle  # noqa: E402
-from promotion import PromotionError, load_protected_regressions  # noqa: E402
+from promotion import PromotionError, load_protected_regressions, package_hash  # noqa: E402
 from proposal import ProposalError, validate_proposal  # noqa: E402
 from registry import RegistryValidationError, validate_root  # noqa: E402
 
@@ -153,9 +153,21 @@ def _audit_skill_content(report: AuditReport, skill_id: str, skill_dir: Path, co
         report.add("FAIL", "relative-link", f"{skill_id}: {link_failure}")
 
 
-def audit_candidate(candidate_dir: Path) -> AuditReport:
-    """Audit one runtime Candidate package before any ACTIVE promotion."""
+def _find_active_skill(root: Path, skill_id: str) -> Path | None:
+    try:
+        registry = _json(root / "capability-library" / "registry.json")
+    except (OSError, json.JSONDecodeError, ValueError):
+        return None
+    for item in registry.get("capabilities", []):
+        if isinstance(item, dict) and item.get("id") == skill_id and item.get("type") == "skill":
+            return (root / str(item.get("path", ""))).resolve()
+    return None
+
+
+def audit_candidate(candidate_dir: Path, *, root: Path | None = None) -> AuditReport:
+    """Audit one runtime Creator or Evolver Candidate before promotion."""
     candidate_dir = candidate_dir.resolve()
+    root = root.resolve() if root is not None else None
     report = AuditReport()
     for name in ("SKILL.md", "proposal.json", "routing.json"):
         if not (candidate_dir / name).is_file():
@@ -171,12 +183,33 @@ def audit_candidate(candidate_dir: Path) -> AuditReport:
         return report
 
     skill_id = str(proposal.get("skill_id", ""))
-    if proposal.get("change_type") != "create":
-        report.add("FAIL", "candidate-change-type", "Creator Candidate proposal must use change_type=create")
+    change_type = proposal.get("change_type")
+    if change_type not in {"create", "modify"}:
+        report.add("FAIL", "candidate-change-type", "Candidate proposal must use change_type=create or modify")
+
     for field_name in ("source_id", "license", "provenance"):
         value = str(proposal.get(field_name, "")).strip()
         if value.casefold() in UNKNOWN_SOURCE_VALUES:
             report.add("FAIL", "candidate-provenance", f"{field_name} must be known before promotion")
+
+    if change_type == "modify":
+        if not proposal.get("evidence_refs"):
+            report.add("FAIL", "candidate-evidence", "Evolver Candidate requires evidence_refs")
+        for field_name in ("observed_pattern", "root_cause", "expected_behavior"):
+            if not isinstance(proposal.get(field_name), str) or not proposal[field_name].strip():
+                report.add("FAIL", "candidate-evolution", f"modify Candidate missing {field_name}")
+        if root is not None:
+            active_dir = _find_active_skill(root, skill_id)
+            if active_dir is None or not active_dir.is_dir():
+                report.add("FAIL", "candidate-base", f"ACTIVE Skill not found for modify Candidate: {skill_id}")
+            else:
+                try:
+                    current_hash = package_hash(active_dir)
+                except PromotionError as exc:
+                    report.add("FAIL", "candidate-base", str(exc))
+                else:
+                    if current_hash != proposal.get("base_hash"):
+                        report.add("FAIL", "candidate-base", "modify Candidate base_hash does not match ACTIVE Skill")
 
     content = _text(candidate_dir / "SKILL.md")
     _audit_skill_content(report, skill_id, candidate_dir, content)
@@ -193,10 +226,24 @@ def audit_candidate(candidate_dir: Path) -> AuditReport:
         report.add("FAIL", "candidate-routing", "routing skill_id does not match proposal")
     positive = routing.get("positive")
     negative = routing.get("negative")
-    if not isinstance(positive, list) or len(positive) < 2:
-        report.add("FAIL", "candidate-routing", "routing fixture requires positive 2+")
+    minimum_positive = 2 if change_type == "create" else 1
+    if not isinstance(positive, list) or len(positive) < minimum_positive:
+        report.add("FAIL", "candidate-routing", f"routing fixture requires positive {minimum_positive}+")
     if not isinstance(negative, list) or len(negative) < 1:
         report.add("FAIL", "candidate-routing", "routing fixture requires negative 1+")
+    preserved = routing.get("preserved_fixture")
+    if preserved is not None:
+        if not isinstance(preserved, str) or not preserved.strip():
+            report.add("FAIL", "candidate-routing", "preserved_fixture must be a path or null")
+        else:
+            preserved_path = (candidate_dir / preserved).resolve()
+            try:
+                preserved_path.relative_to(candidate_dir)
+            except ValueError:
+                report.add("FAIL", "candidate-routing", "preserved_fixture escapes Candidate package")
+            else:
+                if not preserved_path.is_file():
+                    report.add("FAIL", "candidate-routing", "preserved routing fixture is missing")
 
     scripts_dir = candidate_dir / "scripts"
     if scripts_dir.exists():
@@ -205,14 +252,14 @@ def audit_candidate(candidate_dir: Path) -> AuditReport:
             if path.is_file() and path.suffix.casefold() in EXECUTABLE_SUFFIXES
         ]
         if executables:
-            permissions = set(proposal.get("permission_delta", {}).get("add", []))
-            if "process_exec" not in permissions:
-                report.add("FAIL", "candidate-executable", "executable Candidate resource lacks process_exec")
-            if not proposal.get("requires_human_gate"):
-                report.add("FAIL", "candidate-executable", "executable Candidate resource requires Human Gate")
+            added_permissions = set(proposal.get("permission_delta", {}).get("add", []))
+            if change_type == "create" and "process_exec" not in added_permissions:
+                report.add("FAIL", "candidate-executable", "executable Creator Candidate resource lacks process_exec")
+            if added_permissions and not proposal.get("requires_human_gate"):
+                report.add("FAIL", "candidate-executable", "executable Candidate permission expansion requires Human Gate")
 
     if report.result == "PASS":
-        report.add("INFO", "candidate", f"candidate valid: {skill_id}")
+        report.add("INFO", "candidate", f"candidate valid: {skill_id} ({change_type})")
     return report
 
 
@@ -307,7 +354,11 @@ def main() -> int:
     parser.add_argument("--warn-exit-code", action="store_true", help="Return exit code 2 when only WARN findings exist.")
     args = parser.parse_args()
 
-    report = audit_candidate(Path(args.candidate)) if args.candidate else audit_library(Path(args.root), max_skill_bytes=args.max_skill_bytes)
+    report = (
+        audit_candidate(Path(args.candidate), root=Path(args.root))
+        if args.candidate
+        else audit_library(Path(args.root), max_skill_bytes=args.max_skill_bytes)
+    )
     if args.json:
         print(json.dumps(report.as_dict(), ensure_ascii=False, indent=2, sort_keys=True))
     else:
