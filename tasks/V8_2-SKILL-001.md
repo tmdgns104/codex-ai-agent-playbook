@@ -73,96 +73,39 @@ JWT 인증 오류 + regression test
 -> STRICT
 ```
 
-## 변경 파일
-
-```text
-capability-library/registry.json
-capability-library/sources.json
-capability-library/skills/optional/api-design/SKILL.md
-capability-library/skills/optional/sql-optimization/SKILL.md
-capability-library/skills/optional/docker-container/SKILL.md
-capability-library/skills/optional/dependency-upgrade/SKILL.md
-capability-library/skills/optional/performance-profiling/SKILL.md
-capability-library/skills/optional/resilient-error-handling/SKILL.md
-harness/router/test_capability_router.py
-harness/router/test_optional_skills.py
-MANIFEST.txt
-tasks/V8_2-SKILL-001.md
-```
-
-Global `.codex/AGENTS.md`와 Core `.agents/skills/`는 변경하지 않았습니다.
-
 ## Windows Verification Evidence
 
-2026-08-22 실제 Windows Repository에서 다음 Evidence를 확인했습니다.
+2026-08-22 실제 Windows Repository에서 다음을 확인했습니다.
 
 ```text
-python harness\router\test_registry.py
--> Ran 6 tests / OK
-
-python harness\router\test_optional_skills.py
--> Ran 6 tests / OK
-
-python harness\router\test_capability_router.py
--> Ran 28 tests / OK
-
-python harness\activation\test_capability_manager.py
--> Ran 12 tests / OK
-
-python harness\activation\test_skill_materializer.py
--> Ran 10 tests / OK
-
-python harness\activation\test_discovery_bridge.py
--> Ran 10 tests / OK
-
-python harness\activation\test_playbook_launch.py
--> Ran 12 tests / OK
-
-python harness\activation\test_installed_launcher.py
--> Ran 2 tests / OK
+registry                  6/6 PASS
+optional skill integrity   6/6 PASS
+capability router         28/28 PASS
+capability manager        12/12 PASS
+skill materializer        10/10 PASS
+discovery bridge          10/10 PASS
+playbook launcher         12/12 PASS
+installed launcher         2/2 PASS
+Harness Audit             PASS / warnings 0
+STRICT Quality Gate       PASS / ERRORLEVEL 0
+git status --short        clean
 ```
 
-Harness Audit:
+Harness Audit에서 다음 기준도 확인했습니다.
 
 ```text
-PASS global AGENTS.md size: 4579 bytes
-PASS skill metadata checked: 7 skills
-PASS capability sources
-PASS capability registry
-PASS optional skill integrity: 10 skills
-PASS harness Python syntax
-PASS MANIFEST covers managed files
-INFO warnings: 0
-RESULT PASS
+global AGENTS.md size: 4579 bytes
+Core skill metadata: 7
+Optional skill integrity: 10
+capability sources: PASS
+capability registry: PASS
+MANIFEST coverage: PASS
 ```
 
-STRICT Quality Gate:
+검증 중 발견한 기존 Optional Skill 공통 계약 불일치 2건은 최소 수정 후 재검증했습니다.
 
-```text
-PASS unstaged diff whitespace
-PASS staged diff whitespace
-PASS unresolved Git conflicts
-INFO changed/untracked files: 0
-PASS conflict-marker scan
-PASS suspicious-secret scan
-PASS verification: harness_audit.py
-RESULT PASS
-ERRORLEVEL=0
-```
-
-Final repository state:
-
-```text
-git status --short
--> no output
-```
-
-검증 중 발견된 기존 Optional Skill 공통 계약 불일치는 최소 수정했습니다.
-
-- `root-cause-debugging`: `Handoff` / `Stop`을 `Stop / Handoff` 공통 섹션으로 정규화
+- `root-cause-debugging`: `Stop / Handoff` 공통 섹션 형식으로 정규화
 - `code-review`: `Stop / Handoff` 규칙 추가
-
-두 수정 후 Optional Skill integrity regression이 PASS했습니다.
 
 ## Acceptance Criteria
 
@@ -172,23 +115,21 @@ git status --short
 4. Core Skill 7개 변경 없음 — PASS
 5. Global `.codex/AGENTS.md` 변경 없음 — PASS
 6. 각 새 Skill에 Evidence / Stop-Handoff 규칙 포함 — PASS
-7. Router가 각 새 Skill의 명확한 positive case를 선택 — PASS
-8. 각 새 Skill의 대표 negative case에서 false activation 없음 — PASS
-9. 기존 JWT exact-3 regression 유지 — PASS
-10. total selection <= 3 유지 — PASS
-11. Registry tests PASS — PASS
-12. Router tests PASS — PASS
-13. Optional Skill integrity tests PASS — PASS
-14. Activation/materializer/discovery/launcher regression PASS — PASS
-15. Harness Audit PASS — PASS
-16. STRICT Quality Gate PASS — PASS
+7. Router positive cases — PASS
+8. Router negative cases — PASS
+9. 기존 JWT exact-3 regression — PASS
+10. total selection <= 3 — PASS
+11. Registry tests — PASS
+12. Router tests — PASS
+13. Optional Skill integrity tests — PASS
+14. Activation/materializer/discovery/launcher regressions — PASS
+15. Harness Audit — PASS
+16. STRICT Quality Gate — PASS
 17. final working tree clean — PASS
 
 ## 완료 후 순서
 
-Batch 1이 **COMPLETE - VERIFIED** 되었으므로 바로 Skill Batch 2를 추가하지 않습니다.
-
-다음 순서를 먼저 완료합니다.
+Batch 1은 **COMPLETE - VERIFIED**입니다. 다음 대량 Skill Batch를 바로 추가하지 않습니다.
 
 ```text
 V8_2-SKILL-002  Skill Governance Foundation
