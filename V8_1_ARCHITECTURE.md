@@ -1,6 +1,8 @@
 # V8.1 아키텍처 - Dynamic Capability Library
 
-상태: **Draft for implementation**
+상태: **Baseline implemented / CAP-001 ~ CAP-008 verified**
+
+> 이 문서는 V8.1의 설계 기준입니다. 현재 자동 실행 경로는 optional Skill 중심이며 MCP/Agent 자동 spawn, optional LLM tie-break, project cache 등 일부 항목은 후속 확장 대상으로 남아 있습니다.
 
 ## 1. 목표 구조
 
