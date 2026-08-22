@@ -1,182 +1,124 @@
 ---
 name: codex-task-router
 description: >-
-  Use to route a sufficiently defined Codex software-engineering work unit when
-  the user asks to choose or compare a Codex model, reasoning level, or
-  Ultra/subagent topology, or when a workflow reaches an explicit capability-
-  allocation decision. Recommends the minimum sufficient current capability;
-  it does not implement the task. Do not activate merely because engineering
-  work was requested, or for small edits and simple questions unless routing
-  is explicitly requested.
+  Use only when the user explicitly asks for Codex capability/model/reasoning/
+  topology selection, or when a defined engineering work unit has a material
+  capability-allocation decision because of high uncertainty, risk, architecture
+  impact, hard verification, or meaningful parallel work. Recommend the minimum
+  sufficient supported capability. Do not implement the task.
 ---
 
 # Codex Task Router
 
-## Responsibility
+Route one coherent engineering work unit. Return a recommendation only.
 
-Route one defined implementation or investigation unit. Return a recommendation
-only; do not implement, edit files, or execute the routed work.
+Do not activate for routine small edits, ordinary coding, or simple questions unless
+routing is explicitly requested. Stronger reasoning is not a substitute for unclear
+requirements or architecture.
 
-Routing follows problem, requirements, architecture, decomposition, and scope.
-If those are too vague for a reliable decision, return `INVESTIGATE FIRST` and
-identify only the missing routing facts. Stronger reasoning is not a substitute
-for design.
+## 1. Define the Work Unit
 
-Keep these boundaries:
+Route a coherent outcome, not every helper function.
 
-- Project instructions own architecture, scope, Human Gates, and verification.
-- This skill allocates Codex capability for the current work unit; it does not
-  design a general routing policy, model portfolio, evaluation, or fallback
-  system.
-- `codex-long-run` governs efficient long execution. Set `Long-run Workflow` and
-  hand off; do not reproduce its context, checkpoint, or verification workflow.
+Include the implementation, investigation, tests, fixtures, and small supporting
+refactors needed to complete that outcome.
 
-## Routing Workflow
+If the work is not defined well enough to route reliably, return `INVESTIGATE FIRST`
+with only the missing routing facts.
 
-1. Define one coherent routing unit. Include necessary implementation, error
-   handling, fixtures, tests, experiments, and small supporting refactors under
-   one decision. Do not route every microscopic subtask.
-2. Apply the trivial fast path before repository exploration. A task is trivial
-   only when it is clear, isolated, deterministic, low-risk, architecture-neutral,
-   and easy to verify. Hidden consequence severity disqualifies it.
-3. For non-trivial work, classify the dimensions below. Use task interactions and
-   consequences, not file or line counts.
-4. Compute the serial Safety Floor, then select the least expensive currently
-   supported configuration likely to finish correctly without costly failure or
-   rework.
-5. Evaluate `PARALLEL COMPLEX` only after the serial route. Compare current and
-   recommended configurations, emit the compact result, and stop.
+## 2. Fast Path
 
-## Dimensions
+Use `LIGHT` when all are true:
 
-| Dimension | Values | Judge from |
-| --- | --- | --- |
-| Complexity | LOW / MEDIUM / HIGH / VERY HIGH | algorithms, state, interactions, coupling |
-| Uncertainty | LOW / MEDIUM / HIGH | clarity of scope, root cause, dependencies, approach |
-| Risk | LOW / MEDIUM / HIGH / CRITICAL | consequence of error, irreversibility, security, data |
-| Project Criticality | NORMAL / IMPORTANT / CRITICAL | actual delivery and operational context |
-| Architecture Impact | NONE / LIMITED / SIGNIFICANT | boundaries, responsibilities, contracts, data flow |
-| Breadth | NARROW / MODERATE / BROAD | logical subsystems and shared interfaces/state |
-| Verification Difficulty | LOW / MEDIUM / HIGH | determinism, observability, environment, compatibility |
-| Parallelizability | LOW / MEDIUM / HIGH | independent workstreams, not raw difficulty |
-| Routing Confidence | LOW / MEDIUM / HIGH | completeness and stability of routing evidence |
-| Cost Sensitivity | EFFICIENCY / BALANCED / QUALITY | explicit user priority and failure/rework cost |
+- clear and isolated
+- deterministic
+- low consequence
+- architecture-neutral
+- easy to verify
 
-Small code can have `CRITICAL` risk. Production context alone is not automatically
-critical; use the stated consequences. Low routing confidence makes the route
-provisional, not automatically Ultra.
+Do not perform broad repository analysis merely to justify a trivial route.
 
-## Serial Route and Safety Floor
+## 3. Safety Floor
 
-Use logical routes so model names can evolve. Map each dimension to a minimum
-serial route and take the strongest applicable minimum:
+For non-trivial work, classify only what changes the decision:
 
-| Source | LIGHT | STANDARD | DEEP | CRITICAL |
-| --- | --- | --- | --- | --- |
-| Complexity | LOW | MEDIUM | HIGH | VERY HIGH |
-| Uncertainty | LOW | MEDIUM | HIGH | - |
-| Risk | LOW | MEDIUM | HIGH | CRITICAL |
-| Project Criticality | NORMAL | IMPORTANT | - | CRITICAL |
-| Architecture Impact | NONE | LIMITED | SIGNIFICANT | - |
-| Verification Difficulty | LOW | MEDIUM | HIGH | - |
+| Dimension | Lower floor | Middle floor | Higher floor |
+| --- | --- | --- | --- |
+| Complexity | LOW -> LIGHT | MEDIUM -> STANDARD | HIGH/VERY HIGH -> DEEP |
+| Uncertainty | LOW -> LIGHT | MEDIUM -> STANDARD | HIGH -> DEEP |
+| Risk | LOW -> LIGHT | MEDIUM -> STANDARD | HIGH -> DEEP / CRITICAL -> CRITICAL |
+| Architecture impact | NONE -> LIGHT | LIMITED -> STANDARD | SIGNIFICANT -> DEEP |
+| Verification difficulty | LOW -> LIGHT | MEDIUM -> STANDARD | HIGH -> DEEP |
+| Project criticality | NORMAL -> LIGHT | IMPORTANT -> STANDARD | CRITICAL -> CRITICAL |
 
-Broad, tightly coupled work may raise this result. Breadth, parallelizability,
-confidence, cost sensitivity, and user preference never lower a required floor.
-A significant architecture decision also requires a Human Gate and can rise to
-`CRITICAL` when consequence, uncertainty, or verification warrants it.
+Take the strongest applicable minimum.
 
-Set `Safety Floor Applied: YES` when consequence, criticality, architecture, or
-verification raises the route above the complexity/uncertainty baseline or
-prevents a requested downgrade. State the dominant reason.
+Breadth, cost sensitivity, user preference, and parallelizability may raise the
+recommendation or choose among options at/above the floor; they never lower the
+required floor.
 
 Route meanings:
 
-- `LIGHT`: clear, isolated, low-risk, easy to verify.
-- `STANDARD`: ordinary engineering in known architecture with normal coupling.
-- `DEEP`: difficult investigation or interacting modules with high uncertainty.
-- `CRITICAL`: strongest appropriate single-agent work for high consequence,
-  architecture, migration, security, concurrency, or hard verification.
-- `PARALLEL COMPLEX`: a DEEP/CRITICAL floor plus justified parallel topology;
-  it is not a stronger ordinal Safety Floor.
+- `LIGHT`: clear, isolated, low-risk, easy verification.
+- `STANDARD`: normal engineering inside known architecture.
+- `DEEP`: difficult investigation, interacting modules, high uncertainty, or hard verification.
+- `CRITICAL`: high-consequence/security/migration/architecture work needing the strongest appropriate single-agent route.
+- `PARALLEL COMPLEX`: DEEP/CRITICAL work with genuinely independent workstreams where delegation materially helps.
 
-## Resolve Current Codex Capability
+## 4. Resolve Current Capability
 
-Use already-observed runtime metadata first. When validity matters, query the
-current Codex model catalog or official OpenAI documentation; do not rely on old
-names, guessed prices, or a generic config schema when the model-specific catalog
-is available. Do not repeat capability discovery for every supporting subtask.
+Do not keep a permanent model-name or pricing table in this Skill.
 
-As verified for the current Codex catalog, use this baseline only while each
-combination remains supported:
+Use, in order:
 
-| Route | Default recommendation |
-| --- | --- |
-| LIGHT | `gpt-5.6-luna` / `low` |
-| STANDARD | `gpt-5.6-terra` / `medium` |
-| DEEP | `gpt-5.6-sol` / `high` |
-| CRITICAL | `gpt-5.6-sol` / `xhigh`; use `max` for the hardest quality-first single-agent work |
-| PARALLEL COMPLEX | `gpt-5.6-sol` / `ultra`; use `gpt-5.6-terra` / `ultra` only when its capability is sufficient and efficiency matters |
+1. effective runtime/session configuration already observed;
+2. current Codex model/reasoning controls exposed by the active product;
+3. current official OpenAI Codex documentation when verification is needed.
 
-Availability and account eligibility still require confirmation. If no adequate
-supported combination can be confirmed, do not invent one: report `UNKNOWN`, the
-Safety Floor, and a Human Gate or `INVESTIGATE FIRST` as appropriate.
+Never invent a model, reasoning level, Ultra/subagent feature, switch command, price,
+or account entitlement.
 
-## Ultra Guard
+Choose the least expensive currently supported configuration likely to complete the
+work correctly without costly failure, rework, context reconstruction, or excessive
+verification.
 
-Default `Ultra: NO`. Select `PARALLEL COMPLEX` and recommend `ultra` only when all
-are true:
+If the available configuration cannot be confirmed, report `UNKNOWN` rather than
+guessing.
 
-1. The work is genuinely large or complex.
-2. At least two meaningful workstreams are substantially independent.
-3. Delegation materially improves quality, review breadth, or throughput.
-4. Coordination and token overhead are acceptable.
-5. The critical path is not fundamentally sequential.
+## 5. Parallel / Ultra Guard
 
-One hard algorithm, one narrow race, or a sequential debugging chain uses strong
-single-agent reasoning, not Ultra. If Ultra is unavailable, keep the serial Safety
-Floor and report the limitation; do not pretend delegation occurred.
+Default `Ultra: NO`.
 
-## Stability, Override, and Gates
+Recommend parallel/Ultra-style execution only when all are true:
+
+1. the serial floor is DEEP or CRITICAL;
+2. at least two substantial workstreams are meaningfully independent;
+3. delegation improves quality, review breadth, or throughput;
+4. coordination/token overhead is acceptable;
+5. the critical path is not fundamentally sequential.
+
+One hard algorithm, one race condition, or one sequential debugging chain does not
+justify parallel execution.
+
+## 6. Stability and Overrides
 
 Re-route only when new evidence materially changes scope, risk, architecture,
-coupling, verification, or phase. Escalate when the Safety Floor rises. De-escalate
-only when remaining work is durably simpler, risk is clarified, verification is
-straightforward, and the lower route is likely to remain sufficient. Do not
-oscillate after minor evidence or split one coherent unit merely to save usage.
+verification, or parallel structure.
 
-Respect a supported explicit user configuration. An efficiency preference chooses
-the least expensive option at or above the floor; balanced uses the baseline;
-quality may raise it. Never hide a conflict between a cheaper request and critical
-safety. Flag a Human Gate for material architecture, security, irreversible data,
-production migration, major public API, or requirement decisions, not for ordinary
-supporting details.
+Respect an explicit supported user configuration unless it violates the Safety Floor.
+When a cheaper preference conflicts with the floor, state the conflict instead of
+silently downgrading.
 
-Compare total expected cost: capability usage plus failure, rework, verification,
-context reconstruction, switching, and delegation overhead, not initial model cost
-alone.
+Use a Human Gate for material architecture, security, irreversible data, production
+migration, major public API, or requirement decisions.
 
-When current configuration is observable, compare the effective session setting,
-not merely a default config file. Otherwise use `Current Configuration: UNKNOWN`.
-Use only a switching surface confirmed in the active environment, such as the
-interactive model/reasoning controls, CLI `--model` plus configuration/profile
-overrides, or explicit subagent overrides. Never claim the parent session or a
-subagent was switched unless it actually was.
-
-Actions:
-
-- `KEEP`: effective configuration matches the recommendation.
-- `SWITCH RECOMMENDED`: a material mismatch exists, or an unknown configuration
-  should be explicitly established and the switching cost is worthwhile.
-- `INVESTIGATE FIRST`: missing facts prevent reliable routing.
-- `SWITCH NOT WORTHWHILE`: trivial work where switching overhead exceeds benefit.
-
-Set `Long-run Workflow: YES` only when execution likely needs multiple substantial
-steps, repeated debug/verification cycles, repository-scale work, or another
-session. This is a handoff flag, not permission to begin implementation.
+Set `Long-run Workflow: YES` when execution is likely to require multiple substantial
+implementation/debug/verification cycles or a resumable session. This is only a
+handoff to `codex-long-run`; do not reproduce that Skill's workflow.
 
 ## Output
 
-For a clearly trivial unit, return only:
+For trivial work:
 
 ```text
 TASK ROUTING
@@ -185,45 +127,43 @@ Route: LIGHT
 Confidence: HIGH
 Ultra: NO
 Action: KEEP / SWITCH NOT WORTHWHILE
-Reason: <one or two sentences>
+Reason: <1-2 sentences>
 ```
 
-For non-trivial work, keep every reason concise:
+For non-trivial work:
 
 ```text
 TASK ROUTING
 
-Work Unit: <defined coherent unit>
+Work Unit: <coherent outcome>
 Route: LIGHT / STANDARD / DEEP / CRITICAL / PARALLEL COMPLEX
 Complexity: LOW / MEDIUM / HIGH / VERY HIGH
 Uncertainty: LOW / MEDIUM / HIGH
 Risk: LOW / MEDIUM / HIGH / CRITICAL
-Project Criticality: NORMAL / IMPORTANT / CRITICAL
 Architecture Impact: NONE / LIMITED / SIGNIFICANT
-Breadth: NARROW / MODERATE / BROAD
 Verification Difficulty: LOW / MEDIUM / HIGH
 Parallelizability: LOW / MEDIUM / HIGH
 Routing Confidence: LOW / MEDIUM / HIGH
-Cost Sensitivity: EFFICIENCY / BALANCED / QUALITY
-Safety Floor Applied: YES / NO
-Reason: <dominant floor reason>
-User Override: NONE / EFFICIENCY / BALANCED / QUALITY / EXPLICIT
-Effect: <effect without hiding safety conflicts>
+Safety Floor: <route and dominant reason>
 Recommended Model: <confirmed current model or UNKNOWN>
 Recommended Reasoning: <confirmed current level or UNKNOWN>
 Ultra: YES / NO
-Current Configuration: <effective model/reasoning or UNKNOWN>
-Configuration Match: YES / NO / UNKNOWN
-Action: KEEP / SWITCH RECOMMENDED / INVESTIGATE FIRST
-Why: <concise total-cost and quality rationale>
-Human Gate: YES / NO
-Reason: <gate reason or none>
+Current Configuration: <effective setting or UNKNOWN>
+Action: KEEP / SWITCH RECOMMENDED / INVESTIGATE FIRST / SWITCH NOT WORTHWHILE
+Human Gate: YES / NO - <reason>
 Long-run Workflow: YES / NO
+Why: <concise total-cost and quality rationale>
 ```
 
 ## Anti-patterns
 
-Do not route by file count, use the strongest or cheapest model for everything,
-equate difficulty with Ultra, ignore small high-risk changes, replace design with
-reasoning, run broad repository analysis for a trivial route, route every helper,
-oscillate on noise, silently defeat a Safety Floor, or start implementation.
+Do not:
+
+- route by file/line count
+- use the strongest or cheapest model for everything
+- equate difficulty with parallelism
+- replace missing design with more reasoning
+- route every microscopic subtask
+- repeatedly rediscover the model catalog
+- claim a configuration switch or delegation that was not actually applied
+- start implementation from this Skill
