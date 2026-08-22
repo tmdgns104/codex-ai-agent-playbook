@@ -1,215 +1,247 @@
 # Codex AI Agent Playbook Kit
 
-이 패키지는 `AI Agent Development Playbook v3`를 Codex CLI에서 재사용하기 위한 설치형 세트입니다.
+Codex를 **더 적은 반복 설명과 더 적은 고정 컨텍스트로**, 여러 프로젝트에서 일관되게 사용하기 위한 전역 Playbook + Skills 세트입니다.
 
-## 포함 내용
+현재 개발 버전: **V7 Candidate (`v7-context-efficient`)**
+
+## 핵심 구조
 
 ```text
-.codex/
-└── AGENTS.md
-    모든 프로젝트에서 적용할 최소 작업 원칙
+.codex/AGENTS.md
+  매 세션에 필요한 최소 전역 원칙만 유지
 
-.agents/
-└── skills/
-    └── ai-agent-development-playbook/
-        ├── SKILL.md
-        ├── references/
-        │   ├── PLAYBOOK.md
-        │   ├── STARTER_PROMPTS_KO.md
-        │   └── 각종 Contract/Result/Review 템플릿
-        └── assets/
-            └── project-template/
-                새 프로젝트에 복사해 사용할 문서 구조
-```
+.agents/skills/
+  ai-agent-development-playbook/
+  codex-long-run/
+  codex-task-router/
+  guide-ppt-creator/
+  human-centered-project-builder/
+  human-readable-code/
 
-## Windows 설치
+install.ps1
+  전역 설치/업데이트
 
-PowerShell에서 압축을 푼 폴더로 이동한 뒤:
+verify-install.ps1
+  GitHub 저장소 버전과 PC 전역 설치 상태 비교
 
-```powershell
-Set-ExecutionPolicy -Scope Process Bypass
-.\install.ps1
+uninstall.ps1
+  Playbook이 관리하는 전역 항목 제거
 ```
 
 설치 위치:
 
 ```text
-$HOME\.codex\AGENTS.md
-$HOME\.agents\skills\ai-agent-development-playbook\
+%USERPROFILE%\.codex\AGENTS.md
+%USERPROFILE%\.agents\skills\<skill-name>\
 ```
 
-기존 `$HOME\.codex\AGENTS.md`가 있다면 설치 스크립트는
-`AI_AGENT_PLAYBOOK_KIT` 마커 구간만 추가/갱신하여 기존 사용자 지침을 보존합니다.
+## V7에서 달라진 점
 
-기존 Skill 폴더가 있다면 timestamp 백업 후 새 버전을 설치합니다.
+### 1. 전역 AGENTS.md 경량화
 
-## 제거
+항상 주입되는 전역 파일은 상세 매뉴얼이 아니라 **작업 원칙과 Skill 라우팅용 인덱스**로 사용합니다.
+
+상세 절차는 필요한 순간에만 Skill에서 읽습니다.
+
+목표:
+
+```text
+항상 필요한 규칙 -> AGENTS.md
+상황별 상세 워크플로 -> Skills
+프로젝트 전용 지식 -> 각 Repository
+```
+
+### 2. 모델 라우터의 고정 모델표 제거
+
+`codex-task-router`는 모델 이름/가격을 장기간 하드코딩하지 않습니다.
+
+라우팅이 실제로 필요한 경우에만:
+
+1. 현재 세션 설정
+2. 현재 제품에 노출된 모델/Reasoning 옵션
+3. 필요할 때 최신 OpenAI Codex 공식 문서
+
+순서로 확인합니다.
+
+### 3. 설치 스크립트 멱등화
+
+이미 같은 Skill이 설치되어 있으면 다시 복사하거나 백업하지 않습니다.
+
+변경이 있을 때만 교체합니다.
+
+### 4. Skill 백업 위치 변경
+
+V6까지는 기존 Skill 백업이 다음처럼 Skill 검색 경로 안에 생길 수 있었습니다.
+
+```text
+%USERPROFILE%\.agents\skills\skill-name.backup-YYYYMMDD-HHMMSS
+```
+
+이 구조는 백업 안의 `SKILL.md`가 중복 Skill로 탐색될 가능성이 있습니다.
+
+V7부터 백업은 다음 위치로 이동합니다.
+
+```text
+%USERPROFILE%\.codex\playbook-backups\<timestamp>\
+```
+
+기존 `*.backup-*` 폴더도 설치 시 Skill 검색 경로 밖으로 이동합니다.
+
+### 5. 설치 검증 추가
 
 ```powershell
+.\verify-install.ps1
+```
+
+을 실행하면 Repository 버전과 전역 설치본을 비교해:
+
+```text
+PASS
+DRIFT
+MISSING
+```
+
+으로 확인합니다.
+
+---
+
+# Windows 설치
+
+## 처음 설치
+
+```powershell
+git clone https://github.com/tmdgns104/codex-ai-agent-playbook.git
+cd codex-ai-agent-playbook
+git switch v7-context-efficient
+
+Set-ExecutionPolicy -Scope Process Bypass
+.\install.ps1
+```
+
+설치 후 자동 검증이 실행됩니다.
+
+직접 다시 확인하려면:
+
+```powershell
+.\verify-install.ps1
+```
+
+## 기존 설치를 V7 후보로 업데이트
+
+이미 Repository를 내려받아 둔 경우:
+
+```powershell
+cd <codex-ai-agent-playbook 폴더>
+
+git status
+git fetch origin
+git switch v7-context-efficient
+git pull
+
+Set-ExecutionPolicy -Scope Process Bypass
+.\install.ps1
+.\verify-install.ps1
+```
+
+`git status`에 직접 수정한 파일이 있다면 먼저 확인한 뒤 진행합니다.
+
+## V7이 main에 병합된 뒤
+
+```powershell
+cd <codex-ai-agent-playbook 폴더>
+git switch main
+git pull origin main
+
+Set-ExecutionPolicy -Scope Process Bypass
+.\install.ps1
+.\verify-install.ps1
+```
+
+그 다음 **새 Codex 세션**을 시작합니다.
+
+---
+
+# 포함 Skills
+
+| Skill | 용도 |
+| --- | --- |
+| `ai-agent-development-playbook` | 비단순 개발, 설계, Agent/RAG/tooling, 계약, 검증 |
+| `codex-long-run` | 여러 구현/디버깅/검증 사이클이 필요한 장기 작업 |
+| `codex-task-router` | 모델/Reasoning/병렬 실행 선택이 실제로 필요한 경우의 추천 |
+| `human-readable-code` | 사람이 읽고 배우기 쉬운 코드, 구조, 설명 |
+| `human-centered-project-builder` | 요구부터 구현·검증까지 한 번에 진행하는 프로젝트 워크플로 |
+| `guide-ppt-creator` | 기술 문서/프로젝트를 가이드 PPTX로 변환 |
+
+기본 원칙은 **전부 사용하지 않는 것**입니다.
+
+현재 작업에 필요한 최소 Skill만 사용합니다.
+
+---
+
+# 추천 사용 방식
+
+작은 수정:
+
+```text
+버그 원인을 확인하고 최소 수정 후 관련 테스트까지 실행해.
+```
+
+일반적인 비단순 개발:
+
+```text
+$ai-agent-development-playbook
+
+현재 Repository의 요구사항/아키텍처를 먼저 확인하고
+현재 Task 범위만 구현한 뒤 Evidence로 완료 여부를 판단해.
+```
+
+장기 작업:
+
+```text
+$codex-long-run
+
+현재 Repository 상태를 기준으로 하나의 결과만 끝까지 진행해.
+불필요한 전체 스캔과 반복 로그 출력을 줄이고
+필요한 검증 Evidence를 남겨.
+```
+
+라우팅이 정말 필요한 경우:
+
+```text
+$codex-task-router
+
+이 작업에 현재 Codex의 어떤 capability가 적절한지만 추천해.
+구현은 하지 마.
+```
+
+---
+
+# 제거
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
 .\uninstall.ps1
 ```
 
-전역 `AGENTS.md`에서는 이 Kit가 추가한 마커 구간만 제거합니다.
+전역 `AGENTS.md`에서는 `AI_AGENT_PLAYBOOK_KIT` 마커 구간만 제거하고,
+이 Repository가 관리하는 Skill만 제거합니다.
 
-## 설치 확인
-
-새 터미널에서 프로젝트 폴더로 이동해:
-
-```powershell
-codex
-```
-
-그리고:
+백업은 자동 삭제하지 않습니다.
 
 ```text
-$ai-agent-development-playbook
-
-이 skill의 목적과 현재 프로젝트에서 언제 사용해야 하는지 요약해.
-코드는 수정하지 마.
+%USERPROFILE%\.codex\playbook-backups\
 ```
 
-처럼 확인합니다.
-
-## 새 프로젝트 시작 권장 방식
-
-1. 새 repo 생성
-2. `assets/project-template`에서 필요한 문서만 프로젝트 루트에 복사
-3. Codex 실행
-4. `$ai-agent-development-playbook`을 사용해 Problem/Requirements/Architecture 확정
-5. `TASK-XXX.md` 단위로 구현
-6. 테스트/Evidence 생성
-7. 필요하면 ChatGPT로 Architecture/Result Review
-
-## 중요한 원칙
-
-모든 프로젝트에 모든 문서를 강제로 만들지 않습니다.
-
-- 작은 script: Task + Test 정도로 충분할 수 있음
-- 일반 web app: Project/Requirements/Architecture/AGENTS
-- RAG: Resource contract + retrieval eval 추가
-- Tool-using agent: State/Node/Tool contracts 추가
-- Production agent: Persistence/Observability/Security/HITL 추가
-
-프로젝트 복잡성에 맞춰 Playbook을 단계적으로 적용합니다.
-
+에서 필요 없는 백업을 사용자가 직접 정리할 수 있습니다.
 
 ---
 
-# V4 추가: guide-ppt-creator
+# 설계 원칙
 
-V4에는 두 개의 사용자 Skill이 포함됩니다.
-
-```text
-$ai-agent-development-playbook
-→ 프로젝트를 설계하고 구현/검증하는 방법론
-
-$guide-ppt-creator
-→ 프로젝트/문서/코드를 사람이 이해하기 쉬운 PPT 가이드로 변환하는 워크플로
-```
-
-`guide-ppt-creator`는 다음 순서를 기본으로 합니다.
-
-```text
-Source Analysis
-→ Audience / Goal
-→ Storyboard Contract
-→ Slide Contract
-→ Diagram Contract
-→ Speaker Notes
-→ PPTX Build
-→ Structural Inspect
-→ Render
-→ Visual QA
-→ Content QA
-```
-
-주요 파일:
-
-```text
-.agents/skills/guide-ppt-creator/
-├── SKILL.md
-├── references/
-│   ├── STORYBOARD_CONTRACT.md
-│   ├── SLIDE_CONTRACT.md
-│   ├── DIAGRAM_CONTRACT.md
-│   ├── SPEAKER_NOTES_CONTRACT.md
-│   ├── VISUAL_QA.md
-│   ├── CONTENT_QA.md
-│   ├── PPTX_IMPLEMENTATION_GUIDE.md
-│   ├── PPT_RESULT_TEMPLATE.md
-│   └── STARTER_PROMPTS_KO.md
-├── scripts/
-│   ├── inspect_pptx.py
-│   ├── render_pptx.py
-│   └── make_contact_sheet.py
-└── assets/
-    ├── default-theme.json
-    └── deck-template/
-```
-
-## 사용 예
-
-```text
-$guide-ppt-creator
-
-PROJECT.md, ARCHITECTURE.md, AGENT_ARCHITECTURE.md를 기반으로
-프로젝트 구조 가이드 PPT를 만들어.
-
-대상은 프로젝트를 처음 보는 개발자야.
-
-먼저 Storyboard를 설계하고,
-그 다음 PPTX를 만들어.
-
-발표자 노트에는 발표자 지침이 아니라
-청중에게 실제로 설명하는 강의문을 작성해.
-
-완료 후 가능한 방식으로 렌더링해서
-Visual QA와 Content QA 결과를 보고해.
-```
-
-## 렌더링 주의
-
-`render_pptx.py`는 로컬 환경에 LibreOffice/soffice가 있으면
-PPTX를 PDF로 렌더링하고, `pdftoppm`이 있으면 PNG까지 생성합니다.
-
-렌더러가 없다면 Skill은 반드시:
-
-```text
-VISUAL QA: UNVERIFIED
-```
-
-라고 보고하도록 설계되어 있습니다.
-
-
----
-
-# V5: 사람이 이해할 수 있는 개발 워크플로
-
-추가 Skill:
-
-```text
-$human-readable-code
-→ 사람이 읽고 배우고 유지보수하기 쉬운 코드 작성/리뷰
-
-$human-centered-project-builder
-→ 설계 + Task + 가독성 + 구현 + 테스트 + 설명을 한 번에 시작
-```
-
-가장 간단한 사용:
-
-```text
-$human-centered-project-builder
-
-BUILD_REQUEST.md를 읽고 프로젝트를 시작해.
-설계를 먼저 정리하고, 승인된 범위에서 TASK-001부터 구현해.
-테스트와 Readability Review까지 수행해.
-```
-
-세부 Skill을 직접 조합할 수도 있습니다:
-
-```text
-$ai-agent-development-playbook
-$human-readable-code
-
-PROJECT.md와 ARCHITECTURE.md를 기준으로 TASK-001을 구현해.
-```
+- Chat 기록보다 Repository를 지속 가능한 Source of Truth로 사용
+- 한 번에 하나의 coherent outcome
+- 자기 보고 PASS가 아니라 Test/Diff/Artifact Evidence로 완료 판단
+- 전역 규칙은 짧게 유지
+- 세부 워크플로는 Skill로 Progressive Disclosure
+- 프로젝트 전용 규칙은 프로젝트 Repository에 유지
+- 토큰 절감이 정확성이나 검증 신뢰성을 낮추면 채택하지 않음
