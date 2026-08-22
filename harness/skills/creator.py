@@ -76,7 +76,7 @@ def creator_eligibility(
     if nearby_skill_ids:
         return Eligibility("NO_ACTION", "nearby Skill exists; evaluate minimal extension before new Skill")
     if gap_event_count < 2:
-        return Eligibility("WAIT", "at least two matching Gap Events are required")
+        return Eligibility("WAIT", "at least two distinct matching Gap Events are required")
     if len(positive_cases) < 2 or len(negative_cases) < 1:
         return Eligibility("WAIT", "candidate requires at least two positive and one negative routing cases")
     return Eligibility("CREATE_CANDIDATE", "repeated reusable gap with minimum routing evidence")
@@ -196,12 +196,17 @@ def create_candidate(
     repository_specific_one_off: bool = False,
 ) -> dict[str, Any]:
     """Create a runtime candidate package after deterministic eligibility checks."""
+    state_root = state_root.resolve()
+    if state_root.name != ".playbook-state":
+        raise CreatorError("Creator state_root must be a .playbook-state directory")
+
     spec = validate_creator_spec(spec)
     matches = matching_gap_events(events, domain_hypothesis=spec["domain_hypothesis"])
+    distinct_fingerprints = {str(event.get("task_fingerprint", "")) for event in matches}
     eligibility = creator_eligibility(
         router_selected_ids=router_selected_ids or [],
         nearby_skill_ids=nearby_skill_ids or [],
-        gap_event_count=len(matches),
+        gap_event_count=len(distinct_fingerprints),
         reusable_workflow=reusable_workflow,
         repository_specific_one_off=repository_specific_one_off,
         positive_cases=spec["positive_cases"],
