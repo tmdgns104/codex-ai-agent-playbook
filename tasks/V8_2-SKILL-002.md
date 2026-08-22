@@ -1,10 +1,10 @@
 # V8.2-SKILL-002 - Skill Governance Foundation
 
-상태: **APPROVED - NOT STARTED**
+상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
 
 선행 조건:
 
-- V8_2-SKILL-001 Windows verification COMPLETE - VERIFIED
+- V8_2-SKILL-001 — COMPLETE - VERIFIED
 - V8.1 Dynamic Capability Library contracts preserved
 
 참조:
@@ -21,20 +21,27 @@ Creator/Evolver/Curator보다 먼저 Skill 자기관리의 안전 경계를 구�
 
 이 Task에서는 LLM 기반 Skill 생성/수정을 구현하지 않습니다.
 
-추가 핵심 계약:
+핵심 계약:
 
 ```text
 Codex/LLM이 없거나 사용량이 소진되어도
-Router / Evidence / Metrics / Queue / Lifecycle / Audit / Gate / Rollback은 계속 동작한다.
+Router / Evidence / Queue / Lifecycle / Audit / Gate / Rollback은 계속 동작한다.
 ```
 
 Semantic 판단이 필요한 작업은 실패 처리하지 않고 Proposal Queue에 `waiting_for_analysis` 상태로 보관합니다.
 
-## 구현 범위
+## 구현 내용
 
-### 1. Lifecycle schema/store
+### 1. Lifecycle
 
-최소 상태:
+추가:
+
+```text
+capability-library/governance/lifecycle.json
+harness/skills/lifecycle.py
+```
+
+상태:
 
 ```text
 candidate
@@ -46,112 +53,75 @@ stale
 archived
 ```
 
-ACTIVE version은 immutable snapshot으로 취급합니다.
+잘못된 상태 전이는 deterministic code가 거부합니다. ACTIVE Skill은 validation 도중 immutable이라는 계약을 schema에서 유지합니다.
 
-### 2. Proposal schema
+### 2. Proposal Contract
 
-최소 필드:
-
-```text
-proposal_id
-change_type
-skill_id
-base_version
-base_hash
-proposed_version
-reason
-evidence_refs
-trigger_delta
-permission_delta
-requires_human_gate
-status
-```
-
-### 3. `skill_audit.py`
-
-권장 위치:
+추가:
 
 ```text
-harness/quality/skill_audit.py
+harness/skills/proposal.py
 ```
 
-최소 검사:
+검사:
 
-- registry/path/frontmatter consistency
-- source/license
-- Optional isolation
-- permission declaration
-- SKILL.md size stats + soft warning
-- relative link integrity
-- exact trigger overlap report
-- suspicious broad trigger warning
-- personal path / obvious secret
-- executable resources declaration
-- lifecycle consistency
-- routing fixture presence
+- required proposal fields
+- change/status enum
+- base/proposed version
+- base hash
+- evidence refs
+- trigger delta
+- permission delta
+- trigger/permission/structural expansion의 Human Gate 강제
 
-CLI는 human-readable output과 JSON output을 지원합니다.
+### 3. Lock / Base Hash / Promotion
 
-Exit contract 제안:
+추가:
 
 ```text
-0 PASS
-1 FAIL
-2 WARN-only (optional; 기존 harness convention과 충돌하면 문서화 후 조정)
+harness/skills/locking.py
+harness/skills/promotion.py
 ```
 
-기존 Quality Gate exit contract를 임의로 변경하지 않습니다.
+보장:
 
-### 4. Lock / base hash
-
-동일 Skill concurrent write 방지.
-
-- one writer per skill
+- one writer per Skill
+- cross-platform exclusive lock file
+- stale lock recovery
 - base hash mismatch rejection
-- stale lock recovery test
-- atomic write strategy
+- validation 실패 시 ACTIVE package 변경 없음
+- required Human Gate 미승인 시 promotion 금지
+- staged package rename + rollback backup
 
-### 5. Protected regression marker
+### 4. Append-only Event Store
 
-기존 routing regression을 proposal이 삭제/약화하지 못하도록 protected fixture 개념을 정의합니다.
-
-특히 다음 Control Plane 계약도 protected regression 대상입니다.
-
-```text
-LLM unavailable
--> governance continues
--> semantic work queued
--> ACTIVE Skill unchanged
-```
-
-### 6. Append-only Event Store
-
-권장 위치:
+추가:
 
 ```text
 harness/skills/events.py
 .playbook-state/events/skill-events.jsonl
 ```
 
-최소 event:
+지원 event:
 
-- verified usage
-- verification failure
-- capability gap
-- user correction marker
-- routing false-positive/false-negative marker
+- verified_usage
+- verification_failure
+- capability_gap
+- user_correction
+- routing_false_positive
+- routing_false_negative
 
-규칙:
+전체 task text/raw prompt/credential 필드는 저장할 수 없습니다. task fingerprint와 짧은 redacted summary를 사용합니다.
 
-- 전체 task text/credential을 장기 저장하지 않음
-- fingerprint/redacted summary/Evidence ref 우선
-- append-only
-- malformed event rejection
-- `.playbook-state/`는 gitignored local runtime state
+반복 Evidence의 LLM 호출 전 grouping을 위해 다음 deterministic key를 지원합니다.
 
-### 7. Proposal Queue
+```text
+sorted(skill_ids) + event_type + normalized_issue_code
+```
 
-권장 위치:
+### 5. Proposal Queue
+
+추가:
 
 ```text
 harness/skills/queue.py
@@ -159,7 +129,7 @@ harness/skills/queue.py
 .playbook-state/queue/processed.jsonl
 ```
 
-최소 상태:
+상태:
 
 ```text
 waiting_for_analysis
@@ -170,75 +140,137 @@ blocked
 failed
 ```
 
-Queue item은 LLM availability와 무관하게 생성/조회/상태 검증이 가능해야 합니다.
+Queue에는 Codex/OpenAI/Ollama adapter가 없습니다. Provider availability와 무관하게 생성/조회/상태 검증이 가능합니다.
 
-Codex/LLM이 없다는 이유만으로 `waiting_for_analysis` item을 governance FAIL로 취급하지 않습니다.
+### 6. Deterministic Skill Audit
 
-### 8. Deterministic Pattern Bucket Contract
-
-MVP에서는 semantic clustering을 구현하지 않습니다.
-
-대신 동일/유사 Evidence를 LLM 호출 전에 줄일 수 있도록 deterministic grouping key contract만 둡니다.
-
-예:
+추가:
 
 ```text
-skill_id + event_type + normalized_issue_code
-```
-
-목적은 Evidence 한 건마다 LLM을 호출하지 않고 반복 패턴을 batch 분석할 수 있게 하는 것입니다.
-
-### 9. Provider-independent Boundary
-
-SKILL-002에서는 Codex/OpenAI/Ollama 같은 구체 provider adapter를 구현하지 않습니다.
-
-다음 상태만 구분할 수 있으면 됩니다.
-
-```text
-semantic_analysis_not_needed
-semantic_analysis_required
-waiting_for_analysis
-```
-
-Creator/Evolver/Curator는 이후 Task에서 이 queue contract 위에 구현합니다.
-
-Local LLM 또는 Codex의 결과는 모두 동일한 Audit/Regression/Promotion Gate를 통과해야 합니다.
-
-## 금지 범위
-
-- Skill Creator 구현
-- Skill Evolver 구현
-- Skill Curator LLM 구현
-- Codex를 governance runtime의 필수 dependency로 만들기
-- Local LLM adapter 구현
-- automatic provider selection
-- semantic/embedding retrieval
-- 자동 archive
-- automatic merge/split
-- global AGENTS 확대
-- permission model 변경
-
-## 예상 파일
-
-최소 후보:
-
-```text
-capability-library/governance/lifecycle.json
-capability-library/governance/policy.json
-harness/skills/events.py
-harness/skills/queue.py
-harness/skills/proposal.py
-harness/skills/locking.py
-harness/skills/promotion.py
 harness/quality/skill_audit.py
-harness/quality/test_skill_audit.py
-harness/skills/test_governance.py
-harness/skills/test_events.py
-harness/skills/test_queue.py
+```
+
+검사:
+
+- capability registry/source/license validation 재사용
+- lifecycle schema
+- protected regression presence
+- path/frontmatter/name/description consistency
+- Optional Skill isolation
+- SKILL.md byte statistics + soft warning
+- relative link integrity
+- personal path / obvious secret
+- executable resource permission/declaration
+- local 또는 centralized routing fixture signal
+- exact trigger overlap report
+- suspicious broad trigger review
+
+기존 `quality_gate.py` exit contract는 변경하지 않습니다.
+
+`skill_audit.py` 기본 exit:
+
+```text
+0 PASS 또는 WARN-only
+1 FAIL
+```
+
+명시적 `--warn-exit-code` 사용 시 WARN-only는 exit 2입니다.
+
+### 7. Protected Regression
+
+추가:
+
+```text
 evaluation/self-managing/protected-routing.json
 ```
 
-실제 구현 과정에서 파일을 더 작게 합치는 것은 허용하지만 책임 경계는 유지합니다.
+필수 보호 ID:
+
+```text
+jwt-exact-3
+max-selected-3
+llm-unavailable-control-plane
+```
+
+`policy.json`의 required ID를 fixture에서 제거하면 promotion/audit가 FAIL하도록 구현했습니다.
+
+특히 LLM unavailable 계약은 test에서 실제로 다음을 확인합니다.
+
+```text
+semantic analysis required
++ llm unavailable
+-> waiting_for_analysis
+-> ACTIVE bytes unchanged
+-> governance continues
+```
+
+### 8. Runtime State Isolation
+
+`.gitignore`에 추가:
+
+```text
+.playbook-state/
+```
+
+실사용 Evidence/Queue/Lock은 Repository Source of Truth와 분리된 로컬 runtime state입니다.
+
+## 변경 파일
+
+```text
+.gitignore
+capability-library/governance/lifecycle.json
+capability-library/governance/policy.json
+evaluation/self-managing/protected-routing.json
+harness/skills/lifecycle.py
+harness/skills/proposal.py
+harness/skills/locking.py
+harness/skills/promotion.py
+harness/skills/events.py
+harness/skills/queue.py
+harness/skills/test_governance.py
+harness/skills/test_events.py
+harness/skills/test_queue.py
+harness/quality/skill_audit.py
+harness/quality/test_skill_audit.py
+MANIFEST.txt
+tasks/V8_2-SKILL-002.md
+```
+
+Global `.codex/AGENTS.md`, existing Router scoring, permission model은 변경하지 않았습니다.
+
+## Windows Verification
+
+먼저 SKILL-002 focused tests:
+
+```cmd
+python harness\skills\test_governance.py
+python harness\skills\test_events.py
+python harness\skills\test_queue.py
+python harness\quality\test_skill_audit.py
+python harness\quality\skill_audit.py --root .
+```
+
+그 다음 V8.2-SKILL-001 / V8.1 protected regression:
+
+```cmd
+python harness\router\test_registry.py
+python harness\router\test_optional_skills.py
+python harness\router\test_capability_router.py
+python harness\activation\test_capability_manager.py
+python harness\activation\test_skill_materializer.py
+python harness\activation\test_discovery_bridge.py
+python harness\activation\test_playbook_launch.py
+python harness\activation\test_installed_launcher.py
+```
+
+마지막:
+
+```cmd
+python harness\security\harness_audit.py --root .
+python harness\quality\quality_gate.py --repo . --profile strict --verify "python harness\security\harness_audit.py --root ."
+echo %ERRORLEVEL%
+git status --short
+```
 
 ## Acceptance Criteria
 
@@ -255,7 +287,7 @@ evaluation/self-managing/protected-routing.json
 11. trigger overlap reported without auto merge
 12. permission delta detected
 13. protected regression cannot be silently removed
-14. existing V8.1 router tests PASS
+14. existing V8.1/V8.2 router tests PASS
 15. existing activation/materializer/discovery/launcher tests PASS
 16. Harness Audit PASS
 17. STRICT Quality Gate PASS
@@ -271,4 +303,4 @@ evaluation/self-managing/protected-routing.json
 
 ## 완료 조건
 
-실제 Windows Evidence 확인 전 `COMPLETE - VERIFIED`로 표시하지 않습니다.
+구현은 완료했습니다. 실제 Windows Evidence 확인 전 `COMPLETE - VERIFIED`로 표시하지 않습니다.
