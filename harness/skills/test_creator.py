@@ -142,6 +142,20 @@ class CandidateTests(unittest.TestCase):
             self.assertTrue(result["proposal"]["requires_human_gate"])
             self.assertIn("network", result["proposal"]["permission_delta"]["add"])
 
+    def test_permission_delta_without_trigger_is_still_human_gated(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            spec = creator_spec(permissions=["local_read"])
+            spec["triggers"] = []
+            result = create_candidate(
+                state_root=Path(temp) / ".playbook-state",
+                spec=spec,
+                events=[gap("gap-1", "task a"), gap("gap-2", "task b")],
+            )
+            self.assertEqual(result["result"], "CANDIDATE_CREATED")
+            self.assertTrue(result["proposal"]["requires_human_gate"])
+            self.assertEqual(result["proposal"]["trigger_delta"]["add"], [])
+            self.assertEqual(result["proposal"]["permission_delta"]["add"], ["local_read"])
+
     def test_unknown_license_is_rejected_before_candidate_creation(self) -> None:
         with self.assertRaises(CreatorError):
             validate_creator_spec(creator_spec(license_name="unknown"))
