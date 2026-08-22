@@ -30,5 +30,8 @@
   ],
   "routing_fixture_mode": "centralized_or_local",
   "delete_automation_allowed": false,
-  "llm_provider_required_for_control_plane": false
+  "llm_provider_required_for_control_plane": false,
+  "evolution_min_distinct_evidence": 2,
+  "evolution_max_content_edits": 2,
+  "evolution_max_changed_fraction": 0.35
 }
