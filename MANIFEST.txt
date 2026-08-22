@@ -70,7 +70,10 @@ harness/profiles/minimal.json
 harness/profiles/standard.json
 harness/profiles/strict.json
 harness/quality/quality_gate.py
+harness/router/capability_router.py
 harness/router/registry.py
+harness/router/scoring.py
+harness/router/test_capability_router.py
 harness/router/test_registry.py
 harness/security/harness_audit.py
 README.md
