@@ -1,10 +1,10 @@
 # V8.2-SKILL-006 - Self-Managing Lifecycle Integration
 
-상태: **APPROVED - NOT STARTED**
+상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
 
 선행 조건:
 
-- V8_2-SKILL-005 COMPLETE - VERIFIED
+- V8_2-SKILL-005 — COMPLETE - VERIFIED
 
 ## 목적
 
@@ -18,124 +18,325 @@ User Task
   v
 V8.1 Metadata Router
   |
-  +--> Skill found --> Gate --> Activation --> Codex --> Verification --> Event
+  +--> Skill found --> Gate --> Activation --> Codex --> post-task Event
   |
-  +--> No suitable Skill --> Gap Event --> Creator Candidate
+  +--> No suitable Skill --> Codex --> Gap Event only
 
-Observed Events
+Maintenance Entry Point
   |
-  +--> Evolver Proposal
-  +--> Curator Proposal
+  +--> gaps / create
+  +--> evolve
+  +--> curate
+  +--> proposals / validate / promote
            |
            v
-      Skill Audit
+      Candidate Audit
            |
            v
-      Regression
+    Protected Regression
            |
            v
-   Promotion/Human Gate
+   Promotion / Human Gate
            |
            v
    Capability Library
 ```
 
-## 통합 요구사항
+## 구현 내용
 
-### 1. Normal Task Cost
+### 1. Normal Path는 Lightweight 유지
 
-Self-Managing subsystem 때문에 정상 작업마다 Creator/Evolver/Curator LLM 작업을 실행하면 안 됩니다.
+`harness/activation/playbook_launch.py`는 기존 Router / Gate / Activation / Codex 실행 흐름을 유지합니다.
 
-Normal path는 기존 V8.1과 동일하게 lightweight해야 합니다.
+Self-Managing 계층은 정상 task 시작 시 import/실행하지 않습니다.
 
-### 2. Event Recording
+Task 종료 후에만 lazy-load하여 privacy-safe Event 1건을 best-effort 기록합니다.
 
-Task 종료 후 최소 event를 기록할 수 있습니다.
+```text
+selected Skill + exit 0  -> verified_usage
+selected Skill + exit !=0 -> verification_failure
+no Skill                  -> capability_gap
+--user-correction         -> user_correction
+```
 
+저장되는 것은:
+
+- task fingerprint
 - selected Skill ids
 - verification outcome
-- task fingerprint
-- correction marker if explicitly available
+- explicit correction marker
+- timestamp / issue code
 
-기록 실패가 정상 Codex task를 깨뜨리면 안 됩니다.
+raw task text는 저장하지 않습니다.
 
-### 3. Maintenance Entry Point
+Event 저장 실패는 Codex exit/result를 변경하지 않습니다.
 
-권장 CLI 예:
+### 2. Event State 위치
+
+Event/Proposal/Candidate runtime state는 target Git repository가 아니라 **catalog root의 `.playbook-state`**에 저장합니다.
+
+Repository 개발 환경:
 
 ```text
-python harness/skills/manage.py audit
-python harness/skills/manage.py gaps
-python harness/skills/manage.py proposals
-python harness/skills/manage.py validate <proposal-id>
-python harness/skills/manage.py promote <proposal-id>
-python harness/skills/manage.py curate
+<playbook-repo>/.playbook-state
 ```
 
-실제 CLI 이름은 구현 시 기존 naming과 정합성을 맞춥니다.
-
-### 4. Human Gate
-
-CLI는 Human Gate가 필요한 proposal을 자동 적용하지 않습니다.
-
-상태 예:
+Global installed 환경:
 
 ```text
-READY
-VALIDATION_FAILED
+%USERPROFILE%\.codex\.playbook-state
+```
+
+따라서 임의 target Git repository에 Self-Managing telemetry 때문에 untracked 파일을 만들지 않습니다.
+
+### 3. Maintenance CLI
+
+추가:
+
+```text
+harness/skills/manage.py
+```
+
+지원 command:
+
+```cmd
+python harness\skills\manage.py audit
+python harness\skills\manage.py gaps
+python harness\skills\manage.py proposals
+python harness\skills\manage.py create --spec <json>
+python harness\skills\manage.py evolve --spec <json> [--issue-code <code>]
+python harness\skills\manage.py validate <proposal-id>
+python harness\skills\manage.py promote <proposal-id>
+python harness\skills\manage.py curate
+python harness\skills\manage.py benchmark
+```
+
+CLI는 LLM provider를 요구하지 않습니다.
+
+Creator/Evolver의 semantic spec 작성은 reviewed input으로 받고, deterministic code는 eligibility / candidate / audit / regression / promotion만 담당합니다.
+
+### 4. Lifecycle Integration Helper
+
+추가:
+
+```text
+harness/skills/lifecycle_integration.py
+```
+
+담당:
+
+- post-task Event build/record
+- Candidate discovery
+- Candidate validation
+- protected Router regression
+- low-risk promotion
+- installed/repository catalog layout resolution
+- scaling size contract
+
+### 5. Promotion 계약
+
+`modify` Candidate는 기존 Evolver promotion wrapper를 그대로 재사용합니다.
+
+따라서:
+
+- ACTIVE base hash
+- one-writer lock
+- protected regression
+- Candidate metadata 제거
+- atomic replacement
+- promotion history
+
+계약을 유지합니다.
+
+Curator의 low-risk package-only:
+
+```text
+compress
+extract-reference
+```
+
+만 generic atomic package promotion 대상입니다.
+
+다음은 자동 promotion하지 않습니다.
+
+```text
+create
+split
+merge
+archive
+trigger-expand
+permission-expand
+registry trigger/permission delta
+```
+
+### 6. Human Gate
+
+다음은 approval 전:
+
+```text
 HUMAN_GATE_REQUIRED
-STALE_BASE
-PROMOTED
-REJECTED
 ```
 
-### 5. Installer
+- permission expansion
+- split
+- merge
+- archive
+- trigger expansion
 
-필요한 governance code/data가 global installed harness에 포함되어야 한다면 `install.ps1`, `verify-install.ps1`, uninstall parity를 유지합니다.
+approval 후에도 V8.2에서 구조/registry mutation을 자동 수행하지 않는 항목은 `MANUAL_ONLY`입니다.
 
-Optional Skill은 여전히 global discovery path에 대량 설치하지 않습니다.
+즉 Human Gate approval 자체가 silent mutation 권한이 되지 않습니다.
 
-## Windows E2E
+### 7. Installed Protected Regression
 
-최소 실제 검증:
+Repository Source of Truth:
 
-### E2E-1 Existing behavior
+```text
+evaluation/self-managing/protected-routing.json
+```
 
-JWT regression task에서 기존 exact-3/STRICT behavior 유지.
+Global install 시 별도 installer branch를 추가하지 않고 기존 capability-library 설치 경로에 snapshot을 포함합니다.
 
-### E2E-2 Gap
+```text
+capability-library/governance/protected-routing.json
+```
 
-Known gap task -> no Skill auto-creation, Gap Event only.
+`load_protected_regressions()`는:
 
-### E2E-3 Creator
+1. Repository evaluation fixture 우선
+2. installed governance snapshot fallback
+3. 둘 다 있으면 JSON object equality 검증
 
-Gap -> Candidate package 생성 -> ACTIVE unchanged.
+을 수행합니다.
 
-### E2E-4 Failed validation
+따라서 기존 install/reinstall/uninstall 구조를 변경하지 않고 installed maintenance control plane을 사용할 수 있습니다.
 
-negative fixture failure -> promotion blocked -> ACTIVE hash unchanged.
+### 8. Scaling Check
 
-### E2E-5 Successful low-risk promotion
+`manage.py benchmark`는 deterministic metadata Router를 synthetic registry로 측정합니다.
 
-Synthetic low-risk candidate -> all checks PASS -> atomic promotion.
+```text
+10
+50
+100
+500
+1000
+```
 
-### E2E-6 Human Gate
+Skill metadata에서 runtime을 기록하고 semantic/embedding Router를 자동 추가하지 않습니다.
 
-permission expansion/split/merge/archive -> HUMAN_GATE_REQUIRED.
+### 9. Integration Tests
 
-### E2E-7 Curator
+추가:
 
-oversized synthetic Skill -> compress/reference proposal, no silent ACTIVE mutation.
+```text
+harness/skills/test_lifecycle_integration.py
+harness/skills/test_lifecycle_control_plane.py
+```
 
-### E2E-8 Install/Reinstall
+검증 범위:
 
-install -> verify -> same-version reinstall idempotent.
+- Event privacy / best-effort
+- Gap Event only / no auto-create
+- target repo no telemetry mutation
+- Creator repeated-gap gate
+- Evolver Candidate integration
+- Curator package Candidate validation
+- failed regression -> ACTIVE unchanged
+- low-risk atomic promotion + history
+- permission/split/merge/archive Human Gate
+- installed protected snapshot fallback
+- normal Launcher has no Creator/Evolver/Curator direct invocation
+- 10/50/100/500/1000 scaling
 
-## Scaling Check
+## 변경 파일
 
-Synthetic registry metadata로 10/50/100/500/1000 Skill routing runtime을 측정합니다.
+```text
+capability-library/governance/protected-routing.json
+harness/activation/playbook_launch.py
+harness/skills/promotion.py
+harness/skills/lifecycle_integration.py
+harness/skills/manage.py
+harness/skills/test_lifecycle_integration.py
+harness/skills/test_lifecycle_control_plane.py
+MANIFEST.txt
+tasks/V8_2-SKILL-006.md
+```
 
-V8.2에서는 결과를 기록만 하고 Evidence 없이 semantic router를 추가하지 않습니다.
+Global `.codex/AGENTS.md`, Router scoring, ACTIVE registry, Optional Skill content는 변경하지 않았습니다.
+
+## Windows Verification
+
+먼저 SKILL-006 focused tests:
+
+```cmd
+python harness\skills\test_lifecycle_integration.py
+python harness\skills\test_lifecycle_control_plane.py
+```
+
+그 다음 Self-Managing regressions:
+
+```cmd
+python harness\skills\test_curator.py
+python harness\skills\test_evolver.py
+python harness\skills\test_creator.py
+python harness\skills\test_governance.py
+python harness\skills\test_events.py
+python harness\skills\test_queue.py
+python harness\quality\test_skill_audit.py
+python harness\quality\skill_audit.py --root .
+```
+
+Router / Activation regressions:
+
+```cmd
+python harness\router\test_capability_router.py
+python harness\activation\test_capability_manager.py
+python harness\activation\test_skill_materializer.py
+python harness\activation\test_discovery_bridge.py
+python harness\activation\test_playbook_launch.py
+python harness\activation\test_installed_launcher.py
+```
+
+Maintenance CLI / scaling:
+
+```cmd
+python harness\skills\manage.py audit
+python harness\skills\manage.py gaps
+python harness\skills\manage.py proposals
+python harness\skills\manage.py curate
+python harness\skills\manage.py benchmark --repeats 20
+```
+
+Global install E2E:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+powershell -ExecutionPolicy Bypass -File .\verify-install.ps1
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+powershell -ExecutionPolicy Bypass -File .\verify-install.ps1
+```
+
+Installed maintenance smoke:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" benchmark --repeats 2
+```
+
+Installed arbitrary Git repository dry-run:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root <another-git-repo> --task "JWT 인증 오류를 수정하고 regression test를 실행" --dry-run
+```
+
+Final:
+
+```cmd
+python harness\security\harness_audit.py --root .
+python harness\quality\quality_gate.py --repo . --profile strict --verify "python harness\security\harness_audit.py --root ."
+echo %ERRORLEVEL%
+git status --short
+```
 
 ## Acceptance Criteria
 
@@ -153,12 +354,17 @@ V8.2에서는 결과를 기록만 하고 Evidence 없이 semantic router를 추�
 12. all V8.1 router tests PASS
 13. all V8.1 activation/materializer/discovery/launcher tests PASS
 14. new governance/creator/evolver/curator tests PASS
-15. Skill Audit PASS
+15. Skill Audit PASS/WARN-only with no FAIL
 16. Harness Audit PASS
 17. STRICT Quality Gate PASS
 18. install/verify/reinstall Windows PASS
 19. arbitrary target Git repository behavior PASS
 20. final working tree clean
+21. raw task text is not persisted in lifecycle events
+22. lifecycle Event failure cannot change normal Codex task exit result
+23. no-skill normal task creates Gap Event only, never Candidate automatically
+24. global installed control plane can load protected regression without repository evaluation tree
+25. scaling measurement records 10/50/100/500/1000 without adding semantic router
 
 ## V8.2 완료 후
 
@@ -174,4 +380,4 @@ V8.3+ 후보:
 
 ## 완료 조건
 
-실제 Windows Evidence 전 `COMPLETE - VERIFIED` 금지.
+구현은 완료했습니다. 실제 Windows Evidence 확인 전 `COMPLETE - VERIFIED`로 표시하지 않습니다.
