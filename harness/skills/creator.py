@@ -18,14 +18,6 @@ from gap_detector import matching_gap_events
 from proposal import ProposalError, validate_proposal
 
 SKILL_ID = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-HIGH_RISK_PERMISSIONS = {
-    "network",
-    "credential_access",
-    "external_write",
-    "database_write",
-    "destructive",
-    "production",
-}
 FORBIDDEN_SOURCE_LICENSE = {"", "unknown", "unverified", "unspecified"}
 
 
@@ -160,7 +152,10 @@ Stop and request review when required evidence is unavailable, permissions would
 
 
 def build_proposal(spec: dict[str, Any], *, evidence_refs: list[str]) -> dict[str, Any]:
-    requires_human_gate = bool(set(spec["permissions"]) & HIGH_RISK_PERMISSIONS) or bool(spec["triggers"])
+    # A newly created Skill has no ACTIVE permission/trigger baseline. Any declared
+    # permission or trigger is therefore an expansion under the shared proposal
+    # contract and must be surfaced through the Human Gate before activation.
+    requires_human_gate = bool(spec["permissions"]) or bool(spec["triggers"])
     proposal = {
         "proposal_id": spec["proposal_id"],
         "change_type": "create",
