@@ -10,6 +10,7 @@ import unittest
 from pathlib import Path
 
 from capability_router import load_capabilities, route_capabilities
+from scoring import contains_phrase, normalized_phrase
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -143,6 +144,32 @@ class CapabilityRouterTests(unittest.TestCase):
         self.assertIn("selected", payload)
         self.assertIn("profile", payload)
         self.assertIn("result", payload)
+
+    def test_known_korean_particles_extend_trigger_boundary(self) -> None:
+        task = normalized_phrase("JWT 인증 오류를 수정하고 regression test를 실행")
+        self.assertTrue(contains_phrase(task, "오류"))
+        self.assertTrue(contains_phrase(task, "test"))
+
+    def test_unrelated_korean_suffix_does_not_match(self) -> None:
+        task = normalized_phrase("보안관을 호출")
+        self.assertFalse(contains_phrase(task, "보안"))
+
+    def test_ascii_prefix_does_not_match_longer_ascii_word(self) -> None:
+        task = normalized_phrase("problem을 분석")
+        self.assertFalse(contains_phrase(task, "pr"))
+
+    def test_real_jwt_regression_sentence_avoids_code_review_false_activation(self) -> None:
+        result = route_capabilities(
+            "JWT 인증 오류를 수정하고 regression test를 실행",
+            self.capabilities,
+        )
+        ids = [item["id"] for item in result["selected"]]
+        self.assertEqual(result["count"], 3)
+        self.assertEqual(result["profile"], "strict")
+        self.assertIn("security-review", ids)
+        self.assertIn("testing", ids)
+        self.assertIn("root-cause-debugging", ids)
+        self.assertNotIn("code-review", ids)
 
 
 if __name__ == "__main__":
