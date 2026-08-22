@@ -141,6 +141,18 @@ git status --short
 16. STRICT Quality Gate PASS
 17. final working tree clean
 
-## 완료 후
+## 완료 후 순서
 
-Batch 1 Windows Evidence가 모두 PASS한 뒤 다음 Skill 묶음을 추가합니다. 여러 Batch를 한 번에 섞지 않습니다.
+Batch 1 Windows Evidence가 모두 PASS하면 바로 Skill Batch 2를 추가하지 않습니다.
+
+다음 순서를 먼저 완료합니다.
+
+```text
+V8_2-SKILL-002  Skill Governance Foundation
+V8_2-SKILL-003  Skill Creator
+V8_2-SKILL-004  Skill Evolver
+V8_2-SKILL-005  Skill Curator
+V8_2-SKILL-006  Self-Managing Lifecycle Integration
+```
+
+이 관리 체계가 COMPLETE - VERIFIED 된 뒤 다음 대량 Optional Skill 흡수 Batch를 진행합니다.
