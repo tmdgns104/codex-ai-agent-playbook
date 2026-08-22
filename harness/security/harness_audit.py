@@ -27,12 +27,21 @@ ROOT_MANAGED = {
     "verify-install.ps1",
 }
 
+TRANSIENT_DIRS = {"__pycache__"}
+TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
+
 
 def iter_files(root: Path, subtree: str):
     base = root / subtree
     if not base.exists():
         return []
-    return [p for p in base.rglob("*") if p.is_file()]
+    return [
+        p
+        for p in base.rglob("*")
+        if p.is_file()
+        and not any(part in TRANSIENT_DIRS for part in p.parts)
+        and p.suffix.lower() not in TRANSIENT_SUFFIXES
+    ]
 
 
 def rel(root: Path, path: Path) -> str:
