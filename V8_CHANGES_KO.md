@@ -148,20 +148,21 @@ Hook의 목적은 MINIMAL/STANDARD/STRICT 검증 Profile과 결정론적 Gate로
 
 ## V8 Candidate 검증 항목
 
-GitHub 정적 검토 후 실제 Windows PC에서 다음을 확인합니다.
+실제 Windows PC에서 2026-08-22 확인한 항목:
 
-- [ ] V7 -> V8 update
-- [ ] 새 `codex-skill-router` 전역 설치
-- [ ] `~/.codex/playbook-harness` 설치
-- [ ] `verify-install.ps1` RESULT PASS
-- [ ] Harness Audit RESULT PASS
-- [ ] 동일 V8 재설치 no-op
-- [ ] Quality Gate MINIMAL PASS 시나리오
-- [ ] Quality Gate STRICT + verify PASS 시나리오
-- [ ] Quality Gate STRICT + no verify -> UNVERIFIED
-- [ ] deliberate conflict/secret fixture 검출
+- [x] V7 -> V8 update
+- [x] 새 `codex-skill-router` 전역 설치
+- [x] `~/.codex/playbook-harness` 설치
+- [x] `verify-install.ps1` RESULT PASS
+- [x] Harness Audit RESULT PASS / warnings 0
+- [x] 동일 V8 재설치 no-op
+- [x] Quality Gate MINIMAL PASS 시나리오
+- [x] Quality Gate STRICT + verify PASS 시나리오
+- [x] Quality Gate STRICT + no verify -> UNVERIFIED / exit 2
+- [x] deliberate conflict/secret fixture 검출 -> FAIL / exit 1
 - [ ] uninstall 후 사용자 소유 AGENTS 영역 보존
 
+Negative fixture는 검증 후 삭제했고 `git status --short` clean을 확인했습니다.
 실제 실행하지 않은 항목은 PASS로 기록하지 않습니다.
 
 ## V8 이후 P1 후보
