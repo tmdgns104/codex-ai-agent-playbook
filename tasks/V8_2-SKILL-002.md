@@ -1,6 +1,6 @@
 # V8.2-SKILL-002 - Skill Governance Foundation
 
-상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
+상태: **COMPLETE - VERIFIED**
 
 선행 조건:
 
@@ -238,38 +238,35 @@ tasks/V8_2-SKILL-002.md
 
 Global `.codex/AGENTS.md`, existing Router scoring, permission model은 변경하지 않았습니다.
 
-## Windows Verification
+## Windows Verification Evidence
 
-먼저 SKILL-002 focused tests:
+실제 Windows repository에서 확인한 Evidence:
 
-```cmd
-python harness\skills\test_governance.py
-python harness\skills\test_events.py
-python harness\skills\test_queue.py
-python harness\quality\test_skill_audit.py
-python harness\quality\skill_audit.py --root .
+```text
+Governance focused tests       12/12 PASS
+Event Store tests               6/6 PASS
+Proposal Queue tests            7/7 PASS
+Skill Audit tests               6/6 PASS
+Real skill_audit.py             RESULT WARN / exit 0
+Capability Router regression   28/28 PASS
+Capability Manager             12/12 PASS
+Skill Materializer             10/10 PASS
+Discovery Bridge               10/10 PASS
+Playbook Launcher              12/12 PASS
+Installed Launcher              2/2 PASS
+Harness Audit                  PASS / warnings 0
+STRICT Quality Gate            PASS / ERRORLEVEL 0
+Global AGENTS.md               4579 bytes
+Working tree                   clean
 ```
 
-그 다음 V8.2-SKILL-001 / V8.1 protected regression:
+`skill_audit.py`의 WARN은 실패가 아니라 관리 Evidence입니다. 실제 WARN은 기존 trigger overlap / broad-trigger review 후보였고 ACTIVE Skill을 자동 수정하지 않았습니다.
 
-```cmd
-python harness\router\test_registry.py
-python harness\router\test_optional_skills.py
-python harness\router\test_capability_router.py
-python harness\activation\test_capability_manager.py
-python harness\activation\test_skill_materializer.py
-python harness\activation\test_discovery_bridge.py
-python harness\activation\test_playbook_launch.py
-python harness\activation\test_installed_launcher.py
-```
+SKILL-002에서 Router/Registry/Optional Skill 파일은 변경하지 않았으므로 SKILL-001에서 이미 확인한 다음 Evidence도 계속 유효합니다.
 
-마지막:
-
-```cmd
-python harness\security\harness_audit.py --root .
-python harness\quality\quality_gate.py --repo . --profile strict --verify "python harness\security\harness_audit.py --root ."
-echo %ERRORLEVEL%
-git status --short
+```text
+Registry tests                  6/6 PASS
+Optional Skill integrity        6/6 PASS
 ```
 
 ## Acceptance Criteria
@@ -301,6 +298,10 @@ git status --short
 25. no concrete LLM provider is required by governance tests
 26. protected regression covers the LLM-unavailable Control Plane contract
 
-## 완료 조건
+모든 Acceptance Criteria를 실제 Windows Evidence로 충족했습니다.
 
-구현은 완료했습니다. 실제 Windows Evidence 확인 전 `COMPLETE - VERIFIED`로 표시하지 않습니다.
+## 완료
+
+**V8_2-SKILL-002 = COMPLETE - VERIFIED**
+
+다음 Task: `V8_2-SKILL-003 - Skill Creator`.
