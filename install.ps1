@@ -15,6 +15,8 @@ $SkillsSourceRoot = Join-Path $KitRoot ".agents\skills"
 
 $HarnessSourceRoot = Join-Path $KitRoot "harness"
 $HarnessTargetRoot = Join-Path $GlobalCodexDir "playbook-harness"
+$CapabilitySourceRoot = Join-Path $KitRoot "capability-library"
+$CapabilityTargetRoot = Join-Path $GlobalCodexDir "capability-library"
 
 $BackupBase = Join-Path $GlobalCodexDir "playbook-backups"
 $script:RunBackup = $null
@@ -148,6 +150,22 @@ Get-ChildItem -LiteralPath $SkillsSourceRoot -Directory | ForEach-Object {
         Copy-Item -LiteralPath $source -Destination $target -Recurse -Force
         Write-Host "INSTALLED skill '$skillName'"
     }
+}
+
+$capabilitySame = Test-DirectoryEqual -Source $CapabilitySourceRoot -Target $CapabilityTargetRoot
+if ($capabilitySame -and -not $Force) {
+    Write-Host "OK       capability library"
+}
+else {
+    if (Test-Path -LiteralPath $CapabilityTargetRoot) {
+        $capabilityBackupRoot = Join-Path (Get-RunBackup) "capability-library"
+        Copy-Item -LiteralPath $CapabilityTargetRoot -Destination $capabilityBackupRoot -Recurse -Force
+        Remove-Item -LiteralPath $CapabilityTargetRoot -Recurse -Force
+        Write-Host "BACKUP   capability library"
+    }
+
+    Copy-Item -LiteralPath $CapabilitySourceRoot -Destination $CapabilityTargetRoot -Recurse -Force
+    Write-Host "INSTALLED capability library"
 }
 
 $harnessSame = Test-DirectoryEqual -Source $HarnessSourceRoot -Target $HarnessTargetRoot
