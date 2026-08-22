@@ -1,6 +1,6 @@
 # V7 변경사항 - Context Efficient Global Playbook
 
-상태: **Candidate**
+상태: **Release Candidate - Windows update/no-op verification passed**
 
 브랜치:
 
@@ -159,30 +159,66 @@ RESULT FAIL
 
 ## V7 Candidate 검증 항목
 
-main 병합 전 다음을 확인합니다.
+2026-08-22 Windows 실환경에서 V6 설치본을 V7으로 갱신하여 다음 핵심 경로를 확인했습니다.
 
 - [ ] PowerShell 설치 신규 환경
-- [ ] V6 -> V7 업데이트
-- [ ] 동일 버전 재설치 시 no-op
-- [ ] legacy `*.backup-*` 이동
-- [ ] `verify-install.ps1` PASS
+- [x] V6 -> V7 업데이트
+- [x] 동일 버전 재설치 시 no-op
+- [x] legacy `*.backup-*` 이동
+- [x] `verify-install.ps1` PASS
 - [ ] 일부 Skill 수정 후 DRIFT 검출
-- [ ] `AGENTS.md` 사용자 커스텀 영역 보존
-- [ ] uninstall 후 사용자 커스텀 영역 보존
+- [ ] `AGENTS.md` 사용자 커스텀 영역 보존 E2E
+- [ ] uninstall 후 사용자 커스텀 영역 보존 E2E
 - [ ] 새 Codex 세션에서 6개 Skill 인식 확인
+
+### Windows 실환경 Evidence
+
+첫 업데이트에서:
+
+```text
+UPDATED  C:\Users\user\.codex\AGENTS.md
+MOVED    legacy backup ...
+BACKUP   skill 'codex-long-run'
+INSTALLED skill 'codex-long-run'
+BACKUP   skill 'codex-task-router'
+INSTALLED skill 'codex-task-router'
+...
+RESULT   PASS
+```
+
+동일 버전을 즉시 다시 설치했을 때 모든 관리 항목이 `OK`였고 새 `BACKUP`/`INSTALLED`가 생성되지 않았습니다.
+
+```text
+OK       C:\Users\user\.codex\AGENTS.md
+OK       skill 'ai-agent-development-playbook'
+OK       skill 'codex-long-run'
+OK       skill 'codex-task-router'
+OK       skill 'guide-ppt-creator'
+OK       skill 'human-centered-project-builder'
+OK       skill 'human-readable-code'
+...
+RESULT   PASS
+```
+
+따라서 V7의 핵심 Windows 업데이트 경로, legacy backup migration, 설치 검증, 멱등 재설치는 실환경 Evidence를 확보했습니다.
 
 ## 적용
 
-Candidate 브랜치 테스트:
+Windows CMD에서:
 
-```powershell
+```cmd
 git fetch origin
 git switch v7-context-efficient
-git pull
+git pull origin v7-context-efficient
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
+```
 
+PowerShell에서는:
+
+```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 .\verify-install.ps1
 ```
 
-검증 후 main 병합 예정.
+설치 후 새 Codex 세션에서 적용 상태를 확인합니다.
