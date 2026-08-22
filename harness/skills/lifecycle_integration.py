@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from events import EventError, EventStore, task_fingerprint, validate_event
+from evolver import promote_evolution_candidate
 from locking import skill_lock
 from promotion import PromotionError, load_protected_regressions, package_hash, promote_package
 from proposal import ProposalError, validate_proposal
@@ -29,7 +30,7 @@ QUALITY_DIR = HARNESS_ROOT / "quality"
 if str(QUALITY_DIR) not in sys.path:
     sys.path.insert(0, str(QUALITY_DIR))
 
-from skill_audit import audit_candidate  # noqa: E402
+from skill_audit import audit_candidate, relative_link_failures  # noqa: E402
 
 CURATOR_PACKAGE_TYPES = {"compress", "extract-reference"}
 STRUCTURAL_TYPES = {"split", "merge", "trigger-expand", "archive"}
@@ -173,7 +174,7 @@ def list_candidates(state_root: Path) -> list[dict[str, Any]]:
     return items
 
 
-def _active_skill_dir(root: Path, skill_id: str) -> Path:
+def _registry_skill(root: Path, skill_id: str) -> dict[str, Any]:
     registry_path = root / "capability-library" / "registry.json"
     try:
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
@@ -181,11 +182,16 @@ def _active_skill_dir(root: Path, skill_id: str) -> Path:
         raise LifecycleIntegrationError(f"invalid capability registry: {exc}") from exc
     for item in registry.get("capabilities", []):
         if isinstance(item, dict) and item.get("type") == "skill" and item.get("id") == skill_id:
-            path = (root / str(item.get("path", ""))).resolve()
-            if not path.is_dir():
-                raise LifecycleIntegrationError(f"ACTIVE Skill package missing: {skill_id}")
-            return path
+            return item
     raise LifecycleIntegrationError(f"ACTIVE Skill not found: {skill_id}")
+
+
+def _active_skill_dir(root: Path, skill_id: str) -> Path:
+    item = _registry_skill(root, skill_id)
+    path = (root / str(item.get("path", ""))).resolve()
+    if not path.is_dir():
+        raise LifecycleIntegrationError(f"ACTIVE Skill package missing: {skill_id}")
+    return path
 
 
 def run_protected_regression(
@@ -219,6 +225,50 @@ def run_protected_regression(
     }
 
 
+def _curator_package_audit(candidate_dir: Path, *, root: Path, proposal: dict[str, Any]) -> dict[str, Any]:
+    failures: list[str] = []
+    for name in ("SKILL.md", "proposal.json", "routing.json"):
+        if not (candidate_dir / name).is_file():
+            failures.append(f"candidate missing {name}")
+    if failures:
+        return {"result": "FAIL", "failures": failures}
+
+    try:
+        active_dir = _active_skill_dir(root, str(proposal["skill_id"]))
+        current_hash = package_hash(active_dir)
+    except (LifecycleIntegrationError, PromotionError) as exc:
+        failures.append(str(exc))
+    else:
+        if current_hash != proposal.get("base_hash"):
+            failures.append("Curator Candidate base_hash does not match ACTIVE Skill")
+
+    content = (candidate_dir / "SKILL.md").read_text(encoding="utf-8", errors="replace")
+    failures.extend(relative_link_failures(candidate_dir, content))
+    try:
+        routing = json.loads((candidate_dir / "routing.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        failures.append(f"invalid routing fixture: {exc}")
+    else:
+        if routing.get("skill_id") != proposal.get("skill_id"):
+            failures.append("routing skill_id does not match proposal")
+        if not isinstance(routing.get("positive"), list) or not routing["positive"]:
+            failures.append("routing fixture requires positive 1+")
+        if not isinstance(routing.get("negative"), list) or not routing["negative"]:
+            failures.append("routing fixture requires negative 1+")
+        preserved = routing.get("preserved_fixture")
+        if preserved:
+            preserved_path = (candidate_dir / str(preserved)).resolve()
+            try:
+                preserved_path.relative_to(candidate_dir.resolve())
+            except ValueError:
+                failures.append("preserved routing fixture escapes Candidate package")
+            else:
+                if not preserved_path.is_file():
+                    failures.append("preserved routing fixture is missing")
+
+    return {"result": "FAIL" if failures else "PASS", "failures": failures}
+
+
 def validate_candidate(
     *,
     root: Path,
@@ -228,11 +278,15 @@ def validate_candidate(
     regression_runner: Callable[..., Any] = subprocess.run,
 ) -> dict[str, Any]:
     candidate_dir, proposal = load_candidate_proposal(state_root, proposal_id)
-    report = audit_candidate(candidate_dir, root=root)
-    if report.result == "FAIL":
+    change_type = str(proposal.get("change_type"))
+    if change_type in CURATOR_PACKAGE_TYPES:
+        audit = _curator_package_audit(candidate_dir, root=root.resolve(), proposal=proposal)
+    else:
+        audit = audit_candidate(candidate_dir, root=root).as_dict()
+    if audit["result"] == "FAIL":
         return {
             "result": "VALIDATION_FAILED",
-            "audit": report.as_dict(),
+            "audit": audit,
             "protected_regression": None,
         }
 
@@ -243,19 +297,19 @@ def validate_candidate(
         except (PromotionError, LifecycleIntegrationError, OSError) as exc:
             return {
                 "result": "VALIDATION_FAILED",
-                "audit": report.as_dict(),
+                "audit": audit,
                 "protected_regression": {"result": "FAIL", "error": str(exc)},
             }
         if regression["result"] != "PASS":
             return {
                 "result": "VALIDATION_FAILED",
-                "audit": report.as_dict(),
+                "audit": audit,
                 "protected_regression": regression,
             }
 
     return {
         "result": "READY",
-        "audit": report.as_dict(),
+        "audit": audit,
         "protected_regression": regression,
         "proposal": proposal,
     }
@@ -318,6 +372,20 @@ def promote_candidate(
             "current_hash": current_hash,
             "expected_hash": proposal["base_hash"],
         }
+
+    if change_type == "modify":
+        try:
+            new_hash = promote_evolution_candidate(
+                root=root,
+                state_root=state_root,
+                candidate_dir=candidate_dir,
+                validation_passed=True,
+                protected_regression_passed=True,
+                human_gate_approved=human_gate_approved,
+            )
+        except PromotionError as exc:
+            return {"result": "VALIDATION_FAILED", "error": str(exc)}
+        return {"result": "PROMOTED", "new_hash": new_hash}
 
     with skill_lock(state_root.resolve(), str(proposal["skill_id"])):
         holder, staged = _sanitized_candidate(candidate_dir)
