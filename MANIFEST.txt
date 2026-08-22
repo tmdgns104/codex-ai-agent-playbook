@@ -117,3 +117,17 @@ install.sh
 uninstall.ps1
 uninstall.sh
 verify-install.ps1
+capability-library/governance/lifecycle.json
+capability-library/governance/policy.json
+evaluation/self-managing/protected-routing.json
+harness/quality/skill_audit.py
+harness/quality/test_skill_audit.py
+harness/skills/events.py
+harness/skills/lifecycle.py
+harness/skills/locking.py
+harness/skills/promotion.py
+harness/skills/proposal.py
+harness/skills/queue.py
+harness/skills/test_events.py
+harness/skills/test_governance.py
+harness/skills/test_queue.py
