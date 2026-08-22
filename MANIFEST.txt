@@ -32,6 +32,7 @@
 .agents/skills/ai-agent-development-playbook/references/TASK_TEMPLATE.md
 .agents/skills/ai-agent-development-playbook/references/TOOL_TEMPLATE.md
 .agents/skills/codex-long-run/SKILL.md
+.agents/skills/codex-skill-router/SKILL.md
 .agents/skills/codex-task-router/SKILL.md
 .agents/skills/guide-ppt-creator/SKILL.md
 .agents/skills/guide-ppt-creator/assets/deck-template/DECK_SPEC_TEMPLATE.md
@@ -63,6 +64,11 @@
 .agents/skills/human-readable-code/references/STARTER_PROMPTS_KO.md
 .agents/skills/human-readable-code/scripts/readability_audit.py
 .codex/AGENTS.md
+harness/profiles/minimal.json
+harness/profiles/standard.json
+harness/profiles/strict.json
+harness/quality/quality_gate.py
+harness/security/harness_audit.py
 README.md
 README_KO.md
 ONE_CALL_CODEX_PROMPTS_KO.md
