@@ -16,6 +16,14 @@
       "url": "https://github.com/affaan-m/ECC",
       "license": "MIT",
       "adaptation": "rewritten"
+    },
+    {
+      "id": "jayrha-agent-skills-rewritten",
+      "name": "JayRHa AgentSkills",
+      "kind": "external-reference",
+      "url": "https://github.com/JayRHa/AgentSkills",
+      "license": "MIT",
+      "adaptation": "rewritten"
     }
   ]
 }
