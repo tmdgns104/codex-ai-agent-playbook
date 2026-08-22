@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Focused tests for the V8.1 deterministic capability router."""
+"""Focused tests for deterministic capability routing."""
 
 from __future__ import annotations
 
@@ -86,6 +86,55 @@ class CapabilityRouterTests(unittest.TestCase):
         ids = self.ids("리팩터링 diff를 리뷰하고 품질 검토")
         self.assertIn("code-review", ids)
 
+    def test_api_design_positive_case(self) -> None:
+        ids = self.ids("OpenAPI 기반 API 설계와 endpoint design을 검토")
+        self.assertIn("api-design", ids)
+
+    def test_api_usage_does_not_force_api_design(self) -> None:
+        ids = self.ids("외부 API 사용법과 공식 문서를 확인")
+        self.assertNotIn("api-design", ids)
+
+    def test_sql_optimization_positive_case(self) -> None:
+        ids = self.ids("EXPLAIN ANALYZE로 느린 쿼리 최적화와 실행 계획을 분석")
+        self.assertIn("sql-optimization", ids)
+
+    def test_plain_sql_edit_does_not_force_sql_optimization(self) -> None:
+        ids = self.ids("SQL 문법 오타 한 줄 수정")
+        self.assertNotIn("sql-optimization", ids)
+
+    def test_docker_container_positive_case(self) -> None:
+        ids = self.ids("Dockerfile multi-stage build cache를 최적화")
+        self.assertIn("docker-container", ids)
+
+    def test_plain_container_word_does_not_force_docker_skill(self) -> None:
+        ids = self.ids("README에 container라는 단어 설명 추가")
+        self.assertNotIn("docker-container", ids)
+
+    def test_dependency_upgrade_positive_case(self) -> None:
+        ids = self.ids("Dependabot major version 의존성 업그레이드를 검토")
+        self.assertIn("dependency-upgrade", ids)
+
+    def test_plain_version_edit_does_not_force_dependency_upgrade(self) -> None:
+        ids = self.ids("README의 version 문자열 하나 수정")
+        self.assertNotIn("dependency-upgrade", ids)
+
+    def test_performance_profiling_positive_case(self) -> None:
+        ids = self.ids("p95 latency 성능 프로파일링 benchmark를 실행")
+        self.assertIn("performance-profiling", ids)
+
+    def test_plain_performance_word_does_not_force_profiling(self) -> None:
+        ids = self.ids("README에 performance라는 용어 설명 추가")
+        self.assertNotIn("performance-profiling", ids)
+
+    def test_resilient_error_handling_positive_case(self) -> None:
+        ids = self.ids("retry backoff timeout policy와 idempotency를 설계")
+        self.assertIn("resilient-error-handling", ids)
+
+    def test_generic_error_does_not_force_resilience_skill(self) -> None:
+        ids = self.ids("일반 오류 원인을 디버그해서 찾아줘")
+        self.assertIn("root-cause-debugging", ids)
+        self.assertNotIn("resilient-error-handling", ids)
+
     def test_total_selection_never_exceeds_three(self) -> None:
         result = route_capabilities(
             "JWT 인증 버그를 테스트하고 최신 API 문서를 검토한 뒤 git push PR 리뷰",
@@ -158,7 +207,7 @@ class CapabilityRouterTests(unittest.TestCase):
         task = normalized_phrase("problem을 분석")
         self.assertFalse(contains_phrase(task, "pr"))
 
-    def test_real_jwt_regression_sentence_avoids_code_review_false_activation(self) -> None:
+    def test_real_jwt_regression_sentence_avoids_new_skill_false_activation(self) -> None:
         result = route_capabilities(
             "JWT 인증 오류를 수정하고 regression test를 실행",
             self.capabilities,
@@ -170,6 +219,17 @@ class CapabilityRouterTests(unittest.TestCase):
         self.assertIn("testing", ids)
         self.assertIn("root-cause-debugging", ids)
         self.assertNotIn("code-review", ids)
+        self.assertFalse(
+            {
+                "api-design",
+                "sql-optimization",
+                "docker-container",
+                "dependency-upgrade",
+                "performance-profiling",
+                "resilient-error-handling",
+            }
+            & set(ids)
+        )
 
 
 if __name__ == "__main__":
