@@ -66,6 +66,8 @@
 .codex/AGENTS.md
 capability-library/registry.json
 capability-library/sources.json
+harness/activation/capability_manager.py
+harness/activation/test_capability_manager.py
 harness/profiles/minimal.json
 harness/profiles/standard.json
 harness/profiles/strict.json
