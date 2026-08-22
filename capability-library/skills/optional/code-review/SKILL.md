@@ -67,6 +67,13 @@ severity
 
 리뷰가 PASS라고 말하려면 최소한 diff와 관련 verification 결과를 실제로 확인해야 합니다. 테스트가 실행되지 않았다면 `not verified`라고 구분합니다.
 
+## Stop / Handoff
+
+- 보안 경계가 포함되면 `security-review`를 함께 사용합니다.
+- 변경의 실제 동작 검증이 부족하면 `testing`으로 넘깁니다.
+- 원인이 불명확한 실패를 발견하면 `root-cause-debugging`으로 넘깁니다.
+- 현재 diff를 넘어 architecture 변경이나 permission 확대가 필요하면 리뷰 범위에서 임의 수정하지 않고 Human Gate로 넘깁니다.
+
 ## Source
 
 ECC의 code-review command/rule 패턴을 참고해, always-on reviewer나 Claude 전용 workflow 없이 Codex Playbook의 focused diff review용 Skill로 재작성했습니다.
