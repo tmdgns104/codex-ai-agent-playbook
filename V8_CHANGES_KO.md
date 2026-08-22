@@ -1,11 +1,23 @@
 # V8 변경사항 - Harness Core
 
-상태: **Verified**
+상태: **Released / Verified**
 
-브랜치:
+현재 안정 브랜치:
+
+```text
+main
+```
+
+V8 개발 브랜치:
 
 ```text
 v8-harness-core
+```
+
+GitHub `main` 병합 commit:
+
+```text
+3d18991 V8: add context-aware routing and deterministic harness gates
 ```
 
 ## 목표
@@ -19,11 +31,9 @@ V8은 Everything Claude Code/Claude Code 계열에서 다음 운영 패턴만 �
 
 V7의 최우선 원칙인 **낮은 고정 컨텍스트 + Evidence 기반 완료**는 유지합니다.
 
-## 이번 V8에 포함된 P0
+## V8에 포함된 P0
 
 ### P0-1. Context-aware Skill Router
-
-새 Skill:
 
 ```text
 .agents/skills/codex-skill-router/SKILL.md
@@ -66,7 +76,7 @@ harness/quality/quality_gate.py
 - conflict marker
 - changed/untracked file count
 - STANDARD/STRICT suspicious-secret scan
-- 명시적인 repository verification command
+- 명시적인 Repository verification command
 
 STRICT에서 `--verify`가 없으면 PASS가 아니라 `UNVERIFIED`입니다.
 
@@ -112,7 +122,7 @@ Windows와 shell installer 모두:
 - backup은 Skill discovery path 밖에 저장
 - Harness도 fingerprint 비교
 
-Windows `verify-install.ps1`는:
+Windows `verify-install.ps1`는 다음을 확인합니다.
 
 - Global AGENTS block
 - 모든 managed Skill
@@ -120,11 +130,9 @@ Windows `verify-install.ps1`는:
 - legacy backup 잔존
 - Python 사용 가능 시 Harness Audit
 
-을 확인합니다.
-
 ## 의도적으로 제외
 
-이번 V8 Core에는 다음을 넣지 않습니다.
+V8 Core에는 다음을 넣지 않습니다.
 
 ### LangChain / LlamaIndex
 
@@ -146,9 +154,9 @@ Human 승인 없는 자동 Skill 승격은 하지 않습니다.
 Codex에 동일한 lifecycle API가 있다고 가정하지 않습니다.
 Hook의 목적은 MINIMAL/STANDARD/STRICT 검증 Profile과 결정론적 Gate로 번역합니다.
 
-## V8 검증 결과
+## 실제 Windows 검증 결과
 
-실제 Windows PC에서 2026-08-22 확인:
+2026-08-22 대상 Windows PC에서 확인:
 
 - [x] V7 -> V8 update
 - [x] 새 `codex-skill-router` 전역 설치
@@ -156,21 +164,38 @@ Hook의 목적은 MINIMAL/STANDARD/STRICT 검증 Profile과 결정론적 Gate로
 - [x] `verify-install.ps1` RESULT PASS
 - [x] Harness Audit RESULT PASS / warnings 0
 - [x] 동일 V8 재설치 no-op
-- [x] Quality Gate MINIMAL PASS 시나리오
-- [x] Quality Gate STRICT + verify PASS 시나리오
+- [x] Quality Gate MINIMAL PASS
+- [x] Quality Gate STRICT + verify PASS
 - [x] Quality Gate STRICT + no verify -> UNVERIFIED / exit 2
-- [x] deliberate conflict/secret fixture 검출 -> FAIL / exit 1
+- [x] deliberate conflict/secret fixture -> FAIL / exit 1
+- [x] negative fixture 삭제 후 Git working tree clean
 - [x] uninstall 후 사용자 소유 AGENTS 영역 보존
 - [x] uninstall 후 V8 재설치 및 최종 `verify-install.ps1` RESULT PASS
-- [x] 최종 `git status --short` clean
+- [x] 로컬 `main`, `origin/main`, `origin/HEAD`가 V8 merge commit으로 정렬
 
 Negative fixture는 검증 후 삭제했습니다.
 Uninstall 검증에서는 사용자 소유 테스트 문구가 남고 managed AGENTS block, 7개 Skill, playbook harness만 제거되는 것을 확인했습니다.
 최종 재설치 후 Global AGENTS, 7개 Skill, playbook harness, Harness Audit가 모두 PASS했습니다.
 
+## Context Budget 결과
+
+V8은 기능을 늘리면서 전역 `AGENTS.md`를 다시 비대하게 만들지 않았습니다.
+
+Repository 기준 전역 AGENTS 크기는 V7 수준 이하로 유지했고,
+Windows CRLF working copy에서도 Harness Audit size budget을 통과했습니다.
+
+즉 V8의 목표는 다음입니다.
+
+```text
+기능 증가
+!= 항상 읽는 Context 증가
+```
+
+상세 절차는 Skills/Harness로 밀어내고 필요할 때만 사용합니다.
+
 ## V8 이후 P1 후보
 
-P0가 V7 대비 품질/토큰 측면에서 유효한 것이 확인된 뒤만 검토합니다.
+P0의 실사용 결과를 본 뒤에만 검토합니다.
 
 1. Candidate Learning
    - 반복 성공 패턴을 candidate로만 기록
@@ -181,6 +206,9 @@ P0가 V7 대비 품질/토큰 측면에서 유효한 것이 확인된 뒤만 검
    - 독립 workstream이 명확할 때만 병렬화
 4. Routing/Quality eval dataset
    - V7/V8 A-B 비교를 위한 고정 task set
+
+P1 기능을 바로 Core에 추가하지 않습니다.
+실제 V8 작업에서 Router/Profile의 오버헤드와 효과를 먼저 확인합니다.
 
 ## 성공 기준
 
@@ -194,3 +222,5 @@ V8은 기능 수가 많아졌다는 이유로 성공이 아닙니다.
 - 고위험 작업의 검증 누락 감소
 - 설치/업데이트/rollback 신뢰성 유지
 - 기존 V7보다 완료 정확성 또는 Evidence 품질이 좋아짐
+
+이 항목들의 설치/검증 계약은 실제 Windows에서 검증한 뒤 `main`에 병합했습니다.
