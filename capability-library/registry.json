@@ -60,7 +60,7 @@
       "recommended_profile": "standard",
       "permissions": ["local_read", "process_exec", "network", "external_write"],
       "context_cost": "low",
-      "dependencies": ["gh-cli"],
+      "dependencies": [],
       "source_id": "v8.1-internal",
       "license": "repository",
       "path": "capability-library/wrappers/cli/github-ops"
