@@ -1,0 +1,8 @@
+{
+  "name": "MINIMAL",
+  "description": "Clear isolated low-risk changes with easy verification.",
+  "max_changed_files_warning": 20,
+  "scan_conflict_markers": true,
+  "scan_secrets": false,
+  "verification_required": false
+}
