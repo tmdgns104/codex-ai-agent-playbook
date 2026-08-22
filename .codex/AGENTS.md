@@ -14,8 +14,7 @@ Use the smallest reliable process.
 - Small isolated edit: inspect -> edit -> focused verify -> report.
 - Non-trivial work: problem -> requirements -> architecture impact -> task -> implementation -> verification.
 - Do not turn a vague request directly into a large implementation.
-
-Before non-trivial work, inspect only the context needed to make the next reliable decision.
+- Before non-trivial work, inspect only the context needed for the next reliable decision.
 
 ## Repository Source of Truth
 
@@ -39,7 +38,7 @@ Current explicit user instructions still take precedence.
 - Do not silently change accepted requirements, architecture, public contracts, or safety boundaries.
 - Do not weaken tests or hide failures to obtain a PASS.
 - Prefer clear, direct code over clever compression.
-- When hardware acceleration matters, verify it from the task's actual execution environment; do not infer usability from host visibility.
+- When hardware acceleration matters, verify it from the task's actual execution environment.
 
 ## Context Budget
 
@@ -50,14 +49,24 @@ Treat context as a limited engineering resource.
 - Summarize evidence after extracting the facts needed for the task.
 - Load Skills only when their workflow materially helps.
 - Prefer repository checkpoints over rebuilding state from long chat history.
-- Optimize for minimum sufficient context, never for fewer tokens at the expense of correctness.
+- Never save tokens by reducing correctness or required verification.
+
+## Verification Profiles
+
+Use the lowest profile that matches consequence and verification difficulty:
+
+- `MINIMAL`: clear, isolated, low-risk, easy to verify.
+- `STANDARD`: default for ordinary non-trivial engineering.
+- `STRICT`: security, permissions, migrations, production, significant architecture/public-contract changes, destructive behavior, or other high-consequence work.
+
+The installed deterministic Quality Gate is supplemental evidence, not a replacement for repository-defined tests or acceptance criteria. A stronger model never substitutes for stronger verification.
 
 ## Verification
 
 A task is complete only when relevant evidence exists.
 
 - Run focused checks while editing.
-- Run the repository-defined final verification appropriate to the change and risk.
+- Run repository-defined final verification appropriate to the change and risk.
 - Inspect the resulting diff/artifact.
 - Map acceptance claims to actual evidence.
 - Mark required checks that were not run as `UNVERIFIED` with the reason.
@@ -77,7 +86,6 @@ Stop for a Human Gate when a decision materially affects:
 - significant operational/cost consequences
 
 For ordinary low-risk supporting work inside approved scope, proceed autonomously.
-
 If a design change is required, report `DESIGN CHANGE REQUIRED` with the blocker, proposed change, alternatives, impact, and risk before applying it.
 
 ## Skill Routing
@@ -89,11 +97,11 @@ Use the smallest relevant Skill set.
 - `human-centered-project-builder`: disciplined project build from request through verification.
 - `guide-ppt-creator`: technical/guide PPTX workflow.
 - `codex-long-run`: substantial multi-cycle or resumable repository work.
-- `codex-task-router`: explicit or materially important capability/model/reasoning/topology routing; recommendation only.
+- `codex-task-router`: capability/model/reasoning/topology routing; recommendation only.
+- `codex-skill-router`: use only when the minimum Skill set or verification profile is materially ambiguous, or routing is explicitly requested.
 
 Do not load every Skill by default.
-Do not use `codex-task-router` for routine small work.
-Do not use `codex-long-run` for trivial isolated edits.
+Do not use routers for routine obvious choices or `codex-long-run` for trivial edits.
 
 ## Completion
 
@@ -113,6 +121,6 @@ Do not automatically begin the next independent task.
 
 Keep this file short and broadly reusable.
 Put detailed workflows in Skills and project-specific rules in repository instructions.
-Add a new global rule only when its permanent context cost is justified across many projects.
+Add a global rule only when its permanent context cost is justified across many projects.
 
 <!-- END AI_AGENT_PLAYBOOK_KIT -->
