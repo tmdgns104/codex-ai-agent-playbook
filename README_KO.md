@@ -1,202 +1,156 @@
-# Codex AI Agent Playbook Kit
+# Codex AI Agent Playbook Kit - V8.1
 
-Codex를 **더 적은 고정 컨텍스트와 더 강한 검증 루프**로 여러 프로젝트에서 일관되게 사용하기 위한 전역 Playbook + Skills + Harness 세트입니다.
+Codex를 **적은 고정 Context**, **필요한 Capability만 선택하는 구조**, **실제 Evidence 기반 검증**으로 여러 프로젝트에서 일관되게 사용하기 위한 전역 Playbook + Skills + Harness입니다.
 
-현재 안정 버전: **V8 (`main`)**  
-실제 Windows 환경 검증 완료 / GitHub `main` 병합 완료
+현재 안정 버전: **V8.1 (`main`)**  
+Windows 실환경 검증 완료 / PR #5 Squash Merge 완료
 
-## 핵심 구조
+> 처음 사용하는 경우에는 [빠른 시작 문서](docs/QUICKSTART.md)부터 보는 것을 권장합니다.
 
-```text
-.codex/AGENTS.md
-  항상 필요한 최소 전역 원칙
+---
 
-.agents/skills/
-  ai-agent-development-playbook/
-  codex-long-run/
-  codex-task-router/
-  codex-skill-router/
-  guide-ppt-creator/
-  human-centered-project-builder/
-  human-readable-code/
+## 1. 이 프로젝트가 해결하려는 문제
 
-harness/
-  profiles/
-    minimal.json
-    standard.json
-    strict.json
-  quality/quality_gate.py
-  security/harness_audit.py
+Codex를 오래 사용하면서 기능과 지침을 계속 추가하면 다음 문제가 생길 수 있습니다.
 
-install.ps1 / install.sh
-  전역 설치/업데이트
+- 모든 작업에서 큰 전역 Prompt를 반복해서 읽음
+- Skill이 많아질수록 필요하지 않은 Context까지 노출됨
+- 작은 수정에도 복잡한 절차가 적용됨
+- Agent가 스스로 `PASS`라고 말한 것을 실제 검증으로 착각할 수 있음
+- 긴 작업이 Chat history에 의존해 재시작/재개가 어려워짐
+- 보안/권한 작업과 단순 오타 수정에 같은 검증 비용을 씀
 
-verify-install.ps1
-  Repository와 Windows 전역 설치 상태 비교 + Harness Audit
-```
-
-Windows 전역 설치 위치:
+V8.1은 **기능은 Library에 많이 보유할 수 있지만 현재 작업에는 필요한 것만 꺼내 쓰는 구조**를 목표로 합니다.
 
 ```text
-%USERPROFILE%\.codex\AGENTS.md
-%USERPROFILE%\.agents\skills\<skill-name>\
-%USERPROFILE%\.codex\playbook-harness\
+Capability는 많이 보유
+        ↓
+항상 읽지는 않음
+        ↓
+Task마다 필요한 최소 Capability만 선택
 ```
 
 ---
 
-# V8 핵심
-
-V8은 Everything Claude Code/Claude Code 계열의 장점 중 **Codex에 맞고 토큰 대비 효과가 큰 운영 패턴만** 흡수합니다.
-
-LangChain/LlamaIndex 같은 Agent 애플리케이션 프레임워크를 Playbook Core에 추가하지 않습니다.
-상시 멀티에이전트도 기본값으로 사용하지 않습니다.
+## 2. V8.1 핵심 흐름
 
 ```text
-사용자 요청
-  -> 필요한 경우에만 Skill Router
-  -> 최소 Skill 집합
-  -> MINIMAL / STANDARD / STRICT
-  -> Repository Context
-  -> 구현
-  -> Repository Verification
-  -> Deterministic Quality Gate
-  -> Evidence
+사용자 작업
+    ↓
+Deterministic Metadata Router
+    ↓
+최소 Capability Plan
+    ↓
+Risk / Permission Gate
+    ↓
+필요한 optional Skill만 임시 활성화
+    ↓
+Codex 실행
+    ↓
+Repository Verification
+    ↓
+Quality Gate / Evidence
+    ↓
+Codex 종료 후 Runtime Cleanup
 ```
 
-## 1. Context-aware Skill Routing
-
-새 Skill:
-
-```text
-$codex-skill-router
-```
-
-Skill 선택이 애매한 비단순 작업에서만 사용합니다.
-
-라우터는 다음만 추천합니다.
-
-- 필요한 최소 Skill 집합
-- `MINIMAL / STANDARD / STRICT` 검증 프로필
-- long-run 필요 여부
-- capability router 필요 여부
-- Human Gate 필요 여부
-
-명확한 작업에는 라우터를 호출하지 않습니다.
+중요한 점은 **Skill 0개도 정상적인 결과**라는 것입니다.
 
 예:
 
 ```text
-오타 한 줄 수정
--> Skill 없음
+README 오타 한 줄 수정
+→ MINIMAL
+→ optional Skill 0개
 
-가독성 리팩터링
--> human-readable-code
-
-복잡한 RAG 아키텍처 변경
--> ai-agent-development-playbook
--> 필요하면 codex-long-run
+JWT 인증 오류 수정 + regression test
+→ STRICT
+→ security-review
+→ testing
+→ root-cause-debugging
 ```
 
-## 2. Risk-based Verification Profiles
-
-### MINIMAL
-
-명확하고 격리된 저위험 변경.
-
-### STANDARD
-
-일반적인 비단순 개발의 기본값.
-
-### STRICT
-
-보안/권한/마이그레이션/배포/중요 아키텍처/공개 계약/파괴적 변경 등 고위험 작업.
-
-강한 모델을 쓰는 것과 검증 강도는 별개입니다.
-
-## 3. Deterministic Quality Gate
-
-Repository에서 직접 실행:
-
-```cmd
-python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile standard
-```
-
-STRICT 예:
-
-```cmd
-python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile strict --verify "python -m pytest"
-```
-
-검사 항목:
-
-- unstaged/staged `git diff --check`
-- unresolved conflict
-- conflict marker
-- 변경 파일 수 경고
-- STANDARD/STRICT suspicious-secret scan
-- 명시적으로 전달된 Repository verification command
-
-STRICT에서 실행 Evidence가 필요한데 `--verify`가 없으면:
-
-```text
-RESULT     UNVERIFIED
-```
-
-으로 끝납니다.
-
-Exit code:
-
-```text
-0 = PASS
-1 = FAIL
-2 = UNVERIFIED
-```
-
-Quality Gate는 Repository 테스트/Acceptance Criteria를 대체하지 않고 **보조 Evidence**로 사용합니다.
-
-## 4. Harness Audit
-
-Playbook 자체 검증:
-
-```cmd
-python harness\security\harness_audit.py --root .
-```
-
-검사 항목:
-
-- 전역 `AGENTS.md` 크기 예산
-- 마커 무결성
-- 전역 문서의 현재 모델명 hardcoding
-- Skill frontmatter/name 중복
-- Skill 검색 경로 안의 backup 폴더
-- 과도하게 큰 SKILL.md 경고
-- profile JSON 구조
-- Harness Python syntax
-- MANIFEST drift
-- 재사용 문서의 개인 절대 경로/명백한 secret material
-
-목적은 다른 Harness를 그대로 복제하는 것이 아니라 **이 Playbook에 필요한 정적 검증만 경량으로 구현**하는 것입니다.
+사용자가 평소에 Skill 이름을 직접 고를 필요가 없습니다.
 
 ---
 
-# V7에서 유지되는 개선
+## 3. V8.1 설치 구조
 
-- 전역 `AGENTS.md` 경량화
-- Repository Source of Truth
-- Progressive Disclosure Skills
-- 고정 모델표 제거
-- 설치 멱등화
-- Skill 백업을 검색 경로 밖으로 이동
-- `verify-install.ps1` 기반 drift 검증
+Windows 설치 후:
 
-V8은 이 구조를 유지하면서 Skill Routing과 Quality 계층을 추가합니다.
+```text
+%USERPROFILE%\.codex\
+├─ AGENTS.md
+├─ capability-library\
+├─ playbook-harness\
+└─ playbook-backups\
+
+%USERPROFILE%\.agents\skills\
+├─ ai-agent-development-playbook\
+├─ codex-long-run\
+├─ codex-skill-router\
+├─ codex-task-router\
+├─ guide-ppt-creator\
+├─ human-centered-project-builder\
+└─ human-readable-code\
+```
+
+역할은 다음과 같습니다.
+
+### `~/.codex/AGENTS.md`
+
+항상 필요한 최소 전역 운영 원칙만 유지합니다.
+
+V8.1 최종 Windows 검증 기준 Playbook 전역 영역은 **4579 bytes**였습니다.
+
+### `~/.agents/skills/`
+
+항상 사용할 수 있는 7개의 Core managed Skill입니다.
+
+### `~/.codex/capability-library/`
+
+작업별로 선택할 optional Capability의 원본 Library입니다.
+
+현재 optional Skill:
+
+```text
+security-review
+testing
+root-cause-debugging
+code-review
+```
+
+이 네 Skill을 모두 전역 Skill discovery 경로에 설치하지 않습니다.
+
+### `~/.codex/playbook-harness/`
+
+다음 결정론적 기능이 들어 있습니다.
+
+```text
+Router
+Activation Manager
+Skill Materializer
+Codex Discovery Bridge
+Auto Launcher
+Quality Gate
+Harness Audit
+```
 
 ---
 
-# Windows 설치 / 업데이트
+## 4. 설치 - Windows
 
-## 처음 설치
+### 준비물
+
+```cmd
+git --version
+python --version
+codex --version
+```
+
+세 명령이 정상적으로 버전을 출력하는지 확인합니다.
+
+### 처음 설치
 
 CMD:
 
@@ -215,7 +169,31 @@ Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 ```
 
-## 기존 설치 업데이트
+설치 스크립트는 기존 사용자 설정을 무조건 덮어쓰지 않습니다.
+
+- 전역 `AGENTS.md`는 Playbook marker 구간만 관리
+- Core Skill은 managed Skill만 관리
+- 기존 managed 파일이 바뀌면 backup 생성
+- Capability Library 설치
+- Harness 설치
+- 설치 직후 verification 자동 실행
+
+정상 설치의 마지막 부분에는 다음이 포함됩니다.
+
+```text
+PASS     global AGENTS.md playbook block
+PASS     skill '...'
+PASS     capability library
+PASS     playbook harness
+PASS     harness audit
+RESULT   PASS
+```
+
+---
+
+## 5. 기존 설치 업데이트
+
+Playbook Repository에서:
 
 ```cmd
 git switch main
@@ -223,99 +201,267 @@ git pull origin main
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
 ```
 
-설치 후 `verify-install.ps1`가 자동 실행됩니다.
+같은 버전을 다시 설치하고 내용이 동일하면:
 
-직접 확인:
+```text
+OK       capability library
+OK       playbook harness
+```
+
+처럼 나오며 새 backup이나 불필요한 재복사가 발생하지 않습니다.
+
+설치 상태만 다시 확인하려면:
 
 ```cmd
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
 ```
 
-정상 상태:
+---
 
-```text
-PASS     global AGENTS.md playbook block
-PASS     skill '...'
-PASS     playbook harness
-PASS     harness audit
-RESULT   PASS
+## 6. 가장 쉬운 실제 사용법
+
+설치가 끝났다면 Playbook Repository가 아니라 **실제로 수정할 프로젝트의 Git Repository**로 이동합니다.
+
+예:
+
+```cmd
+cd /d D:\my-project
 ```
 
-동일 버전을 다시 설치했을 때 변경이 없다면 새 백업/재복사를 만들지 않습니다.
+그 다음 작업 문장만 전달합니다.
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "JWT 인증 오류를 수정하고 regression test를 실행"
+```
+
+사용자는 보통 다음을 직접 하지 않아도 됩니다.
+
+- Skill 이름 선택
+- Capability Library 경로 지정
+- 임시 `.agents/skills` 구성
+- Codex `-C` bridge 경로 계산
+- session cleanup
+
+Launcher가 이 과정을 자동으로 연결합니다.
 
 ---
 
-# 포함 Skills
+## 7. 실제 Codex 실행 전에 결과만 확인하기
 
-| Skill | 용도 |
-| --- | --- |
-| `codex-skill-router` | 애매한 비단순 작업의 최소 Skill/Profile 추천 |
-| `ai-agent-development-playbook` | 비단순 개발, 설계, Agent/RAG/tooling, 계약, 검증 |
-| `codex-long-run` | 여러 구현/디버깅/검증 사이클이 필요한 장기 작업 |
-| `codex-task-router` | 모델/Reasoning/병렬 실행 선택이 실제로 필요한 경우의 추천 |
-| `human-readable-code` | 사람이 읽고 배우기 쉬운 코드, 구조, 설명 |
-| `human-centered-project-builder` | 요구부터 구현·검증까지 한 번에 진행하는 프로젝트 워크플로 |
-| `guide-ppt-creator` | 기술 문서/프로젝트를 가이드 PPTX로 변환 |
+먼저 어떤 Skill이 선택되는지만 보고 싶다면 `--dry-run`을 사용합니다.
 
-원칙은 **전부 사용하지 않는 것**입니다.
-현재 작업에 필요한 최소 Skill만 사용합니다.
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "JWT 인증 오류를 수정하고 regression test를 실행" --dry-run
+```
+
+실제 Windows 검증 결과:
+
+```text
+PROFILE     STRICT
+SKILLS      security-review,testing,root-cause-debugging
+COUNT       3
+BRIDGE      true
+DRY_RUN     true
+RESULT      READY
+CLEANUP     BRIDGE_CLEANED
+RESULT      DRY_RUN_COMPLETE
+```
+
+작은 작업:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "README 오타 한 줄 수정" --dry-run
+```
+
+대표 결과:
+
+```text
+PROFILE     MINIMAL
+SKILLS      none
+COUNT       0
+BRIDGE      false
+```
+
+즉 단순 작업에 억지로 Skill을 붙이지 않습니다.
 
 ---
 
-# 실제 Windows 검증 결과
+## 8. 자동 Skill 선택은 자동 권한 승인이 아님
 
-2026-08-22 실제 대상 PC에서 다음을 확인했습니다.
+V8.1은 다음과 같은 민감 권한을 Router가 임의로 승인하지 않습니다.
 
-- V7 → V8 update PASS
-- `codex-skill-router` 포함 7개 Skill 설치 PASS
-- `~/.codex/playbook-harness` 설치/fingerprint PASS
-- `verify-install.ps1` RESULT PASS
-- Harness Audit warnings 0 / PASS
-- 동일 V8 재설치 no-op
-- Quality Gate MINIMAL → PASS
-- Quality Gate STRICT + 실제 검증 → PASS
-- Quality Gate STRICT + 검증 없음 → UNVERIFIED / exit 2
-- conflict marker + 가짜 GitHub token fixture → FAIL / exit 1
-- uninstall 후 사용자 소유 AGENTS 영역 보존
-- uninstall 후 V8 재설치/전체 검증 PASS
-- 최종 Git working tree clean
+```text
+credential_access
+external_write
+database_write
+destructive
+production
+network
+browser_control
+```
 
-자세한 내용은 [V8_CHANGES_KO.md](V8_CHANGES_KO.md)를 참고합니다.
+예:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "GitHub에 commit push하고 PR 생성" --dry-run
+```
+
+민감 external write가 필요한 경우:
+
+```text
+RESULT      HUMAN_GATE_REQUIRED
+```
+
+으로 자동 진행을 차단합니다.
+
+Skill 자동 선택과 실제 권한 부여는 분리되어 있습니다.
 
 ---
 
-# 추천 사용 예
+## 9. Core Skill과 Optional Skill 차이
 
-Skill 선택이 애매할 때:
+### Core Skill
+
+전역으로 설치되고 여러 프로젝트에서 직접 사용할 수 있습니다.
+
+| Skill | 역할 |
+|---|---|
+| `codex-skill-router` | 애매한 비단순 작업에서 최소 Skill/Profile 추천 |
+| `ai-agent-development-playbook` | 복잡한 개발/Architecture/Agent/RAG/Tooling |
+| `codex-long-run` | 여러 구현·디버깅·검증 cycle이 필요한 긴 작업 |
+| `codex-task-router` | 모델/Reasoning/병렬 topology 판단이 필요한 작업 |
+| `human-readable-code` | 가독성/유지보수성 중심 코드 |
+| `human-centered-project-builder` | 요구→설계→구현→검증 프로젝트 workflow |
+| `guide-ppt-creator` | 기술/프로젝트 가이드 PPT 제작 |
+
+### Optional Skill
+
+Capability Library 안에 보관하고 Router가 현재 Task에서 필요하다고 판단할 때만 session-scoped bridge로 노출합니다.
 
 ```text
-$codex-skill-router
-
-현재 작업에 필요한 최소 Skill과 검증 Profile만 추천해.
-구현은 하지 마.
+security-review
+testing
+root-cause-debugging
+code-review
 ```
 
-비단순 개발:
+V8.1의 핵심은 **Library에 있다는 이유만으로 Context에 넣지 않는 것**입니다.
 
-```text
-$ai-agent-development-playbook
+---
 
-Repository 요구사항/아키텍처와 현재 Task 범위를 확인하고
-최소 변경으로 구현한 뒤 실제 Evidence로 완료 여부를 판단해.
+## 10. 검증 Profile
+
+### MINIMAL
+
+작고 격리된 저위험 변경.
+
+### STANDARD
+
+일반적인 비단순 개발의 기본 검증 수준.
+
+### STRICT
+
+보안, 권한, 마이그레이션, 배포, 중요 Architecture/Public Contract, 파괴적 변경처럼 실패 비용이 큰 작업.
+
+Skill 수와 검증 Profile은 같은 개념이 아닙니다.
+
+---
+
+## 11. Deterministic Quality Gate
+
+일반적인 작업:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile standard
 ```
 
-장기 작업:
+STRICT + 실제 검증 명령:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile strict --verify "python -m pytest"
+```
+
+주요 검사:
+
+- unstaged/staged `git diff --check`
+- unresolved Git conflict
+- conflict marker
+- suspicious secret pattern
+- 변경 파일 상태
+- 전달된 실제 Repository verification command
+
+결과:
 
 ```text
-$codex-long-run
+0 = PASS
+1 = FAIL
+2 = UNVERIFIED
+```
 
-현재 Repository 상태를 기준으로 하나의 결과만 끝까지 진행해.
-불필요한 전체 스캔과 반복 로그를 줄이고 필요한 Evidence를 남겨.
+STRICT인데 필요한 실행 Evidence가 없으면 `PASS`라고 추측하지 않고 `UNVERIFIED`로 종료합니다.
+
+Quality Gate는 Repository 자체 테스트와 Acceptance Criteria를 대체하지 않습니다.
+
+---
+
+## 12. Harness Audit
+
+Playbook Repository 자체를 검증할 때:
+
+```cmd
+python harness\security\harness_audit.py --root .
+```
+
+V8.1에서는 다음도 확인합니다.
+
+- 전역 `AGENTS.md` Context 예산
+- managed Skill metadata
+- Profile JSON
+- Capability source / registry schema
+- optional Skill integrity
+- optional Skill이 Core discovery path에 잘못 노출됐는지
+- Harness Python syntax
+- MANIFEST drift
+
+정상 마지막 출력:
+
+```text
+INFO       warnings: 0
+RESULT     PASS
 ```
 
 ---
 
-# 제거
+## 13. V8.1 실제 Windows 검증
+
+2026-08-22 실제 Windows 환경에서 확인했습니다.
+
+```text
+CAP-001 ~ CAP-008              COMPLETE - VERIFIED
+CAP-008 focused tests          2 PASS
+CAP-005 regression             10 PASS
+CAP-006 regression             10 PASS
+CAP-007 regression             12 PASS
+합계                            34 PASS
+
+Capability Library install     PASS
+Playbook Harness install       PASS
+Harness Audit                  PASS / warnings 0
+별도 Git Repository launcher   PASS
+JWT 자동 Skill 선택            exact 3 PASS
+Target repo catalog copy       없음
+Runtime residue                없음
+동일 버전 reinstall            idempotent PASS
+STRICT Quality Gate            PASS
+Exit code                      0
+Working tree                   clean
+```
+
+최종 V8.1은 PR #5를 Squash Merge하여 `main`에 반영했습니다.
+
+---
+
+## 14. 제거
 
 Windows:
 
@@ -329,12 +475,18 @@ Linux/macOS:
 ./uninstall.sh
 ```
 
-전역 `AGENTS.md`에서는 Playbook 마커 구간만 제거하고,
-이 Repository가 관리하는 Skills와 `~/.codex/playbook-harness`만 제거합니다.
+관리되는 다음 항목을 제거합니다.
 
-사용자가 직접 작성한 marker 밖 AGENTS 내용은 보존하도록 설계되어 있으며 실제 Windows에서 검증했습니다.
+```text
+Playbook AGENTS marker block
+Core managed Skills
+~/.codex/capability-library
+~/.codex/playbook-harness
+```
 
-백업은 자동 삭제하지 않습니다.
+사용자가 `AGENTS.md` marker 밖에 작성한 내용은 보존합니다.
+
+백업은 자동으로 지우지 않습니다.
 
 ```text
 %USERPROFILE%\.codex\playbook-backups\
@@ -342,15 +494,50 @@ Linux/macOS:
 
 ---
 
-# 설계 원칙
+## 15. 문제가 생겼을 때
+
+Playbook Repository에서 먼저:
+
+```cmd
+git status --short
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
+```
+
+Playbook 자체 검사:
+
+```cmd
+python harness\security\harness_audit.py --root .
+```
+
+설치 상태가 꼬였다면 최신 `main`을 받은 뒤 `install.ps1`을 다시 실행합니다.
+
+---
+
+## 16. 관련 문서
+
+- [빠른 시작](docs/QUICKSTART.md)
+- [동작 원리](docs/HOW_IT_WORKS.md)
+- [Skills 가이드](docs/SKILLS.md)
+- [개발 가이드](docs/DEVELOPMENT.md)
+- [V8.1 요구사항](V8_1_REQUIREMENTS.md)
+- [V8.1 Architecture](V8_1_ARCHITECTURE.md)
+- [V8.1 Capability Policy](V8_1_CAPABILITY_POLICY.md)
+- [V8.1 Evaluation Plan](V8_1_EVALUATION_PLAN.md)
+- [V8 변경사항](V8_CHANGES_KO.md)
+- [V7 변경사항](V7_CHANGES_KO.md)
+
+---
+
+## 설계 원칙
 
 - Chat 기록보다 Repository를 지속 가능한 Source of Truth로 사용
-- 한 번에 하나의 coherent outcome
+- 한 번에 하나의 coherent outcome에 집중
 - 자기 보고 PASS가 아니라 Test/Diff/Artifact Evidence로 완료 판단
-- 전역 규칙은 짧게 유지
-- 상세 워크플로는 Skill로 Progressive Disclosure
-- Skill Router도 선택이 애매할 때만 사용
-- Quality Gate는 LLM이 아니라 결정론적 코드로 수행
-- 고위험 작업만 STRICT/강한 검증 사용
-- 상시 멀티에이전트와 무거운 Agent framework는 기본 Core에서 제외
+- 전역 Context는 짧게 유지
+- 상세 Workflow는 Progressive Disclosure
+- Capability Router는 body가 아니라 metadata부터 읽음
+- Capability 0개도 허용
+- optional Skill은 필요할 때만 session-scoped 활성화
+- 고위험 권한은 Human/Network/Manual Gate 유지
+- 상시 Multi-Agent와 무거운 Agent framework는 기본 Core에서 제외
 - 토큰 절감이 정확성이나 검증 신뢰성을 낮추면 채택하지 않음
