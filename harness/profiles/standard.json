@@ -1,0 +1,8 @@
+{
+  "name": "STANDARD",
+  "description": "Default for ordinary non-trivial engineering in approved architecture.",
+  "max_changed_files_warning": 40,
+  "scan_conflict_markers": true,
+  "scan_secrets": true,
+  "verification_required": false
+}
