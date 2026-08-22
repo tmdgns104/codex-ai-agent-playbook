@@ -119,6 +119,7 @@ uninstall.sh
 verify-install.ps1
 capability-library/governance/lifecycle.json
 capability-library/governance/policy.json
+capability-library/governance/protected-routing.json
 evaluation/self-managing/protected-routing.json
 harness/quality/skill_audit.py
 harness/quality/test_skill_audit.py
@@ -138,3 +139,7 @@ harness/skills/evolver.py
 harness/skills/test_evolver.py
 harness/skills/curator.py
 harness/skills/test_curator.py
+harness/skills/lifecycle_integration.py
+harness/skills/manage.py
+harness/skills/test_lifecycle_integration.py
+harness/skills/test_lifecycle_control_plane.py
