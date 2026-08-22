@@ -160,10 +160,10 @@ Hook의 목적은 MINIMAL/STANDARD/STRICT 검증 Profile과 결정론적 Gate로
 - [x] Quality Gate STRICT + verify PASS 시나리오
 - [x] Quality Gate STRICT + no verify -> UNVERIFIED / exit 2
 - [x] deliberate conflict/secret fixture 검출 -> FAIL / exit 1
-- [ ] uninstall 후 사용자 소유 AGENTS 영역 보존
+- [x] uninstall 후 사용자 소유 AGENTS 영역 보존
 
 Negative fixture는 검증 후 삭제했고 `git status --short` clean을 확인했습니다.
-실제 실행하지 않은 항목은 PASS로 기록하지 않습니다.
+Uninstall 검증에서는 사용자 소유 테스트 문구가 남고 managed AGENTS block, 7개 Skill, playbook harness만 제거되는 것을 확인했습니다.
 
 ## V8 이후 P1 후보
 
