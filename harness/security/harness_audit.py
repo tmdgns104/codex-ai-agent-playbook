@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -156,6 +157,28 @@ def main() -> int:
         else:
             print(f"PASS       profile '{profile_name}'")
 
+    registry_script = root / "harness" / "router" / "registry.py"
+    if not registry_script.exists():
+        fail("capability registry validator missing")
+    else:
+        registry_result = subprocess.run(
+            [sys.executable, str(registry_script), "--root", str(root), "--quiet"],
+            cwd=root,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+        if registry_result.returncode == 0:
+            print("PASS       capability sources")
+            print("PASS       capability registry")
+        else:
+            fail("capability registry validation")
+            output = registry_result.stdout.strip()
+            if output:
+                for line in output.splitlines()[-10:]:
+                    print(f"           {line}")
+
     python_files = iter_files(root, "harness")
     for path in python_files:
         if path.suffix != ".py":
@@ -177,7 +200,7 @@ def main() -> int:
                 fail(f"MANIFEST entry missing on disk: {entry}")
 
         managed = set(ROOT_MANAGED)
-        for subtree in (".agents", ".codex", "harness"):
+        for subtree in (".agents", ".codex", "harness", "capability-library"):
             managed.update(rel(root, p) for p in iter_files(root, subtree))
         missing_from_manifest = managed - manifest
         if missing_from_manifest:
@@ -185,7 +208,11 @@ def main() -> int:
         else:
             print("PASS       MANIFEST covers managed files")
 
-    scan_files = iter_files(root, ".agents") + iter_files(root, ".codex")
+    scan_files = (
+        iter_files(root, ".agents")
+        + iter_files(root, ".codex")
+        + iter_files(root, "capability-library")
+    )
     for path in scan_files:
         if path.suffix.lower() not in {".md", ".txt", ".json", ".yaml", ".yml", ".toml"}:
             continue
