@@ -1,6 +1,8 @@
 # V8.1 평가 계획 - V8 vs V8.1
 
-상태: **Draft for implementation**
+상태: **Integration verified / quantitative comparison pending**
+
+> CAP-001 ~ CAP-008의 기능·Windows 통합 검증은 완료되었습니다. 아래의 대규모 fixture 기반 V8 대비 토큰/성공률 정량 비교는 후속 평가 단계입니다. 실행하지 않은 항목은 PASS로 간주하지 않습니다.
 
 ## 1. 목적
 
