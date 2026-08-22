@@ -268,6 +268,10 @@ def create_evolution_candidate(
     min_evidence = int(policy.get("evolution_min_distinct_evidence", 2))
 
     registry_item = _registry_skill(root, spec["skill_id"])
+    if spec["source_id"] != registry_item.get("source_id"):
+        raise EvolutionError("source_id must match ACTIVE registry provenance")
+    if spec["license"] != registry_item.get("license"):
+        raise EvolutionError("license must match ACTIVE registry provenance")
     active_dir = (root / str(registry_item["path"])).resolve()
     if not active_dir.is_dir():
         raise EvolutionError(f"ACTIVE Skill package missing: {active_dir}")
@@ -388,7 +392,11 @@ def promote_evolution_candidate(
         if stage.exists():
             shutil.rmtree(stage)
         stage.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copytree(candidate_dir, stage, ignore=shutil.ignore_patterns(*METADATA_FILES))
+        shutil.copytree(candidate_dir, stage)
+        for metadata_name in METADATA_FILES:
+            metadata_path = stage / metadata_name
+            if metadata_path.exists():
+                metadata_path.unlink()
         new_hash = promote_package(
             active_dir,
             stage,
