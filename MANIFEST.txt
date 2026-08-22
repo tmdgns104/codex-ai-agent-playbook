@@ -136,3 +136,5 @@ harness/skills/creator.py
 harness/skills/test_creator.py
 harness/skills/evolver.py
 harness/skills/test_evolver.py
+harness/skills/curator.py
+harness/skills/test_curator.py
