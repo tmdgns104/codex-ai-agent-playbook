@@ -28,8 +28,8 @@ def valid_proposal() -> dict:
         "evidence_refs": ["evt-1", "evt-2"],
         "trigger_delta": {"add": [], "remove": []},
         "permission_delta": {"add": [], "remove": []},
-        "requires_human_gate": false,
-        "status": "candidate"
+        "requires_human_gate": False,
+        "status": "candidate",
     }
 
 
@@ -48,9 +48,7 @@ class LifecycleTests(unittest.TestCase):
 
 class ProposalTests(unittest.TestCase):
     def test_proposal_schema_is_validated(self) -> None:
-        proposal = valid_proposal()
-        proposal["requires_human_gate"] = False
-        validate_proposal(proposal)
+        validate_proposal(valid_proposal())
 
     def test_permission_expansion_requires_human_gate(self) -> None:
         proposal = valid_proposal()
