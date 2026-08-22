@@ -13,8 +13,8 @@
       "permissions": ["local_read"],
       "context_cost": "medium",
       "dependencies": [],
-      "source_id": "v8.1-internal",
-      "license": "repository",
+      "source_id": "ecc-rewritten",
+      "license": "MIT",
       "path": "capability-library/skills/optional/security-review"
     },
     {
@@ -29,8 +29,8 @@
       "permissions": ["local_read", "process_exec"],
       "context_cost": "medium",
       "dependencies": [],
-      "source_id": "v8.1-internal",
-      "license": "repository",
+      "source_id": "ecc-rewritten",
+      "license": "MIT",
       "path": "capability-library/skills/optional/testing"
     },
     {
@@ -93,8 +93,8 @@
       "permissions": ["local_read"],
       "context_cost": "medium",
       "dependencies": [],
-      "source_id": "v8.1-internal",
-      "license": "repository",
+      "source_id": "ecc-rewritten",
+      "license": "MIT",
       "path": "capability-library/skills/optional/code-review"
     }
   ]
