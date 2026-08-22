@@ -1,159 +1,190 @@
-# Quick Start
+# 빠른 시작 - V8
 
-이 문서는 Codex AI Agent Playbook Kit v6를 처음 설치하고 확인하는 가장 짧은 경로입니다.
+이 문서는 Codex AI Agent Playbook V8을 가장 짧게 설치하고 확인하는 방법입니다.
+
+현재 안정 버전은 `main`입니다.
 
 ## 1. 준비물
 
 - Git
 - Codex CLI
+- Python 3
 - Windows PowerShell 또는 POSIX shell
 
 버전 확인 예:
 
-```powershell
+```cmd
 git --version
 codex --version
+python --version
 ```
 
 ## 2. Clone
 
-```powershell
+```cmd
 git clone https://github.com/tmdgns104/codex-ai-agent-playbook.git
 cd codex-ai-agent-playbook
 ```
 
-v6가 아직 `main`에 병합되기 전이라면:
-
-```powershell
-git switch v6-candidate
-```
+별도 후보 브랜치로 이동할 필요 없이 `main`을 사용합니다.
 
 ## 3. Windows 설치
+
+CMD:
+
+```cmd
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
+```
+
+PowerShell:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 ```
 
-설치 스크립트는:
+설치 스크립트는 다음을 관리합니다.
 
-1. `$HOME\.codex\AGENTS.md`의 Kit marker 구간을 추가/갱신하고,
-2. `.agents\skills`의 각 Skill을 `$HOME\.agents\skills`에 설치하며,
-3. 기존 동일 Skill이 있으면 timestamp 백업을 만든 뒤 교체합니다.
+1. `%USERPROFILE%\.codex\AGENTS.md`의 Playbook marker 구간
+2. `%USERPROFILE%\.agents\skills\`의 7개 managed Skill
+3. `%USERPROFILE%\.codex\playbook-harness\`
+4. 필요 시 `%USERPROFILE%\.codex\playbook-backups\<timestamp>\` 백업
 
-## 4. 설치된 위치 확인
+변경이 없는 동일 버전 재설치는 `OK`로 끝나며 불필요한 백업/재복사를 만들지 않습니다.
 
-```powershell
-Get-Content $HOME\.codex\AGENTS.md
-Get-ChildItem $HOME\.agents\skills
+## 4. 설치 검증
+
+설치 후 자동 검증이 실행됩니다.
+
+직접 다시 확인하려면:
+
+```cmd
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
 ```
 
-v6 기준 핵심 Skill은 다음 6개입니다.
+정상 예:
 
 ```text
+PASS     global AGENTS.md playbook block
+PASS     skill 'ai-agent-development-playbook'
+PASS     skill 'codex-long-run'
+PASS     skill 'codex-skill-router'
+PASS     skill 'codex-task-router'
+PASS     skill 'guide-ppt-creator'
+PASS     skill 'human-centered-project-builder'
+PASS     skill 'human-readable-code'
+PASS     playbook harness
+PASS     harness audit
+RESULT   PASS
+```
+
+## 5. V8의 7개 Skill
+
+```text
+codex-skill-router
 ai-agent-development-playbook
-human-readable-code
-human-centered-project-builder
-guide-ppt-creator
 codex-long-run
 codex-task-router
+guide-ppt-creator
+human-centered-project-builder
+human-readable-code
 ```
 
-## 5. Codex에서 확인
+모든 Skill을 같이 쓰지 않습니다.
+현재 작업에 필요한 최소 Skill만 사용합니다.
 
-새 터미널을 열고 프로젝트 Repository로 이동한 뒤:
+## 6. Skill 선택이 애매할 때
 
-```powershell
-codex
+```text
+$codex-skill-router
+
+현재 작업에 필요한 최소 Skill과 검증 Profile만 추천해.
+구현은 하지 마.
 ```
 
-첫 확인 예:
+작은 수정처럼 선택이 명확하면 Router를 사용하지 않아도 됩니다.
+
+## 7. 비단순 개발
 
 ```text
 $ai-agent-development-playbook
 
-이 Skill이 담당하는 역할을 설명해.
-현재 Repository는 수정하지 마.
-```
-
-가독성 Skill 확인:
-
-```text
-$human-readable-code
-
-이 Skill의 핵심 원칙을 5개로 요약해.
-코드는 수정하지 마.
-```
-
-## 6. 새 프로젝트 시작
-
-가장 간단한 통합 시작은:
-
-```text
-$human-centered-project-builder
-
-이 Repository를 새 프로젝트로 시작하려고 해.
-바로 구현하지 말고 Problem → Requirements → Architecture → Task 순서로 진행해.
-```
-
-중요한 Architecture가 정해지면 Repository 문서에 기록하고, 구현은 Task 단위로 진행하는 것을 권장합니다.
-
-## 7. 기존 프로젝트에서 사용
-
-이미 `PROJECT.md`, `REQUIREMENTS.md`, `ARCHITECTURE.md`, `DECISIONS.md`, `STATUS.md`, `tasks/`가 있다면:
-
-```text
-$ai-agent-development-playbook
-$human-readable-code
-
-Repository 문서와 현재 Task를 읽어.
-승인된 범위만 구현하고 완료 전 Verification과 Acceptance Criteria를 실제로 확인해.
+현재 Repository의 요구사항과 Architecture, 현재 Task를 먼저 확인해.
+승인된 범위만 구현하고 실제 Verification Evidence로 완료 여부를 판단해.
 ```
 
 ## 8. 긴 작업
 
-여러 구현/디버깅/검증 사이클이 필요한 Repository 작업에는:
-
 ```text
 $codex-long-run
 
-현재 Repository와 작업 상태를 읽고
-하나의 coherent outcome을 끝까지 이어가.
+현재 Repository 상태를 기준으로 하나의 coherent outcome만 끝까지 진행해.
+불필요한 전체 스캔과 반복 로그를 줄이고 필요한 Evidence를 남겨.
 ```
 
-이 Skill은 Architecture를 새로 정하는 역할이 아니라, 이미 승인된 범위 안에서 긴 실행을 Context 효율적으로 이어가기 위한 orchestration 역할입니다.
+## 9. Quality Gate
 
-## 9. 모델/Reasoning 선택이 중요한 경우
+일반적인 비단순 작업:
 
-작업 자체가 충분히 정의되어 있고 capability 선택을 검토하고 싶다면:
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile standard
+```
+
+고위험 작업에서 실제 검증 명령까지 포함:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile strict --verify "python -m pytest"
+```
+
+결과:
 
 ```text
-$codex-task-router
-
-현재 Task에 필요한 최소 충분한 Codex capability를 추천해.
-구현은 하지 마.
+PASS       exit 0
+FAIL       exit 1
+UNVERIFIED exit 2
 ```
 
-Router는 작업을 구현하지 않고 추천만 합니다.
+STRICT에서 필요한 실행 Evidence 없이 구조 검사만 통과한 경우 거짓 PASS 대신 `UNVERIFIED`가 됩니다.
 
-## 10. 제거
+## 10. Harness Audit
 
-Windows:
+Playbook Repository 자체 확인:
 
-```powershell
-.\uninstall.ps1
+```cmd
+python harness\security\harness_audit.py --root .
 ```
 
-Kit marker 구간과 설치 Skill을 제거합니다.
+정상 마지막 출력:
 
-## 설치 후 문제가 생기면
+```text
+INFO       warnings: 0
+RESULT     PASS
+```
+
+## 11. 기존 설치 업데이트
+
+```cmd
+git switch main
+git pull origin main
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
+```
+
+## 12. 제거
+
+```cmd
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\uninstall.ps1"
+```
+
+Playbook marker 구간, managed Skills, playbook harness만 제거합니다.
+사용자가 marker 밖에 직접 작성한 전역 AGENTS 내용은 보존하도록 설계되어 있으며 V8에서 실제 Windows 검증을 완료했습니다.
+
+## 문제가 생기면
 
 먼저 다음을 확인합니다.
 
-```powershell
-git status
-Get-Content $HOME\.codex\AGENTS.md
-Get-ChildItem $HOME\.agents\skills
+```cmd
+git status --short
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
 ```
 
-기존 사용자 전역 규칙이 있다면 marker 밖 내용은 보존되어야 합니다.
+그리고 [V8 변경사항 및 검증 기록](../V8_CHANGES_KO.md)을 확인합니다.
