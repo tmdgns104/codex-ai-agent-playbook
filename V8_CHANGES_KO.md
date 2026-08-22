@@ -1,6 +1,6 @@
 # V8 변경사항 - Harness Core
 
-상태: **Candidate**
+상태: **Verified**
 
 브랜치:
 
@@ -19,7 +19,7 @@ V8은 Everything Claude Code/Claude Code 계열에서 다음 운영 패턴만 �
 
 V7의 최우선 원칙인 **낮은 고정 컨텍스트 + Evidence 기반 완료**는 유지합니다.
 
-## 이번 Candidate에 포함된 P0
+## 이번 V8에 포함된 P0
 
 ### P0-1. Context-aware Skill Router
 
@@ -146,9 +146,9 @@ Human 승인 없는 자동 Skill 승격은 하지 않습니다.
 Codex에 동일한 lifecycle API가 있다고 가정하지 않습니다.
 Hook의 목적은 MINIMAL/STANDARD/STRICT 검증 Profile과 결정론적 Gate로 번역합니다.
 
-## V8 Candidate 검증 항목
+## V8 검증 결과
 
-실제 Windows PC에서 2026-08-22 확인한 항목:
+실제 Windows PC에서 2026-08-22 확인:
 
 - [x] V7 -> V8 update
 - [x] 새 `codex-skill-router` 전역 설치
@@ -161,9 +161,12 @@ Hook의 목적은 MINIMAL/STANDARD/STRICT 검증 Profile과 결정론적 Gate로
 - [x] Quality Gate STRICT + no verify -> UNVERIFIED / exit 2
 - [x] deliberate conflict/secret fixture 검출 -> FAIL / exit 1
 - [x] uninstall 후 사용자 소유 AGENTS 영역 보존
+- [x] uninstall 후 V8 재설치 및 최종 `verify-install.ps1` RESULT PASS
+- [x] 최종 `git status --short` clean
 
-Negative fixture는 검증 후 삭제했고 `git status --short` clean을 확인했습니다.
+Negative fixture는 검증 후 삭제했습니다.
 Uninstall 검증에서는 사용자 소유 테스트 문구가 남고 managed AGENTS block, 7개 Skill, playbook harness만 제거되는 것을 확인했습니다.
+최종 재설치 후 Global AGENTS, 7개 Skill, playbook harness, Harness Audit가 모두 PASS했습니다.
 
 ## V8 이후 P1 후보
 
