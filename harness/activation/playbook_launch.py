@@ -4,6 +4,9 @@
 The launcher reuses the verified V8.1 router, activation policy, and discovery
 bridge. Users provide only the task. Eligible Skills are selected automatically,
 exposed for the new Codex session, and cleaned up after Codex exits.
+
+V8.2 adds only a best-effort privacy-safe post-task event. Creator, Evolver, and
+Curator remain separate maintenance-path operations and are not invoked here.
 """
 
 from __future__ import annotations
@@ -11,6 +14,7 @@ from __future__ import annotations
 import argparse
 import secrets
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Callable
 
@@ -184,6 +188,34 @@ def execute_launch(
     }
 
 
+def record_launch_event(
+    plan: dict[str, Any],
+    result: dict[str, Any],
+    *,
+    user_correction: bool = False,
+) -> dict[str, Any]:
+    """Lazy-load V8.2 event code after task completion; never raise into normal flow."""
+    codex_exit = result.get("codex_exit")
+    if codex_exit is None:
+        return {"result": "EVENT_SKIPPED"}
+
+    skills_dir = Path(__file__).resolve().parents[1] / "skills"
+    if str(skills_dir) not in sys.path:
+        sys.path.insert(0, str(skills_dir))
+    try:
+        from lifecycle_integration import record_task_event
+
+        return record_task_event(
+            state_root=Path(str(plan["catalog_root"])) / ".playbook-state",
+            task_text=str(plan["task"]),
+            skill_ids=[str(item) for item in plan.get("skills", [])],
+            codex_exit=int(codex_exit),
+            user_correction=user_correction,
+        )
+    except Exception as exc:  # event telemetry must never break a normal Codex task
+        return {"result": "EVENT_RECORD_FAILED", "error": str(exc)}
+
+
 def print_plan(plan: dict[str, Any], *, dry_run: bool) -> None:
     print("Codex Playbook Auto Skill Launcher")
     print(f"Session: {plan['session']}")
@@ -210,6 +242,7 @@ def main() -> int:
     parser.add_argument("--catalog-root", help="Optional Playbook catalog root override for tests/diagnostics.")
     parser.add_argument("--dry-run", action="store_true", help="Plan and print argv without starting Codex.")
     parser.add_argument("--keep-runtime", action="store_true", help="Keep managed bridge after dry-run/exit for debugging.")
+    parser.add_argument("--user-correction", action="store_true", help="Mark this completed task as an explicit user-correction evidence event.")
     args = parser.parse_args()
 
     session = args.session or generate_session_id()
@@ -233,13 +266,17 @@ def main() -> int:
             dry_run=args.dry_run,
             keep_runtime=args.keep_runtime,
         )
+        event = record_launch_event(plan, result, user_correction=args.user_correction)
         print()
         if result["codex_exit"] is not None:
             print(f"CODEX_EXIT  {result['codex_exit']}")
         print(f"CLEANUP     {result['cleanup']}")
+        print(f"EVENT       {event['result']}")
         print(f"RESULT      {result['result']}")
         if result.get("error"):
             print(f"ERROR       {result['error']}")
+        if event.get("error"):
+            print(f"EVENT_WARN  {event['error']}")
 
         if result["result"] == "DRY_RUN_COMPLETE":
             return 0
