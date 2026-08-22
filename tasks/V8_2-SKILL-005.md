@@ -1,6 +1,6 @@
 # V8.2-SKILL-005 - Skill Curator
 
-상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
+상태: **COMPLETE - VERIFIED**
 
 선행 조건:
 
@@ -150,69 +150,70 @@ tasks/V8_2-SKILL-005.md
 
 Global `.codex/AGENTS.md`, ACTIVE registry, Router scoring, Optional Skill content는 변경하지 않았습니다.
 
-## Windows Verification
+## Windows Verification Evidence
 
-먼저 SKILL-005 focused test:
+실제 Windows Repository에서 다음 Evidence를 확인했습니다.
 
-```cmd
-python harness\skills\test_curator.py
+```text
+Skill Curator focused tests      12/12 PASS
+Skill Evolver regression         13/13 PASS
+Skill Creator regression         13/13 PASS
+Governance focused tests         12/12 PASS
+Event Store tests                 6/6 PASS
+Proposal Queue tests              7/7 PASS
+Skill Audit unit tests            6/6 PASS
+Real skill_audit.py              WARN-only / no FAIL
+Capability Router                28/28 PASS
+Capability Manager               12/12 PASS
+Skill Materializer               10/10 PASS
+Discovery Bridge                 10/10 PASS
+Playbook Launcher                12/12 PASS
+Installed Launcher                2/2 PASS
+Harness Audit                    PASS / warnings 0
+STRICT Quality Gate              PASS / ERRORLEVEL 0
+Quality Gate changed/untracked    0
+Global AGENTS.md                  4579 bytes unchanged
+working tree                     clean
 ```
 
-그 다음 Self-Managing regression:
+Real Skill Audit WARN은 기존 deterministic review signal이며 FAIL이 아닙니다.
 
-```cmd
-python harness\skills\test_evolver.py
-python harness\skills\test_creator.py
-python harness\skills\test_governance.py
-python harness\skills\test_events.py
-python harness\skills\test_queue.py
-python harness\quality\test_skill_audit.py
-python harness\quality\skill_audit.py --root .
+```text
+trigger-overlap: '재현' -> root-cause-debugging, testing
+broad-trigger: testing -> test
+broad-trigger: documentation-lookup -> api, latest, version
+broad-trigger: github-ops -> git, pr
+broad-trigger: root-cause-debugging -> bug, error
+broad-trigger: code-review -> quality
 ```
 
-Router/Activation protected regression:
-
-```cmd
-python harness\router\test_capability_router.py
-python harness\activation\test_capability_manager.py
-python harness\activation\test_skill_materializer.py
-python harness\activation\test_discovery_bridge.py
-python harness\activation\test_playbook_launch.py
-python harness\activation\test_installed_launcher.py
-```
-
-마지막:
-
-```cmd
-python harness\security\harness_audit.py --root .
-python harness\quality\quality_gate.py --repo . --profile strict --verify "python harness\security\harness_audit.py --root ."
-echo %ERRORLEVEL%
-git status --short
-```
+이 WARN들은 Curator가 review candidate로 사용할 수 있으나 자동 merge/narrow/archive 근거로 단독 사용하지 않습니다.
 
 ## Acceptance Criteria
 
-1. Curator receives metadata/audit candidates, not whole library bodies by default
-2. compress proposal/Candidate works on synthetic oversized Skill
-3. reference extraction preserves valid relative link
-4. split proposal exists but cannot auto-promote
-5. merge proposal exists but cannot auto-promote
-6. trigger narrowing requires positive/negative regression
-7. trigger expansion requires Human Gate
-8. low usage alone does not auto archive
-9. archive requires Human Gate
-10. pinned/specialist protection represented and enforced
-11. delete is not automatic/supported V8.2 action
-12. package resources remain intact during proposed restructure
-13. protected routing regression PASS
-14. V8.1/V8.2 activation regression PASS
-15. Skill Audit PASS/WARN-only with no FAIL
-16. Harness Audit PASS
-17. STRICT Quality Gate PASS
-18. final working tree clean
-19. Curator report does not expose raw Skill body text
-20. Candidate writes remain under `.playbook-state`
+1. Curator receives metadata/audit candidates, not whole library bodies by default — VERIFIED
+2. compress proposal/Candidate works on synthetic oversized Skill — VERIFIED
+3. reference extraction preserves valid relative link — VERIFIED
+4. split proposal exists but cannot auto-promote — VERIFIED
+5. merge proposal exists but cannot auto-promote — VERIFIED
+6. trigger narrowing requires positive/negative regression — VERIFIED
+7. trigger expansion requires Human Gate — VERIFIED
+8. low usage alone does not auto archive — VERIFIED
+9. archive requires Human Gate — VERIFIED
+10. pinned/specialist protection represented and enforced — VERIFIED
+11. delete is not automatic/supported V8.2 action — VERIFIED
+12. package resources remain intact during proposed restructure — VERIFIED
+13. protected routing regression PASS — VERIFIED
+14. V8.1/V8.2 activation regression PASS — VERIFIED
+15. Skill Audit PASS/WARN-only with no FAIL — VERIFIED
+16. Harness Audit PASS — VERIFIED
+17. STRICT Quality Gate PASS — VERIFIED
+18. final working tree clean — VERIFIED
+19. Curator report does not expose raw Skill body text — VERIFIED
+20. Candidate writes remain under `.playbook-state` — VERIFIED
 
 ## 완료 조건
 
-구현은 완료했습니다. 실제 Windows Evidence 확인 전 `COMPLETE - VERIFIED`로 표시하지 않습니다.
+**COMPLETE - VERIFIED**
+
+실제 Windows Evidence와 Git clean 상태까지 확인했습니다.
