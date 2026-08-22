@@ -66,6 +66,10 @@
 .codex/AGENTS.md
 capability-library/registry.json
 capability-library/sources.json
+capability-library/skills/optional/code-review/SKILL.md
+capability-library/skills/optional/root-cause-debugging/SKILL.md
+capability-library/skills/optional/security-review/SKILL.md
+capability-library/skills/optional/testing/SKILL.md
 harness/activation/capability_manager.py
 harness/activation/test_capability_manager.py
 harness/profiles/minimal.json
@@ -76,6 +80,7 @@ harness/router/capability_router.py
 harness/router/registry.py
 harness/router/scoring.py
 harness/router/test_capability_router.py
+harness/router/test_optional_skills.py
 harness/router/test_registry.py
 harness/security/harness_audit.py
 README.md
