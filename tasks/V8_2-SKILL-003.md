@@ -1,6 +1,6 @@
 # V8.2-SKILL-003 - Skill Creator
 
-상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
+상태: **COMPLETE - VERIFIED**
 
 선행 조건:
 
@@ -155,65 +155,52 @@ Global `.codex/AGENTS.md`, ACTIVE registry, Router scoring, Optional Skill conte
 
 ## Windows Verification
 
-먼저 SKILL-003 focused test:
+실제 Windows Evidence:
 
-```cmd
-python harness\skills\test_creator.py
+```text
+Skill Creator focused tests     13/13 PASS
+Governance focused tests        12/12 PASS
+Event Store tests                6/6 PASS
+Proposal Queue tests             7/7 PASS
+Skill Audit unit tests           6/6 PASS
+Real skill_audit.py              WARN-only / no FAIL
+Capability Router               28/28 PASS
+Capability Manager              12/12 PASS
+Skill Materializer              10/10 PASS
+Discovery Bridge                10/10 PASS
+Playbook Launcher               12/12 PASS
+Installed Launcher               2/2 PASS
+Harness Audit                   PASS / warnings 0
+STRICT Quality Gate             PASS / ERRORLEVEL 0
+Global AGENTS.md                 4579 bytes unchanged
+working tree                    clean
 ```
 
-그 다음 Candidate Audit regression과 Control Plane regression:
-
-```cmd
-python harness\quality\test_skill_audit.py
-python harness\skills\test_governance.py
-python harness\skills\test_events.py
-python harness\skills\test_queue.py
-python harness\quality\skill_audit.py --root .
-```
-
-Router/Activation protected regression:
-
-```cmd
-python harness\router\test_capability_router.py
-python harness\activation\test_capability_manager.py
-python harness\activation\test_skill_materializer.py
-python harness\activation\test_discovery_bridge.py
-python harness\activation\test_playbook_launch.py
-python harness\activation\test_installed_launcher.py
-```
-
-마지막:
-
-```cmd
-python harness\security\harness_audit.py --root .
-python harness\quality\quality_gate.py --repo . --profile strict --verify "python harness\security\harness_audit.py --root ."
-echo %ERRORLEVEL%
-git status --short
-```
+`skill_audit.py --root .`의 WARN은 기존 trigger overlap / broad-trigger review 항목이며 FAIL은 없었습니다. 이 경고는 자동 수정/병합하지 않고 이후 Curator의 Evidence로 유지합니다.
 
 ## Acceptance Criteria
 
-1. Router miss가 즉시 Skill 생성으로 이어지지 않음
-2. Gap Event가 privacy-safe 형태로 기록됨
-3. trivial task에서 Creator NO_ACTION
-4. repository-specific one-off task에서 NO_ACTION
-5. existing Skill sufficient case에서 new Skill 생성 안 함
-6. reusable domain gap에서 Candidate 생성
-7. Candidate는 ACTIVE Library 밖에 존재
-8. Candidate에 proposal/provenance/permission 포함
-9. positive 2+ / negative 1+ routing fixture 포함
-10. `skill_audit.py` candidate audit 실행 가능
-11. high-risk permission candidate는 Human Gate 표시
-12. source/license 불명 candidate 생성/promotion 경로 차단
-13. existing protected routing regressions PASS
-14. V8.1/V8.2 activation regression PASS
-15. Harness Audit PASS
-16. STRICT Quality Gate PASS
-17. final working tree clean
-18. 동일 task fingerprint를 복제해 반복 Gap으로 가장할 수 없음
-19. Creator는 `.playbook-state` 외부 Candidate write를 거부
-20. Global `.codex/AGENTS.md` 증가 없음
+1. Router miss가 즉시 Skill 생성으로 이어지지 않음 — PASS
+2. Gap Event가 privacy-safe 형태로 기록됨 — PASS
+3. trivial task에서 Creator NO_ACTION — PASS
+4. repository-specific one-off task에서 NO_ACTION — PASS
+5. existing Skill sufficient case에서 new Skill 생성 안 함 — PASS
+6. reusable domain gap에서 Candidate 생성 — PASS
+7. Candidate는 ACTIVE Library 밖에 존재 — PASS
+8. Candidate에 proposal/provenance/permission 포함 — PASS
+9. positive 2+ / negative 1+ routing fixture 포함 — PASS
+10. `skill_audit.py` candidate audit 실행 가능 — PASS
+11. high-risk permission candidate는 Human Gate 표시 — PASS
+12. source/license 불명 candidate 생성/promotion 경로 차단 — PASS
+13. existing protected routing regressions PASS — PASS
+14. V8.1/V8.2 activation regression PASS — PASS
+15. Harness Audit PASS — PASS
+16. STRICT Quality Gate PASS — PASS
+17. final working tree clean — PASS
+18. 동일 task fingerprint를 복제해 반복 Gap으로 가장할 수 없음 — PASS
+19. Creator는 `.playbook-state` 외부 Candidate write를 거부 — PASS
+20. Global `.codex/AGENTS.md` 증가 없음 — PASS
 
 ## 완료 조건
 
-구현은 완료했습니다. 실제 Windows Evidence 확인 전 `COMPLETE - VERIFIED`로 표시하지 않습니다.
+실제 Windows Evidence와 clean working tree가 확인되었습니다. `COMPLETE - VERIFIED`.
