@@ -5,6 +5,8 @@ $GlobalAgents = Join-Path $HOME ".codex\AGENTS.md"
 $SourceAgents = Join-Path $KitRoot ".codex\AGENTS.md"
 $SkillsDir = Join-Path $HOME ".agents\skills"
 $SkillsSourceRoot = Join-Path $KitRoot ".agents\skills"
+$HarnessSourceRoot = Join-Path $KitRoot "harness"
+$HarnessTargetRoot = Join-Path $HOME ".codex\playbook-harness"
 
 $begin = "<!-- BEGIN AI_AGENT_PLAYBOOK_KIT -->"
 $end = "<!-- END AI_AGENT_PLAYBOOK_KIT -->"
@@ -93,6 +95,22 @@ Get-ChildItem -LiteralPath $SkillsSourceRoot -Directory | ForEach-Object {
     }
 }
 
+if (-not (Test-Path -LiteralPath $HarnessTargetRoot)) {
+    Write-Host "MISSING  playbook harness"
+    $failed = $true
+}
+else {
+    $sourceHarnessHash = Get-DirectoryFingerprint -Path $HarnessSourceRoot
+    $targetHarnessHash = Get-DirectoryFingerprint -Path $HarnessTargetRoot
+    if ($sourceHarnessHash -eq $targetHarnessHash) {
+        Write-Host "PASS     playbook harness"
+    }
+    else {
+        Write-Host "DRIFT    playbook harness"
+        $failed = $true
+    }
+}
+
 $legacyBackups = @(
     Get-ChildItem -LiteralPath $SkillsDir -Directory -Filter "*.backup-*" -ErrorAction SilentlyContinue
 )
@@ -102,6 +120,23 @@ if ($legacyBackups.Count -gt 0) {
     Write-Host "WARN     legacy backup folders remain inside skill discovery path:"
     $legacyBackups | ForEach-Object { Write-Host "         $($_.FullName)" }
     $failed = $true
+}
+
+$python = Get-Command python -ErrorAction SilentlyContinue
+if ($python -and -not $failed) {
+    $auditScript = Join-Path $HarnessTargetRoot "security\harness_audit.py"
+    Write-Host ""
+    & $python.Source $auditScript --root $KitRoot
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "FAIL     harness audit"
+        $failed = $true
+    }
+    else {
+        Write-Host "PASS     harness audit"
+    }
+}
+elseif (-not $python) {
+    Write-Host "WARN     Python not found; runtime harness audit UNVERIFIED"
 }
 
 Write-Host ""
