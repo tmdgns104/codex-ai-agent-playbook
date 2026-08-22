@@ -2,7 +2,8 @@
 
 Codex를 **더 적은 고정 컨텍스트와 더 강한 검증 루프**로 여러 프로젝트에서 일관되게 사용하기 위한 전역 Playbook + Skills + Harness 세트입니다.
 
-현재 개발 버전: **V8 Candidate (`v8-harness-core`)**
+현재 안정 버전: **V8 (`main`)**  
+실제 Windows 환경 검증 완료 / GitHub `main` 병합 완료
 
 ## 핵심 구조
 
@@ -44,20 +45,20 @@ Windows 전역 설치 위치:
 
 ---
 
-# V8 핵심 변경
+# V8 핵심
 
 V8은 Everything Claude Code/Claude Code 계열의 장점 중 **Codex에 맞고 토큰 대비 효과가 큰 운영 패턴만** 흡수합니다.
 
 LangChain/LlamaIndex 같은 Agent 애플리케이션 프레임워크를 Playbook Core에 추가하지 않습니다.
 상시 멀티에이전트도 기본값으로 사용하지 않습니다.
 
-목표:
-
 ```text
-User Request
-  -> 최소 Skill 선택
-  -> MINIMAL / STANDARD / STRICT 프로필
-  -> Implementation
+사용자 요청
+  -> 필요한 경우에만 Skill Router
+  -> 최소 Skill 집합
+  -> MINIMAL / STANDARD / STRICT
+  -> Repository Context
+  -> 구현
   -> Repository Verification
   -> Deterministic Quality Gate
   -> Evidence
@@ -73,15 +74,13 @@ $codex-skill-router
 
 Skill 선택이 애매한 비단순 작업에서만 사용합니다.
 
-라우터는:
+라우터는 다음만 추천합니다.
 
 - 필요한 최소 Skill 집합
 - `MINIMAL / STANDARD / STRICT` 검증 프로필
 - long-run 필요 여부
 - capability router 필요 여부
 - Human Gate 필요 여부
-
-만 추천하고 구현은 하지 않습니다.
 
 명확한 작업에는 라우터를 호출하지 않습니다.
 
@@ -111,7 +110,7 @@ Skill 선택이 애매한 비단순 작업에서만 사용합니다.
 
 ### STRICT
 
-보안/권한/마이그레이션/배포/중요 아키텍처/파괴적 변경 등 고위험 작업.
+보안/권한/마이그레이션/배포/중요 아키텍처/공개 계약/파괴적 변경 등 고위험 작업.
 
 강한 모델을 쓰는 것과 검증 강도는 별개입니다.
 
@@ -119,28 +118,24 @@ Skill 선택이 애매한 비단순 작업에서만 사용합니다.
 
 Repository에서 직접 실행:
 
-```powershell
-python "$HOME\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile standard
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile standard
 ```
 
 STRICT 예:
 
-```powershell
-python "$HOME\.codex\playbook-harness\quality\quality_gate.py" `
-  --repo . `
-  --profile strict `
-  --verify "python -m pytest"
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile strict --verify "python -m pytest"
 ```
 
 검사 항목:
 
-- `git diff --check`
-- staged diff whitespace
+- unstaged/staged `git diff --check`
 - unresolved conflict
 - conflict marker
 - 변경 파일 수 경고
-- STANDARD/STRICT의 suspicious-secret scan
-- 명시적으로 전달된 repository verification command
+- STANDARD/STRICT suspicious-secret scan
+- 명시적으로 전달된 Repository verification command
 
 STRICT에서 실행 Evidence가 필요한데 `--verify`가 없으면:
 
@@ -150,14 +145,22 @@ RESULT     UNVERIFIED
 
 으로 끝납니다.
 
+Exit code:
+
+```text
+0 = PASS
+1 = FAIL
+2 = UNVERIFIED
+```
+
 Quality Gate는 Repository 테스트/Acceptance Criteria를 대체하지 않고 **보조 Evidence**로 사용합니다.
 
 ## 4. Harness Audit
 
 Playbook 자체 검증:
 
-```powershell
-python .\harness\security\harness_audit.py --root .
+```cmd
+python harness\security\harness_audit.py --root .
 ```
 
 검사 항목:
@@ -173,7 +176,7 @@ python .\harness\security\harness_audit.py --root .
 - MANIFEST drift
 - 재사용 문서의 개인 절대 경로/명백한 secret material
 
-목적은 ECC AgentShield를 복사하는 것이 아니라 **이 Playbook에 필요한 정적 하네스 감사만 경량으로 구현**하는 것입니다.
+목적은 다른 Harness를 그대로 복제하는 것이 아니라 **이 Playbook에 필요한 정적 검증만 경량으로 구현**하는 것입니다.
 
 ---
 
@@ -183,33 +186,40 @@ python .\harness\security\harness_audit.py --root .
 - Repository Source of Truth
 - Progressive Disclosure Skills
 - 고정 모델표 제거
-- Windows 설치 멱등화
+- 설치 멱등화
 - Skill 백업을 검색 경로 밖으로 이동
 - `verify-install.ps1` 기반 drift 검증
 
-V8은 이 구조를 버리지 않고 위에 Quality/Route 계층만 추가합니다.
+V8은 이 구조를 유지하면서 Skill Routing과 Quality 계층을 추가합니다.
 
 ---
 
 # Windows 설치 / 업데이트
 
-V8 Candidate 테스트:
+## 처음 설치
+
+CMD:
+
+```cmd
+git clone https://github.com/tmdgns104/codex-ai-agent-playbook.git
+cd codex-ai-agent-playbook
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
+```
+
+PowerShell:
 
 ```powershell
-cd <codex-ai-agent-playbook 폴더>
-
-git status --short
-git fetch origin
-git switch v8-harness-core
-git pull origin v8-harness-core
-
+git clone https://github.com/tmdgns104/codex-ai-agent-playbook.git
+cd codex-ai-agent-playbook
 Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 ```
 
-CMD에서 실행한다면:
+## 기존 설치 업데이트
 
 ```cmd
+git switch main
+git pull origin main
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
 ```
 
@@ -217,8 +227,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
 
 직접 확인:
 
-```powershell
-.\verify-install.ps1
+```cmd
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
 ```
 
 정상 상태:
@@ -227,7 +237,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
 PASS     global AGENTS.md playbook block
 PASS     skill '...'
 PASS     playbook harness
-...
+PASS     harness audit
 RESULT   PASS
 ```
 
@@ -249,6 +259,28 @@ RESULT   PASS
 
 원칙은 **전부 사용하지 않는 것**입니다.
 현재 작업에 필요한 최소 Skill만 사용합니다.
+
+---
+
+# 실제 Windows 검증 결과
+
+2026-08-22 실제 대상 PC에서 다음을 확인했습니다.
+
+- V7 → V8 update PASS
+- `codex-skill-router` 포함 7개 Skill 설치 PASS
+- `~/.codex/playbook-harness` 설치/fingerprint PASS
+- `verify-install.ps1` RESULT PASS
+- Harness Audit warnings 0 / PASS
+- 동일 V8 재설치 no-op
+- Quality Gate MINIMAL → PASS
+- Quality Gate STRICT + 실제 검증 → PASS
+- Quality Gate STRICT + 검증 없음 → UNVERIFIED / exit 2
+- conflict marker + 가짜 GitHub token fixture → FAIL / exit 1
+- uninstall 후 사용자 소유 AGENTS 영역 보존
+- uninstall 후 V8 재설치/전체 검증 PASS
+- 최종 Git working tree clean
+
+자세한 내용은 [V8_CHANGES_KO.md](V8_CHANGES_KO.md)를 참고합니다.
 
 ---
 
@@ -287,9 +319,8 @@ $codex-long-run
 
 Windows:
 
-```powershell
-Set-ExecutionPolicy -Scope Process Bypass
-.\uninstall.ps1
+```cmd
+powershell -NoProfile -ExecutionPolicy Bypass -File ".\uninstall.ps1"
 ```
 
 Linux/macOS:
@@ -300,6 +331,8 @@ Linux/macOS:
 
 전역 `AGENTS.md`에서는 Playbook 마커 구간만 제거하고,
 이 Repository가 관리하는 Skills와 `~/.codex/playbook-harness`만 제거합니다.
+
+사용자가 직접 작성한 marker 밖 AGENTS 내용은 보존하도록 설계되어 있으며 실제 Windows에서 검증했습니다.
 
 백업은 자동 삭제하지 않습니다.
 
