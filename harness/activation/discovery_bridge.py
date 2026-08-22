@@ -113,16 +113,19 @@ def prepare_bridge(
     task_text: str,
     target_root: Path,
     session: str,
+    catalog_root: Path | None = None,
 ) -> dict[str, Any]:
     """Prepare selected Skills under a Codex-discoverable session-local cwd."""
     validate_session_id(session)
     root = _require_git_root(root)
+    catalog_root = (catalog_root or root).resolve()
     target_root = _require_target_inside_repo(root, target_root)
     session_dir = target_root / session
 
     try:
         activation = prepare_session(
             root=root,
+            catalog_root=catalog_root,
             task_text=task_text,
             target_root=target_root,
             session=session,
@@ -136,6 +139,7 @@ def prepare_bridge(
             "managed_by": BRIDGE_MANAGED_BY,
             "session": session,
             "task": task_text,
+            "catalog_root": str(catalog_root),
             "materialized": [],
             "codex_discovery_ready": False,
             "result": "NO_BRIDGE",
@@ -160,6 +164,7 @@ def prepare_bridge(
             "session": session,
             "task": task_text,
             "repository_root": str(root),
+            "catalog_root": str(catalog_root),
             "bridge_cwd": str(bridge_cwd),
             "skill_root": str(bridge_skill_root),
             "materialized": materialized,
@@ -283,6 +288,7 @@ def main() -> int:
 
     prepare = subparsers.add_parser("prepare")
     prepare.add_argument("--root", default=".")
+    prepare.add_argument("--catalog-root", help="Optional Playbook catalog root; defaults to --root.")
     prepare.add_argument("--task", required=True)
     prepare.add_argument("--target", default=".playbook-runtime")
     prepare.add_argument("--session", required=True)
@@ -309,6 +315,7 @@ def main() -> int:
         if args.command == "prepare":
             payload = prepare_bridge(
                 root=Path(args.root),
+                catalog_root=Path(args.catalog_root) if args.catalog_root else None,
                 task_text=args.task,
                 target_root=Path(args.target),
                 session=args.session,
