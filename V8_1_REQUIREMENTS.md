@@ -1,10 +1,12 @@
 # V8.1 요구사항 - Dynamic Capability Library
 
-상태: **Draft for implementation**
+상태: **Baseline implemented / CAP-001 ~ CAP-008 verified**
 
-기준 브랜치: `v8.1-capability-library`
+현재 안정 브랜치: `main`
 
-부모 버전: V8 (`main`)
+부모 버전: V8
+
+> 아래 문서는 V8.1 설계 기준 요구사항입니다. MCP/Agent 확장과 정량 토큰/성공률 비교 항목 일부는 후속 평가 대상으로 남아 있습니다.
 
 ## 1. 목적
 
@@ -254,4 +256,3 @@ V8.1은 기능 개수가 많아졌다는 이유로 성공이 아닙니다.
 - task success와 verification success가 V8 이상
 - permanent context 증가 `<= 5%`
 - 실제 Windows install/update/uninstall/reinstall PASS
-
