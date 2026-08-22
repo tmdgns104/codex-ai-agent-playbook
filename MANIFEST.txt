@@ -69,6 +69,7 @@ ONE_CALL_CODEX_PROMPTS_KO.md
 V4_CHANGES_KO.md
 V5_CHANGES_KO.md
 V6_CHANGES_KO.md
+V7_CHANGES_KO.md
 docs/QUICKSTART.md
 docs/HOW_IT_WORKS.md
 docs/SKILLS.md
@@ -77,3 +78,4 @@ install.ps1
 install.sh
 uninstall.ps1
 uninstall.sh
+verify-install.ps1
