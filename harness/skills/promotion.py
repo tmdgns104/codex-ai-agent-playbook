@@ -99,16 +99,46 @@ def promote_package(
     return package_hash(active_dir)
 
 
-def load_protected_regressions(root: Path) -> dict[str, Any]:
-    fixture_path = root / "evaluation" / "self-managing" / "protected-routing.json"
-    policy_path = root / "capability-library" / "governance" / "policy.json"
+def _load_json(path: Path) -> dict[str, Any]:
     try:
-        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise PromotionError(f"protected regression file missing: {path}") from exc
+    except json.JSONDecodeError as exc:
+        raise PromotionError(f"invalid protected regression JSON: {path}: {exc}") from exc
+    if not isinstance(value, dict):
+        raise PromotionError(f"protected regression JSON root must be an object: {path}")
+    return value
+
+
+def load_protected_regressions(root: Path) -> dict[str, Any]:
+    """Load protected routing data in repository or installed catalog layout.
+
+    Repository source-of-truth remains evaluation/self-managing. The governance
+    snapshot is installed automatically with capability-library and must be byte-
+    equivalent at the JSON object level when both copies are present.
+    """
+    repository_fixture = root / "evaluation" / "self-managing" / "protected-routing.json"
+    installed_fixture = root / "capability-library" / "governance" / "protected-routing.json"
+    policy_path = root / "capability-library" / "governance" / "policy.json"
+
+    if repository_fixture.is_file():
+        fixture = _load_json(repository_fixture)
+        if installed_fixture.is_file():
+            installed = _load_json(installed_fixture)
+            if installed != fixture:
+                raise PromotionError("installed protected-routing snapshot drifted from evaluation source")
+    elif installed_fixture.is_file():
+        fixture = _load_json(installed_fixture)
+    else:
+        raise PromotionError("protected regression file missing in repository and installed governance paths")
+
+    try:
         policy = json.loads(policy_path.read_text(encoding="utf-8"))
     except FileNotFoundError as exc:
-        raise PromotionError(f"protected regression file missing: {exc.filename}") from exc
+        raise PromotionError(f"governance policy missing: {policy_path}") from exc
     except json.JSONDecodeError as exc:
-        raise PromotionError(f"invalid protected regression JSON: {exc}") from exc
+        raise PromotionError(f"invalid governance policy JSON: {exc}") from exc
 
     if fixture.get("schema_version") != 1 or fixture.get("protected") is not True:
         raise PromotionError("protected regression marker missing or invalid")
