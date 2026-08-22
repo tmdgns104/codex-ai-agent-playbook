@@ -7,6 +7,27 @@ import re
 from typing import Any
 
 TOKEN_RE = re.compile(r"[0-9A-Za-z가-힣]+")
+HANGUL_RE = re.compile(r"^[가-힣]+$")
+
+KOREAN_PARTICLES = {
+    "은",
+    "는",
+    "이",
+    "가",
+    "을",
+    "를",
+    "에",
+    "에서",
+    "로",
+    "으로",
+    "과",
+    "와",
+    "의",
+    "도",
+    "만",
+    "부터",
+    "까지",
+}
 
 CONTEXT_PENALTY = {"low": 0, "medium": 1, "high": 2}
 ACTIVATION_PENALTY = {"on_demand": 0, "conditional": 1, "manual": 3}
@@ -62,11 +83,38 @@ def normalized_phrase(text: str) -> str:
     return " ".join(tokens(text))
 
 
+def _matches_korean_particle_suffix(task_token: str, trigger_token: str) -> bool:
+    """Allow a trigger token followed only by a known Korean particle.
+
+    This supports Korean task text such as ``오류를`` or mixed tokens such as
+    ``test를`` without weakening normal ASCII word boundaries (for example,
+    ``pr`` must not match ``problem``).
+    """
+
+    if not task_token.startswith(trigger_token) or task_token == trigger_token:
+        return False
+    suffix = task_token[len(trigger_token) :]
+    return suffix in KOREAN_PARTICLES
+
+
 def contains_phrase(task_normalized: str, phrase: str) -> bool:
     normalized = normalized_phrase(phrase)
     if not normalized:
         return False
-    return f" {normalized} " in f" {task_normalized} "
+
+    if f" {normalized} " in f" {task_normalized} ":
+        return True
+
+    phrase_tokens = normalized.split()
+    if len(phrase_tokens) != 1:
+        return False
+
+    trigger_token = phrase_tokens[0]
+    for task_token in task_normalized.split():
+        if _matches_korean_particle_suffix(task_token, trigger_token):
+            return True
+
+    return False
 
 
 def score_capability(task_text: str, capability: dict[str, Any]) -> dict[str, Any]:
