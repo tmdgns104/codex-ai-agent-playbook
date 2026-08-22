@@ -72,9 +72,11 @@ capability-library/skills/optional/security-review/SKILL.md
 capability-library/skills/optional/testing/SKILL.md
 harness/activation/capability_manager.py
 harness/activation/discovery_bridge.py
+harness/activation/playbook_launch.py
 harness/activation/skill_materializer.py
 harness/activation/test_capability_manager.py
 harness/activation/test_discovery_bridge.py
+harness/activation/test_playbook_launch.py
 harness/activation/test_skill_materializer.py
 harness/profiles/minimal.json
 harness/profiles/standard.json
