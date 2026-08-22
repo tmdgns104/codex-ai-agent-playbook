@@ -111,17 +111,19 @@ def prepare_session(
     task_text: str,
     target_root: Path,
     session: str,
+    catalog_root: Path | None = None,
 ) -> dict[str, Any]:
     """Stage only eligible selected Skills and return the written manifest payload."""
     validate_session_id(session)
     root = root.resolve()
+    catalog_root = (catalog_root or root).resolve()
     target_root = target_root.resolve()
     session_dir = target_root / session
 
     if session_dir.exists():
         raise MaterializationError(f"session already exists: {session_dir}")
 
-    capabilities = load_capabilities(root)
+    capabilities = load_capabilities(catalog_root)
     by_id = {capability["id"]: capability for capability in capabilities}
     activation = build_activation_plan(task_text, capabilities)
     final_profile = str(activation["profile"]).lower()
@@ -144,6 +146,7 @@ def prepare_session(
             "session": session,
             "task": task_text,
             "profile": final_profile,
+            "catalog_root": str(catalog_root),
             "selected": [item["id"] for item in activation["plans"]],
             "materialized": [],
             "skipped": skipped,
@@ -153,7 +156,7 @@ def prepare_session(
             "result": "NO_MATERIALIZATION",
         }
 
-    library_root = (root / "capability-library").resolve()
+    library_root = (catalog_root / "capability-library").resolve()
     skills_dir = session_dir / "skills"
     manifest: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
@@ -161,6 +164,7 @@ def prepare_session(
         "session": session,
         "task": task_text,
         "profile": final_profile,
+        "catalog_root": str(catalog_root),
         "selected": [item["id"] for item in activation["plans"]],
         "materialized": [],
         "skipped": skipped,
@@ -174,7 +178,7 @@ def prepare_session(
         skills_dir.mkdir(parents=True, exist_ok=False)
 
         for plan_item, capability in materializable:
-            source_dir = (root / str(capability["path"])).resolve()
+            source_dir = (catalog_root / str(capability["path"])).resolve()
             if not _is_within(source_dir, library_root):
                 raise MaterializationError(f"source path escaped capability library: {source_dir}")
             if not source_dir.is_dir():
@@ -187,7 +191,7 @@ def prepare_session(
                 {
                     "id": capability["id"],
                     "decision": plan_item["decision"],
-                    "source": source_dir.relative_to(root).as_posix(),
+                    "source": source_dir.relative_to(catalog_root).as_posix(),
                     "destination": destination_dir.relative_to(session_dir).as_posix(),
                     "files": files,
                 }
@@ -304,7 +308,8 @@ def main() -> int:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     prepare = subparsers.add_parser("prepare")
-    prepare.add_argument("--root", default=".", help="Playbook repository root.")
+    prepare.add_argument("--root", default=".", help="Target repository root.")
+    prepare.add_argument("--catalog-root", help="Optional Playbook catalog root; defaults to --root.")
     prepare.add_argument("--task", required=True)
     prepare.add_argument("--target", default=".playbook-runtime")
     prepare.add_argument("--session", required=True)
@@ -326,6 +331,7 @@ def main() -> int:
         if args.command == "prepare":
             payload = prepare_session(
                 root=Path(args.root),
+                catalog_root=Path(args.catalog_root) if args.catalog_root else None,
                 task_text=args.task,
                 target_root=Path(args.target),
                 session=args.session,
