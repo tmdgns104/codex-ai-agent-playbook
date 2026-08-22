@@ -86,7 +86,7 @@
       "type": "skill",
       "summary": "정확성, 회귀, 가독성, 계약 위반과 검증 누락을 focused review",
       "domains": ["review", "quality", "verification"],
-      "triggers": ["review", "diff", "regression", "refactor", "quality", "리뷰", "검토", "리팩터링", "회귀", "품질"],
+      "triggers": ["review", "diff", "refactor", "quality", "리뷰", "검토", "리팩터링", "품질"],
       "activation": "on_demand",
       "risk": "low",
       "recommended_profile": "standard",
