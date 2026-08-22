@@ -1,6 +1,8 @@
 # V8.1 Capability Policy
 
-상태: **Draft for implementation**
+상태: **Active baseline / CAP-001 ~ CAP-008 verified**
+
+> 현재 V8.1 자동 실행 경로는 optional Skill 중심입니다. MCP/Agent 관련 항목은 정책상 정의되어 있지만 자동 활성화는 기본 비활성 상태입니다.
 
 ## 1. 목적
 
