@@ -131,3 +131,6 @@ harness/skills/queue.py
 harness/skills/test_events.py
 harness/skills/test_governance.py
 harness/skills/test_queue.py
+harness/skills/gap_detector.py
+harness/skills/creator.py
+harness/skills/test_creator.py
