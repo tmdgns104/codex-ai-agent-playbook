@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Focused tests for V8.1 optional Skill content integrity."""
+"""Focused tests for optional Skill content integrity."""
 
 from __future__ import annotations
 
@@ -12,6 +12,22 @@ ROOT = Path(__file__).resolve().parents[2]
 FRONTMATTER = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
 NAME = re.compile(r"(?m)^name:\s*([^\n]+)$")
 DESCRIPTION = re.compile(r"(?m)^description:\s*([^\n]+)$")
+
+V8_1_SKILLS = {
+    "security-review",
+    "testing",
+    "root-cause-debugging",
+    "code-review",
+}
+
+V8_2_BATCH_1 = {
+    "api-design",
+    "sql-optimization",
+    "docker-container",
+    "dependency-upgrade",
+    "performance-profiling",
+    "resilient-error-handling",
+}
 
 
 class OptionalSkillContentTests(unittest.TestCase):
@@ -31,10 +47,8 @@ class OptionalSkillContentTests(unittest.TestCase):
         return (ROOT / entry["path"] / "SKILL.md").read_text(encoding="utf-8")
 
     def test_expected_optional_skills_exist(self) -> None:
-        self.assertEqual(
-            set(self.skills),
-            {"security-review", "testing", "root-cause-debugging", "code-review"},
-        )
+        self.assertEqual(set(self.skills), V8_1_SKILLS | V8_2_BATCH_1)
+        self.assertEqual(len(self.skills), 10)
         for capability_id, entry in self.skills.items():
             self.assertTrue((ROOT / entry["path"] / "SKILL.md").is_file(), capability_id)
 
@@ -59,11 +73,22 @@ class OptionalSkillContentTests(unittest.TestCase):
             (ROOT / "capability-library" / "sources.json").read_text(encoding="utf-8")
         )
         by_id = {item["id"]: item for item in sources["sources"]}
+
         ecc = by_id["ecc-rewritten"]
         self.assertEqual(ecc["license"], "MIT")
         self.assertEqual(ecc["adaptation"], "rewritten")
         for capability_id in ("security-review", "testing", "code-review"):
             self.assertEqual(self.skills[capability_id]["source_id"], "ecc-rewritten")
+            self.assertEqual(self.skills[capability_id]["license"], "MIT")
+
+        jayrha = by_id["jayrha-agent-skills-rewritten"]
+        self.assertEqual(jayrha["license"], "MIT")
+        self.assertEqual(jayrha["adaptation"], "rewritten")
+        for capability_id in V8_2_BATCH_1:
+            self.assertEqual(
+                self.skills[capability_id]["source_id"],
+                "jayrha-agent-skills-rewritten",
+            )
             self.assertEqual(self.skills[capability_id]["license"], "MIT")
 
     def test_testing_does_not_impose_global_coverage_target(self) -> None:
@@ -74,7 +99,8 @@ class OptionalSkillContentTests(unittest.TestCase):
     def test_skills_preserve_evidence_and_handoff_rules(self) -> None:
         for capability_id in self.skills:
             content = self.skill_text(capability_id)
-            self.assertTrue("Evidence" in content or "근거" in content, capability_id)
+            self.assertIn("Evidence", content, capability_id)
+            self.assertIn("Stop / Handoff", content, capability_id)
         self.assertIn("root-cause-debugging", self.skill_text("testing"))
         self.assertIn("security-review", self.skill_text("root-cause-debugging"))
         self.assertIn("security-review", self.skill_text("code-review"))
