@@ -8,6 +8,14 @@
       "url": "https://github.com/tmdgns104/codex-ai-agent-playbook",
       "license": "repository",
       "adaptation": "original"
+    },
+    {
+      "id": "ecc-rewritten",
+      "name": "Everything Claude Code (ECC)",
+      "kind": "external-reference",
+      "url": "https://github.com/affaan-m/ECC",
+      "license": "MIT",
+      "adaptation": "rewritten"
     }
   ]
 }
