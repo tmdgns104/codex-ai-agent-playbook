@@ -167,6 +167,7 @@ def main() -> int:
             print(f"PASS       profile '{profile_name}'")
 
     registry_script = root / "harness" / "router" / "registry.py"
+    registry_valid = False
     if not registry_script.exists():
         fail("capability registry validator missing")
     else:
@@ -179,6 +180,7 @@ def main() -> int:
             check=False,
         )
         if registry_result.returncode == 0:
+            registry_valid = True
             print("PASS       capability sources")
             print("PASS       capability registry")
         else:
@@ -187,6 +189,47 @@ def main() -> int:
             if output:
                 for line in output.splitlines()[-10:]:
                     print(f"           {line}")
+
+    if registry_valid:
+        try:
+            registry_data = json.loads(text(root / "capability-library" / "registry.json"))
+            optional_skills = [
+                item
+                for item in registry_data.get("capabilities", [])
+                if isinstance(item, dict) and item.get("type") == "skill"
+            ]
+            optional_failures_before = len(failures)
+            for item in optional_skills:
+                capability_id = str(item.get("id", ""))
+                skill_dir = root / str(item.get("path", ""))
+                skill_file = skill_dir / "SKILL.md"
+                if not skill_file.exists():
+                    fail(f"optional skill missing SKILL.md: {capability_id}")
+                    continue
+                content = text(skill_file)
+                match = FRONTMATTER.search(content)
+                if not match:
+                    fail(f"optional skill frontmatter missing/invalid: {capability_id}")
+                    continue
+                frontmatter = match.group(1)
+                name_match = NAME.search(frontmatter)
+                desc_match = DESCRIPTION.search(frontmatter)
+                if not name_match:
+                    fail(f"optional skill name missing: {capability_id}")
+                else:
+                    name = name_match.group(1).strip().strip("'\"")
+                    if name != capability_id or skill_dir.name != capability_id:
+                        fail(f"optional skill name/path mismatch: {capability_id} != {name}")
+                if not desc_match:
+                    fail(f"optional skill description missing: {capability_id}")
+                if skill_file.stat().st_size > args.max_skill_bytes:
+                    warn(f"large optional SKILL.md ({skill_file.stat().st_size} bytes): {capability_id}")
+                if (skills_root / capability_id).exists():
+                    fail(f"optional skill leaked into always-discovered skill path: {capability_id}")
+            if len(failures) == optional_failures_before:
+                print(f"PASS       optional skill integrity: {len(optional_skills)} skills")
+        except (OSError, json.JSONDecodeError) as exc:
+            fail(f"optional skill integrity check failed: {exc}")
 
     python_files = iter_files(root, "harness")
     for path in python_files:
