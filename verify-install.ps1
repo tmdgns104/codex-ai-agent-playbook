@@ -7,6 +7,8 @@ $SkillsDir = Join-Path $HOME ".agents\skills"
 $SkillsSourceRoot = Join-Path $KitRoot ".agents\skills"
 $HarnessSourceRoot = Join-Path $KitRoot "harness"
 $HarnessTargetRoot = Join-Path $HOME ".codex\playbook-harness"
+$CapabilitySourceRoot = Join-Path $KitRoot "capability-library"
+$CapabilityTargetRoot = Join-Path $HOME ".codex\capability-library"
 
 $begin = "<!-- BEGIN AI_AGENT_PLAYBOOK_KIT -->"
 $end = "<!-- END AI_AGENT_PLAYBOOK_KIT -->"
@@ -92,6 +94,22 @@ Get-ChildItem -LiteralPath $SkillsSourceRoot -Directory | ForEach-Object {
             Write-Host "DRIFT    skill '$skillName'"
             $failed = $true
         }
+    }
+}
+
+if (-not (Test-Path -LiteralPath $CapabilityTargetRoot)) {
+    Write-Host "MISSING  capability library"
+    $failed = $true
+}
+else {
+    $sourceCapabilityHash = Get-DirectoryFingerprint -Path $CapabilitySourceRoot
+    $targetCapabilityHash = Get-DirectoryFingerprint -Path $CapabilityTargetRoot
+    if ($sourceCapabilityHash -eq $targetCapabilityHash) {
+        Write-Host "PASS     capability library"
+    }
+    else {
+        Write-Host "DRIFT    capability library"
+        $failed = $true
     }
 }
 

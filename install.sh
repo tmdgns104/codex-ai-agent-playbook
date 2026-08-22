@@ -9,6 +9,8 @@ SKILLS_DIR="$HOME/.agents/skills"
 SKILLS_SOURCE_ROOT="$KIT_ROOT/.agents/skills"
 HARNESS_SOURCE_ROOT="$KIT_ROOT/harness"
 HARNESS_TARGET_ROOT="$GLOBAL_CODEX_DIR/playbook-harness"
+CAPABILITY_SOURCE_ROOT="$KIT_ROOT/capability-library"
+CAPABILITY_TARGET_ROOT="$GLOBAL_CODEX_DIR/capability-library"
 BACKUP_BASE="$GLOBAL_CODEX_DIR/playbook-backups"
 RUN_BACKUP=""
 
@@ -105,6 +107,19 @@ for source in "$SKILLS_SOURCE_ROOT"/*; do
   echo "INSTALLED skill '$skill_name'"
 done
 
+if same_dir "$CAPABILITY_SOURCE_ROOT" "$CAPABILITY_TARGET_ROOT"; then
+  echo "OK       capability library"
+else
+  if [ -d "$CAPABILITY_TARGET_ROOT" ]; then
+    ensure_backup_root
+    cp -R "$CAPABILITY_TARGET_ROOT" "$RUN_BACKUP/capability-library"
+    rm -rf "$CAPABILITY_TARGET_ROOT"
+    echo "BACKUP   capability library"
+  fi
+  cp -R "$CAPABILITY_SOURCE_ROOT" "$CAPABILITY_TARGET_ROOT"
+  echo "INSTALLED capability library"
+fi
+
 if same_dir "$HARNESS_SOURCE_ROOT" "$HARNESS_TARGET_ROOT"; then
   echo "OK       playbook harness"
 else
@@ -127,6 +142,5 @@ echo
 python3 "$HARNESS_TARGET_ROOT/security/harness_audit.py" --root "$KIT_ROOT"
 
 echo
-echo 'Try: $codex-skill-router'
-echo 'Try: $ai-agent-development-playbook'
-echo 'Try: $codex-long-run'
+echo 'Installed auto launcher:'
+echo 'python3 "$HOME/.codex/playbook-harness/activation/playbook_launch.py" --root . --task "<task>"'

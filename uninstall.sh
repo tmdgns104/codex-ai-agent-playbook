@@ -4,6 +4,7 @@ set -euo pipefail
 KIT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GLOBAL_AGENTS="$HOME/.codex/AGENTS.md"
 GLOBAL_HARNESS="$HOME/.codex/playbook-harness"
+GLOBAL_CAPABILITY_LIBRARY="$HOME/.codex/capability-library"
 SKILLS_DIR="$HOME/.agents/skills"
 SKILLS_SOURCE_ROOT="$KIT_ROOT/.agents/skills"
 
@@ -29,6 +30,11 @@ for source in "$SKILLS_SOURCE_ROOT"/*; do
   rm -rf "$SKILLS_DIR/$skill_name"
   echo "Removed skill: $skill_name"
 done
+
+if [ -d "$GLOBAL_CAPABILITY_LIBRARY" ]; then
+  rm -rf "$GLOBAL_CAPABILITY_LIBRARY"
+  echo "Removed capability library"
+fi
 
 if [ -d "$GLOBAL_HARNESS" ]; then
   rm -rf "$GLOBAL_HARNESS"

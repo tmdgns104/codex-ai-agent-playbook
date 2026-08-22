@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -26,12 +27,21 @@ ROOT_MANAGED = {
     "verify-install.ps1",
 }
 
+TRANSIENT_DIRS = {"__pycache__"}
+TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
+
 
 def iter_files(root: Path, subtree: str):
     base = root / subtree
     if not base.exists():
         return []
-    return [p for p in base.rglob("*") if p.is_file()]
+    return [
+        p
+        for p in base.rglob("*")
+        if p.is_file()
+        and not any(part in TRANSIENT_DIRS for part in p.parts)
+        and p.suffix.lower() not in TRANSIENT_SUFFIXES
+    ]
 
 
 def rel(root: Path, path: Path) -> str:
@@ -156,6 +166,71 @@ def main() -> int:
         else:
             print(f"PASS       profile '{profile_name}'")
 
+    registry_script = root / "harness" / "router" / "registry.py"
+    registry_valid = False
+    if not registry_script.exists():
+        fail("capability registry validator missing")
+    else:
+        registry_result = subprocess.run(
+            [sys.executable, str(registry_script), "--root", str(root), "--quiet"],
+            cwd=root,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+        if registry_result.returncode == 0:
+            registry_valid = True
+            print("PASS       capability sources")
+            print("PASS       capability registry")
+        else:
+            fail("capability registry validation")
+            output = registry_result.stdout.strip()
+            if output:
+                for line in output.splitlines()[-10:]:
+                    print(f"           {line}")
+
+    if registry_valid:
+        try:
+            registry_data = json.loads(text(root / "capability-library" / "registry.json"))
+            optional_skills = [
+                item
+                for item in registry_data.get("capabilities", [])
+                if isinstance(item, dict) and item.get("type") == "skill"
+            ]
+            optional_failures_before = len(failures)
+            for item in optional_skills:
+                capability_id = str(item.get("id", ""))
+                skill_dir = root / str(item.get("path", ""))
+                skill_file = skill_dir / "SKILL.md"
+                if not skill_file.exists():
+                    fail(f"optional skill missing SKILL.md: {capability_id}")
+                    continue
+                content = text(skill_file)
+                match = FRONTMATTER.search(content)
+                if not match:
+                    fail(f"optional skill frontmatter missing/invalid: {capability_id}")
+                    continue
+                frontmatter = match.group(1)
+                name_match = NAME.search(frontmatter)
+                desc_match = DESCRIPTION.search(frontmatter)
+                if not name_match:
+                    fail(f"optional skill name missing: {capability_id}")
+                else:
+                    name = name_match.group(1).strip().strip("'\"")
+                    if name != capability_id or skill_dir.name != capability_id:
+                        fail(f"optional skill name/path mismatch: {capability_id} != {name}")
+                if not desc_match:
+                    fail(f"optional skill description missing: {capability_id}")
+                if skill_file.stat().st_size > args.max_skill_bytes:
+                    warn(f"large optional SKILL.md ({skill_file.stat().st_size} bytes): {capability_id}")
+                if (skills_root / capability_id).exists():
+                    fail(f"optional skill leaked into always-discovered skill path: {capability_id}")
+            if len(failures) == optional_failures_before:
+                print(f"PASS       optional skill integrity: {len(optional_skills)} skills")
+        except (OSError, json.JSONDecodeError) as exc:
+            fail(f"optional skill integrity check failed: {exc}")
+
     python_files = iter_files(root, "harness")
     for path in python_files:
         if path.suffix != ".py":
@@ -177,7 +252,7 @@ def main() -> int:
                 fail(f"MANIFEST entry missing on disk: {entry}")
 
         managed = set(ROOT_MANAGED)
-        for subtree in (".agents", ".codex", "harness"):
+        for subtree in (".agents", ".codex", "harness", "capability-library"):
             managed.update(rel(root, p) for p in iter_files(root, subtree))
         missing_from_manifest = managed - manifest
         if missing_from_manifest:
@@ -185,7 +260,11 @@ def main() -> int:
         else:
             print("PASS       MANIFEST covers managed files")
 
-    scan_files = iter_files(root, ".agents") + iter_files(root, ".codex")
+    scan_files = (
+        iter_files(root, ".agents")
+        + iter_files(root, ".codex")
+        + iter_files(root, "capability-library")
+    )
     for path in scan_files:
         if path.suffix.lower() not in {".md", ".txt", ".json", ".yaml", ".yml", ".toml"}:
             continue

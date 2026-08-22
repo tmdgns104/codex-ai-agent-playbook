@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "v8.1-internal",
+      "name": "Codex AI Agent Playbook V8.1 design",
+      "kind": "internal",
+      "url": "https://github.com/tmdgns104/codex-ai-agent-playbook",
+      "license": "repository",
+      "adaptation": "original"
+    },
+    {
+      "id": "ecc-rewritten",
+      "name": "Everything Claude Code (ECC)",
+      "kind": "external-reference",
+      "url": "https://github.com/affaan-m/ECC",
+      "license": "MIT",
+      "adaptation": "rewritten"
+    }
+  ]
+}
