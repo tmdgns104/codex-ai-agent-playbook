@@ -27,6 +27,7 @@ BLOCKING_RESULTS = {
     "manual": "MANUAL_ONLY",
     "network": "NETWORK_REVIEW_REQUIRED",
 }
+DEFAULT_CATALOG_ROOT = Path(__file__).resolve().parents[2]
 
 
 def generate_session_id() -> str:
@@ -38,6 +39,14 @@ def resolve_target(root: Path, target: Path) -> Path:
     if target.is_absolute():
         return target.resolve()
     return (root / target).resolve()
+
+
+def resolve_catalog_root(catalog_root: Path | None = None) -> Path:
+    root = (catalog_root or DEFAULT_CATALOG_ROOT).resolve()
+    registry = root / "capability-library" / "registry.json"
+    if not registry.is_file():
+        raise ValueError(f"capability registry not found under catalog root: {root}")
+    return root
 
 
 def _blocking_result(activation: dict[str, Any]) -> str | None:
@@ -54,11 +63,13 @@ def build_launch_plan(
     task_text: str,
     target_root: Path,
     session: str,
+    catalog_root: Path | None = None,
 ) -> dict[str, Any]:
     """Build the launch plan and prepare a bridge only when eligible Skills exist."""
     root = root.resolve()
     target_root = resolve_target(root, target_root)
-    capabilities = load_capabilities(root)
+    catalog_root = resolve_catalog_root(catalog_root)
+    capabilities = load_capabilities(catalog_root)
     activation = build_activation_plan(task_text, capabilities)
     blocker = _blocking_result(activation)
 
@@ -71,12 +82,14 @@ def build_launch_plan(
             "count": 0,
             "bridge": False,
             "target_root": str(target_root),
+            "catalog_root": str(catalog_root),
             "argv": [],
             "result": blocker,
         }
 
     bridge = prepare_bridge(
         root=root,
+        catalog_root=catalog_root,
         task_text=task_text,
         target_root=target_root,
         session=session,
@@ -103,6 +116,7 @@ def build_launch_plan(
         "count": len(skills),
         "bridge": bridge_created,
         "target_root": str(target_root),
+        "catalog_root": str(catalog_root),
         "argv": argv,
         "result": "READY",
     }
@@ -189,10 +203,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Automatically select only needed Skills and launch Codex once."
     )
-    parser.add_argument("--root", default=".", help="Repository root.")
+    parser.add_argument("--root", default=".", help="Target Git repository root.")
     parser.add_argument("--task", required=True, help="Task passed once to Codex as the initial prompt.")
-    parser.add_argument("--target", default=".playbook-runtime", help="Managed runtime directory under the repository.")
+    parser.add_argument("--target", default=".playbook-runtime", help="Managed runtime directory under the target repository.")
     parser.add_argument("--session", help="Optional safe session id. Generated automatically when omitted.")
+    parser.add_argument("--catalog-root", help="Optional Playbook catalog root override for tests/diagnostics.")
     parser.add_argument("--dry-run", action="store_true", help="Plan and print argv without starting Codex.")
     parser.add_argument("--keep-runtime", action="store_true", help="Keep managed bridge after dry-run/exit for debugging.")
     args = parser.parse_args()
@@ -203,6 +218,7 @@ def main() -> int:
     try:
         plan = build_launch_plan(
             root=root,
+            catalog_root=Path(args.catalog_root) if args.catalog_root else None,
             task_text=args.task,
             target_root=Path(args.target),
             session=session,
