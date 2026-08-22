@@ -20,6 +20,7 @@ from curator import (
 from promotion import package_hash
 
 
+LONG_BLOCK = "Repeated long example line for extraction and compression.\n" * 12
 SKILL_BODY = """---
 name: synthetic-skill
 description: >-
@@ -55,8 +56,7 @@ Stop when evidence is missing or scope expands.
 - source_id: `internal-test`
 - license: `repository`
 
-LONG_BLOCK = """ + ("Repeated long example line for extraction and compression.\n" * 12) + """
-"""
+""" + LONG_BLOCK
 
 
 class SyntheticLibrary:
@@ -158,13 +158,12 @@ class PackageCandidateTests(unittest.TestCase):
             state = Path(temp) / ".playbook-state"
             active_before = (lib.active / "SKILL.md").read_bytes()
             resource_before = (lib.active / "assets" / "keep.txt").read_bytes()
-            old = "Repeated long example line for extraction and compression.\n" * 12
             proposal = lib.proposal("compress", proposal_id="prop-compress-001")
             candidate = create_package_candidate(
                 state_root=state,
                 active_dir=lib.active,
                 proposal=proposal,
-                operations=[{"old": old, "new": "Long example condensed; see focused workflow above.\n"}],
+                operations=[{"old": LONG_BLOCK, "new": "Long example condensed; see focused workflow above.\n"}],
                 positive_cases=["compress duplicated example while preserving workflow"],
                 negative_cases=["rewrite the whole Skill for style only"],
             )
@@ -179,13 +178,12 @@ class PackageCandidateTests(unittest.TestCase):
             lib = SyntheticLibrary(Path(temp))
             state = Path(temp) / ".playbook-state"
             active_before = (lib.active / "SKILL.md").read_bytes()
-            old = "Repeated long example line for extraction and compression.\n" * 12
             proposal = lib.proposal("extract-reference", proposal_id="prop-reference-001")
             candidate = create_package_candidate(
                 state_root=state,
                 active_dir=lib.active,
                 proposal=proposal,
-                operations=[{"old": old, "reference_path": "references/long-example.md", "title": "Long example"}],
+                operations=[{"old": LONG_BLOCK, "reference_path": "references/long-example.md", "title": "Long example"}],
                 positive_cases=["move long reusable example to reference"],
                 negative_cases=["move core workflow out of SKILL.md"],
             )
