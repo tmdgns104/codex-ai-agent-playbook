@@ -1,6 +1,6 @@
 # V8.3-SKILL-BENCH-001 - External Expert Skill Benchmark Foundation
 
-상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
+상태: **COMPLETE - VERIFIED**
 
 선행 조건:
 
@@ -185,7 +185,7 @@ Domain별:
 
 을 deterministic JSON으로 출력합니다.
 
-현재 pre-candidate baseline은 Candidate 0개를 의도적으로 유지합니다. 다음 Wave에서 약 100개 전후 metadata를 수집합니다.
+Foundation 시점의 pre-candidate baseline은 Candidate 0개이며 `evaluation/external-skills/reports/coverage-baseline.json`에 고정되어 있습니다. 이후 `V8_3-SKILL-BENCH-002`에서 Candidate 100개가 추가되었으므로 현재 catalog 실행 결과의 candidate_count는 100입니다.
 
 ## Safety Requirements
 
@@ -206,103 +206,98 @@ Domain별:
 - benchmark foundation을 이유로 semantic router 추가 금지
 - V8.2 0~3 selected capability 원칙 유지
 
-## Windows Verification
+## Windows Verification - COMPLETE
 
-먼저 Foundation focused tests:
+Foundation pre-Wave focused Evidence:
 
-```cmd
+```text
 python evaluation\external-skills\tools\test_external_catalog.py
-```
+Ran 10 tests - OK
 
-기대값:
-
-```text
-Ran 10 tests
-OK
-```
-
-그 다음 실제 full coverage report:
-
-```cmd
 python evaluation\external-skills\tools\external_catalog.py --root .
+Foundation pre-candidate catalog validation - RESULT PASS
+
+coverage-baseline.json
+candidate_count 0 / domain_pack_count 25 / active_registry_capability_count 12
 ```
 
-기대 핵심:
+Wave 1 확장 후 current focused Evidence:
 
 ```text
-"domain_pack_count": 25
-"candidate_count": 0
-"active_capability_count": 12
-"protected_domain_packs": ["big-data", "documentation-guide"]
+python evaluation\external-skills\tools\test_external_catalog.py
+Ran 12 tests - OK
+
+python evaluation\external-skills\tools\test_effective_coverage.py
+Ran 5 tests - OK
+
+python evaluation\external-skills\tools\external_catalog.py --root .
+Candidate count 100 / Domain Pack count 25 / ACTIVE capability count 12
+RESULT PASS
+
+python evaluation\external-skills\tools\effective_coverage.py --root .
+Candidate count 100 / desired 172 / current covered 29 / uncovered 143
 RESULT PASS
 ```
 
-V8.2 normal path regression:
-
-```cmd
-python harness\router\test_capability_router.py
-python harness\activation\test_capability_manager.py
-python harness\activation\test_skill_materializer.py
-python harness\activation\test_discovery_bridge.py
-python harness\activation\test_playbook_launch.py
-```
-
-Final:
-
-```cmd
-python harness\security\harness_audit.py --root .
-python harness\quality\quality_gate.py --repo . --profile strict --verify "python evaluation\external-skills\tools\test_external_catalog.py"
-echo %ERRORLEVEL%
-git status --short
-```
-
-## First Candidate Wave 계획
-
-Foundation PASS 후 다음 Task에서 약 100개 전후 Candidate metadata를 분야별로 수집합니다.
-
-우선순위:
+V8.2 normal-path regression Evidence:
 
 ```text
-1. Documentation / Guide / PDF / PPTX / XLSX
-2. Data Analysis / Big Data / ML
-3. RAG / Agent / Backend / DB
-4. Testing / Debug / Security / DevOps
-5. Computer Vision / Edge AI / NVIDIA
-6. Research / Scientific Computing
-7. Embedded / Robotics / Industrial / Networking
+python harness\router\test_capability_router.py
+Ran 28 tests - OK
+
+python harness\activation\test_capability_manager.py
+Ran 12 tests - OK
+
+python harness\activation\test_skill_materializer.py
+Ran 10 tests - OK
+
+python harness\activation\test_discovery_bridge.py
+Ran 10 tests - OK
+
+python harness\activation\test_playbook_launch.py
+Ran 12 tests - OK
 ```
 
-후보 수는 목표치이지 채택 수가 아닙니다.
+Final Harness/Gate Evidence:
 
-## Acceptance Criteria
+```text
+python harness\security\harness_audit.py --root .
+AGENTS.md 4579 bytes / Core 7 / Optional 10 / warnings 0
+RESULT PASS
 
-1. requirements/architecture 문서 존재
-2. source registry >= 6 trusted sources + discovery index
-3. 25 domain packs valid
-4. external catalog validator 10 tests PASS
-5. candidates schema valid
-6. benchmark schema valid
-7. coverage report deterministic
-8. documentation-guide protected pack 존재
-9. big-data protected pack 존재
-10. external scripts not executed
-11. ACTIVE registry unchanged
-12. Router scoring unchanged
-13. Global AGENTS.md unchanged
-14. V8.2 router/activation regression PASS
-15. Harness Audit PASS
-16. STRICT Quality Gate PASS
-17. final working tree clean
-18. Windows Evidence 확인 전 COMPLETE 표시 금지
+python harness\quality\quality_gate.py --repo . --profile strict --verify "python evaluation\external-skills\tools\test_external_catalog.py"
+RESULT PASS
+ERRORLEVEL 0
+
+git status --short
+(clean)
+```
+
+## Acceptance Criteria Result
+
+1. requirements/architecture 문서 존재 - PASS
+2. source registry >= 6 trusted sources + discovery index - PASS
+3. 25 domain packs valid - PASS
+4. external catalog validator PASS - PASS (Foundation 10/10, current 12/12)
+5. candidates schema valid - PASS
+6. benchmark schema valid - PASS
+7. coverage report deterministic - PASS
+8. documentation-guide protected pack 존재 - PASS
+9. big-data protected pack 존재 - PASS
+10. external scripts not executed - PASS
+11. ACTIVE registry unchanged - PASS
+12. Router scoring unchanged - PASS
+13. Global AGENTS.md unchanged - PASS
+14. V8.2 router/activation regression PASS - PASS
+15. Harness Audit PASS - PASS
+16. STRICT Quality Gate PASS - PASS
+17. final working tree clean - PASS
+18. Windows Evidence 확인 전 COMPLETE 표시 금지 - PASS
+
+따라서 `V8_3-SKILL-BENCH-001`은 **COMPLETE - VERIFIED**입니다.
 
 ## 완료 후 다음 Task
 
 `V8_3-SKILL-BENCH-002 - Expert Candidate Wave 1`
 
-목표:
-
-- 분야별 대표 Candidate 약 100개 metadata 수집
-- source/license/dependency 분류
-- 중복 clustering
-- 첫 benchmark 대상 선정
-- ACTIVE import 없음
+`V8_3-SKILL-BENCH-002`도 Windows Evidence를 통해 COMPLETE - VERIFIED 되었으며, 다음 단계는 `V8_3-SKILL-BENCH-003 - Expert Candidate Inspection and Benchmark Shortlist`입니다.
