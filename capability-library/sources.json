@@ -24,6 +24,14 @@
       "url": "https://github.com/JayRHa/AgentSkills",
       "license": "MIT",
       "adaptation": "rewritten"
+    },
+    {
+      "id": "v8.3-internal",
+      "name": "Codex AI Agent Playbook V8.3 internal-original capability expansion",
+      "kind": "internal",
+      "url": "https://github.com/tmdgns104/codex-ai-agent-playbook",
+      "license": "repository",
+      "adaptation": "original"
     }
   ]
 }

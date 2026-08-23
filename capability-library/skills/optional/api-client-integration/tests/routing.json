@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "skill_id": "api-client-integration",
+  "positive": [
+    "httpx client external API integration pagination timeout을 구현해",
+    "API client auth injection response schema drift를 처리해"
+  ],
+  "negative": [
+    "OpenAPI 기반 새 endpoint API 설계를 검토해"
+  ]
+}

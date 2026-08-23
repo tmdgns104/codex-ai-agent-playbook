@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "skill_id": "data-analysis-pandas",
+  "positive": [
+    "pandas DataFrame CSV 분석 dtype null duplicate를 점검해",
+    "pandas EDA dataframe aggregation으로 요약 통계를 만들어"
+  ],
+  "negative": [
+    "EXPLAIN ANALYZE로 느린 SQL 쿼리 실행 계획과 인덱스를 최적화해"
+  ]
+}

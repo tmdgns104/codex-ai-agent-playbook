@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "skill_id": "ci-cd-workflow",
+  "positive": [
+    "GitHub Actions workflow build test cache artifact를 구성해",
+    "CI/CD pipeline branch gate deploy gate secret masking을 추가해"
+  ],
+  "negative": [
+    "git commit push하고 PR을 생성해"
+  ]
+}

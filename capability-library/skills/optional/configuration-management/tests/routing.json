@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "skill_id": "configuration-management",
+  "positive": [
+    "environment variable precedence config precedence를 정리해",
+    "dev test prod 환경별 설정 우선순위를 통일하고 secret 값은 로그에서 제외해"
+  ],
+  "negative": [
+    "JWT 권한과 secret rotation 보안 검토를 해"
+  ]
+}

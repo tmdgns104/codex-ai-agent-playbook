@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "skill_id": "refactoring",
+  "positive": [
+    "behavior preserving refactor extract method refactor로 큰 함수를 나눠",
+    "행동 보존 리팩터링 계획으로 rename move simplify를 작은 단계로 진행해"
+  ],
+  "negative": [
+    "diff를 읽고 코드 품질만 리뷰해"
+  ]
+}

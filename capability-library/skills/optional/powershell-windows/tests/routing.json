@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "skill_id": "powershell-windows",
+  "positive": [
+    "PowerShell script execution policy Windows path quoting 오류를 수정해",
+    "CMD와 PowerShell ERRORLEVEL 차이를 반영해서 파워셸 스크립트를 고쳐"
+  ],
+  "negative": [
+    "git 브랜치에서 commit push하고 PR 생성해"
+  ]
+}

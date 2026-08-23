@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "skill_id": "data-validation",
+  "positive": [
+    "data validation schema validation nullable range uniqueness를 확인해",
+    "data quality check null uniqueness cross-field invariant를 검증해"
+  ],
+  "negative": [
+    "pytest 단위 테스트와 regression test만 추가해"
+  ]
+}
