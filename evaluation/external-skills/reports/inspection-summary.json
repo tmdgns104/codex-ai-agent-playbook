@@ -10,7 +10,7 @@
   "benchmark_ready_count": 28,
   "duplicate_cluster_count": 5,
   "shortlist_candidate_count": 15,
-  "shortlist_domain_pack_count": 13,
+  "shortlist_domain_pack_count": 15,
   "shortlist_source_count": 2,
   "targeted_discovery_domains": ["industrial-automation", "networking", "robotics-ros"],
   "industrial_automation_gap_retained": true,
