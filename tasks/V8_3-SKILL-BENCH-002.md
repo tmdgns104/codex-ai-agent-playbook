@@ -112,19 +112,31 @@ decision = DISCOVERED
 13. normal Router/Global AGENTS 변경 없음
 14. Windows Evidence 전 COMPLETE 표시 금지
 
-## Windows Verification Pending
+## Windows Verification Progress
 
-다음 Evidence가 필요합니다.
+확인 완료:
 
 ```text
 python evaluation\external-skills\tools\test_external_catalog.py
+Ran 12 tests - OK
+
 python evaluation\external-skills\tools\test_candidate_wave.py
+Ran 5 tests - OK
+
 python evaluation\external-skills\tools\test_effective_coverage.py
+Ran 5 tests - OK
+```
+
+초기 Candidate Source ID 불일치(Anthropic/NVIDIA)는 Windows Evidence에서 발견되었고 commit `0f263c4ce1b11ee3b216b4e33edca42e703e95f8`에서 수정 후 12/12 PASS를 확인했습니다.
+
+남은 Evidence:
+
+```text
 python evaluation\external-skills\tools\external_catalog.py --root .
 python evaluation\external-skills\tools\effective_coverage.py --root .
 ```
 
-Foundation/Router/Harness regression은 Candidate 관련 변경이 정상 task path를 침범하지 않았는지 별도로 확인합니다.
+그 후 Candidate 관련 변경이 normal Router/Global AGENTS 경로를 침범하지 않았는지 최소 regression을 확인합니다.
 
 ## 다음 단계
 
