@@ -3,7 +3,7 @@
   "skill_id": "python-project-engineering",
   "positive": [
     "pyproject.toml package layout src layout을 기준으로 파이썬 프로젝트 구조를 정리해",
-    "파이썬 패키지 구조와 가상환경 entry point를 일관되게 정리해"
+    "파이썬 가상환경 파이썬 패키지 구조 entry point를 일관되게 정리해"
   ],
   "negative": [
     "Dependabot major version 의존성 업그레이드만 진행해"
