@@ -1,6 +1,6 @@
-# 빠른 시작 - V8.1
+# 빠른 시작 - V8.2
 
-이 문서는 Codex AI Agent Playbook V8.1을 **설치 → 검증 → 실제 Git Repository에서 자동 Skill 선택으로 실행**하는 가장 짧은 방법만 설명합니다.
+이 문서는 Codex AI Agent Playbook V8.2를 **설치 → 검증 → 실제 Git Repository에서 자동 Skill 선택으로 실행**하는 가장 짧은 방법만 설명합니다.
 
 현재 안정 버전은 `main`입니다.
 
@@ -35,13 +35,13 @@ cd codex-ai-agent-playbook
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
 ```
 
-설치 스크립트가 다음을 관리합니다.
+설치되는 주요 구성:
 
 ```text
 %USERPROFILE%\.codex\AGENTS.md
 %USERPROFILE%\.agents\skills\<7개 Core managed Skill>
-%USERPROFILE%\.codex\capability-library\
-%USERPROFILE%\.codex\playbook-harness\
+%USERPROFILE%\.codex\capability-library\<10 Optional Skills + 2 wrappers + governance>
+%USERPROFILE%\.codex\playbook-harness\<Router / Activation / Quality / Lifecycle>
 ```
 
 기존 managed 내용이 바뀌는 경우에는:
@@ -64,14 +64,13 @@ Optional Skill은 `%USERPROFILE%\.agents\skills`에 전부 영구 설치하지 �
 
 ```text
 PASS     global AGENTS.md playbook block
-PASS     skill '...'
 PASS     capability library
 PASS     playbook harness
 PASS     harness audit
 RESULT   PASS
 ```
 
-직접 다시 확인하고 싶다면:
+직접 다시 확인:
 
 ```cmd
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
@@ -81,17 +80,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
 
 ## 4. 실제 프로젝트에서 사용
 
-이제 Playbook 폴더를 떠나서 **Codex로 작업할 Git Repository**로 이동합니다.
-
-예:
+Playbook 폴더가 아니라 **Codex로 작업할 Git Repository**로 이동합니다.
 
 ```cmd
 cd /d D:\my-project
-```
-
-현재 폴더가 Git Repository인지 확인:
-
-```cmd
 git status
 ```
 
@@ -101,25 +93,26 @@ git status
 python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "JWT 인증 오류를 수정하고 regression test를 실행"
 ```
 
-사용자가 Skill 이름을 직접 지정할 필요가 없습니다.
-
-V8.1이 자동으로:
+V8.2가 자동으로:
 
 ```text
 Task 분석
-→ 필요한 optional Skill 0~3개 선택
+→ 필요한 Optional Skill 0~3개 선택
 → MINIMAL / STANDARD / STRICT 판단
 → Risk / Permission Gate
-→ 선택된 Skill만 임시 활성화
+→ 선택 Skill만 임시 활성화
 → Codex 실행
-→ Codex 종료 후 cleanup
+→ privacy-safe Event 기록
+→ cleanup
 ```
 
 을 수행합니다.
 
+Creator/Evolver/Curator는 일반 task마다 실행되지 않습니다.
+
 ---
 
-## 5. 실제 Codex 실행 전에 Skill 선택만 확인
+## 5. Codex 실행 전에 Skill 선택만 확인
 
 처음에는 `--dry-run`으로 확인하는 것을 권장합니다.
 
@@ -127,7 +120,7 @@ Task 분석
 python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "JWT 인증 오류를 수정하고 regression test를 실행" --dry-run
 ```
 
-정상 예:
+실제 Windows 검증 결과:
 
 ```text
 PROFILE     STRICT
@@ -137,16 +130,15 @@ BRIDGE      true
 DRY_RUN     true
 RESULT      READY
 CLEANUP     BRIDGE_CLEANED
+EVENT       EVENT_SKIPPED
 RESULT      DRY_RUN_COMPLETE
 ```
 
-이 상태에서는 실제 Codex 작업을 시작하지 않습니다.
+`--dry-run`에서는 실제 task를 실행하지 않으므로 lifecycle Event도 기록하지 않습니다.
 
 ---
 
 ## 6. 작은 작업은 Skill이 없어도 정상
-
-예:
 
 ```cmd
 python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "README 오타 한 줄 수정" --dry-run
@@ -161,15 +153,41 @@ COUNT       0
 BRIDGE      false
 ```
 
-V8.1의 목표는 Skill을 많이 쓰는 것이 아니라 **필요한 Skill만 쓰는 것**입니다.
+목표는 Skill을 많이 쓰는 것이 아니라 **필요한 Skill만 쓰는 것**입니다.
 
 ---
 
-## 7. 민감한 권한 작업
+## 7. 현재 Skill 구성
+
+```text
+Core Skills        7
+Optional Skills   10
+Wrappers           2
+Registry total    12 capabilities
+```
+
+Optional Skills:
+
+```text
+security-review
+testing
+root-cause-debugging
+code-review
+api-design
+sql-optimization
+docker-container
+dependency-upgrade
+performance-profiling
+resilient-error-handling
+```
+
+전체 설명은 [Skills 가이드](SKILLS.md)를 참고합니다.
+
+---
+
+## 8. 민감한 권한 작업
 
 자동 Skill 선택은 권한 자동 승인이 아닙니다.
-
-예:
 
 ```cmd
 python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "GitHub에 commit push하고 PR 생성" --dry-run
@@ -185,7 +203,7 @@ RESULT      HUMAN_GATE_REQUIRED
 
 ---
 
-## 8. Quality Gate
+## 9. Quality Gate
 
 일반적인 비단순 작업:
 
@@ -207,11 +225,39 @@ python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . 
 2 = UNVERIFIED
 ```
 
-STRICT인데 필요한 실제 검증이 없으면 `UNVERIFIED`가 정상입니다.
+---
+
+## 10. Self-Managing Skill 상태 확인
+
+설치형 Control Plane audit:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" audit
+```
+
+Gap 확인:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" gaps
+```
+
+Proposal 확인:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" proposals
+```
+
+Library scaling benchmark:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" benchmark --repeats 20
+```
+
+Self-Managing maintenance는 LLM provider 없이도 Control Plane 기능을 사용할 수 있습니다.
 
 ---
 
-## 9. 업데이트
+## 11. 업데이트
 
 이미 설치되어 있다면 Playbook Repository에서:
 
@@ -232,7 +278,7 @@ OK       playbook harness
 
 ---
 
-## 10. 제거
+## 12. 제거
 
 Windows:
 
@@ -246,13 +292,11 @@ Linux/macOS:
 ./uninstall.sh
 ```
 
-Playbook이 관리하는 marker 구간, Core managed Skills, Capability Library, Harness만 제거합니다.
-
-사용자가 `AGENTS.md` marker 밖에 직접 작성한 내용은 보존합니다.
+Playbook이 관리하는 marker 구간, Core managed Skills, Capability Library, Harness만 제거합니다. 사용자가 `AGENTS.md` marker 밖에 직접 작성한 내용은 보존합니다.
 
 ---
 
-## 11. 문제가 생기면
+## 13. 문제가 생기면
 
 Playbook Repository에서:
 
@@ -262,6 +306,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
 python harness\security\harness_audit.py --root .
 ```
 
-먼저 이 세 결과를 확인하면 설치 drift와 Playbook 자체 문제를 구분하기 쉽습니다.
+설치형 Self-Managing 상태:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" audit
+```
 
 더 자세한 설명은 [README_KO.md](../README_KO.md)를 참고합니다.
