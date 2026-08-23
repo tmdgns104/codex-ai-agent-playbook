@@ -1,19 +1,20 @@
-# 동작 원리 - V8.1
+# 동작 원리 - V8.2
 
-Codex AI Agent Playbook V8.1은 하나의 거대한 Prompt가 아니라 **항상 필요한 작은 전역 규칙**과 **필요할 때만 활성화되는 Capability**를 분리합니다.
+Codex AI Agent Playbook V8.2는 하나의 거대한 Prompt가 아니라 **항상 필요한 작은 전역 규칙**, **필요할 때만 활성화되는 Capability**, **LLM 없이 동작하는 Self-Managing Control Plane**을 분리합니다.
 
-핵심 목표는:
+핵심 목표:
 
 ```text
 Context 비용은 줄이고
-검증 신뢰성은 유지하거나 높이는 것
+검증 신뢰성은 유지하거나 높이며
+Skill Library가 커져도 정상 task path는 가볍게 유지
 ```
-
-입니다.
 
 ---
 
-## 전체 흐름
+## 전체 구조
+
+### Normal Task Path
 
 ```text
 User Task
@@ -36,10 +37,34 @@ Repository Verification
    ↓
 Deterministic Quality Gate
    ↓
-Evidence
+privacy-safe Event
    ↓
 Managed Cleanup
 ```
+
+### Self-Managing Maintenance Path
+
+```text
+Events / Gap / Failure / Correction
+              ↓
+Deterministic Control Plane
+              ↓
+Proposal Queue / Lifecycle
+              ↓
+Creator / Evolver / Curator
+              ↓
+Candidate
+              ↓
+Skill Audit
+              ↓
+Protected Regression
+              ↓
+Promotion Gate / Human Gate
+              ↓
+ACTIVE Library
+```
+
+Creator/Evolver/Curator는 정상 task 시작 시 상시 실행되지 않습니다.
 
 ---
 
@@ -59,42 +84,61 @@ Managed Cleanup
 
 설치 스크립트는 사용자 `AGENTS.md` 전체를 덮어쓰지 않고 Playbook marker 구간만 관리합니다.
 
-```text
-<!-- BEGIN AI_AGENT_PLAYBOOK_KIT -->
-...
-<!-- END AI_AGENT_PLAYBOOK_KIT -->
-```
+V8.2 최종 Windows 검증 기준 Playbook 전역 영역은 **4579 bytes**입니다.
 
 ---
 
-## 2. Core Skill과 Optional Capability를 분리
+## 2. Core Skill과 Optional Capability 분리
 
-### Core Skill
+### Core Skills
 
-`%USERPROFILE%\.agents\skills\`에 설치되는 7개 managed Skill입니다.
+`%USERPROFILE%\.agents\skills\`에 설치되는 **7개 managed Skill**입니다.
 
-이들은 여러 Repository에서 공통으로 사용할 수 있는 운영/개발 Workflow입니다.
+```text
+ai-agent-development-playbook
+codex-long-run
+codex-skill-router
+codex-task-router
+guide-ppt-creator
+human-centered-project-builder
+human-readable-code
+```
 
-### Optional Capability
+### Optional Skills
 
-`%USERPROFILE%\.codex\capability-library\`에 보관합니다.
-
-현재 optional Skill:
+`%USERPROFILE%\.codex\capability-library\skills\optional\`에 보관하는 **10개 Skill**입니다.
 
 ```text
 security-review
 testing
 root-cause-debugging
 code-review
+api-design
+sql-optimization
+docker-container
+dependency-upgrade
+performance-profiling
+resilient-error-handling
 ```
 
-중요한 점은 Library에 존재한다고 해서 Codex가 매 작업에서 모두 읽는 것이 아니라는 것입니다.
+### Wrappers
+
+Registry에는 Skill 외에 두 Capability가 더 있습니다.
+
+```text
+documentation-lookup   rest-wrapper
+github-ops             cli-wrapper
+```
+
+따라서 Registry 전체는 **12 capabilities**입니다.
+
+Library에 존재한다고 해서 Codex가 매 작업에서 모두 읽는 것은 아닙니다.
 
 ---
 
 ## 3. Deterministic Capability Router
 
-V8.1 Router는 먼저 Capability 본문이 아니라 짧은 `registry.json` metadata를 읽습니다.
+Router는 Capability 본문이 아니라 짧은 `registry.json` metadata를 먼저 읽습니다.
 
 대표 metadata:
 
@@ -111,7 +155,7 @@ context_cost
 path
 ```
 
-Router의 초기 판단에는 LLM API를 사용하지 않습니다.
+초기 판단에는 LLM API를 사용하지 않습니다.
 
 작업 문장과 trigger/domain metadata를 비교해 필요한 Capability를 점수화합니다.
 
@@ -119,13 +163,22 @@ Router의 초기 판단에는 LLM API를 사용하지 않습니다.
 
 ```text
 Capability 0개 허용
-전체 선택 기본 상한 3개
-Skill 최대 3개
-MCP 최대 1개
-Agent 최대 1개
+Optional Skill 최대 3개
+Metadata-first
+Semantic router는 기본 path에 없음
 ```
 
-V8.1 현재 실제 자동 실행 경로는 optional Skill 중심이며 MCP/Agent를 자동 spawn하지 않습니다.
+2026-08-23 Windows synthetic benchmark 20회 평균:
+
+```text
+10 skills      0.0586 ms
+50 skills      0.2308 ms
+100 skills     0.4712 ms
+500 skills     2.3551 ms
+1000 skills    5.0401 ms
+```
+
+현재 결과에서는 semantic/embedding Router를 상시 추가할 근거가 없어 metadata-first 방식을 유지합니다.
 
 ---
 
@@ -159,7 +212,7 @@ SKILLS security-review,testing,root-cause-debugging
 COUNT 3
 ```
 
-즉 필요한 것만 선택합니다.
+필요한 것만 선택합니다.
 
 ---
 
@@ -185,11 +238,11 @@ external_write
 database_write
 destructive
 production
+network
+browser_control
 ```
 
-이런 권한은 자동 진행을 막습니다.
-
-즉:
+따라서:
 
 ```text
 Skill 자동 선택
@@ -199,22 +252,24 @@ Skill 자동 선택
 
 입니다.
 
+`github-ops`처럼 external write가 필요한 Capability는 Gate가 자동 실행을 막을 수 있습니다.
+
 ---
 
 ## 6. Skill Materialization
 
-Gate를 통과한 optional Skill만 현재 session runtime으로 복사합니다.
+Gate를 통과한 Optional Skill만 현재 session runtime으로 복사합니다.
 
-예:
+개념:
 
 ```text
 <target-repo>/.playbook-runtime/<session>/
 ```
 
-여기서 중요한 안전 조건:
+안전 조건:
 
 - target repo에 전체 capability-library를 복사하지 않음
-- optional Skill을 전역 `.agents/skills`에 영구 설치하지 않음
+- Optional Skill을 전역 `.agents/skills`에 모두 영구 설치하지 않음
 - 선택되지 않은 Skill은 session에 노출하지 않음
 - source path가 capability-library 밖으로 escape하지 못함
 
@@ -222,21 +277,16 @@ Gate를 통과한 optional Skill만 현재 session runtime으로 복사합니다
 
 ## 7. Codex Discovery Bridge
 
-Codex는 Repository hierarchy의 `.agents/skills`를 탐색할 수 있습니다.
-
-V8.1은 이를 이용해 task-scoped bridge를 만듭니다.
-
-개념:
+Codex가 Repository hierarchy의 `.agents/skills`를 탐색할 수 있는 특성을 이용해 task-scoped bridge를 만듭니다.
 
 ```text
 Target Repository
-├─ 기존 Repository 내용
 └─ .playbook-runtime/
    └─ <session>/
       └─ cwd/
          └─ .agents/
             └─ skills/
-               └─ <선택된 optional Skill만>
+               └─ <선택된 Optional Skill만>
 ```
 
 Launcher는 대략 다음 구조로 Codex를 실행합니다.
@@ -245,20 +295,11 @@ Launcher는 대략 다음 구조로 Codex를 실행합니다.
 codex -C <bridge-cwd> --add-dir <target-repo> -- "<task>"
 ```
 
-이 방식으로:
-
-- 기존 Repository Core context 유지
-- 선택된 optional Skill만 추가 discovery
-- target repo 전체 작업 권한 유지
-- optional Skill 영구 설치 방지
-
-를 동시에 만족합니다.
+이 방식으로 기존 Repository 작업 범위는 유지하면서 선택된 Optional Skill만 추가 discovery합니다.
 
 ---
 
 ## 8. Installed Launcher
-
-설치 후 사용자는 Capability Library 위치를 알 필요가 없습니다.
 
 실제 작업할 Git Repository에서:
 
@@ -274,9 +315,9 @@ Launcher는 자기 설치 위치를 기준으로 자동으로:
 
 를 찾습니다.
 
-따라서 Playbook source Repository와 실제 작업 Repository는 서로 달라도 됩니다.
+Playbook source Repository와 실제 작업 Repository는 서로 달라도 됩니다.
 
-이 분리 구조는 실제 Windows의 별도 Git Repository에서 검증했습니다.
+V8.2는 별도의 임의 Git Repository에서도 이 동작을 검증했습니다.
 
 ---
 
@@ -288,11 +329,233 @@ Launcher는 자기 설치 위치를 기준으로 자동으로:
 python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "JWT 인증 오류를 수정하고 regression test를 실행" --dry-run
 ```
 
-이 기능은 새로운 trigger나 Capability를 추가했을 때 선택 결과를 검증하는 데도 유용합니다.
+V8.2에서는 dry-run이면 실제 task가 실행되지 않았으므로:
+
+```text
+EVENT EVENT_SKIPPED
+```
+
+가 정상입니다.
 
 ---
 
-## 10. Repository Source of Truth
+## 10. Post-task Event
+
+실제 Codex 실행 후 Self-Managing Layer가 사용할 최소 Event를 best-effort로 기록합니다.
+
+대표 Event:
+
+```text
+selected Skill + exit 0   → verified_usage
+selected Skill + exit !=0 → verification_failure
+no Skill                  → capability_gap
+explicit correction       → user_correction
+```
+
+저장 대상:
+
+- task fingerprint
+- selected Skill ids
+- verification outcome
+- explicit correction marker
+- timestamp / issue code
+
+저장하지 않는 것:
+
+- raw task text
+- credential
+- 대화 전체 원문
+
+Event 기록 실패는 정상 Codex task의 exit/result를 변경하지 않습니다.
+
+---
+
+## 11. Runtime State 위치
+
+Self-Managing telemetry는 target Git Repository가 아니라 catalog root에 둡니다.
+
+Global 설치:
+
+```text
+%USERPROFILE%\.codex\.playbook-state\
+```
+
+따라서 임의 target Repository에 lifecycle telemetry 때문에 untracked 파일을 만들지 않습니다.
+
+---
+
+## 12. LLM-Independent Control Plane
+
+다음은 LLM 없이 Python/파일 기반으로 동작합니다.
+
+```text
+Registry loading/validation
+Metadata Router
+Permission/Risk Gate
+Event/Evidence append
+Gap detection
+Proposal Queue
+Lifecycle state validation
+Skill statistics
+Trigger overlap inspection
+Source/license/provenance inspection
+Candidate Audit
+Protected Regression
+Base Hash
+One-writer Lock
+Promotion Gate
+Rollback metadata
+```
+
+Codex/API quota가 없어도 Control Plane은 계속 동작할 수 있게 설계되어 있습니다.
+
+---
+
+## 13. Creator
+
+Creator는 반복되는 실제 Capability Gap에서 새 Skill Candidate를 제안합니다.
+
+주요 계약:
+
+- 한 번의 Router miss만으로 자동 생성하지 않음
+- distinct Evidence가 반복되어야 함
+- reusable workflow가 아니면 생성하지 않음
+- 기존/근접 Skill로 해결 가능하면 새 Skill보다 extension 검토 우선
+- source/license/provenance 확인
+- Candidate만 생성
+- ACTIVE registry를 자동 변경하지 않음
+
+Permission/trigger 확대가 있으면 Human Gate를 요구합니다.
+
+---
+
+## 14. Evolver
+
+Evolver는 ACTIVE Skill의 반복 실패/수정 Evidence를 바탕으로 다음 버전 Candidate를 만듭니다.
+
+```text
+ACTIVE vN
+→ Evidence
+→ Proposal
+→ Candidate vN+1
+→ Audit
+→ Protected Regression
+→ Promotion
+```
+
+보호 계약:
+
+- ACTIVE vN은 Candidate 작성 중 immutable
+- base hash 검사
+- bounded edit
+- routing fixture 필요
+- permission/trigger expansion Human Gate
+- one-writer lock
+- atomic promotion
+- promotion history
+
+---
+
+## 15. Curator
+
+Curator는 Library가 커질 때의 운영 비용을 감시합니다.
+
+검토 대상:
+
+- Skill size
+- support file 수
+- usage/success/failure metadata
+- routing false positive/negative
+- trigger overlap
+- body signature
+- protection flag
+
+정상 작업마다 전체 Skill 본문을 읽지 않고 metadata/report를 우선합니다.
+
+중요한 정책:
+
+- low usage/time alone으로 archive하지 않음
+- split/merge/archive는 Human Gate
+- V8.2에서 자동 delete 없음
+- `compress` / `extract-reference`만 제한된 low-risk package promotion 대상
+
+---
+
+## 16. Candidate Audit / Protected Regression
+
+새 Skill 또는 수정된 Skill은 ACTIVE에 들어가기 전에 검사합니다.
+
+Audit 예:
+
+- required files
+- frontmatter
+- source/license/provenance
+- relative link
+- executable permission
+- routing fixture
+- base hash
+- Human Gate contract
+
+Protected Regression은 기존 핵심 routing behavior를 유지하는지 확인합니다.
+
+Repository Source of Truth:
+
+```text
+evaluation/self-managing/protected-routing.json
+```
+
+Global install fallback:
+
+```text
+capability-library/governance/protected-routing.json
+```
+
+---
+
+## 17. Promotion / Human Gate
+
+자동으로 ACTIVE를 바꾸지 않는 대표 작업:
+
+```text
+create registry insertion
+split
+merge
+archive
+trigger expansion
+permission expansion
+structural registry change
+```
+
+Human Gate approval 자체도 silent mutation 권한이 아닙니다. V8.2에서 일부 구조 변경은 승인 후에도 `MANUAL_ONLY`입니다.
+
+---
+
+## 18. Maintenance CLI
+
+Repository source:
+
+```cmd
+python harness\skills\manage.py audit
+python harness\skills\manage.py gaps
+python harness\skills\manage.py proposals
+python harness\skills\manage.py curate
+python harness\skills\manage.py benchmark --repeats 20
+```
+
+설치형:
+
+```cmd
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" audit
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" gaps
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" proposals
+python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" curate
+```
+
+Semantic Candidate spec 작성은 reviewed input을 전제로 하며, Control Plane 자체는 특정 LLM provider를 요구하지 않습니다.
+
+---
+
+## 19. Repository Source of Truth
 
 프로젝트별 사실과 계약은 각 Repository가 소유합니다.
 
@@ -311,9 +574,7 @@ Global Playbook이나 Skill이 Repository의 승인된 Architecture/Task Contrac
 
 ---
 
-## 11. Verification Profile
-
-작업마다 같은 검증 비용을 사용하지 않습니다.
+## 20. Verification Profile
 
 ```text
 MINIMAL
@@ -330,11 +591,7 @@ Capability가 recommended profile을 제안할 수 있지만 검증 강도를 �
 
 ---
 
-## 12. Deterministic Quality Gate
-
-Quality Gate는 LLM의 자기 판단과 분리된 코드로 실행합니다.
-
-예:
+## 21. Deterministic Quality Gate
 
 ```cmd
 python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . --profile strict --verify "python -m pytest"
@@ -360,33 +617,40 @@ python "%USERPROFILE%\.codex\playbook-harness\quality\quality_gate.py" --repo . 
 
 ---
 
-## 13. Harness Audit
+## 22. Audit
 
-Playbook 자체도 결정론적으로 검사합니다.
+### Skill Audit
+
+```cmd
+python harness\quality\skill_audit.py --root .
+```
+
+Registry/lifecycle/provenance/Skill hygiene/routing signal을 검사합니다.
+
+### Harness Audit
 
 ```cmd
 python harness\security\harness_audit.py --root .
 ```
 
-V8.1 검사에는 다음이 포함됩니다.
+검사 예:
 
 - 전역 `AGENTS.md` Context budget
 - Core Skill metadata
 - Profile JSON
-- Capability sources
-- Capability registry
-- optional Skill integrity
+- Capability sources / registry
+- Optional Skill integrity
 - Python syntax
 - MANIFEST
-- Skill discovery path의 backup 오염 여부
+- backup discovery path 오염 여부
 
 ---
 
-## 14. Cleanup
+## 23. Cleanup
 
 Codex session이 끝나면 Launcher가 관리한 bridge/runtime을 정리합니다.
 
-실제 V8.1 Windows 검증에서:
+실제 Windows 검증에서:
 
 ```text
 Target repo capability-library copy 없음
@@ -395,24 +659,31 @@ Target repo capability-library copy 없음
 
 을 확인했습니다.
 
+Self-Managing state는 target repo가 아니라 global catalog state에 저장됩니다.
+
 ---
 
-## 15. 왜 MCP/Agent를 항상 켜지 않는가
+## 24. 왜 모든 것을 항상 켜지 않는가
 
-V8.1은 기능이 많다는 이유만으로 무거운 계층을 항상 활성화하지 않습니다.
-
-우선순위:
+V8.2는 기능이 많다는 이유만으로 무거운 계층을 항상 활성화하지 않습니다.
 
 ```text
-Skill
-→ CLI/REST wrapper
-→ MCP
-→ Agent
+Metadata
+→ Skill
+→ Wrapper
+→ 필요한 경우에만 semantic maintenance
 ```
 
-MCP는 stateful structured interaction 가치가 분명할 때만 고려하고, Agent는 독립 검증/병렬성이 실제로 필요한 경우에만 고려합니다.
+정상 task마다 Creator/Evolver/Curator나 상시 Multi-Agent를 기본 실행하지 않습니다.
 
-상시 Planner/Coder/Tester/Reviewer 멀티에이전트를 기본 구조로 사용하지 않습니다.
+핵심은:
+
+```text
+성장은 AI가 하고
+비대화 감시는 deterministic code가 한다
+```
+
+입니다.
 
 ---
 
@@ -421,6 +692,9 @@ MCP는 stateful structured interaction 가치가 분명할 때만 고려하고, 
 ```text
 많은 Capability를 보유할 수 있다.
 하지만 현재 Task에는 필요한 최소 Capability만 노출한다.
+
+Self-Managing Layer를 가질 수 있다.
+하지만 정상 Task path에 상시 LLM 비용을 추가하지 않는다.
 
 토큰을 줄인다.
 하지만 정확성과 검증 신뢰성을 낮추지는 않는다.
