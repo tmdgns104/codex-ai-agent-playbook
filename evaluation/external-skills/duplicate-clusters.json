@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "policy": "report-overlap-only-no-auto-lifecycle",
+  "clusters": [
+    {
+      "cluster_id": "documentation-authoring",
+      "candidate_ids": ["kd-scientific-writing", "anth-doc-coauthoring", "ar-api-documentation", "ar-code-documentation"],
+      "relation": "partial-overlap",
+      "recommended_action": "HUMAN_REVIEW",
+      "notes": "Unknown-license and path-drift candidates are not merge candidates. Keep distinct until rediscovery or benchmark evidence exists."
+    },
+    {
+      "cluster_id": "big-data-dataframe",
+      "candidate_ids": ["nv-accelerated-computing-cudf", "nv-cupynumeric-migration-readiness", "kd-dask", "kd-polars"],
+      "relation": "overlap-and-complement",
+      "recommended_action": "BENCHMARK_SIDE_BY_SIDE",
+      "notes": "Compare distributed, CPU, and GPU dataframe workflows instead of collapsing them by name."
+    },
+    {
+      "cluster_id": "ml-analysis",
+      "candidate_ids": ["kd-scikit-learn", "kd-shap"],
+      "relation": "complementary",
+      "recommended_action": "KEEP_DISTINCT",
+      "notes": "Model-building and explainability overlap in workflow but provide different capabilities."
+    },
+    {
+      "cluster_id": "testing",
+      "candidate_ids": ["anth-webapp-testing", "nv-hsb-test", "ecc-ai-regression-testing"],
+      "relation": "partial-overlap-different-contexts",
+      "recommended_action": "BENCHMARK_SIDE_BY_SIDE",
+      "notes": "Browser, vendor-stack, and AI regression testing contexts differ materially."
+    }
+  ],
+  "automatic_merge_count": 0,
+  "automatic_archive_count": 0,
+  "automatic_delete_count": 0
+}
