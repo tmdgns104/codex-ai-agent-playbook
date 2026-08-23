@@ -10,44 +10,22 @@ from typing import Any
 
 VALID_SOURCE_TIERS = {"A", "B", "C", "discovery"}
 VALID_DECISIONS = {
-    "DISCOVERED",
-    "INSPECTED",
-    "BENCHMARK_READY",
-    "ADOPT_CANDIDATE",
-    "ADAPT_CANDIDATE",
-    "REFERENCE_ONLY",
-    "REJECTED",
-    "PROMOTED",
+    "DISCOVERED", "INSPECTED", "BENCHMARK_READY", "ADOPT_CANDIDATE",
+    "ADAPT_CANDIDATE", "REFERENCE_ONLY", "REJECTED", "PROMOTED",
 }
-VALID_LICENSE_STATUS = {
-    "unknown",
-    "verified",
-    "mixed-reviewed",
-    "reference-only",
-    "rejected",
-}
-VALID_COMPATIBILITY_STATUS = {
-    "unknown",
-    "compatible",
-    "adaptation-required",
-    "incompatible",
-}
+VALID_LICENSE_STATUS = {"unknown", "verified", "mixed-reviewed", "reference-only", "rejected"}
+VALID_COMPATIBILITY_STATUS = {"unknown", "compatible", "adaptation-required", "incompatible"}
 PROTECTED_DOMAIN_PACKS = {"documentation-guide", "big-data"}
 REQUIRED_BENCHMARK_VARIANTS = {
-    "baseline-no-optional",
-    "current-playbook",
-    "external-expert",
-    "adapted-playbook",
+    "baseline-no-optional", "current-playbook", "external-expert", "adapted-playbook",
 }
 REQUIRED_EVIDENCE_FIELDS = {
-    "acceptance_result",
-    "selected_capabilities",
-    "selected_count",
-    "loaded_skill_bytes",
-    "gate_result",
-    "dependency_burden",
-    "execution_time_ms",
-    "notes",
+    "acceptance_result", "selected_capabilities", "selected_count", "loaded_skill_bytes",
+    "gate_result", "dependency_burden", "execution_time_ms", "notes",
+}
+DISCOVERY_DEFAULT_FIELDS = {
+    "source_revision", "license_status", "compatibility_status", "dependencies",
+    "permissions", "bundled_scripts", "external_scripts_executed", "decision",
 }
 
 
@@ -124,9 +102,7 @@ def validate_sources_document(data: dict[str, Any]) -> set[str]:
         _require_string_list(entry.get("compatibility"), f"source[{source_id}].compatibility")
         _require_string_list(entry.get("focus"), f"source[{source_id}].focus", allow_empty=False)
         if entry.get("auto_execute_external_scripts") is not False:
-            raise ExternalCatalogError(
-                f"external script auto-execution must remain disabled: {source_id}"
-            )
+            raise ExternalCatalogError(f"external script auto-execution must remain disabled: {source_id}")
 
     if trusted_count < 6:
         raise ExternalCatalogError("source baseline requires at least 6 trusted sources")
@@ -165,6 +141,16 @@ def validate_domain_packs_document(data: dict[str, Any]) -> dict[str, list[str]]
     return result
 
 
+def _candidate_defaults(data: dict[str, Any]) -> dict[str, Any]:
+    defaults = data.get("discovery_defaults", {})
+    if not isinstance(defaults, dict):
+        raise ExternalCatalogError("discovery_defaults must be an object")
+    unknown = set(defaults) - DISCOVERY_DEFAULT_FIELDS
+    if unknown:
+        raise ExternalCatalogError(f"discovery_defaults contains forbidden field(s): {sorted(unknown)}")
+    return defaults
+
+
 def validate_candidates_document(
     data: dict[str, Any], *, source_ids: set[str], domain_ids: set[str]
 ) -> list[dict[str, Any]]:
@@ -174,11 +160,14 @@ def validate_candidates_document(
     if not isinstance(candidates, list):
         raise ExternalCatalogError("candidates must be a list")
 
+    defaults = _candidate_defaults(data)
     candidate_ids: set[str] = set()
     validated: list[dict[str, Any]] = []
-    for index, entry in enumerate(candidates):
-        if not isinstance(entry, dict):
+    for index, raw_entry in enumerate(candidates):
+        if not isinstance(raw_entry, dict):
             raise ExternalCatalogError(f"candidate[{index}] must be an object")
+        entry = {**defaults, **raw_entry}
+
         candidate_id = _require_nonempty_string(entry.get("candidate_id"), f"candidate[{index}].candidate_id")
         if candidate_id in candidate_ids:
             raise ExternalCatalogError(f"duplicate candidate id: {candidate_id}")
@@ -190,8 +179,8 @@ def validate_candidates_document(
         domain_pack = _require_nonempty_string(entry.get("domain_pack"), f"candidate[{candidate_id}].domain_pack")
         if domain_pack not in domain_ids:
             raise ExternalCatalogError(f"unknown domain pack for candidate {candidate_id}: {domain_pack}")
-
         _require_nonempty_string(entry.get("upstream_path"), f"candidate[{candidate_id}].upstream_path")
+
         source_revision = entry.get("source_revision")
         if source_revision is not None:
             _require_nonempty_string(source_revision, f"candidate[{candidate_id}].source_revision")
@@ -243,9 +232,7 @@ def validate_benchmark_schema_document(data: dict[str, Any]) -> None:
     missing_variants = REQUIRED_BENCHMARK_VARIANTS - variants
     if missing_variants:
         raise ExternalCatalogError(f"missing benchmark variant(s): {sorted(missing_variants)}")
-    evidence = set(
-        _require_string_list(data.get("evidence_fields"), "benchmark.evidence_fields", allow_empty=False)
-    )
+    evidence = set(_require_string_list(data.get("evidence_fields"), "benchmark.evidence_fields", allow_empty=False))
     missing_evidence = REQUIRED_EVIDENCE_FIELDS - evidence
     if missing_evidence:
         raise ExternalCatalogError(f"missing benchmark evidence field(s): {sorted(missing_evidence)}")
@@ -258,11 +245,11 @@ def _load_active_capability_ids(root: Path) -> set[str]:
     capabilities = registry.get("capabilities")
     if not isinstance(capabilities, list):
         raise ExternalCatalogError("active registry capabilities must be a list")
-    result: set[str] = set()
-    for entry in capabilities:
-        if isinstance(entry, dict) and isinstance(entry.get("id"), str) and entry["id"].strip():
-            result.add(entry["id"].strip())
-    return result
+    return {
+        entry["id"].strip()
+        for entry in capabilities
+        if isinstance(entry, dict) and isinstance(entry.get("id"), str) and entry["id"].strip()
+    }
 
 
 def build_coverage_report(
@@ -274,24 +261,20 @@ def build_coverage_report(
         domain_candidates = [c for c in candidates if c["domain_pack"] == domain_id]
         inspected = [c for c in domain_candidates if c["decision"] != "DISCOVERED"]
         benchmark_ready = [
-            c
-            for c in domain_candidates
-            if c["decision"]
-            in {"BENCHMARK_READY", "ADOPT_CANDIDATE", "ADAPT_CANDIDATE", "PROMOTED"}
+            c for c in domain_candidates
+            if c["decision"] in {"BENCHMARK_READY", "ADOPT_CANDIDATE", "ADAPT_CANDIDATE", "PROMOTED"}
         ]
         active_covered = sorted(set(desired) & active_ids)
-        reports.append(
-            {
-                "domain_pack": domain_id,
-                "desired_capability_count": len(desired),
-                "discovered_candidate_count": len(domain_candidates),
-                "inspected_count": len(inspected),
-                "benchmark_ready_count": len(benchmark_ready),
-                "active_coverage_count": len(active_covered),
-                "active_covered_capabilities": active_covered,
-                "uncovered_active_capabilities": sorted(set(desired) - active_ids),
-            }
-        )
+        reports.append({
+            "domain_pack": domain_id,
+            "desired_capability_count": len(desired),
+            "discovered_candidate_count": len(domain_candidates),
+            "inspected_count": len(inspected),
+            "benchmark_ready_count": len(benchmark_ready),
+            "active_coverage_count": len(active_covered),
+            "active_covered_capabilities": active_covered,
+            "uncovered_active_capabilities": sorted(set(desired) - active_ids),
+        })
 
     return {
         "schema_version": 1,
@@ -310,9 +293,7 @@ def load_and_validate_catalog(root: Path) -> tuple[dict[str, Any], dict[str, lis
     domains_data = _load_json(base / "domain-packs.json", "domain packs")
     domains = validate_domain_packs_document(domains_data)
     candidates_data = _load_json(base / "candidates.json", "candidates")
-    candidates = validate_candidates_document(
-        candidates_data, source_ids=source_ids, domain_ids=set(domains)
-    )
+    candidates = validate_candidates_document(candidates_data, source_ids=source_ids, domain_ids=set(domains))
     benchmark = _load_json(base / "benchmark-schema.json", "benchmark schema")
     validate_benchmark_schema_document(benchmark)
     return sources, domains, candidates
