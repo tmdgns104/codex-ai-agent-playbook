@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "status": "READY_FOR_WINDOWS_BENCHMARK_FIXTURES",
+  "selection_policy": "license-and-path-cleared-static-inspection",
+  "candidate_ids": [
+    "kd-scientific-writing",
+    "nv-accelerated-computing-cudf",
+    "kd-dask",
+    "kd-scientific-slides",
+    "kd-exploratory-data-analysis",
+    "nv-data-designer",
+    "kd-scikit-learn",
+    "kd-shap",
+    "kd-pytorch-lightning",
+    "kd-optimize-for-gpu",
+    "nv-rtvi-cv-customize-model",
+    "kd-pydicom",
+    "nv-deepstream-dev",
+    "nv-holoscan-setup",
+    "nv-aiq-research",
+    "anth-claude-api",
+    "ecc-ai-regression-testing",
+    "nv-dynamo-troubleshoot",
+    "kd-pylabrobot",
+    "nv-dynamo-interconnect-check"
+  ],
+  "candidate_count": 20,
+  "source_count": 4,
+  "domain_pack_count": 14,
+  "active_import_count": 0,
+  "external_scripts_executed": false,
+  "notes": "This is a benchmark shortlist only. No candidate is ACTIVE or promoted by this file."
+}
