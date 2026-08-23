@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Focused tests for V8.3 external expert skill catalog foundation."""
+"""Focused tests for V8.3 external expert skill catalog foundation and discovery wave."""
 
 from __future__ import annotations
 
@@ -30,6 +30,23 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def discovered_candidate(*, source_id: str, candidate_id: str = "discovered") -> dict:
+    return {
+        "candidate_id": candidate_id,
+        "source_id": source_id,
+        "upstream_path": "skills/example",
+        "domain_pack": "documentation-guide",
+        "source_revision": None,
+        "license_status": "unknown",
+        "compatibility_status": "unknown",
+        "dependencies": [],
+        "permissions": [],
+        "bundled_scripts": None,
+        "external_scripts_executed": False,
+        "decision": "DISCOVERED",
+    }
+
+
 class ExternalCatalogBaselineTests(unittest.TestCase):
     def test_repository_baseline_validates(self) -> None:
         sources, domains, candidates = load_and_validate_catalog(ROOT)
@@ -39,7 +56,7 @@ class ExternalCatalogBaselineTests(unittest.TestCase):
         self.assertGreaterEqual(len(discovery), 1)
         self.assertEqual(25, len(domains))
         self.assertTrue(PROTECTED_DOMAIN_PACKS.issubset(domains))
-        self.assertEqual([], candidates)
+        self.assertGreaterEqual(len(candidates), 100)
 
     def test_source_auto_execution_is_rejected(self) -> None:
         data = load_json(EXTERNAL / "sources.json")
@@ -69,49 +86,51 @@ class ExternalCatalogBaselineTests(unittest.TestCase):
         domains = validate_domain_packs_document(load_json(EXTERNAL / "domain-packs.json"))
         data = {
             "schema_version": 1,
-            "candidates": [
-                {
-                    "candidate_id": "bad-source",
-                    "source_id": "not-registered",
-                    "upstream_path": "skills/example",
-                    "domain_pack": "documentation-guide",
-                    "source_revision": None,
-                    "license_status": "unknown",
-                    "compatibility_status": "unknown",
-                    "dependencies": [],
-                    "permissions": [],
-                    "bundled_scripts": False,
-                    "external_scripts_executed": False,
-                    "decision": "DISCOVERED"
-                }
-            ]
+            "candidates": [discovered_candidate(source_id="not-registered", candidate_id="bad-source")],
         }
         with self.assertRaisesRegex(ExternalCatalogError, "unknown source"):
+            validate_candidates_document(data, source_ids=sources, domain_ids=set(domains))
+
+    def test_discovered_candidate_allows_unknown_bundled_scripts(self) -> None:
+        sources = validate_sources_document(load_json(EXTERNAL / "sources.json"))
+        domains = validate_domain_packs_document(load_json(EXTERNAL / "domain-packs.json"))
+        source_id = sorted(sources)[0]
+        data = {"schema_version": 1, "candidates": [discovered_candidate(source_id=source_id)]}
+        validated = validate_candidates_document(data, source_ids=sources, domain_ids=set(domains))
+        self.assertIsNone(validated[0]["bundled_scripts"])
+
+    def test_inspected_candidate_requires_known_bundled_scripts(self) -> None:
+        sources = validate_sources_document(load_json(EXTERNAL / "sources.json"))
+        domains = validate_domain_packs_document(load_json(EXTERNAL / "domain-packs.json"))
+        source_id = sorted(sources)[0]
+        candidate = discovered_candidate(source_id=source_id, candidate_id="inspected-null")
+        candidate.update(
+            {
+                "decision": "INSPECTED",
+                "source_revision": "abc123",
+                "license_status": "verified",
+                "compatibility_status": "compatible",
+            }
+        )
+        data = {"schema_version": 1, "candidates": [candidate]}
+        with self.assertRaisesRegex(ExternalCatalogError, "boolean after discovery"):
             validate_candidates_document(data, source_ids=sources, domain_ids=set(domains))
 
     def test_unknown_license_cannot_advance_candidate(self) -> None:
         sources = validate_sources_document(load_json(EXTERNAL / "sources.json"))
         domains = validate_domain_packs_document(load_json(EXTERNAL / "domain-packs.json"))
         source_id = sorted(sources)[0]
-        data = {
-            "schema_version": 1,
-            "candidates": [
-                {
-                    "candidate_id": "unknown-license",
-                    "source_id": source_id,
-                    "upstream_path": "skills/example",
-                    "domain_pack": "documentation-guide",
-                    "source_revision": "abc123",
-                    "license_status": "unknown",
-                    "compatibility_status": "compatible",
-                    "dependencies": [],
-                    "permissions": ["local_read"],
-                    "bundled_scripts": False,
-                    "external_scripts_executed": False,
-                    "decision": "ADOPT_CANDIDATE"
-                }
-            ]
-        }
+        candidate = discovered_candidate(source_id=source_id, candidate_id="unknown-license")
+        candidate.update(
+            {
+                "decision": "ADOPT_CANDIDATE",
+                "source_revision": "abc123",
+                "compatibility_status": "compatible",
+                "permissions": ["local_read"],
+                "bundled_scripts": False,
+            }
+        )
+        data = {"schema_version": 1, "candidates": [candidate]}
         with self.assertRaisesRegex(ExternalCatalogError, "unknown license"):
             validate_candidates_document(data, source_ids=sources, domain_ids=set(domains))
 
@@ -119,25 +138,19 @@ class ExternalCatalogBaselineTests(unittest.TestCase):
         sources = validate_sources_document(load_json(EXTERNAL / "sources.json"))
         domains = validate_domain_packs_document(load_json(EXTERNAL / "domain-packs.json"))
         source_id = sorted(sources)[0]
-        data = {
-            "schema_version": 1,
-            "candidates": [
-                {
-                    "candidate_id": "script-executed",
-                    "source_id": source_id,
-                    "upstream_path": "skills/example",
-                    "domain_pack": "big-data",
-                    "source_revision": "abc123",
-                    "license_status": "verified",
-                    "compatibility_status": "compatible",
-                    "dependencies": [],
-                    "permissions": ["local_read"],
-                    "bundled_scripts": True,
-                    "external_scripts_executed": True,
-                    "decision": "INSPECTED"
-                }
-            ]
-        }
+        candidate = discovered_candidate(source_id=source_id, candidate_id="script-executed")
+        candidate.update(
+            {
+                "decision": "INSPECTED",
+                "source_revision": "abc123",
+                "license_status": "verified",
+                "compatibility_status": "compatible",
+                "permissions": ["local_read"],
+                "bundled_scripts": True,
+                "external_scripts_executed": True,
+            }
+        )
+        data = {"schema_version": 1, "candidates": [candidate]}
         with self.assertRaisesRegex(ExternalCatalogError, "must not execute"):
             validate_candidates_document(data, source_ids=sources, domain_ids=set(domains))
 
@@ -155,7 +168,7 @@ class ExternalCatalogBaselineTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(before, after)
         self.assertEqual(25, first["domain_pack_count"])
-        self.assertEqual(0, first["candidate_count"])
+        self.assertGreaterEqual(first["candidate_count"], 100)
         self.assertEqual(sorted(PROTECTED_DOMAIN_PACKS), first["protected_domain_packs"])
 
     def test_build_coverage_counts_candidates_without_loading_skill_body(self) -> None:
