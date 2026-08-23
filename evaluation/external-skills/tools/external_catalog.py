@@ -210,8 +210,18 @@ def validate_candidates_document(
 
         _require_string_list(entry.get("dependencies"), f"candidate[{candidate_id}].dependencies")
         _require_string_list(entry.get("permissions"), f"candidate[{candidate_id}].permissions")
-        if not isinstance(entry.get("bundled_scripts"), bool):
-            raise ExternalCatalogError(f"bundled_scripts must be boolean: {candidate_id}")
+
+        bundled_scripts = entry.get("bundled_scripts")
+        if decision == "DISCOVERED":
+            if bundled_scripts is not None and not isinstance(bundled_scripts, bool):
+                raise ExternalCatalogError(
+                    f"DISCOVERED bundled_scripts must be null or boolean: {candidate_id}"
+                )
+        elif not isinstance(bundled_scripts, bool):
+            raise ExternalCatalogError(
+                f"bundled_scripts must be boolean after discovery: {candidate_id}"
+            )
+
         if entry.get("external_scripts_executed") is not False:
             raise ExternalCatalogError(f"external scripts must not execute during intake: {candidate_id}")
 
