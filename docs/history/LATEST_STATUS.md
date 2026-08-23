@@ -236,7 +236,33 @@ kd-infographics
 - OpenRouter/Perplexity 계열 외부 API 사용 가능
 - external API, script 모두 실행하지 않음
 
-## 8. 다음 실행 단계
+## 8. README 및 한국어 문서 최신화
+
+`docs-history-v8.3` 문서 브랜치에서 GitHub 첫 화면과 상세 가이드를 현재 상태에 맞춰 갱신했습니다.
+
+```text
+README.md
+README_KO.md
+docs/DOCUMENTATION_POLICY.md
+docs/history/README.md
+docs/history/LATEST_STATUS.md
+docs/history/DEVELOPMENT_JOURNAL.md
+docs/history/TROUBLESHOOTING_LOG.md
+docs/history/RESEARCH_LOG.md
+```
+
+두 README는 이제 다음을 동시에 보여줍니다.
+
+```text
+안정판  V8.2 COMPLETE / VERIFIED
+개발판  V8.3 Skill Library Expansion
+```
+
+설치·일반 사용 명령은 검증된 `main` 기준으로 유지하고, V8.3 Track A/Track B의 개발 현황과 BENCH-003A 수치는 별도 개발 상태로 표시합니다.
+
+설명 문장은 한국어를 기본으로 하며 코드, 명령어, 파일 경로, Skill ID, 상태 enum, commit SHA 등 실제 계약 식별자만 원문을 유지합니다.
+
+## 9. 다음 실행 단계
 
 BENCH-003A 범위를 유지하기 위해 새 ECC 후보를 현재 Task에 억지로 추가하지 않습니다.
 
@@ -257,28 +283,3 @@ BENCH-003A 범위를 유지하기 위해 새 ECC 후보를 현재 Task에 억지
 12. working tree 검증
 13. 완료 Evidence가 모두 PASS일 때만 commit/push
 ```
-
-## 9. 현재 중단점
-
-가장 최근 Batch A 반영 시도는 다른 Repository인 `D:\qwen-harness-test`에서 실행해 `FileNotFoundError`가 발생했습니다.
-
-이 실패는 파일을 읽기 전에 발생했기 때문에 Playbook 저장소에는 부분 수정이 생기지 않았습니다.
-
-올바른 Repository로 이동한 뒤 baseline을 다시 확인했고 다음 값이 유지됨을 검증했습니다.
-
-```text
-D:\Codex_Playbook\codex_ai_agent_playbook_kit_v5
-
-INSPECTED       53
-BENCHMARK_READY 43
-```
-
-따라서 현재 재개 지점은 **K-Dense Batch A 반영 직전**입니다.
-
-## 10. 문서 정책
-
-이 저장소에서 새로 추가하거나 갱신하는 설명 문서는 한국어를 기본 언어로 사용합니다.
-
-코드, 명령어, 경로, Skill ID, 상태 enum 등 실제 동작 계약에 사용되는 식별자는 정확성을 위해 원문을 유지합니다.
-
-자세한 기준은 [`docs/DOCUMENTATION_POLICY.md`](../DOCUMENTATION_POLICY.md)를 참고합니다.
