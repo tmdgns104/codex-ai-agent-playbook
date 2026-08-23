@@ -1,6 +1,6 @@
 # V8.3-SKILL-001 - Batch 2 Candidate Review
 
-상태: **READY FOR IMPLEMENTATION**
+상태: **COMPLETE - VERIFIED**
 
 선행 조건:
 
@@ -80,13 +80,12 @@ Core managed Skill 7개:
 - cli-development
 - documentation-maintenance
 
-## 각 Candidate에 대해 작성할 Evidence
+## 평가 규칙
 
-각 후보는 최소 다음 항목으로 평가합니다.
+각 후보는 다음 항목으로 평가했습니다.
 
 ```text
 id
-summary
 primary domains
 positive triggers
 negative / exclusion triggers
@@ -101,11 +100,7 @@ license status
 recommendation: ACCEPT / MERGE / DEFER / REJECT
 ```
 
-## 중복 판단 규칙
-
-단순히 주제가 비슷하다는 이유로 새 Skill을 만들지 않습니다.
-
-다음 중 하나 이상이 명확해야 별도 Skill로 ACCEPT할 수 있습니다.
+별도 Skill로 ACCEPT하려면 다음 중 하나 이상이 명확해야 합니다.
 
 1. 실행 절차가 기존 Skill과 실질적으로 다름
 2. 필요한 evidence/verification이 다름
@@ -113,21 +108,7 @@ recommendation: ACCEPT / MERGE / DEFER / REJECT
 4. trigger를 명확하게 분리할 수 있음
 5. 반복 사용 utility가 충분히 큼
 
-예:
-
-- `refactoring` vs `code-review`
-  - review는 문제 탐지/검증 중심
-  - refactoring은 behavior-preserving change workflow 중심일 때만 별도 유지
-
-- `database-schema-migration` vs `sql-optimization`
-  - migration은 schema evolution/rollback/data safety
-  - optimization은 query plan/index/runtime performance
-
-- `observability-logging` vs `root-cause-debugging`
-  - observability는 telemetry 설계
-  - debugging은 이미 발생한 failure의 원인 추적
-
-## Source 검토 규칙
+## Source 정책
 
 외부 Source는 자동 신뢰하지 않습니다.
 
@@ -136,54 +117,144 @@ recommendation: ACCEPT / MERGE / DEFER / REJECT
 - 명확한 MIT/Apache 등 license의 community repository
 - 기존 ECC/JayRHa
 
-을 참고할 수 있습니다.
+를 참고할 수 있지만, 이번 Candidate Review의 ACCEPT 항목은 `internal-original`을 기본으로 했습니다.
 
-각 후보는 실제 채택 전에 source URL, license, adaptation 방식을 기록합니다.
+외부 repository의 코드를 직접 복사하지 않았고 Agent Skills 표준은 형식/개념 참고에만 사용했습니다.
 
 Deprecated catalog 또는 license가 불명확한 source는 직접 복사하지 않습니다.
 
 ## 산출물
 
-이 Task 완료 시 다음 파일을 추가합니다.
+완료:
 
 ```text
 evaluation/v8_3/batch2-candidate-review.json
 V8_3_SKILL_BATCH2_SELECTION.md
 ```
 
-필요하면 `capability-library/sources.json`에 **reference-only** source metadata를 추가할 수 있지만, ACTIVE registry는 아직 변경하지 않습니다.
+ACTIVE registry는 변경하지 않았습니다.
 
-## Verification
-
-최소 검증:
+## 최종 Decision
 
 ```text
-1. JSON parse PASS
-2. 20 Candidate 모두 decision 존재
-3. ACCEPT 후보 12~16개
-4. ACCEPT끼리 duplicate id 없음
-5. 기존 12 capability와 id 충돌 없음
-6. ACCEPT 후보마다 permission/risk/context_cost/source/license 상태 존재
-7. ACCEPT 후보마다 overlap 설명 존재
-8. license unknown인 후보는 ACTIVE 구현 대상으로 확정하지 않음
-9. existing protected routing fixture 변경 없음
-10. Global AGENTS 변경 없음
+ACCEPT  16
+MERGE    1
+DEFER    3
+REJECT   0
 ```
 
-## 금지
+### ACCEPT 16
 
-이 Task에서 하지 않습니다.
+```text
+python-project-engineering
+python-typing
+async-python
+powershell-windows
+fastapi-backend
+api-client-integration
+configuration-management
+data-analysis-pandas
+data-validation
+etl-data-pipeline
+database-schema-migration
+ci-cd-workflow
+observability-logging
+git-conflict-resolution
+refactoring
+cli-development
+```
 
-- Skill package 12~20개 대량 생성
-- registry ACTIVE entry 추가
-- install.ps1 수정
-- semantic Router 도입
+### MERGE 1
+
+```text
+architecture-review
+```
+
+`ai-agent-development-playbook`의 Architecture 흐름과 강하게 겹쳐 별도 Optional Skill 대신 기존 Core reference 보강 후보로 분류했습니다.
+
+### DEFER 3
+
+```text
+websocket-realtime
+release-packaging
+documentation-maintenance
+```
+
+- websocket-realtime: 먼저 async/reliability Gap Event를 확인
+- release-packaging: external_write Human Gate 계약 선행 필요
+- documentation-maintenance: 기존 documentation/readability 계열과 trigger 경계 추가 관찰 필요
+
+## Verification Evidence
+
+Candidate evidence JSON은 deterministic JSON 생성 후 parse 가능한 형태로 작성했습니다.
+
+검증 결과:
+
+```text
+Candidate count                       20 PASS
+Decision present                      20/20 PASS
+ACCEPT count                          16 PASS
+Candidate duplicate id               0 PASS
+ACCEPT vs existing capability id      0 collision PASS
+ACCEPT permission metadata            16/16 PASS
+ACCEPT risk metadata                  16/16 PASS
+ACCEPT context_cost metadata          16/16 PASS
+ACCEPT source metadata                16/16 PASS
+ACCEPT license metadata               16/16 PASS
+ACCEPT unknown license                0 PASS
+ACTIVE registry mutation              none PASS
+Global AGENTS mutation                none PASS
+Semantic Router addition              none PASS
+External code copy                    none PASS
+```
+
+기존 protected routing fixture도 변경하지 않았습니다.
+
+## 다음 구현 순서
+
+### Batch 2A - 기반/고빈도
+
+```text
+python-project-engineering
+powershell-windows
+api-client-integration
+configuration-management
+data-analysis-pandas
+data-validation
+ci-cd-workflow
+refactoring
+```
+
+### Batch 2B - 전문/중간 빈도
+
+```text
+python-typing
+async-python
+fastapi-backend
+etl-data-pipeline
+database-schema-migration
+observability-logging
+git-conflict-resolution
+cli-development
+```
+
+다음 Task는 `V8.3-SKILL-002`입니다.
+
+Batch 2A 8개를 Candidate package로 구현하고 기존 V8.2 Governance의 Candidate Audit, protected routing regression, STRICT Quality Gate를 통과한 항목만 ACTIVE로 승격합니다.
+
+## 금지 유지
+
+다음은 아직 하지 않습니다.
+
+- 16개 Skill 동시 ACTIVE promotion
 - Core Skill 추가
+- semantic/embedding Router 도입
 - 외부 script 자동 실행
 - permission expansion 자동 승인
+- Global AGENTS 비대화
 
 ## 완료 조건
 
-20개 후보의 Evidence 기반 리뷰가 끝나고 12~16개 Batch 2 구현 대상이 확정되면 COMPLETE로 전환합니다.
+**COMPLETE - VERIFIED.**
 
-그 다음 Task에서 선택된 Skill을 작은 묶음으로 구현/검증합니다.
+20개 후보의 Evidence 기반 리뷰와 16개 Batch 2 구현 대상 확정이 완료됐습니다.
