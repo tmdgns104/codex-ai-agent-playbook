@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "mapping_policy": "explicit-conservative",
+  "description": "Maps currently available Playbook capabilities to V8.3 desired domain capabilities. This avoids false gaps caused by name-only exact matching. Claims are intentionally conservative and must be supported by the current Skill or wrapper contract.",
+  "providers": [
+    {
+      "id": "api-design",
+      "source": "active-registry",
+      "coverage": {
+        "backend-api": ["rest-api", "openapi", "graphql", "api-contract"]
+      }
+    },
+    {
+      "id": "code-review",
+      "source": "active-registry",
+      "coverage": {
+        "git-delivery": ["code-review"]
+      }
+    },
+    {
+      "id": "docker-container",
+      "source": "active-registry",
+      "coverage": {
+        "devops-container": ["docker"]
+      }
+    },
+    {
+      "id": "github-ops",
+      "source": "active-registry",
+      "coverage": {
+        "git-delivery": ["git-workflow", "pull-request"]
+      }
+    },
+    {
+      "id": "performance-profiling",
+      "source": "active-registry",
+      "coverage": {
+        "debug-performance": ["profiling", "benchmark"]
+      }
+    },
+    {
+      "id": "resilient-error-handling",
+      "source": "active-registry",
+      "coverage": {
+        "reliability-observability": ["retry", "timeout", "circuit-breaker", "idempotency"]
+      }
+    },
+    {
+      "id": "root-cause-debugging",
+      "source": "active-registry",
+      "coverage": {
+        "debug-performance": ["root-cause-analysis"]
+      }
+    },
+    {
+      "id": "security-review",
+      "source": "active-registry",
+      "coverage": {
+        "security-auth": ["security-review", "jwt", "oauth", "secrets", "api-security"]
+      }
+    },
+    {
+      "id": "sql-optimization",
+      "source": "active-registry",
+      "coverage": {
+        "database-sql": ["sql-optimization", "indexing"]
+      }
+    },
+    {
+      "id": "testing",
+      "source": "active-registry",
+      "coverage": {
+        "testing-qa": ["regression", "test-design", "acceptance-testing"]
+      }
+    },
+    {
+      "id": "guide-ppt-creator",
+      "source": "core-skill",
+      "coverage": {
+        "presentation-visual": ["technical-slides", "presentation-design"]
+      }
+    },
+    {
+      "id": "ai-agent-development-playbook",
+      "source": "core-skill",
+      "coverage": {
+        "rag-llm-agent": ["rag-design", "agent-design"]
+      }
+    }
+  ]
+}
