@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "variants": [
+    "baseline-no-optional",
+    "current-playbook",
+    "external-expert",
+    "adapted-playbook"
+  ],
+  "evidence_fields": [
+    "acceptance_result",
+    "selected_capabilities",
+    "selected_count",
+    "loaded_skill_bytes",
+    "gate_result",
+    "dependency_burden",
+    "execution_time_ms",
+    "notes"
+  ],
+  "llm_self_report_is_sufficient": false
+}
