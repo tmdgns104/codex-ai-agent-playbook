@@ -1,6 +1,6 @@
 # V8.3-SKILL-BENCH-001 - External Expert Skill Benchmark Foundation
 
-상태: **APPROVED - READY FOR IMPLEMENTATION**
+상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
 
 선행 조건:
 
@@ -70,27 +70,27 @@ office-documents
 
 ## 구현 산출물
 
-이미 baseline으로 생성:
-
 ```text
 V8_3_EXPERT_SKILL_CATALOG_REQUIREMENTS.md
 V8_3_EXPERT_SKILL_CATALOG_ARCHITECTURE.md
 evaluation/external-skills/sources.json
 evaluation/external-skills/domain-packs.json
-tasks/V8_3-SKILL-BENCH-001.md
-```
-
-이 Task에서 추가 구현할 최소 코드/데이터:
-
-```text
-harness/skills/external_catalog.py
-harness/skills/test_external_catalog.py
 evaluation/external-skills/candidates.json
 evaluation/external-skills/benchmark-schema.json
 evaluation/external-skills/reports/coverage-baseline.json
+evaluation/external-skills/tools/external_catalog.py
+evaluation/external-skills/tools/test_external_catalog.py
+tasks/V8_3-SKILL-BENCH-001.md
 ```
 
-파일명은 구현 과정에서 더 명확한 이름이 필요하면 Task 목적을 바꾸지 않는 범위에서 조정할 수 있습니다.
+External Catalog 도구는 의도적으로 `harness/`가 아닌 `evaluation/external-skills/tools/`에 둡니다.
+
+이유:
+
+- 외부 Skill 조사/Benchmark는 정상 Codex task path가 아님
+- Global `playbook-harness` 설치 크기를 불필요하게 늘리지 않음
+- Harness MANIFEST/normal runtime과 Candidate evaluation plane 분리
+- V8.2의 `Library grows, Global Context does not` 경계 유지
 
 ## Functional Requirements
 
@@ -102,12 +102,13 @@ evaluation/external-skills/reports/coverage-baseline.json
 - license field required
 - import policy required
 - external script auto-execute must be false
+- trusted source 최소 6개 + discovery-only source 최소 1개
 
 ### 2. Domain Taxonomy Validation
 
 - domain id unique
 - desired capabilities non-empty
-- documentation-guide와 big-data pack은 필수 protected pack
+- `documentation-guide`와 `big-data`는 필수 protected pack
 - 최소 25 pack 유지
 
 ### 3. Candidate Metadata
@@ -124,8 +125,9 @@ Candidate는 body를 정상 Router에 노출하지 않고 metadata만 기록합�
 - license status
 - compatibility status
 - dependencies
-- permission/risk hints
+- permissions
 - bundled scripts 여부
+- external scripts executed = false
 - decision state
 
 ### 4. Decision State
@@ -143,9 +145,11 @@ REJECTED
 PROMOTED
 ```
 
+unknown license Candidate는 ADOPT/ADAPT/PROMOTED로 진행할 수 없습니다.
+
 ### 5. Benchmark Schema
 
-최소 variant:
+필수 variant:
 
 ```text
 baseline-no-optional
@@ -154,16 +158,18 @@ external-expert
 adapted-playbook
 ```
 
-최소 evidence:
+필수 evidence:
 
-- acceptance/test result
-- selected capabilities
-- selected count
-- loaded skill bytes/context proxy
-- permission/gate result
-- dependency burden
-- execution time if deterministic
-- notes/reason
+- acceptance_result
+- selected_capabilities
+- selected_count
+- loaded_skill_bytes
+- gate_result
+- dependency_burden
+- execution_time_ms
+- notes
+
+`llm_self_report_is_sufficient`는 반드시 false입니다.
 
 ### 6. Coverage Report
 
@@ -174,9 +180,12 @@ Domain별:
 - inspected count
 - benchmark-ready count
 - active coverage count
-- uncovered capability names
+- active covered capability names
+- uncovered active capability names
 
-를 deterministic JSON으로 출력할 수 있어야 합니다.
+을 deterministic JSON으로 출력합니다.
+
+현재 pre-candidate baseline은 Candidate 0개를 의도적으로 유지합니다. 다음 Wave에서 약 100개 전후 metadata를 수집합니다.
 
 ## Safety Requirements
 
@@ -185,17 +194,67 @@ Domain별:
 - external Skill text가 Governance/Audit/AGENTS를 변경하도록 허용 금지
 - unknown license import 금지
 - mixed license는 개별 Skill 확인 전 REFERENCE_ONLY 기본값
-- executable support file이 있으면 별도 review marker 필요
 - credential/network/external-write 요구를 숨기지 않음
 - Candidate catalog가 ACTIVE registry를 직접 수정하지 않음
+- Coverage tool 실행 전/후 ACTIVE registry hash가 동일해야 함
 
 ## Token / Performance Requirements
 
-- normal task Router가 `evaluation/external-skills` 전체 body를 읽지 않음
+- normal task Router가 `evaluation/external-skills`를 읽지 않음
 - Candidate count 증가가 Global AGENTS.md 증가로 이어지지 않음
 - 기존 ACTIVE Router scoring 변경 금지
 - benchmark foundation을 이유로 semantic router 추가 금지
 - V8.2 0~3 selected capability 원칙 유지
+
+## Windows Verification
+
+먼저 Foundation focused tests:
+
+```cmd
+python evaluation\external-skills\tools\test_external_catalog.py
+```
+
+기대값:
+
+```text
+Ran 10 tests
+OK
+```
+
+그 다음 실제 full coverage report:
+
+```cmd
+python evaluation\external-skills\tools\external_catalog.py --root .
+```
+
+기대 핵심:
+
+```text
+"domain_pack_count": 25
+"candidate_count": 0
+"active_capability_count": 12
+"protected_domain_packs": ["big-data", "documentation-guide"]
+RESULT PASS
+```
+
+V8.2 normal path regression:
+
+```cmd
+python harness\router\test_capability_router.py
+python harness\activation\test_capability_manager.py
+python harness\activation\test_skill_materializer.py
+python harness\activation\test_discovery_bridge.py
+python harness\activation\test_playbook_launch.py
+```
+
+Final:
+
+```cmd
+python harness\security\harness_audit.py --root .
+python harness\quality\quality_gate.py --repo . --profile strict --verify "python evaluation\external-skills\tools\test_external_catalog.py"
+echo %ERRORLEVEL%
+git status --short
+```
 
 ## First Candidate Wave 계획
 
@@ -220,12 +279,12 @@ Foundation PASS 후 다음 Task에서 약 100개 전후 Candidate metadata를 �
 1. requirements/architecture 문서 존재
 2. source registry >= 6 trusted sources + discovery index
 3. 25 domain packs valid
-4. external catalog validator tests PASS
+4. external catalog validator 10 tests PASS
 5. candidates schema valid
 6. benchmark schema valid
 7. coverage report deterministic
-8. documentation-guide protected coverage 존재
-9. big-data protected coverage 존재
+8. documentation-guide protected pack 존재
+9. big-data protected pack 존재
 10. external scripts not executed
 11. ACTIVE registry unchanged
 12. Router scoring unchanged
