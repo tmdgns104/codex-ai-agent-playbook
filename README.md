@@ -7,7 +7,7 @@ Codex를 여러 프로젝트에서 사용할 때 **매 작업마다 거대한 �
 
 V8.2는 Windows 실제 환경에서 설치, 자동 Skill 선택, 별도 Git Repository 실행, cleanup, 재설치 멱등성, Self-Managing Skill Lifecycle, STRICT Quality Gate까지 검증했습니다.
 
-[상세 한글 가이드](README_KO.md) · [빠른 시작](docs/QUICKSTART.md) · [동작 원리](docs/HOW_IT_WORKS.md) · [Skills 가이드](docs/SKILLS.md)
+[상세 한글 가이드](README_KO.md) · [빠른 시작](docs/QUICKSTART.md) · [동작 원리](docs/HOW_IT_WORKS.md) · [Skills 가이드](docs/SKILLS.md) · [개발 기록](docs/history/README.md)
 
 ---
 
