@@ -21,7 +21,7 @@
   ],
   "candidate_count": 15,
   "source_count": 2,
-  "domain_pack_count": 13,
+  "domain_pack_count": 15,
   "protected_domain_packs": ["documentation-guide", "big-data"],
   "active_import_count": 0,
   "external_scripts_executed": false,
