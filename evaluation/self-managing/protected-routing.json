@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "protected": true,
+  "cases": [
+    {
+      "id": "jwt-exact-3",
+      "kind": "routing",
+      "task": "JWT 인증 오류를 수정하고 regression test를 실행",
+      "expected_selected": [
+        "security-review",
+        "testing",
+        "root-cause-debugging"
+      ],
+      "exact_count": 3,
+      "expected_profile": "strict"
+    },
+    {
+      "id": "max-selected-3",
+      "kind": "invariant",
+      "invariant": "max_selected_capabilities",
+      "expected_max": 3
+    },
+    {
+      "id": "llm-unavailable-control-plane",
+      "kind": "control-plane",
+      "semantic_analysis_required": true,
+      "llm_available": false,
+      "expected_queue_status": "waiting_for_analysis",
+      "active_skill_mutation": false,
+      "governance_continues": true
+    }
+  ]
+}

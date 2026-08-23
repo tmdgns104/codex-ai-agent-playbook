@@ -44,12 +44,9 @@ description: 오류, 실패, 성능 저하처럼 원인이 불명확한 문제�
 - workaround가 성공했다고 root cause가 해결됐다고 보고
 - 환경 문제와 코드 문제를 섞음
 
-## Handoff
+## Stop / Handoff
 
 - 재현 후 테스트가 필요하면 `testing`
 - 보안 경계 문제면 `security-review`
 - 수정 후 diff 독립 검토가 필요하면 `code-review`
-
-## Stop
-
-Repository 범위를 넘어 architecture 변경이나 권한 확대가 필요해지면 현재 Task에서 임의로 진행하지 않습니다.
+- Repository 범위를 넘어 architecture 변경이나 권한 확대가 필요해지면 현재 Task에서 임의로 진행하지 않습니다.

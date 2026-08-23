@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "states": [
+    "candidate",
+    "validating",
+    "active",
+    "review_required",
+    "rejected",
+    "stale",
+    "archived"
+  ],
+  "transitions": {
+    "candidate": ["validating", "rejected"],
+    "validating": ["active", "rejected"],
+    "active": ["review_required", "stale"],
+    "review_required": ["active", "stale", "archived"],
+    "rejected": ["candidate"],
+    "stale": ["active", "archived"],
+    "archived": ["candidate"]
+  },
+  "active_is_immutable_during_validation": true,
+  "skills": {}
+}
