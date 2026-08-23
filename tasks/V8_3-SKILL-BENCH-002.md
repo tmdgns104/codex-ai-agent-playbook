@@ -1,6 +1,6 @@
 # V8.3-SKILL-BENCH-002 - Expert Candidate Wave 1
 
-상태: **APPROVED - READY FOR IMPLEMENTATION**
+상태: **IMPLEMENTED - WINDOWS VERIFICATION PENDING**
 
 선행 조건:
 
@@ -16,9 +16,29 @@
 
 이 Task에서는 Candidate를 ACTIVE Library에 설치하거나 Router에 노출하지 않습니다.
 
-## Candidate Source
+## 구현 결과
 
-우선 사용:
+```text
+Candidate count     100
+Source count          5
+Domain Pack coverage 23 / 25
+ACTIVE import         0
+External script run   0
+```
+
+Source 분포:
+
+```text
+K-Dense      35
+NVIDIA       30
+alirezarezvani 22
+Anthropic     8
+ECC           5
+```
+
+Candidate는 `discovery_defaults`를 사용해 반복 metadata를 줄이고, 각 항목에는 `candidate_id / source_id / upstream_path / domain_pack`만 직접 기록합니다.
+
+## Candidate Source
 
 ```text
 anthropics/skills
@@ -41,25 +61,21 @@ affaan-m/ECC
 7. research-literature / scientific-computing
 8. embedded-iot / robotics-ros / networking
 
-industrial-automation은 신뢰도 높은 전문 Source가 부족하면 억지 Candidate를 채우지 않고 다음 targeted source discovery로 넘깁니다.
+industrial-automation은 신뢰도 높은 전문 Source가 부족하여 Wave 1에서 억지 Candidate를 만들지 않았습니다. git-delivery도 현재 기존 coverage가 있고 Wave 1 우선순위에서 제외했습니다. 두 분야는 targeted source discovery 대상으로 남깁니다.
 
 ## Discovery Metadata Contract
 
 `DISCOVERED` Candidate는 아직 Skill body/support files를 검사하기 전 상태입니다.
 
-필수:
+기본값:
 
 ```text
-candidate_id
-source_id
-upstream_path
-domain_pack
-source_revision = null 허용
-license_status = unknown 허용
-compatibility_status = unknown 허용
+source_revision = null
+license_status = unknown
+compatibility_status = unknown
 dependencies = []
 permissions = []
-bundled_scripts = null 허용
+bundled_scripts = null
 external_scripts_executed = false
 decision = DISCOVERED
 ```
@@ -77,10 +93,11 @@ decision = DISCOVERED
 - Anthropic mixed/source-available 자산은 개별 license 확인 전 reference-only 성격으로 취급
 - permission/trigger expansion은 V8.2 Human Gate 유지
 - Global AGENTS.md / Router scoring 변경 금지
+- discovery default는 identity/source/path/domain 필드를 상속할 수 없도록 제한
 
 ## Acceptance Criteria
 
-1. Candidate metadata 약 100개, 최소 100개
+1. Candidate metadata >= 100
 2. source diversity >= 5
 3. protected domain `documentation-guide`, `big-data` 각각 Candidate >= 3
 4. 최소 18개 Domain Pack에 Candidate 존재
@@ -95,6 +112,20 @@ decision = DISCOVERED
 13. normal Router/Global AGENTS 변경 없음
 14. Windows Evidence 전 COMPLETE 표시 금지
 
+## Windows Verification Pending
+
+다음 Evidence가 필요합니다.
+
+```text
+python evaluation\external-skills\tools\test_external_catalog.py
+python evaluation\external-skills\tools\test_candidate_wave.py
+python evaluation\external-skills\tools\test_effective_coverage.py
+python evaluation\external-skills\tools\external_catalog.py --root .
+python evaluation\external-skills\tools\effective_coverage.py --root .
+```
+
+Foundation/Router/Harness regression은 Candidate 관련 변경이 정상 task path를 침범하지 않았는지 별도로 확인합니다.
+
 ## 다음 단계
 
 `V8_3-SKILL-BENCH-003 - Expert Candidate Inspection and Benchmark Shortlist`
@@ -103,4 +134,5 @@ decision = DISCOVERED
 - 중복 cluster
 - domain별 benchmark shortlist 선정
 - ADOPT / ADAPT / REFERENCE_ONLY / REJECT 결정 근거 수집
+- industrial-automation / networking / robotics targeted source 보강
 - 여전히 자동 ACTIVE import 금지
