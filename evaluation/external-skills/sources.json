@@ -15,7 +15,7 @@
       "auto_execute_external_scripts": false
     },
     {
-      "id": "anthropic-skills",
+      "id": "anthropic-reference-skills",
       "repository": "anthropics/skills",
       "tier": "A",
       "role": "official-reference",
@@ -27,7 +27,7 @@
       "auto_execute_external_scripts": false
     },
     {
-      "id": "nvidia-skills",
+      "id": "nvidia-verified-skills",
       "repository": "NVIDIA/skills",
       "tier": "A",
       "role": "vendor-verified",
