@@ -1,15 +1,21 @@
-# Codex AI Agent Playbook Kit - V8.2
+# Codex AI Agent Playbook Kit — 상세 한글 가이드
+
+> **안정 버전: V8.2 (`main`) — COMPLETE / VERIFIED**  
+> **현재 개발 버전: V8.3 — Skill Library Expansion 진행 중**
 
 Codex를 **적은 고정 Context**, **필요한 Capability만 선택하는 구조**, **실제 Evidence 기반 검증**, **Self-Managing Skill Control Plane**으로 여러 프로젝트에서 일관되게 사용하기 위한 전역 Playbook + Skills + Harness입니다.
 
-현재 안정 버전: **V8.2 (`main`)**  
-2026-08-23 Windows 실환경 검증 완료 / PR #6 Merge 완료
+설치와 일반 사용은 검증 완료된 **V8.2 `main`**을 기준으로 합니다. V8.3은 안정판을 깨지 않고 Skill Library를 확장하기 위한 개발 브랜치에서 진행합니다.
 
 > 처음 사용하는 경우에는 [빠른 시작 문서](docs/QUICKSTART.md)부터 보는 것을 권장합니다.
+
+[메인 README](README.md) · [최신 개발 상태](docs/history/LATEST_STATUS.md) · [개발 기록](docs/history/README.md) · [트러블슈팅](docs/history/TROUBLESHOOTING_LOG.md) · [연구기록](docs/history/RESEARCH_LOG.md)
 
 ---
 
 ## 1. 현재 상태
+
+### V8.2 안정판
 
 ```text
 Stable branch         main
@@ -22,18 +28,51 @@ Global AGENTS.md      4579 bytes
 Windows status        COMPLETE - VERIFIED
 ```
 
-V8.2는 V8.1의 Dynamic Capability Library 위에 **Self-Managing Skill Library**를 추가했습니다.
+2026-08-23 Windows 실환경에서 설치, 재설치 멱등성, Capability Router, Skill Materializer, Launcher, Harness Audit, STRICT Quality Gate까지 검증했습니다.
+
+### V8.3 개발판
+
+V8.3은 두 트랙으로 분리합니다.
 
 ```text
-Skill Library는 커질 수 있음
-        ↓
-하지만 매 작업 Context는 커지지 않음
-        ↓
-필요한 Skill만 0~3개 선택
-        ↓
-사용 Evidence는 가볍게 기록
-        ↓
-필요할 때만 Creator / Evolver / Curator 유지보수
+Track A
+v8.3-skill-library-expansion
+→ 내부 Candidate 8개 검증 완료
+→ ACTIVE promotion 전
+
+Track B
+v8.3-expert-skill-catalog
+→ 외부 Expert Skill Catalog / Inspection
+→ BENCH-003A 진행 중
+```
+
+2026-08-24 기준 Track B의 로컬 미커밋 Evidence:
+
+```text
+INSPECTED                  53
+BENCHMARK_READY            43
+ECC path-drift REJECTED     4
+EXTERNAL_SCRIPTS_EXECUTED  False
+focused inspection tests    8/8 PASS
+git diff --check            PASS
+```
+
+현재 BENCH-003A 목표:
+
+```text
+INSPECTED >= 60
+BENCHMARK_READY >= 50
+inspected domain packs >= 20
+external scripts executed = false
+ACTIVE import = 0
+```
+
+K-Dense 추가 후보 8개는 pinned upstream 정적검사를 완료했고 8/8 `BENCHMARK_READY` 판정이 가능한 상태입니다. 아직 `inspections.json`에 반영하지 않았기 때문에 현재 공식 로컬 수치는 계속 `53 / 43`입니다.
+
+현재 재개 지점:
+
+```text
+K-Dense Batch A inspection 반영 직전
 ```
 
 ---
@@ -50,13 +89,14 @@ Codex를 오래 사용하면서 규칙과 Skill을 계속 추가하면 다음 �
 - 보안 작업과 README 오타에 같은 검증 비용을 씀
 - Skill이 늘어날수록 사람이 직접 중복/노후/충돌을 관리해야 함
 
-V8.2는 다음을 목표로 합니다.
+현재 목표는 다음과 같습니다.
 
 ```text
 Library는 풍부하게
 현재 Context는 작게
 검증은 실제 Evidence로
 Skill 유지보수는 deterministic Control Plane 중심으로
+외부 Skill은 검증 후 단계적으로 Promotion
 ```
 
 ---
@@ -76,7 +116,7 @@ Deterministic Metadata Router
     ↓
 Risk / Permission Gate
     ↓
-필요한 optional Skill만 임시 활성화
+필요한 Optional Skill만 임시 활성화
     ↓
 Codex 실행
     ↓
@@ -94,7 +134,7 @@ Skill 0개도 정상입니다.
 ```text
 README 오타 한 줄 수정
 → MINIMAL
-→ optional Skill 0개
+→ Optional Skill 0개
 
 JWT 인증 오류 수정 + regression test
 → STRICT
@@ -123,11 +163,106 @@ Promotion Gate / Human Gate
 ACTIVE Library
 ```
 
-Creator/Evolver/Curator는 일반 task 시작 시 자동 실행되지 않습니다.
+Creator/Evolver/Curator는 일반 Task 시작 시 자동 실행되지 않습니다.
 
 ---
 
-## 4. 설치 구조
+## 4. V8.3 Skill Library 확장 구조
+
+V8.3에서는 Skill을 많이 모으는 것과 ACTIVE로 사용하는 것을 분리합니다.
+
+```text
+Layer 1 — DISCOVERED / Catalog
+많은 후보를 보관
+
+Layer 2 — INSPECTED / BENCHMARK_READY
+실제 path / content / license / dependency / permission 확인
+
+Layer 3 — ACTIVE
+실제 routing evidence와 Promotion Gate 통과
+```
+
+외부 Skill Candidate 상태:
+
+```text
+DISCOVERED
+INSPECTED
+BENCHMARK_READY
+ADOPT_CANDIDATE
+ADAPT_CANDIDATE
+REFERENCE_ONLY
+REJECTED
+PROMOTED
+```
+
+중요한 원칙:
+
+- 공개 GitHub 저장소라는 이유만으로 자동 채택하지 않음
+- per-skill license를 우선 확인
+- 외부 script/install/API를 inspection 중 실행하지 않음
+- pinned revision에서 실제 path를 확인
+- path가 없으면 다른 Skill로 조용히 대체하지 않음
+- Proprietary/불명확 license는 자동 READY 금지
+- Candidate와 ACTIVE를 분리
+
+### 최근 ECC 조사
+
+기존 Catalog의 다음 4개는 pinned revision에서 실제 경로가 없어 `REJECTED` 처리했습니다.
+
+```text
+ecc-aws
+ecc-azure-bicep
+ecc-api-security
+ecc-arm-cortex-m
+```
+
+ECC 자체에는 실존 Skill이 있으므로 저장소 전체를 버리는 것이 아니라 실제 tree 기반으로 후속 재카탈로그화합니다.
+
+후속 후보로 확인된 예:
+
+```text
+ecc-api-design
+ecc-backend-patterns
+ecc-coding-standards
+ecc-agent-introspection-debugging
+ecc-security-review
+ecc-deployment-patterns
+ecc-react-testing
+ecc-verification-loop
+```
+
+### 최근 K-Dense 조사
+
+현재 정식 저장소:
+
+```text
+K-Dense-AI/scientific-agent-skills
+```
+
+기존 pinned revision:
+
+```text
+390f5146bf3c1877cf15636a3dd7b775e4f0f185
+```
+
+은 rename 이후에도 유효함을 확인했습니다.
+
+추가 정적검사 완료 후보:
+
+```text
+kd-statsmodels
+kd-matplotlib
+kd-seaborn
+kd-vaex
+kd-zarr-python
+kd-peer-review
+kd-scientific-schematics
+kd-infographics
+```
+
+---
+
+## 5. 설치 구조
 
 Windows 설치 후:
 
@@ -158,7 +293,7 @@ Windows 설치 후:
 └─ human-readable-code\
 ```
 
-`~/.codex/AGENTS.md`에는 항상 필요한 최소 전역 운영 원칙만 유지합니다. V8.2 최종 Windows 검증 기준 Playbook 전역 영역은 **4579 bytes**입니다.
+`~/.codex/AGENTS.md`에는 항상 필요한 최소 전역 운영 원칙만 유지합니다.
 
 `~/.agents/skills/`에는 **7개 Core managed Skill**이 설치됩니다.
 
@@ -170,7 +305,7 @@ Windows 설치 후:
 
 ---
 
-## 5. 설치 - Windows
+## 6. 설치 — Windows
 
 준비물:
 
@@ -185,6 +320,7 @@ codex --version
 ```cmd
 git clone https://github.com/tmdgns104/codex-ai-agent-playbook.git
 cd codex-ai-agent-playbook
+git switch main
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
 ```
 
@@ -193,6 +329,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ".\install.ps1"
 ```powershell
 git clone https://github.com/tmdgns104/codex-ai-agent-playbook.git
 cd codex-ai-agent-playbook
+git switch main
 Set-ExecutionPolicy -Scope Process Bypass
 .\install.ps1
 ```
@@ -218,7 +355,7 @@ RESULT   PASS
 
 ---
 
-## 6. 기존 설치 업데이트
+## 7. 기존 설치 업데이트
 
 Playbook Repository에서:
 
@@ -245,7 +382,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
 
 ---
 
-## 7. 가장 쉬운 실제 사용법
+## 8. 가장 쉬운 실제 사용법
 
 설치가 끝났다면 Playbook Repository가 아니라 **실제로 수정할 프로젝트의 Git Repository**로 이동합니다.
 
@@ -261,9 +398,7 @@ python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --r
 
 Launcher가 자동으로 Task 분류 → Optional Skill 선택 → Profile 결정 → Permission Gate → 선택 Skill 임시 노출 → Codex 실행 → Event 기록 → Cleanup을 수행합니다.
 
----
-
-## 8. 실제 Codex 실행 전에 결과만 확인
+### 실제 Codex 실행 전에 결과만 확인
 
 ```cmd
 python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "JWT 인증 오류를 수정하고 regression test를 실행" --dry-run
@@ -298,11 +433,9 @@ COUNT       0
 BRIDGE      false
 ```
 
-`--dry-run`에서는 실제 작업을 수행하지 않기 때문에 lifecycle Event도 기록하지 않습니다.
-
 ---
 
-## 9. Core Skills - 7개
+## 9. Core Skills — 7개
 
 | Skill | 용도 | 언제 유용한가 |
 |---|---|---|
@@ -318,7 +451,7 @@ Core Skill도 모든 작업에서 전부 사용하지 않습니다.
 
 ---
 
-## 10. Optional Skills - 10개
+## 10. Optional Skills — 안정판 ACTIVE 10개
 
 Optional Skill은 `%USERPROFILE%\.codex\capability-library\skills\optional\`에 보관합니다.
 
@@ -339,14 +472,14 @@ Optional Skill은 전역 discovery 경로에 전부 영구 설치하지 않습�
 
 ---
 
-## 11. Wrapper Capabilities - 2개
+## 11. Wrapper Capabilities — 2개
 
 | Capability | Type | 용도 | 주의 |
 |---|---|---|---|
 | `documentation-lookup` | REST wrapper | 최신 공식 문서/API 확인 | network permission 검토 |
 | `github-ops` | CLI wrapper | branch/commit/push/PR 작업 규율 | external write Human Gate 가능 |
 
-따라서 Registry 전체는 **12 capabilities = Optional Skill 10 + Wrapper 2**입니다.
+Registry 전체는 **12 capabilities = Optional Skill 10 + Wrapper 2**입니다.
 
 ---
 
@@ -364,12 +497,6 @@ network
 browser_control
 ```
 
-예:
-
-```cmd
-python "%USERPROFILE%\.codex\playbook-harness\activation\playbook_launch.py" --root . --task "GitHub에 commit push하고 PR 생성" --dry-run
-```
-
 권한 Gate가 필요하면:
 
 ```text
@@ -382,9 +509,7 @@ RESULT      HUMAN_GATE_REQUIRED
 
 ## 13. Self-Managing Skill Library
 
-V8.2에서는 Skill Library가 커져도 사람이 모든 Skill을 매번 직접 점검하지 않도록 관리 계층을 추가했습니다.
-
-### Control Plane - LLM 0-token 영역
+### Control Plane — LLM 0-token 영역
 
 ```text
 Capability Registry
@@ -460,7 +585,7 @@ python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" proposals
 python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" curate
 ```
 
-V8.2 maintenance CLI는 LLM provider를 필수 dependency로 요구하지 않습니다.
+안정판 maintenance CLI는 LLM provider를 필수 dependency로 요구하지 않습니다.
 
 ---
 
@@ -570,7 +695,29 @@ V8.2에서는 이 결과를 근거로 semantic/embedding Router를 상시 추가
 
 ---
 
-## 18. 제거
+## 18. 다음 개발 순서
+
+현재 승인된 V8.3 Track B 범위:
+
+```text
+1. K-Dense Batch A inspection 반영
+2. focused inspection test
+3. K-Dense Batch B inspection 반영
+4. INSPECTED >= 60 / BENCHMARK_READY >= 50 확인
+5. domain coverage / shortlist / catalog test
+6. normal routing regression
+7. Harness Audit
+8. STRICT Quality Gate
+9. git diff --check / clean working tree
+10. BENCH-003A 완료 commit / push
+11. ECC 실제 Skill 재카탈로그화는 후속 별도 Task
+```
+
+검증 전에 ACTIVE promotion이나 Router 변경을 하지 않습니다.
+
+---
+
+## 19. 제거
 
 Windows:
 
@@ -588,7 +735,7 @@ Playbook AGENTS marker block, Core managed Skills, Capability Library, Harness�
 
 ---
 
-## 19. 문제가 생겼을 때
+## 20. 문제가 생겼을 때
 
 Playbook Repository에서:
 
@@ -604,10 +751,18 @@ python harness\security\harness_audit.py --root .
 python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" audit
 ```
 
+실제 개발 과정의 장애와 해결 과정은 [트러블슈팅 기록](docs/history/TROUBLESHOOTING_LOG.md)에 누적합니다.
+
 ---
 
-## 20. 관련 문서
+## 21. 관련 문서
 
+- [메인 README](README.md)
+- [최신 개발 상태](docs/history/LATEST_STATUS.md)
+- [개발일지](docs/history/DEVELOPMENT_JOURNAL.md)
+- [트러블슈팅 기록](docs/history/TROUBLESHOOTING_LOG.md)
+- [연구기록](docs/history/RESEARCH_LOG.md)
+- [문서 작성 정책](docs/DOCUMENTATION_POLICY.md)
 - [빠른 시작](docs/QUICKSTART.md)
 - [동작 원리](docs/HOW_IT_WORKS.md)
 - [Skills 가이드](docs/SKILLS.md)
@@ -625,6 +780,9 @@ python "%USERPROFILE%\.codex\playbook-harness\skills\manage.py" audit
 ```text
 Capability는 많이 보유할 수 있다.
 하지만 현재 Task에는 필요한 최소 Capability만 노출한다.
+
+외부 Skill은 많이 조사할 수 있다.
+하지만 검증 전에는 ACTIVE로 승격하지 않는다.
 
 Self-Managing 기능은 Library를 관리한다.
 하지만 정상 작업마다 LLM 비용을 추가하지 않는다.
