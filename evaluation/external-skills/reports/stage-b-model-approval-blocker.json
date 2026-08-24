@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "recorded_at_utc": "2026-08-24T04:17:21Z",
+  "status": "BLOCKED_MODEL_APPROVAL_REQUIRED",
+  "blocker": {
+    "code": "STAGE_B_RUNTIME_CONTROL_NOT_APPROVED",
+    "reason": "The approved benchmark policy requires runtime metadata to be recorded but does not name or approve a Stage B model or provider as a controlled variable.",
+    "policy_runtime_rule": "record-runtime-metadata-do-not-hardcode-provider-or-model",
+    "required_before_execution": [
+      "approved provider and locality",
+      "approved model identifier and immutable revision or digest when available",
+      "generation parameters and deterministic seed policy",
+      "context window and output limit",
+      "slot order and repetition policy",
+      "failure, timeout, and retry policy"
+    ],
+    "execution_gate": "STOP_BEFORE_STAGE_B_LLM_EXECUTION"
+  },
+  "stage_b_matrix": {
+    "candidate_count": 5,
+    "variant_count": 4,
+    "slot_count": 20,
+    "matrix_exact": true,
+    "variants": [
+      "baseline-no-optional",
+      "current-playbook",
+      "external-expert",
+      "adapted-playbook"
+    ],
+    "candidates": [
+      "kd-exploratory-data-analysis",
+      "kd-scikit-learn",
+      "kd-sympy",
+      "kd-citation-management",
+      "kd-docx"
+    ]
+  },
+  "execution_status": {
+    "stage_b_slots_executed": 0,
+    "stage_b_slots_succeeded": 0,
+    "stage_b_slots_failed": 0,
+    "stage_b_slots_not_executed": 20,
+    "runtime_metadata_null_slots": 20,
+    "acceptance_pass_null_slots": 20,
+    "execution_time_null_slots": 20,
+    "pending_execution_slots": 20,
+    "stage_b_executed_flag_remains_false": true,
+    "adoption_decisions_updated": false
+  },
+  "pre_gate_disclosure": {
+    "stage_b_fixture_used": false,
+    "stage_b_variant_context_used": false,
+    "benchmark_result_recorded": false,
+    "non_benchmark_local_llm_smoke_calls": 2,
+    "candidate_runtime_observed_but_not_approved": "local Ollama / qwen3.5:9b",
+    "notes": "Before the explicit model-approval clarification, two local readiness prompts were sent: one exact-text readiness prompt and one JSON readiness prompt. They did not use any Stage B fixture, candidate snapshot, adapted context, or execution slot and are not Stage B Evidence. No further LLM call is permitted until the runtime control is approved."
+  },
+  "protected_artifact_sha256": {
+    "tasks/V8_3-SKILL-BENCH-004.md": "068379a4d7b88be16a2250270e6fcf6b5b894030eee756fa0aa2b057bc8b588e",
+    "tasks/V8_3-SKILL-BENCH-003B.md": "9391dc12d07f8039bedfaaf771419ee31905ad31edc3a11fc1465dcc57c6f608",
+    "evaluation/external-skills/benchmark-policy.json": "588ce0f69995b7f19e4c79d75d7209b686d5d492508f9302eedd6a3f9dd63cf9",
+    "evaluation/external-skills/benchmark-fixtures.json": "bf33aa6efa11b021ee51ac975ec3913fd4bf3f1b2b2ae2a564156d3afacdfc1c",
+    "evaluation/external-skills/benchmark-results.json": "174525b4c09bcf2d8930defd8c1cb7b21c173edb3d7137a9873236db46a35da0",
+    "evaluation/external-skills/adoption-decisions.json": "905994819e1e70fab6c3e3fe3eae3e785d621bd3bcdd8e12bccf0376b2d59767",
+    "evaluation/external-skills/snapshots/manifest.json": "265a2ad0ed15d847eac43a46d6477389cba18ffd9044f983bb33c0d88c049135"
+  },
+  "invariants": {
+    "existing_benchmark_artifacts_changed": false,
+    "active_registry_changed": false,
+    "router_scoring_changed": false,
+    "global_agents_changed": false,
+    "snapshot_sha_changed": false,
+    "external_skill_downloaded": false,
+    "external_script_executed": false,
+    "credential_used": false,
+    "hardware_or_cloud_write": false,
+    "destructive_action": false
+  }
+}
