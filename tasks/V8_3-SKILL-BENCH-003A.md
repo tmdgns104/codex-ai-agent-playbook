@@ -1,6 +1,6 @@
 # V8.3-SKILL-BENCH-003A - Expand Expert Inspection to 50+ Usable Skills
 
-상태: **APPROVED - READY TO IMPLEMENT**
+상태: **COMPLETE - VERIFIED**
 
 선행:
 - V8_3-SKILL-BENCH-003 COMPLETE - VERIFIED
@@ -64,7 +64,46 @@ merge/archive 판단은 BENCH-004 이후로 미룬다.
 13. STRICT Quality Gate PASS, ERRORLEVEL 0
 14. final working tree clean
 
+## 완료 Evidence
+
+완료 commit:
+
+```text
+4e1d92531cebb32a995562e922db50b35e0bcb5f
+V8.3: expand expert skill inspection to 50+ ready candidates
+```
+
+최종 catalog Evidence:
+
+```text
+INSPECTED                  62
+BENCHMARK_READY            52
+INSPECTION_DOMAINS         20
+INSPECTION_SOURCES          5
+SHORTLIST                  15
+ACTIVE_IMPORTS              0
+ACTIVE_REGISTRY_UNCHANGED  True
+EXTERNAL_SCRIPTS_EXECUTED   0
+```
+
+검증 Evidence:
+
+```text
+External Catalog          12/12 PASS
+Effective Coverage         5/5 PASS
+Candidate Wave             5/5 PASS
+Inspection Wave            8/8 PASS
+V8.2 normal regression    72/72 PASS
+Harness Audit             PASS / warnings 0
+STRICT Quality Gate       PASS
+Git diff check            PASS
+working tree              CLEAN before push
+```
+
+GitHub 원격 `v8.3-expert-skill-catalog` HEAD가 완료 commit과 동일함을 확인했다.
+
 ## 완료 후
 `V8_3-SKILL-BENCH-004 - Expert Skill Benchmark and Adoption Decisions`
-에서 50+ pool을 controlled benchmark하여 ADOPT / ADAPT /
-REFERENCE_ONLY / REJECT를 결정한다.
+에서 현재 shortlist를 controlled benchmark하여 ADOPT_CANDIDATE /
+ADAPT_CANDIDATE / REFERENCE_ONLY / REJECTED를 결정한다.
+ACTIVE promotion은 별도 Task에서만 수행한다.
