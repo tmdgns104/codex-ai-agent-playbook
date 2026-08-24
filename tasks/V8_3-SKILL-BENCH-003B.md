@@ -1,6 +1,6 @@
 # V8.3-SKILL-BENCH-003B - Pinned Expert Skill Snapshot Preparation
 
-상태: **APPROVED - READY TO IMPLEMENT**
+상태: **COMPLETE - VERIFIED**
 
 선행:
 - V8_3-SKILL-BENCH-003A COMPLETE - VERIFIED
@@ -279,3 +279,31 @@ evaluation/external-skills/tools/test_snapshot_wave.py
 `V8_3-SKILL-BENCH-004`는 외부 네트워크에서 Skill body를 가져오지 않고 이 Task에서 만든 local snapshot만 사용한다.
 
 BENCH-004의 Stage A `loaded_context_bytes`는 snapshot의 실제 raw byte size를 사용하고, Stage B `external-expert` context 역시 검증된 snapshot을 lazy load한다.
+
+
+## 검증 Evidence
+
+```text
+Snapshot Wave            9/9 PASS
+External Catalog        12/12 PASS
+Effective Coverage       5/5 PASS
+Candidate Wave           5/5 PASS
+Inspection Wave          8/8 PASS
+V8.2 normal regression  72/72 PASS
+Harness Audit            PASS / warnings 0
+STRICT Quality Gate      PASS / ERRORLEVEL 0
+git diff --check         PASS
+
+Snapshots                15/15
+K-Dense                   11
+NVIDIA                     4
+Hash/byte verification    15/15
+Total raw bytes       171876
+External scripts          0
+External API/service      0
+Credentials               0
+Hardware/cloud/destructive side effect 0
+```
+
+BENCH-004는 이제 외부 Skill body를 네트워크에서 직접 읽지 않고
+`evaluation/external-skills/snapshots/`의 pinned local snapshot만 사용한다.
