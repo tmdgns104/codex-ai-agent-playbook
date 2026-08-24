@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import unittest
 from pathlib import Path
@@ -15,6 +16,13 @@ class BenchmarkWaveTests(unittest.TestCase):
     @staticmethod
     def load(path: Path) -> dict:
         return json.loads(path.read_text(encoding="utf-8"))
+
+    @staticmethod
+    def hard_check_pass(result: dict, check_name: str) -> bool:
+        matches = [item["pass"] for item in result["hard_checks"] if item["check"] == check_name]
+        if len(matches) != 1:
+            raise AssertionError(f"hard check is not unique: {check_name}")
+        return matches[0]
 
     def test_runtime_approval_matches_policy(self) -> None:
         control = bench.runtime_control()
@@ -145,6 +153,143 @@ class BenchmarkWaveTests(unittest.TestCase):
                 result = bench.acceptance(candidate_id, output)
                 self.assertTrue(result["acceptance_pass"])
                 self.assertEqual(result["hard_checks_passed"], result["hard_checks_total"])
+
+    def test_semantic_equivalent_eda_non_causality_passes(self) -> None:
+        output = copy.deepcopy(self.good_outputs()["kd-exploratory-data-analysis"])
+        output["correlation_interpretation"] = (
+            "This association is exploratory; causal claims are unsupported."
+        )
+        result = bench.acceptance("kd-exploratory-data-analysis", output)
+        self.assertTrue(self.hard_check_pass(result, "non-causal correlation interpretation"))
+
+    def test_semantic_equivalent_final_single_use_passes(self) -> None:
+        output = copy.deepcopy(self.good_outputs()["kd-scikit-learn"])
+        output["test_set_usage"] = (
+            "Single use for final evaluation after model selection and hyperparameter tuning"
+        )
+        result = bench.acceptance("kd-scikit-learn", output)
+        self.assertTrue(self.hard_check_pass(result, "final-once test usage"))
+
+    def test_incorrect_semantic_claims_still_fail(self) -> None:
+        eda = copy.deepcopy(self.good_outputs()["kd-exploratory-data-analysis"])
+        eda["correlation_interpretation"] = "The correlation proves a causal relationship."
+        eda_result = bench.acceptance("kd-exploratory-data-analysis", eda)
+        self.assertFalse(
+            self.hard_check_pass(eda_result, "non-causal correlation interpretation")
+        )
+
+        ml = copy.deepcopy(self.good_outputs()["kd-scikit-learn"])
+        ml["test_set_usage"] = (
+            "The test set is used repeatedly during model selection and once for final evaluation."
+        )
+        ml_result = bench.acceptance("kd-scikit-learn", ml)
+        self.assertFalse(self.hard_check_pass(ml_result, "final-once test usage"))
+
+    def test_sympy_residual_contract_is_exact(self) -> None:
+        static = bench.validate_static_inputs()
+        contract = static["input_map"]["kd-sympy"]["output_contract"][
+            "verification_residuals"
+        ]
+        schema = bench.response_schema("kd-sympy")["properties"][
+            "verification_residuals"
+        ]
+        expected_keys = ["-2", "-1", "1", "2"]
+        self.assertEqual(contract["required_keys"], expected_keys)
+        self.assertFalse(contract["additional_keys_allowed"])
+        self.assertEqual(schema["required"], expected_keys)
+        self.assertFalse(schema["additionalProperties"])
+        self.assertTrue(all(schema["properties"][key]["const"] == "0" for key in expected_keys))
+
+        incomplete = copy.deepcopy(self.good_outputs()["kd-sympy"])
+        incomplete["verification_residuals"].pop("-2")
+        result = bench.acceptance("kd-sympy", incomplete)
+        self.assertFalse(self.hard_check_pass(result, "zero substitution residuals"))
+
+    def test_citation_normalized_doi_contract_requires_complete_map(self) -> None:
+        static = bench.validate_static_inputs()
+        contract = static["input_map"]["kd-citation-management"]["output_contract"][
+            "normalized_dois"
+        ]
+        schema = bench.response_schema("kd-citation-management")["properties"][
+            "normalized_dois"
+        ]
+        expected_keys = ["C1", "C2", "C3", "C4"]
+        self.assertEqual(contract["required_keys"], expected_keys)
+        self.assertFalse(contract["additional_keys_allowed"])
+        self.assertEqual(schema["required"], expected_keys)
+        self.assertFalse(schema["additionalProperties"])
+        self.assertEqual(schema["properties"]["C3"]["type"], "null")
+
+        incomplete = copy.deepcopy(self.good_outputs()["kd-citation-management"])
+        incomplete["normalized_dois"].pop("C3")
+        result = bench.acceptance("kd-citation-management", incomplete)
+        self.assertFalse(self.hard_check_pass(result, "normalized local DOI values"))
+
+    def test_docx_heading_contract_uses_canonical_levels(self) -> None:
+        static = bench.validate_static_inputs()
+        contract = static["input_map"]["kd-docx"]["output_contract"][
+            "heading_hierarchy"
+        ]
+        schema = bench.response_schema("kd-docx")["properties"]["heading_hierarchy"]
+        self.assertEqual(contract["canonical_level_labels"], ["Title", "Heading 1"])
+        self.assertFalse(contract["additional_entries_allowed"])
+        self.assertEqual(schema["minItems"], 4)
+        self.assertEqual(schema["maxItems"], 4)
+        self.assertEqual(schema["items"]["properties"]["level"]["enum"], ["Title", "Heading 1"])
+
+        inconsistent = copy.deepcopy(self.good_outputs()["kd-docx"])
+        inconsistent["heading_hierarchy"][2]["level"] = "Heading 2"
+        result = bench.acceptance("kd-docx", inconsistent)
+        self.assertFalse(self.hard_check_pass(result, "consistent heading hierarchy"))
+
+    def test_rubric_hard_checks_match_validator_exactly(self) -> None:
+        static = bench.validate_static_inputs()
+        expected_counts = {
+            "kd-exploratory-data-analysis": 7,
+            "kd-scikit-learn": 11,
+            "kd-sympy": 7,
+            "kd-citation-management": 7,
+            "kd-docx": 9,
+        }
+        for candidate_id, expected_count in expected_counts.items():
+            with self.subTest(candidate_id=candidate_id):
+                declared = static["rubric_map"][candidate_id]["hard_checks"]
+                implemented = bench.validator_hard_check_names(candidate_id)
+                self.assertEqual(declared, implemented)
+                self.assertEqual(len(declared), expected_count)
+
+    def test_stored_evidence_hard_checks_match_rubric_without_rescoring(self) -> None:
+        static = bench.validate_static_inputs()
+        for slot in static["results"]["stage_b"]:
+            with self.subTest(candidate=slot["candidate_id"], variant=slot["variant"]):
+                evidence = self.load(bench.REPO_ROOT / slot["acceptance_evidence"])
+                recorded = [item["check"] for item in evidence["acceptance"]["hard_checks"]]
+                declared = static["rubric_map"][slot["candidate_id"]]["hard_checks"]
+                self.assertEqual(recorded, declared)
+
+    def test_historical_stage_b_artifact_hashes_are_preserved(self) -> None:
+        analysis = self.load(bench.BASE / "reports" / "stage-b-failure-analysis.json")
+        expected_results_hash = analysis["source_evidence"][
+            "protected_file_sha256_before_analysis"
+        ]["evaluation/external-skills/benchmark-results.json"]
+        self.assertEqual(
+            hashlib.sha256(bench.RESULTS.read_bytes()).hexdigest(),
+            expected_results_hash,
+        )
+
+        evidence_hash = hashlib.sha256()
+        evidence_paths = sorted(bench.EVIDENCE_ROOT.glob("*/*.json"))
+        self.assertEqual(len(evidence_paths), analysis["source_evidence"]["slot_evidence_file_count"])
+        for path in evidence_paths:
+            raw = path.read_bytes()
+            evidence_hash.update(path.relative_to(bench.REPO_ROOT).as_posix().encode("utf-8"))
+            evidence_hash.update(b"\0")
+            evidence_hash.update(hashlib.sha256(raw).hexdigest().encode("ascii"))
+            evidence_hash.update(b"\n")
+        self.assertEqual(
+            evidence_hash.hexdigest(),
+            analysis["source_evidence"]["slot_evidence_set_sha256"],
+        )
 
     def test_missing_or_unsafe_output_fails(self) -> None:
         for candidate_id, output in self.good_outputs().items():

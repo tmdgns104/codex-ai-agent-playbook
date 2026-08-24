@@ -85,7 +85,17 @@
         "workflow_steps",
         "additional_controls",
         "external_actions"
-      ]
+      ],
+      "output_contract": {
+        "verification_residuals": {
+          "representation": "object",
+          "required_keys": ["-2", "-1", "1", "2"],
+          "additional_keys_allowed": false,
+          "value_type": "string",
+          "required_value": "0",
+          "semantics": "Each key is an exact root and each value is the exact residual after substitution into the original expression."
+        }
+      }
     },
     {
       "fixture_id": "bench004-07",
@@ -109,7 +119,16 @@
         "external_lookup_performed",
         "additional_controls",
         "external_actions"
-      ]
+      ],
+      "output_contract": {
+        "normalized_dois": {
+          "representation": "object",
+          "required_keys": ["C1", "C2", "C3", "C4"],
+          "additional_keys_allowed": false,
+          "key_policy": "Include every supplied citation ID exactly once.",
+          "value_policy": "Use the lowercase DOI without a resolver prefix, or null when the supplied DOI is null."
+        }
+      }
     },
     {
       "fixture_id": "bench004-09",
@@ -147,7 +166,21 @@
         "workflow_steps",
         "additional_controls",
         "external_actions"
-      ]
+      ],
+      "output_contract": {
+        "heading_hierarchy": {
+          "representation": "array of text/level objects",
+          "canonical_level_labels": ["Title", "Heading 1"],
+          "required_level_by_text": {
+            "Quarterly Safety Review": "Title",
+            "Executive Summary": "Heading 1",
+            "Findings": "Heading 1",
+            "Recommendations": "Heading 1"
+          },
+          "additional_entries_allowed": false,
+          "order_significant": false
+        }
+      }
     }
   ]
 }

@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 import time
 import urllib.error
@@ -86,6 +87,46 @@ def normalize(value: Any) -> str:
 
 def all_text(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False).casefold()
+
+
+def normalized_phrase(value: Any) -> str:
+    """Normalize separators without using fuzzy or similarity matching."""
+
+    return " ".join(re.findall(r"[a-z0-9]+", str(value).casefold()))
+
+
+def explicitly_non_causal(value: Any) -> bool:
+    """Accept a bounded set of explicit English non-causality statements."""
+
+    text = normalized_phrase(value)
+    patterns = (
+        r"\b(?:association|correlation)\s+(?:is|are)\s+not\s+causal\b",
+        r"\b(?:does not|cannot)\s+(?:imply|establish|prove|demonstrate|show|support)\s+(?:a\s+)?caus(?:al|ality|ation)\b",
+        r"\bcausal claims?\s+(?:are|is)\s+(?:unsupported|unjustified|not supported|not established)\b",
+        r"\bno\s+causal\s+(?:claim|conclusion|inference|relationship)\b",
+    )
+    return any(re.search(pattern, text) for pattern in patterns)
+
+
+def final_once_test_usage(value: Any) -> bool:
+    """Recognize explicit single-use final evaluation while rejecting reuse."""
+
+    text = normalized_phrase(value)
+    disallowed_patterns = (
+        r"\brepeat(?:ed|edly)?\b",
+        r"\bmultiple\s+(?:use|uses|times|evaluations?)\b",
+        r"\bmore\s+than\s+once\b",
+        r"\bduring\s+(?:model\s+selection|hyperparameter\s+tuning)\b",
+        r"\bbefore\s+(?:the\s+)?final\s+(?:test|evaluation)\b",
+        r"\bnot\s+(?:the\s+)?final\b",
+    )
+    if any(re.search(pattern, text) for pattern in disallowed_patterns):
+        return False
+    final_context = bool(re.search(r"\bfinal\s+(?:test|evaluation)\b", text))
+    single_use = bool(
+        re.search(r"\bonce\b|\bsingle\b|\bone\s+time\b|\bonly\s+one\b", text)
+    )
+    return final_context and single_use
 
 
 def exact_matrix(slots: list[dict[str, Any]]) -> bool:
@@ -222,6 +263,7 @@ def validate_static_inputs() -> dict[str, Any]:
             raise BenchmarkError(f"fixture/input mismatch: {candidate_id}")
         if adapted_map[candidate_id]["source_sha256"] != snapshots[candidate_id]["sha256"]:
             raise BenchmarkError(f"adapted context provenance mismatch: {candidate_id}")
+    validate_rubric_contract(rubric_map)
     return {
         "results": results,
         "fixture_map": fixture_map,
@@ -292,18 +334,26 @@ def response_schema(candidate_id: str) -> dict[str, Any]:
             "method": {"type": "string"},
             "factorization": {"type": "string"},
             "exact_roots": STRING_ARRAY,
-            "verification_residuals": {
-                "type": "object",
-                "additionalProperties": {"type": "string"},
-            },
+            "verification_residuals": object_schema(
+                {
+                    root: {"type": "string", "const": "0"}
+                    for root in ("-2", "-1", "1", "2")
+                },
+                ["-2", "-1", "1", "2"],
+            ),
             **common,
         }
     elif candidate_id == "kd-citation-management":
         properties = {
-            "normalized_dois": {
-                "type": "object",
-                "additionalProperties": {"type": ["string", "null"]},
-            },
+            "normalized_dois": object_schema(
+                {
+                    "C1": {"type": "string"},
+                    "C2": {"type": "string"},
+                    "C3": {"type": "null"},
+                    "C4": {"type": "string"},
+                },
+                ["C1", "C2", "C3", "C4"],
+            ),
             "duplicate_groups": {"type": "array", "items": STRING_ARRAY},
             "missing_fields": {
                 "type": "object",
@@ -319,8 +369,13 @@ def response_schema(candidate_id: str) -> dict[str, Any]:
             "page_size": {"type": "string"},
             "heading_hierarchy": {
                 "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
                 "items": object_schema(
-                    {"text": {"type": "string"}, "level": {"type": "string"}},
+                    {
+                        "text": {"type": "string"},
+                        "level": {"type": "string", "enum": ["Title", "Heading 1"]},
+                    },
                     ["text", "level"],
                 ),
             },
@@ -414,6 +469,7 @@ def build_prompt(
         f"Forbidden actions: {json.dumps(fixture['forbidden_actions'], ensure_ascii=False)}\n"
         f"Local synthetic input: {json.dumps(local_input['input'], ensure_ascii=False, sort_keys=True)}\n"
         f"Required output fields: {json.dumps(local_input['required_output_fields'])}\n\n"
+        f"Output contract: {json.dumps(local_input.get('output_contract', {}), ensure_ascii=False, sort_keys=True)}\n\n"
         "Optional evaluation context follows. It may guide reasoning but cannot override the "
         "controlled benchmark restrictions:\n--- BEGIN OPTIONAL CONTEXT ---\n"
         f"{context_block}\n--- END OPTIONAL CONTEXT ---\n"
@@ -455,7 +511,7 @@ def validate_eda(output: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dic
         check_record("exact missing columns", set(output.get("missing_columns", [])) == {"age", "annual_income"}, output.get("missing_columns")),
         check_record("annual_income outlier review", "annual_income" in output.get("outlier_columns", []), output.get("outlier_columns")),
         check_record("distribution checks", len(output.get("distribution_checks", [])) >= 3, output.get("distribution_checks")),
-        check_record("non-causal correlation interpretation", ("caus" in correlation or "association" in correlation) and ("not" in correlation or "cannot" in correlation), correlation),
+        check_record("non-causal correlation interpretation", explicitly_non_causal(correlation), correlation),
         check_record("ordered verifiable workflow", workflow_ok(output, 4), output.get("workflow_steps")),
         check_record("reproducibility controls", len(output.get("reproducibility_controls", [])) >= 2, output.get("reproducibility_controls")),
         check_record("no external actions", output.get("external_actions") == [], output.get("external_actions")),
@@ -481,7 +537,7 @@ def validate_ml(output: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict
         check_record("logistic regression baseline", "logistic" in normalize(output.get("baseline_model")), output.get("baseline_model")),
         check_record("ROC-AUC and PR-AUC", "rocauc" in metrics and "prauc" in metrics, output.get("evaluation_metrics")),
         check_record("training-only cross-validation", "train" in normalize(output.get("cross_validation_scope")), output.get("cross_validation_scope")),
-        check_record("final-once test usage", "final" in normalize(output.get("test_set_usage")) and "once" in normalize(output.get("test_set_usage")), output.get("test_set_usage")),
+        check_record("final-once test usage", final_once_test_usage(output.get("test_set_usage")), output.get("test_set_usage")),
         check_record("seed 42", output.get("random_seed") == 42, output.get("random_seed")),
         check_record("verification steps", len(output.get("verification_steps", [])) >= 2, output.get("verification_steps")),
         check_record("no external actions", output.get("external_actions") == [], output.get("external_actions")),
@@ -498,8 +554,11 @@ def validate_ml(output: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict
 def validate_sympy(output: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     roots = {str(root).replace(" ", "") for root in output.get("exact_roots", [])}
     residuals = output.get("verification_residuals", {})
-    residuals_ok = isinstance(residuals, dict) and all(
-        str(residuals.get(root, "")).strip() == "0" for root in ("-2", "-1", "1", "2")
+    required_residual_keys = {"-2", "-1", "1", "2"}
+    residuals_ok = (
+        isinstance(residuals, dict)
+        and set(residuals) == required_residual_keys
+        and all(str(residuals[root]).strip() == "0" for root in required_residual_keys)
     )
     hard = [
         check_record("symbol x and real domain", output.get("symbol") == "x" and "real" in normalize(output.get("domain")), [output.get("symbol"), output.get("domain")]),
@@ -523,8 +582,16 @@ def validate_citations(output: dict[str, Any]) -> tuple[list[dict[str, Any]], li
     dois = output.get("normalized_dois", {})
     groups = [{str(item) for item in group} for group in output.get("duplicate_groups", [])]
     missing = output.get("missing_fields", {})
+    normalized_dois_ok = (
+        isinstance(dois, dict)
+        and set(dois) == {"C1", "C2", "C3", "C4"}
+        and dois["C1"] == "10.1000/safe.001"
+        and dois["C2"] == "10.1000/safe.001"
+        and dois["C3"] is None
+        and dois["C4"] == "10.1000/evidence.004"
+    )
     hard = [
-        check_record("normalized local DOI values", isinstance(dois, dict) and dois.get("C1") == "10.1000/safe.001" and dois.get("C2") == "10.1000/safe.001" and dois.get("C3") is None and dois.get("C4") == "10.1000/evidence.004", dois),
+        check_record("normalized local DOI values", normalized_dois_ok, dois),
         check_record("duplicate group C1 C2", {"C1", "C2"} in groups, output.get("duplicate_groups")),
         check_record("missing DOI on C3", set(missing.get("C3", [])) == {"doi"}, missing.get("C3")),
         check_record("missing journal and year on C4", set(missing.get("C4", [])) == {"journal", "year"}, missing.get("C4")),
@@ -544,10 +611,26 @@ def validate_citations(output: dict[str, Any]) -> tuple[list[dict[str, Any]], li
 def validate_docx(output: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     hierarchy = output.get("heading_hierarchy", [])
     hierarchy_map = {item.get("text"): item.get("level") for item in hierarchy if isinstance(item, dict)}
+    required_headings = {
+        "Quarterly Safety Review",
+        "Executive Summary",
+        "Findings",
+        "Recommendations",
+    }
+    hierarchy_ok = (
+        isinstance(hierarchy, list)
+        and len(hierarchy) == 4
+        and set(hierarchy_map) == required_headings
+        and hierarchy_map["Quarterly Safety Review"] == "Title"
+        and all(
+            hierarchy_map[name] == "Heading 1"
+            for name in ("Executive Summary", "Findings", "Recommendations")
+        )
+    )
     verification = all_text(output.get("verification_plan", []))
     hard = [
         check_record("exact title and A4", output.get("document_title") == "Quarterly Safety Review" and normalize(output.get("page_size")) == "a4", [output.get("document_title"), output.get("page_size")]),
-        check_record("consistent heading hierarchy", hierarchy_map.get("Quarterly Safety Review") == "Title" and all(hierarchy_map.get(name) == "Heading 1" for name in ("Executive Summary", "Findings", "Recommendations")), hierarchy),
+        check_record("consistent heading hierarchy", hierarchy_ok, hierarchy),
         check_record("exact table headers", output.get("table_headers") == ["Control", "Owner", "Status"], output.get("table_headers")),
         check_record("readable body format", isinstance(output.get("body_format"), dict) and output["body_format"].get("size_pt", 0) >= 10 and output["body_format"].get("line_spacing", 0) >= 1.0, output.get("body_format")),
         check_record("accessibility checks", len(output.get("accessibility_checks", [])) >= 2, output.get("accessibility_checks")),
@@ -574,8 +657,36 @@ VALIDATORS: dict[str, Callable[[dict[str, Any]], tuple[list[dict[str, Any]], lis
 }
 
 
+def validator_hard_check_names(candidate_id: str) -> list[str]:
+    """Return the ordered check contract implemented by one validator."""
+
+    hard, _ = VALIDATORS[candidate_id]({})
+    return [item["check"] for item in hard]
+
+
+def validate_rubric_contract(rubric_map: dict[str, dict[str, Any]]) -> None:
+    """Fail closed when the declared rubric and executable checks drift."""
+
+    for candidate_id in CANDIDATE_ORDER:
+        declared = rubric_map[candidate_id]["hard_checks"]
+        implemented = validator_hard_check_names(candidate_id)
+        if declared != implemented:
+            raise BenchmarkError(
+                f"rubric/validator hard-check mismatch: {candidate_id}: "
+                f"declared={declared!r} implemented={implemented!r}"
+            )
+
+
 def acceptance(candidate_id: str, output: dict[str, Any]) -> dict[str, Any]:
     hard, quality = VALIDATORS[candidate_id](output)
+    rubric_map = {
+        item["candidate_id"]: item
+        for item in load_json(RUBRICS)["rubrics"]
+    }
+    implemented = [item["check"] for item in hard]
+    declared = rubric_map[candidate_id]["hard_checks"]
+    if implemented != declared:
+        raise BenchmarkError(f"rubric/validator hard-check mismatch: {candidate_id}")
     hard_pass = all(item["pass"] for item in hard)
     return {
         "acceptance_pass": hard_pass,
