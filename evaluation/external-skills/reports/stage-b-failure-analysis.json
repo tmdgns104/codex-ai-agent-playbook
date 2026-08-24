@@ -1,0 +1,610 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "report_id": "stage-b-failure-analysis",
+  "analysis_timestamp_utc": "2026-08-24T05:10:14.962Z",
+  "status": "EVIDENCE_ONLY_ANALYSIS_COMPLETE",
+  "scope": {
+    "executed_slots": 20,
+    "acceptance_pass_slots": 2,
+    "acceptance_fail_slots_analyzed": 18,
+    "new_llm_calls": 0,
+    "ollama_calls": 0,
+    "benchmark_reruns": 0,
+    "adoption_decisions_reconsidered": false,
+    "protected_artifacts_modified": false
+  },
+  "source_evidence": {
+    "protected_file_sha256_before_analysis": {
+      "evaluation/external-skills/benchmark-results.json": "21cb7165c4e02397fdafa9bc5d20f715e723ff351965cf71e00e42f6e7e80249",
+      "evaluation/external-skills/adoption-decisions.json": "4078ba8597bc9483606c41dcae2a88d5096de13ce22cb6c1084665079433bbe3",
+      "evaluation/external-skills/stage-b-acceptance-rubrics.json": "0a190f0bcc5e16c4c0b0fd779f7a83d297a999a516cc5976d178dd56a37d0f56",
+      "evaluation/external-skills/fixtures/stage-b-local-inputs.json": "b27310ae4a464da458992faa34d63363b8ea8f87201d4674ee2643417f0b90d3",
+      "evaluation/external-skills/reports/stage-b-execution-summary.json": "6ff9a6a08186250768153acab19fa63501b4fee08e22fe6ff10deecb370e6e25"
+    },
+    "slot_evidence_root": "evaluation/external-skills/evidence/stage-b",
+    "slot_evidence_file_count": 20,
+    "slot_evidence_set_sha256": "a3aa40c312ff5fa91c76d75775f6b9bf4c173da9cc4fefa9df7090e8273e9392",
+    "slot_evidence_set_hash_method": "SHA-256 over each sorted POSIX relative path, NUL, that file's SHA-256 hex digest, and newline"
+  },
+  "methodology": {
+    "classification_unit": "one acceptance-failed slot",
+    "evidence_rule": "The recorded failed hard checks were compared with parsed_output and raw_response_text in the same immutable slot Evidence. No model self-report was accepted as final Evidence.",
+    "primary_count_rule": "primary_cause_counts assigns exactly one most likely cause to each of the 18 failed slots and therefore sums to 18.",
+    "all_assigned_count_rule": "all_assigned_cause_counts counts both the primary and distinct secondary cause for each slot and therefore sums to 36.",
+    "cause_definitions": {
+      "MODEL_CAPABILITY": "The output misunderstands, omits, contradicts, or computes a task requirement incorrectly.",
+      "CONTEXT_EFFECT": "Optional Skill context is absent, insufficient, overly broad, or appears to steer the answer incorrectly.",
+      "RUBRIC_TOO_STRICT": "The intended acceptance condition is narrower than the practical task purpose, independent of mere word matching.",
+      "FIXTURE_DESIGN": "The fixture or output contract does not define enough structure to make the demanded representation unambiguous.",
+      "EXECUTION_HARNESS": "The recorded validator result is inconsistent with a semantically equivalent phrase or otherwise indicates runner/validator behavior.",
+      "OUTPUT_FORMAT": "Relevant content exists, but not in the exact field, key set, label, or normalized representation expected by acceptance.",
+      "OTHER": "No listed cause adequately explains the failure."
+    },
+    "causal_limit": "This is a fixed-model, one-attempt-per-slot comparison. Context effects are evidence-backed associations, not estimates of repeated-run or cross-model causality."
+  },
+  "failed_slots": [
+    {
+      "candidate": "kd-exploratory-data-analysis",
+      "fixture_id": "bench004-03",
+      "variant": "baseline-no-optional",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/baseline-no-optional.json",
+      "failed_hard_checks": [
+        {"check": "exact missing columns", "recorded_evidence": ["age"]},
+        {"check": "distribution checks", "recorded_evidence": ["age", "annual_income"]},
+        {"check": "non-causal correlation interpretation", "recorded_evidence": "age__annual_income: 0.41 (positive correlation exists; caution required when inferring causality or predicting income solely from age without controlling for other factors like region)."}
+      ],
+      "model_output_evidence": [
+        "missing_columns contains only age even though the fixture records annual_income missing=85.",
+        "distribution_checks names only age and annual_income, while workflow steps separately discuss region and churned.",
+        "The correlation text says caution is required when inferring causality, which is substantively non-causal wording despite the recorded hard-check failure."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "EXECUTION_HARNESS",
+      "confidence": {"score": 0.96, "label": "HIGH", "rationale": "The missing annual_income is a direct contradiction of supplied input; the correlation failure is a separate semantic false-negative signal."}
+    },
+    {
+      "candidate": "kd-exploratory-data-analysis",
+      "fixture_id": "bench004-03",
+      "variant": "current-playbook",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/current-playbook.json",
+      "failed_hard_checks": [
+        {"check": "non-causal correlation interpretation", "recorded_evidence": "age__annual_income correlation is 0.41, indicating a moderate positive relationship. interpret with caution due to potential confounding variables and the small number of high-income outliers."}
+      ],
+      "model_output_evidence": [
+        "The answer mentions caution and confounding but never explicitly states that correlation does not establish causation.",
+        "All other hard checks, including both missing columns and four distribution checks, passed."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "RUBRIC_TOO_STRICT",
+      "confidence": {"score": 0.68, "label": "MEDIUM", "rationale": "Explicit non-causality was omitted, but the caution/confounding wording is close enough that the boundary is partly judgmental."}
+    },
+    {
+      "candidate": "kd-exploratory-data-analysis",
+      "fixture_id": "bench004-03",
+      "variant": "external-expert",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/external-expert.json",
+      "failed_hard_checks": [
+        {"check": "exact missing columns", "recorded_evidence": ["age"]},
+        {"check": "non-causal correlation interpretation", "recorded_evidence": "age and annual_income show moderate positive correlation (r=0.41). this association is exploratory; causal claims are unsupported."}
+      ],
+      "model_output_evidence": [
+        "missing_columns omits annual_income although the supplied input records 85 missing values.",
+        "The correlation output explicitly says causal claims are unsupported, yet the hard check is recorded as failed."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "EXECUTION_HARNESS",
+      "confidence": {"score": 0.98, "label": "HIGH", "rationale": "One failure is an unambiguous input-reading error and the other is an unambiguous semantic false negative."}
+    },
+    {
+      "candidate": "kd-exploratory-data-analysis",
+      "fixture_id": "bench004-03",
+      "variant": "adapted-playbook",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/adapted-playbook.json",
+      "failed_hard_checks": [
+        {"check": "exact missing columns", "recorded_evidence": ["age"]}
+      ],
+      "model_output_evidence": [
+        "missing_columns contains only age and workflow step 2 says others are complete, directly contradicting annual_income missing=85.",
+        "The adapted answer passed distribution, outlier, correlation, workflow, reproducibility, and safety checks."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "CONTEXT_EFFECT",
+      "confidence": {"score": 0.95, "label": "HIGH", "rationale": "The remaining failure is a clear local-input omission; insufficient emphasis in adapted context is possible but not independently proven."}
+    },
+    {
+      "candidate": "kd-scikit-learn",
+      "fixture_id": "bench004-04",
+      "variant": "baseline-no-optional",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/baseline-no-optional.json",
+      "failed_hard_checks": [
+        {"check": "stratified 0.2 split", "recorded_evidence": ["train_test_split with test_fraction=0.2", 0.2]},
+        {"check": "numeric preprocessing", "recorded_evidence": ["impute_missing_values", "standardize"]},
+        {"check": "categorical preprocessing", "recorded_evidence": ["handle_missing_values", "one_hot_encode"]},
+        {"check": "ROC-AUC and PR-AUC", "recorded_evidence": ["accuracy", "precision", "recall", "f1_score"]},
+        {"check": "training-only cross-validation", "recorded_evidence": "none"},
+        {"check": "final-once test usage", "recorded_evidence": "single_holdout_for_final_evaluation_only"}
+      ],
+      "model_output_evidence": [
+        "The split omits stratification, required imbalance-aware metrics are absent, and cross_validation_scope is none.",
+        "The numeric and categorical lists describe standardization, imputation/handling, and one-hot encoding in generic names.",
+        "test_set_usage says single holdout for final evaluation only, semantically expressing final-once usage."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "EXECUTION_HARNESS",
+      "confidence": {"score": 0.97, "label": "HIGH", "rationale": "Several substantive requirements are missing, while three additional failures appear driven by narrow terminology matching."}
+    },
+    {
+      "candidate": "kd-scikit-learn",
+      "fixture_id": "bench004-04",
+      "variant": "current-playbook",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/current-playbook.json",
+      "failed_hard_checks": [
+        {"check": "numeric preprocessing", "recorded_evidence": ["impute_missing_values", "standardize"]},
+        {"check": "categorical preprocessing", "recorded_evidence": ["handle_missing_values", "one_hot_encode"]},
+        {"check": "ROC-AUC and PR-AUC", "recorded_evidence": ["accuracy", "precision", "recall", "f1_score", "roc_auc"]},
+        {"check": "training-only cross-validation", "recorded_evidence": "none"},
+        {"check": "final-once test usage", "recorded_evidence": "single_holdout_for_final_evaluation_only"}
+      ],
+      "model_output_evidence": [
+        "PR-AUC is absent and cross_validation_scope is none, so two failures are substantive.",
+        "The generic preprocessing labels and single_holdout_for_final_evaluation_only carry the intended preprocessing and final-once meanings but were still rejected."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "EXECUTION_HARNESS",
+      "confidence": {"score": 0.96, "label": "HIGH", "rationale": "The output has both genuine omissions and terminology-sensitive false negatives."}
+    },
+    {
+      "candidate": "kd-scikit-learn",
+      "fixture_id": "bench004-04",
+      "variant": "external-expert",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/external-expert.json",
+      "failed_hard_checks": [
+        {"check": "ROC-AUC and PR-AUC", "recorded_evidence": ["accuracy_score", "precision_score", "recall_score", "f1_score", "roc_auc_score"]},
+        {"check": "final-once test usage", "recorded_evidence": "single_holdout_evaluation"}
+      ],
+      "model_output_evidence": [
+        "PR-AUC is genuinely absent from evaluation_metrics.",
+        "single_holdout_evaluation and workflow text restricting predictions to test samples convey a single held-out evaluation, but the dedicated field omits the words final and once."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "OUTPUT_FORMAT",
+      "confidence": {"score": 0.92, "label": "HIGH", "rationale": "Metric omission is decisive; final-once intent exists only indirectly and not in the required representation."}
+    },
+    {
+      "candidate": "kd-scikit-learn",
+      "fixture_id": "bench004-04",
+      "variant": "adapted-playbook",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/adapted-playbook.json",
+      "failed_hard_checks": [
+        {"check": "final-once test usage", "recorded_evidence": "Single use for final evaluation after model selection and hyperparameter tuning"}
+      ],
+      "model_output_evidence": [
+        "The failed field says Single use for final evaluation after model selection and hyperparameter tuning, which is semantically equivalent to final-once use.",
+        "All other hard checks passed, including train-only cross-validation and both required AUC metrics."
+      ],
+      "most_likely_cause": "EXECUTION_HARNESS",
+      "second_likely_cause": "OUTPUT_FORMAT",
+      "confidence": {"score": 0.99, "label": "HIGH", "rationale": "This is the clearest recorded semantic false negative: single and once are equivalent in this context."}
+    },
+    {
+      "candidate": "kd-sympy",
+      "fixture_id": "bench004-06",
+      "variant": "baseline-no-optional",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-sympy/baseline-no-optional.json",
+      "failed_hard_checks": [
+        {"check": "exact symbolic method", "recorded_evidence": "factorization_and_roots"},
+        {"check": "zero substitution residuals", "recorded_evidence": {"method": "substitution_check", "description": "각 근을 원래 식에 대입하여 결과가 0인지 확인", "expected_result": "0"}}
+      ],
+      "model_output_evidence": [
+        "The factorization and exact roots [-2, -1, 1, 2] are correct, so factorization_and_roots is an exact symbolic method in substance.",
+        "verification_residuals describes a substitution check and expected zero but does not provide a root-to-residual map."
+      ],
+      "most_likely_cause": "FIXTURE_DESIGN",
+      "second_likely_cause": "OUTPUT_FORMAT",
+      "confidence": {"score": 0.83, "label": "HIGH", "rationale": "The required field name does not itself disclose the demanded per-root key structure; the answer then chooses a descriptive object instead."}
+    },
+    {
+      "candidate": "kd-sympy",
+      "fixture_id": "bench004-06",
+      "variant": "current-playbook",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-sympy/current-playbook.json",
+      "failed_hard_checks": [
+        {"check": "exact symbolic method", "recorded_evidence": "factorization_and_roots"},
+        {"check": "zero substitution residuals", "recorded_evidence": {"description": "Substitute each root back into the original expression and verify that the result equals zero.", "formula": "f(x) = x**4 - 5*x**2 + 4, check f(root) == 0"}}
+      ],
+      "model_output_evidence": [
+        "The output correctly factors the polynomial, lists all four exact roots, and says every root should produce exactly zero.",
+        "It supplies a verification description/formula instead of concrete residual keys -2, -1, 1, and 2."
+      ],
+      "most_likely_cause": "FIXTURE_DESIGN",
+      "second_likely_cause": "OUTPUT_FORMAT",
+      "confidence": {"score": 0.9, "label": "HIGH", "rationale": "Substantive mathematics is correct; the rejection turns on an under-specified object shape and method-label wording."}
+    },
+    {
+      "candidate": "kd-sympy",
+      "fixture_id": "bench004-06",
+      "variant": "external-expert",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-sympy/external-expert.json",
+      "failed_hard_checks": [
+        {"check": "exact roots", "recorded_evidence": ["/", "/", "/"]},
+        {"check": "zero substitution residuals", "recorded_evidence": {"method": "Substitute each root into the original expression and simplify to confirm zero.", "expected_result": "All residuals must equal exactly 0."}}
+      ],
+      "model_output_evidence": [
+        "factorization is recorded as (x - 1)*(x + 2)*(x - 2), omitting the (x + 1) factor.",
+        "exact_roots is [\"/\", \"/\", \"/\"] and the workflow incorrectly claims solutions [1, -2, 2].",
+        "Residual verification is described but no concrete residual values are supplied."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "FIXTURE_DESIGN",
+      "confidence": {"score": 1.0, "label": "HIGH", "rationale": "The mathematical result is plainly wrong before any formatting issue is considered."}
+    },
+    {
+      "candidate": "kd-citation-management",
+      "fixture_id": "bench004-07",
+      "variant": "baseline-no-optional",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-citation-management/baseline-no-optional.json",
+      "failed_hard_checks": [
+        {"check": "normalized local DOI values", "recorded_evidence": {"C1": "10.1000/SAFE.001", "C2": "10.1000/safe.001"}}
+      ],
+      "model_output_evidence": [
+        "C1 remains uppercase even though the answer's own rule says to convert DOIs to lowercase.",
+        "C3 and C4 are absent from normalized_dois, although duplicate and missing-field outputs are otherwise correct."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "OUTPUT_FORMAT",
+      "confidence": {"score": 0.95, "label": "HIGH", "rationale": "The output contradicts its stated normalization rule; omission of null/unchanged entries is also a map-completeness issue."}
+    },
+    {
+      "candidate": "kd-citation-management",
+      "fixture_id": "bench004-07",
+      "variant": "current-playbook",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-citation-management/current-playbook.json",
+      "failed_hard_checks": [
+        {"check": "normalized local DOI values", "recorded_evidence": {"C1": "10.1000/SAFE.001", "C2": "10.1000/safe.001"}}
+      ],
+      "model_output_evidence": [
+        "The deduplication rule says normalized DOI comparison is case-insensitive, but normalized_dois preserves uppercase C1.",
+        "The full normalized map does not include C3=null or C4=10.1000/evidence.004."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "OUTPUT_FORMAT",
+      "confidence": {"score": 0.95, "label": "HIGH", "rationale": "The required transformation is understood but not consistently applied in the output field."}
+    },
+    {
+      "candidate": "kd-citation-management",
+      "fixture_id": "bench004-07",
+      "variant": "external-expert",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-citation-management/external-expert.json",
+      "failed_hard_checks": [
+        {"check": "normalized local DOI values", "recorded_evidence": {"C1": "10.1000/SAFE.001", "C2": "10.1000/safe.001"}}
+      ],
+      "model_output_evidence": [
+        "The workflow says all DOI values were converted to lowercase, but C1 remains uppercase in normalized_dois.",
+        "C3 and C4 are omitted from the normalized map while all other hard checks pass."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "OUTPUT_FORMAT",
+      "confidence": {"score": 0.97, "label": "HIGH", "rationale": "The output is internally inconsistent on the sole failed requirement."}
+    },
+    {
+      "candidate": "kd-docx",
+      "fixture_id": "bench004-09",
+      "variant": "baseline-no-optional",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-docx/baseline-no-optional.json",
+      "failed_hard_checks": [
+        {"check": "consistent heading hierarchy", "recorded_evidence": [{"text": "Quarterly Safety Review", "level": "H1"}, {"text": "Executive Summary", "level": "H2"}, {"text": "Findings", "level": "H2"}, {"text": "Recommendations", "level": "H2"}]},
+        {"check": "package and visual verification", "recorded_evidence": ["Validate that all H2 headings appear in the Table of Contents (if generated).", "Confirm the 'Control Status' table contains exactly three rows with correct header mapping."]}
+      ],
+      "model_output_evidence": [
+        "H1 title plus peer H2 sections is internally consistent, although it does not use the demanded literal Title/Heading 1 convention.",
+        "The verification plan checks TOC/table content but omits DOCX package validation and rendered-page or visual inspection."
+      ],
+      "most_likely_cause": "RUBRIC_TOO_STRICT",
+      "second_likely_cause": "MODEL_CAPABILITY",
+      "confidence": {"score": 0.6, "label": "MEDIUM", "rationale": "The hierarchy failure is convention-sensitive, while the separate package/visual omission is genuine; either could reasonably be treated as primary."}
+    },
+    {
+      "candidate": "kd-docx",
+      "fixture_id": "bench004-09",
+      "variant": "current-playbook",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-docx/current-playbook.json",
+      "failed_hard_checks": [
+        {"check": "consistent heading hierarchy", "recorded_evidence": [{"text": "Quarterly Safety Review", "level": "H1"}, {"text": "Executive Summary", "level": "H2"}, {"text": "Findings", "level": "H2"}, {"text": "Recommendations", "level": "H2"}]},
+        {"check": "package and visual verification", "recorded_evidence": ["Validate H1-H2 hierarchy in the DOCX file.", "Confirm all three rows of the 'Control Status' table match input data exactly.", "Check that no external links or macros are present."]}
+      ],
+      "model_output_evidence": [
+        "The title/section hierarchy is consistent but uses H1/H2 rather than literal Title/Heading 1 labels.",
+        "A workflow verification says visual inspection confirms uniformity, but verification_plan lacks render/page/visual wording and package-level validation."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "RUBRIC_TOO_STRICT",
+      "confidence": {"score": 0.7, "label": "MEDIUM", "rationale": "Package validation is substantively missing; hierarchy rejection depends on a narrower Word-style convention than internal consistency alone."}
+    },
+    {
+      "candidate": "kd-docx",
+      "fixture_id": "bench004-09",
+      "variant": "external-expert",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-docx/external-expert.json",
+      "failed_hard_checks": [
+        {"check": "consistent heading hierarchy", "recorded_evidence": [{"text": "Executive Summary", "level": "HeadingLevel1"}, {"text": "Findings", "level": "HeadingLevel2"}, {"text": "Recommendations", "level": "HeadingLevel3"}]},
+        {"check": "package and visual verification", "recorded_evidence": ["Render document to PDF via soffice.py --headless --convert-to pdf", "Verify all headings appear in TOC", "Confirm table renders with correct column widths", "Check for stray empty paragraphs or bullets"]}
+      ],
+      "model_output_evidence": [
+        "Three peer input sections are incorrectly assigned three progressively deeper heading levels, and the title is absent from heading_hierarchy.",
+        "The plan includes PDF rendering and visual checks but does not explicitly include DOCX package validation."
+      ],
+      "most_likely_cause": "CONTEXT_EFFECT",
+      "second_likely_cause": "MODEL_CAPABILITY",
+      "confidence": {"score": 0.61, "label": "MEDIUM", "rationale": "The raw-context answer is uniquely elaborate yet structurally worse; one fixed run cannot separate context steering from ordinary model error."}
+    },
+    {
+      "candidate": "kd-docx",
+      "fixture_id": "bench004-09",
+      "variant": "adapted-playbook",
+      "evidence_path": "evaluation/external-skills/evidence/stage-b/kd-docx/adapted-playbook.json",
+      "failed_hard_checks": [
+        {"check": "consistent heading hierarchy", "recorded_evidence": [{"text": "Quarterly Safety Review", "level": "title"}, {"text": "Executive Summary", "level": "h1"}, {"text": "Findings", "level": "h2"}, {"text": "Recommendations", "level": "h2"}]}
+      ],
+      "model_output_evidence": [
+        "The title is present and labels are semantically close to Title/H1, but Findings and Recommendations are H2 while all three supplied sections are peers.",
+        "The adapted answer passes package/visual verification through explicit package validation and PDF rendering."
+      ],
+      "most_likely_cause": "MODEL_CAPABILITY",
+      "second_likely_cause": "OUTPUT_FORMAT",
+      "confidence": {"score": 0.88, "label": "HIGH", "rationale": "There is both a genuine peer-level inconsistency and a literal style-label mismatch."}
+    }
+  ],
+  "aggregates": {
+    "primary_cause_counts": {
+      "MODEL_CAPABILITY": 13,
+      "CONTEXT_EFFECT": 1,
+      "RUBRIC_TOO_STRICT": 1,
+      "FIXTURE_DESIGN": 2,
+      "EXECUTION_HARNESS": 1,
+      "OUTPUT_FORMAT": 0,
+      "OTHER": 0
+    },
+    "all_assigned_cause_counts": {
+      "MODEL_CAPABILITY": 15,
+      "CONTEXT_EFFECT": 2,
+      "RUBRIC_TOO_STRICT": 3,
+      "FIXTURE_DESIGN": 3,
+      "EXECUTION_HARNESS": 5,
+      "OUTPUT_FORMAT": 8,
+      "OTHER": 0
+    },
+    "candidate_fail_causes": {
+      "kd-exploratory-data-analysis": {
+        "fail_slots": 4,
+        "failed_hard_checks": 7,
+        "primary_causes": {"MODEL_CAPABILITY": 4},
+        "summary": "Three variants omit annual_income from missing_columns; current-playbook alone reads both missing counts, but its cautious correlation wording still fails explicit non-causality."
+      },
+      "kd-scikit-learn": {
+        "fail_slots": 4,
+        "failed_hard_checks": 14,
+        "primary_causes": {"MODEL_CAPABILITY": 3, "EXECUTION_HARNESS": 1},
+        "summary": "Optional context progressively restores stratification, concrete preprocessing, AUC metrics, and train-only CV. Adapted-playbook's sole failure is a semantic false negative on single versus once."
+      },
+      "kd-sympy": {
+        "fail_slots": 3,
+        "failed_hard_checks": 6,
+        "primary_causes": {"FIXTURE_DESIGN": 2, "MODEL_CAPABILITY": 1},
+        "summary": "Baseline/current have correct mathematics but descriptive rather than per-root residual objects; raw external context produces an actually wrong factorization and roots."
+      },
+      "kd-citation-management": {
+        "fail_slots": 3,
+        "failed_hard_checks": 3,
+        "primary_causes": {"MODEL_CAPABILITY": 3},
+        "summary": "All three failed variants identify duplicates and missing fields correctly but contradict their own lowercase normalization rule and omit two IDs from normalized_dois."
+      },
+      "kd-docx": {
+        "fail_slots": 4,
+        "failed_hard_checks": 7,
+        "primary_causes": {"RUBRIC_TOO_STRICT": 1, "MODEL_CAPABILITY": 2, "CONTEXT_EFFECT": 1},
+        "summary": "Exact Word-style label expectations mix with genuine omissions of package/render verification and genuine peer-heading inconsistencies. Adapted context removes the verification failure but not the hierarchy failure."
+      }
+    },
+    "variant_fail_causes": {
+      "baseline-no-optional": {
+        "pass_slots": 0,
+        "fail_slots": 5,
+        "failed_hard_checks": 14,
+        "primary_causes": {"MODEL_CAPABILITY": 3, "FIXTURE_DESIGN": 1, "RUBRIC_TOO_STRICT": 1},
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 6694,
+        "output_tokens": 2492,
+        "execution_time_ms": 92468.057
+      },
+      "current-playbook": {
+        "pass_slots": 0,
+        "fail_slots": 5,
+        "failed_hard_checks": 11,
+        "primary_causes": {"MODEL_CAPABILITY": 4, "FIXTURE_DESIGN": 1},
+        "loaded_context_bytes": 4704,
+        "prompt_tokens": 7725,
+        "output_tokens": 2826,
+        "execution_time_ms": 86931.478,
+        "context_note": "Evidence records context only for EDA (4473 bytes) and DOCX (231 bytes); sklearn, SymPy, and citation receive zero selected context bytes."
+      },
+      "external-expert": {
+        "pass_slots": 0,
+        "fail_slots": 5,
+        "failed_hard_checks": 9,
+        "primary_causes": {"MODEL_CAPABILITY": 4, "CONTEXT_EFFECT": 1},
+        "loaded_context_bytes": 54704,
+        "prompt_tokens": 20351,
+        "output_tokens": 2819,
+        "execution_time_ms": 94712.988
+      },
+      "adapted-playbook": {
+        "pass_slots": 2,
+        "fail_slots": 3,
+        "failed_hard_checks": 3,
+        "primary_causes": {"MODEL_CAPABILITY": 2, "EXECUTION_HARNESS": 1},
+        "loaded_context_bytes": 2799,
+        "prompt_tokens": 7130,
+        "output_tokens": 2907,
+        "execution_time_ms": 89814.913
+      }
+    },
+    "variant_comparison": {
+      "baseline_to_current": {
+        "failed_hard_checks_change": -3,
+        "failed_hard_checks_reduction_percent": 21.429,
+        "acceptance_pass_change": 0,
+        "interpretation": "Current routing improves detail mainly for EDA, but three candidates receive no selected optional context and no slot crosses the all-hard-check threshold."
+      },
+      "baseline_to_external": {
+        "failed_hard_checks_change": -5,
+        "failed_hard_checks_reduction_percent": 35.714,
+        "acceptance_pass_change": 0,
+        "interpretation": "Raw external context reduces checklist omissions, especially for sklearn, but leaves at least one failure in every candidate and coincides with the worst SymPy answer."
+      },
+      "baseline_to_adapted": {
+        "failed_hard_checks_change": -11,
+        "failed_hard_checks_reduction_percent": 78.571,
+        "acceptance_pass_change": 2,
+        "interpretation": "Adapted context is the only variant with recorded passes and leaves one failed check in each remaining candidate."
+      },
+      "external_to_adapted": {
+        "failed_hard_checks_change": -6,
+        "failed_hard_checks_reduction_percent": 66.667,
+        "acceptance_pass_change": 2,
+        "interpretation": "Every candidate has no more failed hard checks under adapted context than raw external context; SymPy and citation cross to PASS."
+      }
+    }
+  },
+  "adapted_playbook_two_pass_explanation": {
+    "passed_slots": [
+      {
+        "candidate": "kd-sympy",
+        "why": "The adapted output uses an exact-method label, correct four-factor factorization, all four roots, and the precise root-to-zero residual map absent from baseline/current and incorrect under raw external context."
+      },
+      {
+        "candidate": "kd-citation-management",
+        "why": "The adapted output lowercases both duplicate DOIs and includes the complete C1-C4 normalized map, while preserving the already-correct duplicate and missing-field findings."
+      }
+    ],
+    "remaining_failures": [
+      {"candidate": "kd-exploratory-data-analysis", "reason": "The model still misses annual_income missing=85 despite otherwise complete EDA coverage."},
+      {"candidate": "kd-scikit-learn", "reason": "Recorded FAIL is best explained by validator wording sensitivity because the output says Single use for final evaluation."},
+      {"candidate": "kd-docx", "reason": "The output improves package/render verification but still assigns peer sections different levels and uses non-canonical style labels."}
+    ],
+    "overall": "Adaptation appears to concentrate context on exact acceptance-relevant representations. It solves two contract-sensitive candidates completely, but it cannot reliably correct direct input-reading and hierarchy errors from this one Qwen run."
+  },
+  "raw_external_vs_adapted_cost_effect": {
+    "aggregate": {
+      "raw_external_context_bytes": 54704,
+      "adapted_context_bytes": 2799,
+      "context_bytes_saved": 51905,
+      "context_reduction_percent": 94.883,
+      "raw_external_prompt_tokens": 20351,
+      "adapted_prompt_tokens": 7130,
+      "prompt_tokens_saved": 13221,
+      "prompt_token_reduction_percent": 64.965,
+      "raw_external_output_tokens": 2819,
+      "adapted_output_tokens": 2907,
+      "output_token_change": 88,
+      "output_token_change_percent": 3.122,
+      "raw_external_execution_time_ms": 94712.988,
+      "adapted_execution_time_ms": 89814.913,
+      "execution_time_saved_ms": 4898.075,
+      "execution_time_reduction_percent": 5.172,
+      "raw_external_failed_hard_checks": 9,
+      "adapted_failed_hard_checks": 3,
+      "recorded_pass_change": 2
+    },
+    "per_candidate": {
+      "kd-exploratory-data-analysis": {"context_reduction_percent": 95.298, "prompt_token_reduction_percent": 68.558, "failed_hard_checks": {"external": 2, "adapted": 1}},
+      "kd-scikit-learn": {"context_reduction_percent": 94.253, "prompt_token_reduction_percent": 61.294, "failed_hard_checks": {"external": 2, "adapted": 1}},
+      "kd-sympy": {"context_reduction_percent": 95.145, "prompt_token_reduction_percent": 67.722, "failed_hard_checks": {"external": 2, "adapted": 0}},
+      "kd-citation-management": {"context_reduction_percent": 96.093, "prompt_token_reduction_percent": 68.217, "failed_hard_checks": {"external": 1, "adapted": 0}},
+      "kd-docx": {"context_reduction_percent": 92.242, "prompt_token_reduction_percent": 55.61, "failed_hard_checks": {"external": 2, "adapted": 1}}
+    },
+    "interpretation": "Adapted context is substantially cheaper than raw external context by both bytes and prompt tokens while producing fewer failed checks and two passes. Output length is essentially unchanged and runtime improves only modestly, so the clearest efficiency gain is context/prompt reduction rather than latency."
+  },
+  "qwen_model_limit_evidence": {
+    "primary_model_capability_slots": 13,
+    "examples": [
+      "annual_income missing=85 is omitted in three EDA variants, and adapted workflow explicitly but incorrectly says the other columns are complete.",
+      "Baseline/current sklearn omit PR-AUC and train-only cross-validation; external-expert still omits PR-AUC.",
+      "External-expert SymPy drops a polynomial factor, returns slash characters as roots, and lists only three incorrect solutions.",
+      "All three failed citation variants state lowercase normalization but leave C1 uppercase.",
+      "DOCX outputs repeatedly assign peer sections inconsistent or non-canonical levels."
+    ],
+    "non_gating_warning_signals": [
+      "Adapted sklearn says test_fraction=0.2 but a workflow verification expects a test size of approximately 24 percent.",
+      "Adapted sklearn emits OneHotEncoder(handle='drop', sparse_output=False), which is not a valid expression of the standard handle_unknown parameter and is not caught by the recorded rubric.",
+      "Adapted EDA invents annual_income min=0 even though the local input supplies no minimum."
+    ],
+    "interpretation": "These are input-reading, consistency, factual, or task-completion errors present in the generated content itself. They remain model-limit evidence even where the benchmark also has format or validation problems."
+  },
+  "rubric_and_benchmark_problem_evidence": {
+    "clear_semantic_false_negatives": [
+      {
+        "slot": "kd-scikit-learn/adapted-playbook",
+        "check": "final-once test usage",
+        "output": "Single use for final evaluation after model selection and hyperparameter tuning",
+        "assessment": "Definite semantic equivalence; this sole failed check likely flips the recorded slot result."
+      },
+      {
+        "slot": "kd-exploratory-data-analysis/external-expert",
+        "check": "non-causal correlation interpretation",
+        "output": "This association is exploratory; causal claims are unsupported.",
+        "assessment": "Definite semantic compliance for this check, but the slot still fails the missing-columns check."
+      },
+      {
+        "slot": "kd-exploratory-data-analysis/baseline-no-optional",
+        "check": "non-causal correlation interpretation",
+        "output": "caution required when inferring causality",
+        "assessment": "Probable semantic compliance for this check, but the slot has two other failed checks."
+      }
+    ],
+    "under_specified_output_contracts": [
+      "SymPy verification_residuals is required as an object, but the supplied fixture field list does not state that keys must be exactly -2, -1, 1, and 2 with string value 0.",
+      "Citation normalized_dois is required, but the supplied field list does not explicitly state that every C1-C4 key, including null C3, must be emitted.",
+      "DOCX heading_hierarchy accepts free-form level strings in outputs, while acceptance distinguishes exact Title and Heading 1 spelling from H1/H2 or title/h1 conventions."
+    ],
+    "rubric_execution_contract_discrepancies": [
+      "The rubric declares one combined sklearn numeric-and-categorical preprocessing check, while slot Evidence records separate numeric and categorical checks plus an additional verification-steps hard check.",
+      "The rubric declares six SymPy hard checks, while slot Evidence records seven, including factorization present.",
+      "The rubric declares eight DOCX hard checks, while slot Evidence records nine, including ordered verifiable workflow."
+    ],
+    "impact_assessment": "The extra/split checks do not independently explain a recorded FAIL in this evidence set because the added verification/factorization/workflow checks pass and combined preprocessing would still fail where either component fails. They nevertheless weaken rubric-to-execution traceability. At least one slot, adapted sklearn, is a strong acceptance false-negative candidate without changing the stored benchmark result."
+  },
+  "actual_skill_effect_evidence": {
+    "supported_observations": [
+      "Adapted context is the only variant with passes: SymPy and citation management.",
+      "Adapted context reduces failed hard checks versus raw external context for all five candidates and reduces the aggregate from 9 to 3.",
+      "Raw external sklearn context improves concrete preprocessing, stratification, and train-only CV relative to baseline/current, although it still omits PR-AUC.",
+      "Current-playbook EDA context improves missing-column and distribution coverage to one remaining failure.",
+      "Adapted DOCX context adds package validation and PDF-render verification, removing one of the two raw/current failure dimensions."
+    ],
+    "not_supported": [
+      "The evidence does not show that raw external context is generally superior; it produces zero passes and the worst SymPy correctness failure.",
+      "The evidence does not isolate model variance because each slot has one fixed-seed attempt.",
+      "The evidence does not justify any new REJECT, ADOPT, or ADAPT decision in this analysis task."
+    ]
+  },
+  "conclusions": {
+    "benchmark_itself_problem_possibility": {
+      "assessment": "MATERIAL_BUT_NOT_SUFFICIENT_TO_EXPLAIN_ALL_18_FAILS",
+      "conclusion": "There is direct evidence of semantic validator false negatives, under-specified output shapes, exact-label sensitivity, and rubric/executed-check drift. Adapted sklearn is the clearest slot whose recorded FAIL is likely a harness artifact. Most other affected slots also contain an independent substantive error, so benchmark issues cannot explain away the full 18-slot failure set."
+    },
+    "qwen_model_limit_possibility": {
+      "assessment": "STRONG",
+      "conclusion": "Thirteen of 18 failed slots have MODEL_CAPABILITY as the primary cause. Repeated omissions of explicit input facts, missing evaluation controls, self-contradictory normalization, wrong symbolic mathematics, and inconsistent document hierarchy are content errors rather than mere schema failures."
+    },
+    "actual_skill_effect": {
+      "assessment": "OBSERVED_WITH_SINGLE_RUN_LIMITATION",
+      "conclusion": "Context changes materially affect output quality. Raw external context reduces some checklist omissions but never passes; the compact adapted context yields both recorded passes, fewer failed checks for every candidate, and about 95 percent less loaded context. This supports a targeted-context effect, especially for SymPy residual representation and complete DOI normalization, without establishing cross-run causality."
+    }
+  },
+  "decision_guard": {
+    "adoption_decisions_changed": false,
+    "benchmark_results_changed": false,
+    "instruction": "This report classifies existing failures only and must not be interpreted as a replacement adoption decision."
+  }
+}
