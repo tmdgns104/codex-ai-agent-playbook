@@ -1,0 +1,1497 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "comparison_id": "V8.3-1-vs-V8.3-2-validator-postfix",
+  "generated_at_utc": "2026-08-24T05:50:30.953Z",
+  "purpose": "Measure validator-contract improvement without changing historical results or adoption decisions.",
+  "wave1": {
+    "wave_id": "V8.3-1",
+    "baseline_commit": "cb10e1a9f81cbce5cedf354c071202f30dc72b5c",
+    "slots": 20,
+    "acceptance_pass": 2,
+    "acceptance_fail": 18,
+    "failed_hard_checks": 37,
+    "loaded_context_bytes": 62207,
+    "prompt_tokens": 41900,
+    "output_tokens": 11044,
+    "execution_time_ms": 363927.436
+  },
+  "wave2": {
+    "wave_id": "V8.3-2-validator-postfix",
+    "slots": 20,
+    "acceptance_pass": 8,
+    "acceptance_fail": 12,
+    "failed_hard_checks": 25,
+    "loaded_context_bytes": 62207,
+    "prompt_tokens": 42924,
+    "output_tokens": 10527,
+    "execution_time_ms": 344911.33
+  },
+  "delta": {
+    "acceptance_pass": 6,
+    "acceptance_fail": -6,
+    "failed_hard_checks": -12,
+    "loaded_context_bytes": 0,
+    "prompt_tokens": 1024,
+    "output_tokens": -517,
+    "execution_time_ms": -19016.106
+  },
+  "candidate_comparison": [
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "wave1": {
+        "slots": 4,
+        "acceptance_pass": 0,
+        "acceptance_fail": 4,
+        "failed_hard_checks": 7,
+        "loaded_context_bytes": 17700,
+        "prompt_tokens": 10057,
+        "output_tokens": 2354,
+        "execution_time_ms": 90668.832
+      },
+      "wave2": {
+        "slots": 4,
+        "acceptance_pass": 1,
+        "acceptance_fail": 3,
+        "failed_hard_checks": 7,
+        "loaded_context_bytes": 17700,
+        "prompt_tokens": 10077,
+        "output_tokens": 2227,
+        "execution_time_ms": 82480.894
+      },
+      "delta": {
+        "acceptance_pass": 1,
+        "acceptance_fail": -1,
+        "failed_hard_checks": 0,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 20,
+        "output_tokens": -127,
+        "execution_time_ms": -8187.938
+      }
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "wave1": {
+        "slots": 4,
+        "acceptance_pass": 0,
+        "acceptance_fail": 4,
+        "failed_hard_checks": 14,
+        "loaded_context_bytes": 10875,
+        "prompt_tokens": 7551,
+        "output_tokens": 2304,
+        "execution_time_ms": 71209.104
+      },
+      "wave2": {
+        "slots": 4,
+        "acceptance_pass": 1,
+        "acceptance_fail": 3,
+        "failed_hard_checks": 12,
+        "loaded_context_bytes": 10875,
+        "prompt_tokens": 7571,
+        "output_tokens": 2273,
+        "execution_time_ms": 69852.264
+      },
+      "delta": {
+        "acceptance_pass": 1,
+        "acceptance_fail": -1,
+        "failed_hard_checks": -2,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 20,
+        "output_tokens": -31,
+        "execution_time_ms": -1356.84
+      }
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "wave1": {
+        "slots": 4,
+        "acceptance_pass": 1,
+        "acceptance_fail": 3,
+        "failed_hard_checks": 6,
+        "loaded_context_bytes": 10301,
+        "prompt_tokens": 7703,
+        "output_tokens": 1777,
+        "execution_time_ms": 55943.192
+      },
+      "wave2": {
+        "slots": 4,
+        "acceptance_pass": 1,
+        "acceptance_fail": 3,
+        "failed_hard_checks": 3,
+        "loaded_context_bytes": 10301,
+        "prompt_tokens": 8015,
+        "output_tokens": 1571,
+        "execution_time_ms": 50540.489
+      },
+      "delta": {
+        "acceptance_pass": 0,
+        "acceptance_fail": 0,
+        "failed_hard_checks": -3,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 312,
+        "output_tokens": -206,
+        "execution_time_ms": -5402.703
+      }
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "wave1": {
+        "slots": 4,
+        "acceptance_pass": 1,
+        "acceptance_fail": 3,
+        "failed_hard_checks": 3,
+        "loaded_context_bytes": 15294,
+        "prompt_tokens": 9149,
+        "output_tokens": 1756,
+        "execution_time_ms": 57281.26
+      },
+      "wave2": {
+        "slots": 4,
+        "acceptance_pass": 4,
+        "acceptance_fail": 0,
+        "failed_hard_checks": 0,
+        "loaded_context_bytes": 15294,
+        "prompt_tokens": 9465,
+        "output_tokens": 1776,
+        "execution_time_ms": 57854.693
+      },
+      "delta": {
+        "acceptance_pass": 3,
+        "acceptance_fail": -3,
+        "failed_hard_checks": -3,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 316,
+        "output_tokens": 20,
+        "execution_time_ms": 573.433
+      }
+    },
+    {
+      "candidate_id": "kd-docx",
+      "wave1": {
+        "slots": 4,
+        "acceptance_pass": 0,
+        "acceptance_fail": 4,
+        "failed_hard_checks": 7,
+        "loaded_context_bytes": 8037,
+        "prompt_tokens": 7440,
+        "output_tokens": 2853,
+        "execution_time_ms": 88825.048
+      },
+      "wave2": {
+        "slots": 4,
+        "acceptance_pass": 1,
+        "acceptance_fail": 3,
+        "failed_hard_checks": 3,
+        "loaded_context_bytes": 8037,
+        "prompt_tokens": 7796,
+        "output_tokens": 2680,
+        "execution_time_ms": 84182.99
+      },
+      "delta": {
+        "acceptance_pass": 1,
+        "acceptance_fail": -1,
+        "failed_hard_checks": -4,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 356,
+        "output_tokens": -173,
+        "execution_time_ms": -4642.058
+      }
+    }
+  ],
+  "variant_comparison": [
+    {
+      "variant": "baseline-no-optional",
+      "wave1": {
+        "slots": 5,
+        "acceptance_pass": 0,
+        "acceptance_fail": 5,
+        "failed_hard_checks": 14,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 6694,
+        "output_tokens": 2492,
+        "execution_time_ms": 92468.057
+      },
+      "wave2": {
+        "slots": 5,
+        "acceptance_pass": 1,
+        "acceptance_fail": 4,
+        "failed_hard_checks": 11,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 6950,
+        "output_tokens": 2449,
+        "execution_time_ms": 88132.217
+      },
+      "delta": {
+        "acceptance_pass": 1,
+        "acceptance_fail": -1,
+        "failed_hard_checks": -3,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 256,
+        "output_tokens": -43,
+        "execution_time_ms": -4335.84
+      }
+    },
+    {
+      "variant": "current-playbook",
+      "wave1": {
+        "slots": 5,
+        "acceptance_pass": 0,
+        "acceptance_fail": 5,
+        "failed_hard_checks": 11,
+        "loaded_context_bytes": 4704,
+        "prompt_tokens": 7725,
+        "output_tokens": 2826,
+        "execution_time_ms": 86931.478
+      },
+      "wave2": {
+        "slots": 5,
+        "acceptance_pass": 1,
+        "acceptance_fail": 4,
+        "failed_hard_checks": 8,
+        "loaded_context_bytes": 4704,
+        "prompt_tokens": 7981,
+        "output_tokens": 2543,
+        "execution_time_ms": 78637.554
+      },
+      "delta": {
+        "acceptance_pass": 1,
+        "acceptance_fail": -1,
+        "failed_hard_checks": -3,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 256,
+        "output_tokens": -283,
+        "execution_time_ms": -8293.924
+      }
+    },
+    {
+      "variant": "external-expert",
+      "wave1": {
+        "slots": 5,
+        "acceptance_pass": 0,
+        "acceptance_fail": 5,
+        "failed_hard_checks": 9,
+        "loaded_context_bytes": 54704,
+        "prompt_tokens": 20351,
+        "output_tokens": 2819,
+        "execution_time_ms": 94712.988
+      },
+      "wave2": {
+        "slots": 5,
+        "acceptance_pass": 1,
+        "acceptance_fail": 4,
+        "failed_hard_checks": 6,
+        "loaded_context_bytes": 54704,
+        "prompt_tokens": 20607,
+        "output_tokens": 2705,
+        "execution_time_ms": 90832.361
+      },
+      "delta": {
+        "acceptance_pass": 1,
+        "acceptance_fail": -1,
+        "failed_hard_checks": -3,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 256,
+        "output_tokens": -114,
+        "execution_time_ms": -3880.627
+      }
+    },
+    {
+      "variant": "adapted-playbook",
+      "wave1": {
+        "slots": 5,
+        "acceptance_pass": 2,
+        "acceptance_fail": 3,
+        "failed_hard_checks": 3,
+        "loaded_context_bytes": 2799,
+        "prompt_tokens": 7130,
+        "output_tokens": 2907,
+        "execution_time_ms": 89814.913
+      },
+      "wave2": {
+        "slots": 5,
+        "acceptance_pass": 5,
+        "acceptance_fail": 0,
+        "failed_hard_checks": 0,
+        "loaded_context_bytes": 2799,
+        "prompt_tokens": 7386,
+        "output_tokens": 2830,
+        "execution_time_ms": 87309.198
+      },
+      "delta": {
+        "acceptance_pass": 3,
+        "acceptance_fail": -3,
+        "failed_hard_checks": -3,
+        "loaded_context_bytes": 0,
+        "prompt_tokens": 256,
+        "output_tokens": -77,
+        "execution_time_ms": -2505.715
+      }
+    }
+  ],
+  "slot_comparison": [
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "baseline-no-optional",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "exact missing columns",
+        "distribution checks",
+        "non-causal correlation interpretation"
+      ],
+      "wave2_failed_hard_checks": [
+        "exact missing columns",
+        "distribution checks",
+        "non-causal correlation interpretation"
+      ],
+      "failed_hard_check_delta": 0,
+      "prompt_tokens": {
+        "wave1": 1406,
+        "wave2": 1411,
+        "delta": 5
+      },
+      "output_tokens": {
+        "wave1": 531,
+        "wave2": 472,
+        "delta": -59
+      },
+      "loaded_context_bytes": {
+        "wave1": 0,
+        "wave2": 0,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 31953.167,
+        "wave2": 26519.179,
+        "delta": -5433.988
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/baseline-no-optional.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-exploratory-data-analysis/baseline-no-optional.json"
+    },
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "current-playbook",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "non-causal correlation interpretation"
+      ],
+      "wave2_failed_hard_checks": [
+        "exact missing columns",
+        "non-causal correlation interpretation"
+      ],
+      "failed_hard_check_delta": 1,
+      "prompt_tokens": {
+        "wave1": 2397,
+        "wave2": 2402,
+        "delta": 5
+      },
+      "output_tokens": {
+        "wave1": 640,
+        "wave2": 460,
+        "delta": -180
+      },
+      "loaded_context_bytes": {
+        "wave1": 4473,
+        "wave2": 4473,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 20033.02,
+        "wave2": 14590.143,
+        "delta": -5442.877
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/current-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-exploratory-data-analysis/current-playbook.json"
+    },
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "external-expert",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "exact missing columns",
+        "non-causal correlation interpretation"
+      ],
+      "wave2_failed_hard_checks": [
+        "distribution checks",
+        "non-causal correlation interpretation"
+      ],
+      "failed_hard_check_delta": 0,
+      "prompt_tokens": {
+        "wave1": 4758,
+        "wave2": 4763,
+        "delta": 5
+      },
+      "output_tokens": {
+        "wave1": 554,
+        "wave2": 672,
+        "delta": 118
+      },
+      "loaded_context_bytes": {
+        "wave1": 12633,
+        "wave2": 12633,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 19242.193,
+        "wave2": 22401.283,
+        "delta": 3159.09
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/external-expert.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-exploratory-data-analysis/external-expert.json"
+    },
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "adapted-playbook",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "PASS",
+      "acceptance_transition": "FAIL->PASS",
+      "wave1_failed_hard_checks": [
+        "exact missing columns"
+      ],
+      "wave2_failed_hard_checks": [],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1496,
+        "wave2": 1501,
+        "delta": 5
+      },
+      "output_tokens": {
+        "wave1": 629,
+        "wave2": 623,
+        "delta": -6
+      },
+      "loaded_context_bytes": {
+        "wave1": 594,
+        "wave2": 594,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 19440.452,
+        "wave2": 18970.289,
+        "delta": -470.163
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/adapted-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-exploratory-data-analysis/adapted-playbook.json"
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "variant": "baseline-no-optional",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "stratified 0.2 split",
+        "numeric preprocessing",
+        "categorical preprocessing",
+        "ROC-AUC and PR-AUC",
+        "training-only cross-validation",
+        "final-once test usage"
+      ],
+      "wave2_failed_hard_checks": [
+        "stratified 0.2 split",
+        "numeric preprocessing",
+        "categorical preprocessing",
+        "ROC-AUC and PR-AUC",
+        "training-only cross-validation",
+        "final-once test usage"
+      ],
+      "failed_hard_check_delta": 0,
+      "prompt_tokens": {
+        "wave1": 1289,
+        "wave2": 1294,
+        "delta": 5
+      },
+      "output_tokens": {
+        "wave1": 596,
+        "wave2": 447,
+        "delta": -149
+      },
+      "loaded_context_bytes": {
+        "wave1": 0,
+        "wave2": 0,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 17919.904,
+        "wave2": 13774.76,
+        "delta": -4145.144
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/baseline-no-optional.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-scikit-learn/baseline-no-optional.json"
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "variant": "current-playbook",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "numeric preprocessing",
+        "categorical preprocessing",
+        "ROC-AUC and PR-AUC",
+        "training-only cross-validation",
+        "final-once test usage"
+      ],
+      "wave2_failed_hard_checks": [
+        "stratified 0.2 split",
+        "numeric preprocessing",
+        "ROC-AUC and PR-AUC",
+        "training-only cross-validation"
+      ],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1288,
+        "wave2": 1293,
+        "delta": 5
+      },
+      "output_tokens": {
+        "wave1": 475,
+        "wave2": 632,
+        "delta": 157
+      },
+      "loaded_context_bytes": {
+        "wave1": 0,
+        "wave2": 0,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 14647.419,
+        "wave2": 18887.826,
+        "delta": 4240.407
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/current-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-scikit-learn/current-playbook.json"
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "variant": "external-expert",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "ROC-AUC and PR-AUC",
+        "final-once test usage"
+      ],
+      "wave2_failed_hard_checks": [
+        "ROC-AUC and PR-AUC",
+        "final-once test usage"
+      ],
+      "failed_hard_check_delta": 0,
+      "prompt_tokens": {
+        "wave1": 3586,
+        "wave2": 3591,
+        "delta": 5
+      },
+      "output_tokens": {
+        "wave1": 662,
+        "wave2": 569,
+        "delta": -93
+      },
+      "loaded_context_bytes": {
+        "wave1": 10284,
+        "wave2": 10284,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 21165.62,
+        "wave2": 18355.269,
+        "delta": -2810.351
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/external-expert.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-scikit-learn/external-expert.json"
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "variant": "adapted-playbook",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "PASS",
+      "acceptance_transition": "FAIL->PASS",
+      "wave1_failed_hard_checks": [
+        "final-once test usage"
+      ],
+      "wave2_failed_hard_checks": [],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1388,
+        "wave2": 1393,
+        "delta": 5
+      },
+      "output_tokens": {
+        "wave1": 571,
+        "wave2": 625,
+        "delta": 54
+      },
+      "loaded_context_bytes": {
+        "wave1": 591,
+        "wave2": 591,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 17476.161,
+        "wave2": 18834.409,
+        "delta": 1358.248
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/adapted-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-scikit-learn/adapted-playbook.json"
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "variant": "baseline-no-optional",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "exact symbolic method",
+        "zero substitution residuals"
+      ],
+      "wave2_failed_hard_checks": [
+        "exact symbolic method"
+      ],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1219,
+        "wave2": 1297,
+        "delta": 78
+      },
+      "output_tokens": {
+        "wave1": 372,
+        "wave2": 379,
+        "delta": 7
+      },
+      "loaded_context_bytes": {
+        "wave1": 0,
+        "wave2": 0,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 11453.418,
+        "wave2": 11994.658,
+        "delta": 541.24
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-sympy/baseline-no-optional.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-sympy/baseline-no-optional.json"
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "variant": "current-playbook",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "exact symbolic method",
+        "zero substitution residuals"
+      ],
+      "wave2_failed_hard_checks": [
+        "exact symbolic method"
+      ],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1218,
+        "wave2": 1296,
+        "delta": 78
+      },
+      "output_tokens": {
+        "wave1": 487,
+        "wave2": 379,
+        "delta": -108
+      },
+      "loaded_context_bytes": {
+        "wave1": 0,
+        "wave2": 0,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 14638.501,
+        "wave2": 11703.0,
+        "delta": -2935.501
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-sympy/current-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-sympy/current-playbook.json"
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "variant": "external-expert",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "exact roots",
+        "zero substitution residuals"
+      ],
+      "wave2_failed_hard_checks": [
+        "exact symbolic method"
+      ],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 3981,
+        "wave2": 4059,
+        "delta": 78
+      },
+      "output_tokens": {
+        "wave1": 472,
+        "wave2": 396,
+        "delta": -76
+      },
+      "loaded_context_bytes": {
+        "wave1": 9824,
+        "wave2": 9824,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 16170.434,
+        "wave2": 13860.651,
+        "delta": -2309.783
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-sympy/external-expert.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-sympy/external-expert.json"
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "variant": "adapted-playbook",
+      "wave1_acceptance": "PASS",
+      "wave2_acceptance": "PASS",
+      "acceptance_transition": "PASS->PASS",
+      "wave1_failed_hard_checks": [],
+      "wave2_failed_hard_checks": [],
+      "failed_hard_check_delta": 0,
+      "prompt_tokens": {
+        "wave1": 1285,
+        "wave2": 1363,
+        "delta": 78
+      },
+      "output_tokens": {
+        "wave1": 446,
+        "wave2": 417,
+        "delta": -29
+      },
+      "loaded_context_bytes": {
+        "wave1": 477,
+        "wave2": 477,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 13680.839,
+        "wave2": 12982.18,
+        "delta": -698.659
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-sympy/adapted-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-sympy/adapted-playbook.json"
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant": "baseline-no-optional",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "PASS",
+      "acceptance_transition": "FAIL->PASS",
+      "wave1_failed_hard_checks": [
+        "normalized local DOI values"
+      ],
+      "wave2_failed_hard_checks": [],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1430,
+        "wave2": 1509,
+        "delta": 79
+      },
+      "output_tokens": {
+        "wave1": 377,
+        "wave2": 426,
+        "delta": 49
+      },
+      "loaded_context_bytes": {
+        "wave1": 0,
+        "wave2": 0,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 12064.733,
+        "wave2": 13423.275,
+        "delta": 1358.542
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-citation-management/baseline-no-optional.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-citation-management/baseline-no-optional.json"
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant": "current-playbook",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "PASS",
+      "acceptance_transition": "FAIL->PASS",
+      "wave1_failed_hard_checks": [
+        "normalized local DOI values"
+      ],
+      "wave2_failed_hard_checks": [],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1429,
+        "wave2": 1508,
+        "delta": 79
+      },
+      "output_tokens": {
+        "wave1": 500,
+        "wave2": 424,
+        "delta": -76
+      },
+      "loaded_context_bytes": {
+        "wave1": 0,
+        "wave2": 0,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 15416.218,
+        "wave2": 13343.355,
+        "delta": -2072.863
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-citation-management/current-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-citation-management/current-playbook.json"
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant": "external-expert",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "PASS",
+      "acceptance_transition": "FAIL->PASS",
+      "wave1_failed_hard_checks": [
+        "normalized local DOI values"
+      ],
+      "wave2_failed_hard_checks": [],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 4773,
+        "wave2": 4852,
+        "delta": 79
+      },
+      "output_tokens": {
+        "wave1": 371,
+        "wave2": 470,
+        "delta": 99
+      },
+      "loaded_context_bytes": {
+        "wave1": 14719,
+        "wave2": 14719,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 13736.306,
+        "wave2": 16616.289,
+        "delta": 2879.983
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-citation-management/external-expert.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-citation-management/external-expert.json"
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant": "adapted-playbook",
+      "wave1_acceptance": "PASS",
+      "wave2_acceptance": "PASS",
+      "acceptance_transition": "PASS->PASS",
+      "wave1_failed_hard_checks": [],
+      "wave2_failed_hard_checks": [],
+      "failed_hard_check_delta": 0,
+      "prompt_tokens": {
+        "wave1": 1517,
+        "wave2": 1596,
+        "delta": 79
+      },
+      "output_tokens": {
+        "wave1": 508,
+        "wave2": 456,
+        "delta": -52
+      },
+      "loaded_context_bytes": {
+        "wave1": 575,
+        "wave2": 575,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 16064.003,
+        "wave2": 14471.774,
+        "delta": -1592.229
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-citation-management/adapted-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-citation-management/adapted-playbook.json"
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant": "baseline-no-optional",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "consistent heading hierarchy",
+        "package and visual verification"
+      ],
+      "wave2_failed_hard_checks": [
+        "package and visual verification"
+      ],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1350,
+        "wave2": 1439,
+        "delta": 89
+      },
+      "output_tokens": {
+        "wave1": 616,
+        "wave2": 725,
+        "delta": 109
+      },
+      "loaded_context_bytes": {
+        "wave1": 0,
+        "wave2": 0,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 19076.835,
+        "wave2": 22420.345,
+        "delta": 3343.51
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-docx/baseline-no-optional.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-docx/baseline-no-optional.json"
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant": "current-playbook",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "consistent heading hierarchy",
+        "package and visual verification"
+      ],
+      "wave2_failed_hard_checks": [
+        "package and visual verification"
+      ],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1393,
+        "wave2": 1482,
+        "delta": 89
+      },
+      "output_tokens": {
+        "wave1": 724,
+        "wave2": 648,
+        "delta": -76
+      },
+      "loaded_context_bytes": {
+        "wave1": 231,
+        "wave2": 231,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 22196.32,
+        "wave2": 20113.23,
+        "delta": -2083.09
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-docx/current-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-docx/current-playbook.json"
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant": "external-expert",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "FAIL",
+      "acceptance_transition": "FAIL->FAIL",
+      "wave1_failed_hard_checks": [
+        "consistent heading hierarchy",
+        "package and visual verification"
+      ],
+      "wave2_failed_hard_checks": [
+        "package and visual verification"
+      ],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 3253,
+        "wave2": 3342,
+        "delta": 89
+      },
+      "output_tokens": {
+        "wave1": 760,
+        "wave2": 598,
+        "delta": -162
+      },
+      "loaded_context_bytes": {
+        "wave1": 7244,
+        "wave2": 7244,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 24398.435,
+        "wave2": 19598.869,
+        "delta": -4799.566
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-docx/external-expert.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-docx/external-expert.json"
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant": "adapted-playbook",
+      "wave1_acceptance": "FAIL",
+      "wave2_acceptance": "PASS",
+      "acceptance_transition": "FAIL->PASS",
+      "wave1_failed_hard_checks": [
+        "consistent heading hierarchy"
+      ],
+      "wave2_failed_hard_checks": [],
+      "failed_hard_check_delta": -1,
+      "prompt_tokens": {
+        "wave1": 1444,
+        "wave2": 1533,
+        "delta": 89
+      },
+      "output_tokens": {
+        "wave1": 753,
+        "wave2": 709,
+        "delta": -44
+      },
+      "loaded_context_bytes": {
+        "wave1": 562,
+        "wave2": 562,
+        "delta": 0
+      },
+      "execution_time_ms": {
+        "wave1": 23153.458,
+        "wave2": 22050.546,
+        "delta": -1102.912
+      },
+      "wave1_evidence": "evaluation/external-skills/evidence/stage-b/kd-docx/adapted-playbook.json",
+      "wave2_evidence": "evaluation/external-skills/evidence/stage-b-wave2/kd-docx/adapted-playbook.json"
+    }
+  ],
+  "semantic_false_negative_effect": {
+    "scope": "read-only diagnostic; historical Wave 1 acceptance is not modified",
+    "validator_only_false_negative_resolved_count": 4,
+    "rows": [
+      {
+        "candidate_id": "kd-exploratory-data-analysis",
+        "variant": "baseline-no-optional",
+        "check": "non-causal correlation interpretation",
+        "wave1_stored_pass": false,
+        "wave1_postfix_validator_diagnostic_pass": false,
+        "wave2_observed_pass": false,
+        "wave1_evidence": "age__annual_income: 0.41 (positive correlation exists; caution required when inferring causality or predicting income solely from age without controlling for other factors like region).",
+        "wave2_evidence": "age__annual_income: 0.41 (positive correlation; interpret cautiously due to missing data in age and potential confounding by region)",
+        "validator_only_false_negative_resolved": false
+      },
+      {
+        "candidate_id": "kd-exploratory-data-analysis",
+        "variant": "current-playbook",
+        "check": "non-causal correlation interpretation",
+        "wave1_stored_pass": false,
+        "wave1_postfix_validator_diagnostic_pass": false,
+        "wave2_observed_pass": false,
+        "wave1_evidence": "age__annual_income correlation is 0.41, indicating a moderate positive relationship. interpret with caution due to potential confounding variables and the small number of high-income outliers.",
+        "wave2_evidence": "age와 annual_income 간 상관계수 0.41은 중등도의 양의 상관관계를 나타내나, 인과 관계를 단정할 수 없으며, 다른 변수(예: region)가 통제되지 않았을 경우 편향될 수 있음.",
+        "validator_only_false_negative_resolved": false
+      },
+      {
+        "candidate_id": "kd-exploratory-data-analysis",
+        "variant": "external-expert",
+        "check": "non-causal correlation interpretation",
+        "wave1_stored_pass": false,
+        "wave1_postfix_validator_diagnostic_pass": true,
+        "wave2_observed_pass": false,
+        "wave1_evidence": "age and annual_income show moderate positive correlation (r=0.41). this association is exploratory; causal claims are unsupported.",
+        "wave2_evidence": "age vs annual_income correlation of 0.41 indicates moderate positive association; however, this is an exploratory finding and should not be treated as causal or confirmatory without pre-specified hypothesis testing.",
+        "validator_only_false_negative_resolved": true
+      },
+      {
+        "candidate_id": "kd-exploratory-data-analysis",
+        "variant": "adapted-playbook",
+        "check": "non-causal correlation interpretation",
+        "wave1_stored_pass": true,
+        "wave1_postfix_validator_diagnostic_pass": true,
+        "wave2_observed_pass": true,
+        "wave1_evidence": "age and annual_income show a moderate positive correlation (r=0.41). this indicates an association but does not imply causation.",
+        "wave2_evidence": "age and annual_income show a moderate positive correlation (r=0.41). this indicates an association but does not imply causation.",
+        "validator_only_false_negative_resolved": false
+      },
+      {
+        "candidate_id": "kd-scikit-learn",
+        "variant": "baseline-no-optional",
+        "check": "final-once test usage",
+        "wave1_stored_pass": false,
+        "wave1_postfix_validator_diagnostic_pass": true,
+        "wave2_observed_pass": false,
+        "wave1_evidence": "single_holdout_for_final_evaluation_only",
+        "wave2_evidence": "single_holdout",
+        "validator_only_false_negative_resolved": true
+      },
+      {
+        "candidate_id": "kd-scikit-learn",
+        "variant": "current-playbook",
+        "check": "final-once test usage",
+        "wave1_stored_pass": false,
+        "wave1_postfix_validator_diagnostic_pass": true,
+        "wave2_observed_pass": true,
+        "wave1_evidence": "single_holdout_for_final_evaluation_only",
+        "wave2_evidence": "single_holdout_for_final_evaluation_only",
+        "validator_only_false_negative_resolved": true
+      },
+      {
+        "candidate_id": "kd-scikit-learn",
+        "variant": "external-expert",
+        "check": "final-once test usage",
+        "wave1_stored_pass": false,
+        "wave1_postfix_validator_diagnostic_pass": false,
+        "wave2_observed_pass": false,
+        "wave1_evidence": "single_holdout_evaluation",
+        "wave2_evidence": "single_holdout_evaluation",
+        "validator_only_false_negative_resolved": false
+      },
+      {
+        "candidate_id": "kd-scikit-learn",
+        "variant": "adapted-playbook",
+        "check": "final-once test usage",
+        "wave1_stored_pass": false,
+        "wave1_postfix_validator_diagnostic_pass": true,
+        "wave2_observed_pass": true,
+        "wave1_evidence": "Single use for final evaluation after model selection and hyperparameter tuning",
+        "wave2_evidence": "Single use for final evaluation after model selection/hyperparameter tuning",
+        "validator_only_false_negative_resolved": true
+      }
+    ]
+  },
+  "output_contract_effect": [
+    {
+      "candidate_id": "kd-sympy",
+      "variant": "baseline-no-optional",
+      "check": "zero substitution residuals",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": {
+        "method": "substitution_check",
+        "description": "각 근을 원래 식에 대입하여 결과가 0인지 확인",
+        "expected_result": "0"
+      },
+      "wave2_evidence": {
+        "-2": "0",
+        "-1": "0",
+        "1": "0",
+        "2": "0"
+      }
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "variant": "current-playbook",
+      "check": "zero substitution residuals",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": {
+        "description": "Substitute each root back into the original expression and verify that the result equals zero.",
+        "formula": "f(x) = x**4 - 5*x**2 + 4, check f(root) == 0"
+      },
+      "wave2_evidence": {
+        "-2": "0",
+        "-1": "0",
+        "1": "0",
+        "2": "0"
+      }
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "variant": "external-expert",
+      "check": "zero substitution residuals",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": {
+        "method": "Substitute each root into the original expression and simplify to confirm zero.",
+        "expected_result": "All residuals must equal exactly 0."
+      },
+      "wave2_evidence": {
+        "-2": "0",
+        "-1": "0",
+        "1": "0",
+        "2": "0"
+      }
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "variant": "adapted-playbook",
+      "check": "zero substitution residuals",
+      "wave1_pass": true,
+      "wave2_pass": true,
+      "transition": "PASS->PASS",
+      "wave1_evidence": {
+        "-2": "0",
+        "-1": "0",
+        "1": "0",
+        "2": "0"
+      },
+      "wave2_evidence": {
+        "-2": "0",
+        "-1": "0",
+        "1": "0",
+        "2": "0"
+      }
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant": "baseline-no-optional",
+      "check": "normalized local DOI values",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": {
+        "C1": "10.1000/SAFE.001",
+        "C2": "10.1000/safe.001"
+      },
+      "wave2_evidence": {
+        "C1": "10.1000/safe.001",
+        "C2": "10.1000/safe.001",
+        "C3": null,
+        "C4": "10.1000/evidence.004"
+      }
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant": "current-playbook",
+      "check": "normalized local DOI values",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": {
+        "C1": "10.1000/SAFE.001",
+        "C2": "10.1000/safe.001"
+      },
+      "wave2_evidence": {
+        "C1": "10.1000/safe.001",
+        "C2": "10.1000/safe.001",
+        "C3": null,
+        "C4": "10.1000/evidence.004"
+      }
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant": "external-expert",
+      "check": "normalized local DOI values",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": {
+        "C1": "10.1000/SAFE.001",
+        "C2": "10.1000/safe.001"
+      },
+      "wave2_evidence": {
+        "C1": "10.1000/safe.001",
+        "C2": "10.1000/safe.001",
+        "C3": null,
+        "C4": "10.1000/evidence.004"
+      }
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant": "adapted-playbook",
+      "check": "normalized local DOI values",
+      "wave1_pass": true,
+      "wave2_pass": true,
+      "transition": "PASS->PASS",
+      "wave1_evidence": {
+        "C1": "10.1000/safe.001",
+        "C2": "10.1000/safe.001",
+        "C3": null,
+        "C4": "10.1000/evidence.004"
+      },
+      "wave2_evidence": {
+        "C1": "10.1000/safe.001",
+        "C2": "10.1000/safe.001",
+        "C3": null,
+        "C4": "10.1000/evidence.004"
+      }
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant": "baseline-no-optional",
+      "check": "consistent heading hierarchy",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": [
+        {
+          "text": "Quarterly Safety Review",
+          "level": "H1"
+        },
+        {
+          "text": "Executive Summary",
+          "level": "H2"
+        },
+        {
+          "text": "Findings",
+          "level": "H2"
+        },
+        {
+          "text": "Recommendations",
+          "level": "H2"
+        }
+      ],
+      "wave2_evidence": [
+        {
+          "text": "Quarterly Safety Review",
+          "level": "Title"
+        },
+        {
+          "text": "Executive Summary",
+          "level": "Heading 1"
+        },
+        {
+          "text": "Findings",
+          "level": "Heading 1"
+        },
+        {
+          "text": "Recommendations",
+          "level": "Heading 1"
+        }
+      ]
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant": "current-playbook",
+      "check": "consistent heading hierarchy",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": [
+        {
+          "text": "Quarterly Safety Review",
+          "level": "H1"
+        },
+        {
+          "text": "Executive Summary",
+          "level": "H2"
+        },
+        {
+          "text": "Findings",
+          "level": "H2"
+        },
+        {
+          "text": "Recommendations",
+          "level": "H2"
+        }
+      ],
+      "wave2_evidence": [
+        {
+          "text": "Quarterly Safety Review",
+          "level": "Title"
+        },
+        {
+          "text": "Executive Summary",
+          "level": "Heading 1"
+        },
+        {
+          "text": "Findings",
+          "level": "Heading 1"
+        },
+        {
+          "text": "Recommendations",
+          "level": "Heading 1"
+        }
+      ]
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant": "external-expert",
+      "check": "consistent heading hierarchy",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": [
+        {
+          "text": "Executive Summary",
+          "level": "HeadingLevel1"
+        },
+        {
+          "text": "Findings",
+          "level": "HeadingLevel2"
+        },
+        {
+          "text": "Recommendations",
+          "level": "HeadingLevel3"
+        }
+      ],
+      "wave2_evidence": [
+        {
+          "text": "Quarterly Safety Review",
+          "level": "Title"
+        },
+        {
+          "text": "Executive Summary",
+          "level": "Heading 1"
+        },
+        {
+          "text": "Findings",
+          "level": "Heading 1"
+        },
+        {
+          "text": "Recommendations",
+          "level": "Heading 1"
+        }
+      ]
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant": "adapted-playbook",
+      "check": "consistent heading hierarchy",
+      "wave1_pass": false,
+      "wave2_pass": true,
+      "transition": "FAIL->PASS",
+      "wave1_evidence": [
+        {
+          "text": "Quarterly Safety Review",
+          "level": "title"
+        },
+        {
+          "text": "Executive Summary",
+          "level": "h1"
+        },
+        {
+          "text": "Findings",
+          "level": "h2"
+        },
+        {
+          "text": "Recommendations",
+          "level": "h2"
+        }
+      ],
+      "wave2_evidence": [
+        {
+          "text": "Quarterly Safety Review",
+          "level": "Title"
+        },
+        {
+          "text": "Executive Summary",
+          "level": "Heading 1"
+        },
+        {
+          "text": "Findings",
+          "level": "Heading 1"
+        },
+        {
+          "text": "Recommendations",
+          "level": "Heading 1"
+        }
+      ]
+    }
+  ],
+  "wave1_protection_after_comparison": {
+    "baseline_commit": "cb10e1a9f81cbce5cedf354c071202f30dc72b5c",
+    "protected_sha256": {
+      "evaluation/external-skills/benchmark-results.json": "21cb7165c4e02397fdafa9bc5d20f715e723ff351965cf71e00e42f6e7e80249",
+      "evaluation/external-skills/adoption-decisions.json": "4078ba8597bc9483606c41dcae2a88d5096de13ce22cb6c1084665079433bbe3",
+      "evaluation/external-skills/reports/stage-b-execution-summary.json": "6ff9a6a08186250768153acab19fa63501b4fee08e22fe6ff10deecb370e6e25",
+      "evaluation/external-skills/reports/stage-b-failure-analysis.json": "22f590325b312ec52b9ab54e889eff7f6c23eb0c3064229d738a4dada307c692"
+    },
+    "evidence_file_count": 20,
+    "evidence_set_sha256": "a3aa40c312ff5fa91c76d75775f6b9bf4c173da9cc4fefa9df7090e8273e9392",
+    "acceptance_pass": 2,
+    "acceptance_fail": 18
+  },
+  "adoption_decisions_updated": false,
+  "interpretation_guard": "Wave 2 is a separate experiment. No Wave 1 PASS/FAIL or adoption decision is overwritten or retrospectively changed."
+}

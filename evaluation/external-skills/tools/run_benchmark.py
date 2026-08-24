@@ -740,8 +740,13 @@ def call_model(
     return response, elapsed_ms
 
 
-def slot_evidence_path(candidate_id: str, variant: str) -> Path:
-    return EVIDENCE_ROOT / candidate_id / f"{variant}.json"
+def slot_evidence_path(
+    candidate_id: str,
+    variant: str,
+    *,
+    evidence_root: Path = EVIDENCE_ROOT,
+) -> Path:
+    return evidence_root / candidate_id / f"{variant}.json"
 
 
 def runtime_metadata(
@@ -793,8 +798,15 @@ def execute_slot(
     variant: str,
     static: dict[str, Any],
     control: dict[str, Any],
+    *,
+    evidence_root: Path = EVIDENCE_ROOT,
+    wave_id: str = "V8.3-1",
 ) -> dict[str, Any]:
-    evidence_path = slot_evidence_path(candidate_id, variant)
+    evidence_path = slot_evidence_path(
+        candidate_id,
+        variant,
+        evidence_root=evidence_root,
+    )
     if evidence_path.exists():
         raise BenchmarkError(f"refusing to rerun existing slot Evidence: {evidence_path}")
     installed_model = verify_local_model(control)
@@ -832,9 +844,11 @@ def execute_slot(
     evidence = {
         "schema_version": 1,
         "task_id": "V8_3-SKILL-BENCH-004",
+        "wave_id": wave_id,
         "candidate_id": candidate_id,
         "fixture_id": fixture["fixture_id"],
         "variant": variant,
+        "generation_attempt": 1,
         "execution_status": status,
         "runtime_metadata": metadata,
         "context_evidence": {
@@ -845,6 +859,8 @@ def execute_slot(
             "system_sha256": sha256_bytes(system.encode("utf-8")),
             "prompt_sha256": sha256_bytes(prompt.encode("utf-8")),
             "response_schema_sha256": sha256_bytes(json.dumps(schema, sort_keys=True).encode("utf-8")),
+            "local_input_contract_sha256": sha256_bytes(LOCAL_INPUTS.read_bytes()),
+            "acceptance_rubric_sha256": sha256_bytes(RUBRICS.read_bytes()),
         },
         "token_measurement": {
             "prompt_token_count_available": response is not None and isinstance(response.get("prompt_eval_count"), int),

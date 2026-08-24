@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-sympy",
+  "fixture_id": "bench004-06",
+  "variant": "current-playbook",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:47:30.199Z",
+    "execution_end_utc": "2026-08-24T05:47:41.902Z",
+    "wall_time_ms": 11703.0
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 0,
+    "loaded_context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_capabilities": [],
+    "routing_result": {
+      "task": "제공된 symbolic equation 조건을 바탕으로 SymPy를 활용한 해석 workflow를 설계한다.",
+      "selected": [],
+      "profile": "minimal",
+      "count": 0,
+      "result": "NO_CAPABILITY"
+    },
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "6529ada0cdbdfc8455fb82d617a8bf34f326964906169ee324f9bd5ae722f8a6",
+    "response_schema_sha256": "27a50d1cc41f15227425d2a7d48ad184c775d11a794c36713cd3280b8efb7f45",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1296,
+    "output_token_count_available": true,
+    "output_token_count": 379
+  },
+  "provider_duration": {
+    "total_duration_ns": 11695768600,
+    "load_duration_ns": 488895200,
+    "prompt_eval_duration_ns": 289577000,
+    "eval_duration_ns": 10907412000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"symbol\": \"x\",\n  \"domain\": \"real\",\n  \"method\": \"factorization_and_root_finding\",\n  \"factorization\": \"(x - 1)*(x + 1)*(x - 2)*(x + 2)\",\n  \"exact_roots\": [\n    \"-2\",\n    \"-1\",\n    \"1\",\n    \"2\"\n  ],\n  \"verification_residuals\": {\n    \"-2\": \"0\",\n    \"-1\": \"0\",\n    \"1\": \"0\",\n    \"2\": \"0\"\n  },\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"symbol_definition\",\n      \"verification\": \"Symbol('x') created successfully.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"expression_simplification\",\n      \"verification\": \"Expression x**4 - 5*x**2 + 4 factored into (x - 1)*(x + 1)*(x - 2)*(x + 2).\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"root_extraction\",\n      \"verification\": \"Roots identified as x = -2, -1, 1, 2.\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"result_verification\",\n      \"verification\": \"Substituted each root into original expression; all residuals are exactly 0.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Ensure domain is real to avoid complex roots.\",\n    \"Verify symbolic equality before numerical substitution.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "symbol": "x",
+    "domain": "real",
+    "method": "factorization_and_root_finding",
+    "factorization": "(x - 1)*(x + 1)*(x - 2)*(x + 2)",
+    "exact_roots": [
+      "-2",
+      "-1",
+      "1",
+      "2"
+    ],
+    "verification_residuals": {
+      "-2": "0",
+      "-1": "0",
+      "1": "0",
+      "2": "0"
+    },
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "symbol_definition",
+        "verification": "Symbol('x') created successfully."
+      },
+      {
+        "order": 2,
+        "action": "expression_simplification",
+        "verification": "Expression x**4 - 5*x**2 + 4 factored into (x - 1)*(x + 1)*(x - 2)*(x + 2)."
+      },
+      {
+        "order": 3,
+        "action": "root_extraction",
+        "verification": "Roots identified as x = -2, -1, 1, 2."
+      },
+      {
+        "order": 4,
+        "action": "result_verification",
+        "verification": "Substituted each root into original expression; all residuals are exactly 0."
+      }
+    ],
+    "additional_controls": [
+      "Ensure domain is real to avoid complex roots.",
+      "Verify symbolic equality before numerical substitution."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "symbol x and real domain",
+        "pass": true,
+        "evidence": [
+          "x",
+          "real"
+        ]
+      },
+      {
+        "check": "exact symbolic method",
+        "pass": false,
+        "evidence": "factorization_and_root_finding"
+      },
+      {
+        "check": "exact roots",
+        "pass": true,
+        "evidence": [
+          "-2",
+          "-1",
+          "1",
+          "2"
+        ]
+      },
+      {
+        "check": "zero substitution residuals",
+        "pass": true,
+        "evidence": {
+          "-2": "0",
+          "-1": "0",
+          "1": "0",
+          "2": "0"
+        }
+      },
+      {
+        "check": "factorization present",
+        "pass": true,
+        "evidence": "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "symbol_definition",
+            "verification": "Symbol('x') created successfully."
+          },
+          {
+            "order": 2,
+            "action": "expression_simplification",
+            "verification": "Expression x**4 - 5*x**2 + 4 factored into (x - 1)*(x + 1)*(x - 2)*(x + 2)."
+          },
+          {
+            "order": 3,
+            "action": "root_extraction",
+            "verification": "Roots identified as x = -2, -1, 1, 2."
+          },
+          {
+            "order": 4,
+            "action": "result_verification",
+            "verification": "Substituted each root into original expression; all residuals are exactly 0."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 6,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "explicit assumptions",
+        "pass": false,
+        "evidence": [
+          "assumption",
+          "real domain"
+        ]
+      },
+      {
+        "check": "exact arithmetic",
+        "pass": false,
+        "evidence": [
+          "exact arithmetic",
+          "no floating",
+          "integer"
+        ]
+      },
+      {
+        "check": "factor before solve",
+        "pass": false,
+        "evidence": [
+          "factor before",
+          "factor the"
+        ]
+      },
+      {
+        "check": "verify original expression",
+        "pass": true,
+        "evidence": [
+          "original expression",
+          "substitut"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

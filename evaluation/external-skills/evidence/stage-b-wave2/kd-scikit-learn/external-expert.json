@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-scikit-learn",
+  "fixture_id": "bench004-04",
+  "variant": "external-expert",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:46:40.979Z",
+    "execution_end_utc": "2026-08-24T05:46:59.335Z",
+    "wall_time_ms": 18355.269
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 10284,
+    "loaded_context_sha256": "a3064abd47efdad11265518208b327bd237656264a969942e6731367c7d97820",
+    "selected_capabilities": [
+      "kd-scikit-learn"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "fdfdefb69cbcd4a98aa03e58c9164e80b4a40920506f2b2341ca3e371ca2a9e9",
+    "response_schema_sha256": "b438c23c5b066e805e955dc18531dffce83a114b181e55902d55cb6745ea4273",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 3591,
+    "output_token_count_available": true,
+    "output_token_count": 569
+  },
+  "provider_duration": {
+    "total_duration_ns": 18342976500,
+    "load_duration_ns": 502013300,
+    "prompt_eval_duration_ns": 1421239000,
+    "eval_duration_ns": 16393840000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"split_strategy\": \"stratified_train_test_split\",\n  \"test_fraction\": 0.2,\n  \"preprocessing_location\": \"inside_pipeline\",\n  \"numeric_preprocessing\": [\n    \"SimpleImputer(strategy='median')\",\n    \"StandardScaler()\"\n  ],\n  \"categorical_preprocessing\": [\n    \"SimpleImputer(strategy='most_frequent')\",\n    \"OneHotEncoder(handle_unknown='ignore')\"\n  ],\n  \"baseline_model\": \"LogisticRegression(max_iter=1000, random_state=42)\",\n  \"evaluation_metrics\": [\n    \"accuracy_score\",\n    \"precision_score\",\n    \"recall_score\",\n    \"f1_score\",\n    \"roc_auc_score\"\n  ],\n  \"cross_validation_scope\": \"training_set_only\",\n  \"test_set_usage\": \"single_holdout_evaluation\",\n  \"random_seed\": 42,\n  \"verification_steps\": [\n    \"verify_train_test_split_preserves_class_distribution\",\n    \"verify_preprocessing_fits_only_on_training_data\",\n    \"verify_no_external_network_calls\",\n    \"verify_model_evaluated_once_on_test_set\"\n  ],\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"generate_synthetic_dataset\",\n      \"verification\": \"check_sample_count_equals_1200\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"split_data_stratified\",\n      \"verification\": \"verify_test_fraction_equals_0.2_and_class_balance_preserved\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"build_pipeline_with_preprocessing\",\n      \"verification\": \"verify_numeric_and_categorical_transformers_defined\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"fit_pipeline_on_training_data\",\n      \"verification\": \"verify_model_fitted_only_on_X_train\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"predict_on_test_set\",\n      \"verification\": \"verify_predictions_generated_for_X_test\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"compute_evaluation_metrics\",\n      \"verification\": \"verify_all_required_metrics_computed\"\n    }\n  ],\n  \"additional_controls\": [\n    \"set_random_state=42_on_all_estimators\",\n    \"use_pipeline_to_prevent_data_leakage\",\n    \"stratify_split_for_imbalanced_classes\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "split_strategy": "stratified_train_test_split",
+    "test_fraction": 0.2,
+    "preprocessing_location": "inside_pipeline",
+    "numeric_preprocessing": [
+      "SimpleImputer(strategy='median')",
+      "StandardScaler()"
+    ],
+    "categorical_preprocessing": [
+      "SimpleImputer(strategy='most_frequent')",
+      "OneHotEncoder(handle_unknown='ignore')"
+    ],
+    "baseline_model": "LogisticRegression(max_iter=1000, random_state=42)",
+    "evaluation_metrics": [
+      "accuracy_score",
+      "precision_score",
+      "recall_score",
+      "f1_score",
+      "roc_auc_score"
+    ],
+    "cross_validation_scope": "training_set_only",
+    "test_set_usage": "single_holdout_evaluation",
+    "random_seed": 42,
+    "verification_steps": [
+      "verify_train_test_split_preserves_class_distribution",
+      "verify_preprocessing_fits_only_on_training_data",
+      "verify_no_external_network_calls",
+      "verify_model_evaluated_once_on_test_set"
+    ],
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "generate_synthetic_dataset",
+        "verification": "check_sample_count_equals_1200"
+      },
+      {
+        "order": 2,
+        "action": "split_data_stratified",
+        "verification": "verify_test_fraction_equals_0.2_and_class_balance_preserved"
+      },
+      {
+        "order": 3,
+        "action": "build_pipeline_with_preprocessing",
+        "verification": "verify_numeric_and_categorical_transformers_defined"
+      },
+      {
+        "order": 4,
+        "action": "fit_pipeline_on_training_data",
+        "verification": "verify_model_fitted_only_on_X_train"
+      },
+      {
+        "order": 5,
+        "action": "predict_on_test_set",
+        "verification": "verify_predictions_generated_for_X_test"
+      },
+      {
+        "order": 6,
+        "action": "compute_evaluation_metrics",
+        "verification": "verify_all_required_metrics_computed"
+      }
+    ],
+    "additional_controls": [
+      "set_random_state=42_on_all_estimators",
+      "use_pipeline_to_prevent_data_leakage",
+      "stratify_split_for_imbalanced_classes"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "stratified 0.2 split",
+        "pass": true,
+        "evidence": [
+          "stratified_train_test_split",
+          0.2
+        ]
+      },
+      {
+        "check": "preprocessing inside pipeline",
+        "pass": true,
+        "evidence": "inside_pipeline"
+      },
+      {
+        "check": "numeric preprocessing",
+        "pass": true,
+        "evidence": [
+          "SimpleImputer(strategy='median')",
+          "StandardScaler()"
+        ]
+      },
+      {
+        "check": "categorical preprocessing",
+        "pass": true,
+        "evidence": [
+          "SimpleImputer(strategy='most_frequent')",
+          "OneHotEncoder(handle_unknown='ignore')"
+        ]
+      },
+      {
+        "check": "logistic regression baseline",
+        "pass": true,
+        "evidence": "LogisticRegression(max_iter=1000, random_state=42)"
+      },
+      {
+        "check": "ROC-AUC and PR-AUC",
+        "pass": false,
+        "evidence": [
+          "accuracy_score",
+          "precision_score",
+          "recall_score",
+          "f1_score",
+          "roc_auc_score"
+        ]
+      },
+      {
+        "check": "training-only cross-validation",
+        "pass": true,
+        "evidence": "training_set_only"
+      },
+      {
+        "check": "final-once test usage",
+        "pass": false,
+        "evidence": "single_holdout_evaluation"
+      },
+      {
+        "check": "seed 42",
+        "pass": true,
+        "evidence": 42
+      },
+      {
+        "check": "verification steps",
+        "pass": true,
+        "evidence": [
+          "verify_train_test_split_preserves_class_distribution",
+          "verify_preprocessing_fits_only_on_training_data",
+          "verify_no_external_network_calls",
+          "verify_model_evaluated_once_on_test_set"
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 9,
+    "hard_checks_total": 11,
+    "quality_checks": [
+      {
+        "check": "class imbalance handling",
+        "pass": true,
+        "evidence": [
+          "class imbalance",
+          "imbalanced",
+          "class weight"
+        ]
+      },
+      {
+        "check": "threshold selection",
+        "pass": false,
+        "evidence": [
+          "threshold"
+        ]
+      },
+      {
+        "check": "calibration",
+        "pass": false,
+        "evidence": [
+          "calibrat"
+        ]
+      },
+      {
+        "check": "model comparison or uncertainty",
+        "pass": false,
+        "evidence": [
+          "model comparison",
+          "confidence interval",
+          "uncertainty"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

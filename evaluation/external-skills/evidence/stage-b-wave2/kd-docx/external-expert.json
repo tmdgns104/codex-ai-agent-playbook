@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-docx",
+  "fixture_id": "bench004-09",
+  "variant": "external-expert",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:49:49.253Z",
+    "execution_end_utc": "2026-08-24T05:50:08.853Z",
+    "wall_time_ms": 19598.869
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 7244,
+    "loaded_context_sha256": "5b9ba52c1172b3675e8139b9c0c9b1959d0ba85d60375b9ab9269b8e9e4ff67e",
+    "selected_capabilities": [
+      "kd-docx"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "bcac48f8c151687faa5a340c69a00d24c4f38600aa0705875994a8cf307bfd0d",
+    "response_schema_sha256": "800fdac02df74b704cf4fcb1c961b545e1a719cbe3903a5443fe4a00c1874d96",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 3342,
+    "output_token_count_available": true,
+    "output_token_count": 598
+  },
+  "provider_duration": {
+    "total_duration_ns": 19589130000,
+    "load_duration_ns": 485016500,
+    "prompt_eval_duration_ns": 1223215000,
+    "eval_duration_ns": 17774847000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"document_title\": \"Quarterly Safety Review\",\n  \"page_size\": \"A4\",\n  \"heading_hierarchy\": [\n    {\n      \"text\": \"Quarterly Safety Review\",\n      \"level\": \"Title\"\n    },\n    {\n      \"text\": \"Executive Summary\",\n      \"level\": \"Heading 1\"\n    },\n    {\n      \"text\": \"Findings\",\n      \"level\": \"Heading 1\"\n    },\n    {\n      \"text\": \"Recommendations\",\n      \"level\": \"Heading 1\"\n    }\n  ],\n  \"table_headers\": [\n    \"Control\",\n    \"Owner\",\n    \"Status\"\n  ],\n  \"body_format\": {\n    \"font\": \"Calibri\",\n    \"size_pt\": 11,\n    \"line_spacing\": 1.15\n  },\n  \"accessibility_checks\": [\n    \"Alt text for table caption\",\n    \"High contrast shading for table headers\",\n    \"Logical reading order preserved\"\n  ],\n  \"verification_plan\": [\n    \"Render DOCX to PDF and visually inspect headings hierarchy\",\n    \"Verify table structure matches provided data rows\",\n    \"Confirm no external network calls or file modifications occurred\"\n  ],\n  \"external_template_required\": false,\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Initialize DOCX document with A4 page size and Title heading for 'Quarterly Safety Review'\",\n      \"verification\": \"Document created with correct title and page dimensions\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Insert Heading 1 'Executive Summary' followed by body text\",\n      \"verification\": \"Heading level and text content match specification\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Insert Heading 1 'Findings' followed by body text\",\n      \"verification\": \"Heading level and text content match specification\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Insert Heading 1 'Recommendations' followed by body text\",\n      \"verification\": \"Heading level and text content match specification\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Insert table with headers ['Control', 'Owner', 'Status'] and three data rows\",\n      \"verification\": \"Table structure matches provided schema and row data\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Ensure no external API calls or network access were used\",\n    \"Confirm all content derives solely from the synthetic input JSON\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "document_title": "Quarterly Safety Review",
+    "page_size": "A4",
+    "heading_hierarchy": [
+      {
+        "text": "Quarterly Safety Review",
+        "level": "Title"
+      },
+      {
+        "text": "Executive Summary",
+        "level": "Heading 1"
+      },
+      {
+        "text": "Findings",
+        "level": "Heading 1"
+      },
+      {
+        "text": "Recommendations",
+        "level": "Heading 1"
+      }
+    ],
+    "table_headers": [
+      "Control",
+      "Owner",
+      "Status"
+    ],
+    "body_format": {
+      "font": "Calibri",
+      "size_pt": 11,
+      "line_spacing": 1.15
+    },
+    "accessibility_checks": [
+      "Alt text for table caption",
+      "High contrast shading for table headers",
+      "Logical reading order preserved"
+    ],
+    "verification_plan": [
+      "Render DOCX to PDF and visually inspect headings hierarchy",
+      "Verify table structure matches provided data rows",
+      "Confirm no external network calls or file modifications occurred"
+    ],
+    "external_template_required": false,
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Initialize DOCX document with A4 page size and Title heading for 'Quarterly Safety Review'",
+        "verification": "Document created with correct title and page dimensions"
+      },
+      {
+        "order": 2,
+        "action": "Insert Heading 1 'Executive Summary' followed by body text",
+        "verification": "Heading level and text content match specification"
+      },
+      {
+        "order": 3,
+        "action": "Insert Heading 1 'Findings' followed by body text",
+        "verification": "Heading level and text content match specification"
+      },
+      {
+        "order": 4,
+        "action": "Insert Heading 1 'Recommendations' followed by body text",
+        "verification": "Heading level and text content match specification"
+      },
+      {
+        "order": 5,
+        "action": "Insert table with headers ['Control', 'Owner', 'Status'] and three data rows",
+        "verification": "Table structure matches provided schema and row data"
+      }
+    ],
+    "additional_controls": [
+      "Ensure no external API calls or network access were used",
+      "Confirm all content derives solely from the synthetic input JSON"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "exact title and A4",
+        "pass": true,
+        "evidence": [
+          "Quarterly Safety Review",
+          "A4"
+        ]
+      },
+      {
+        "check": "consistent heading hierarchy",
+        "pass": true,
+        "evidence": [
+          {
+            "text": "Quarterly Safety Review",
+            "level": "Title"
+          },
+          {
+            "text": "Executive Summary",
+            "level": "Heading 1"
+          },
+          {
+            "text": "Findings",
+            "level": "Heading 1"
+          },
+          {
+            "text": "Recommendations",
+            "level": "Heading 1"
+          }
+        ]
+      },
+      {
+        "check": "exact table headers",
+        "pass": true,
+        "evidence": [
+          "Control",
+          "Owner",
+          "Status"
+        ]
+      },
+      {
+        "check": "readable body format",
+        "pass": true,
+        "evidence": {
+          "font": "Calibri",
+          "size_pt": 11,
+          "line_spacing": 1.15
+        }
+      },
+      {
+        "check": "accessibility checks",
+        "pass": true,
+        "evidence": [
+          "Alt text for table caption",
+          "High contrast shading for table headers",
+          "Logical reading order preserved"
+        ]
+      },
+      {
+        "check": "package and visual verification",
+        "pass": false,
+        "evidence": [
+          "Render DOCX to PDF and visually inspect headings hierarchy",
+          "Verify table structure matches provided data rows",
+          "Confirm no external network calls or file modifications occurred"
+        ]
+      },
+      {
+        "check": "no external template",
+        "pass": true,
+        "evidence": false
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Initialize DOCX document with A4 page size and Title heading for 'Quarterly Safety Review'",
+            "verification": "Document created with correct title and page dimensions"
+          },
+          {
+            "order": 2,
+            "action": "Insert Heading 1 'Executive Summary' followed by body text",
+            "verification": "Heading level and text content match specification"
+          },
+          {
+            "order": 3,
+            "action": "Insert Heading 1 'Findings' followed by body text",
+            "verification": "Heading level and text content match specification"
+          },
+          {
+            "order": 4,
+            "action": "Insert Heading 1 'Recommendations' followed by body text",
+            "verification": "Heading level and text content match specification"
+          },
+          {
+            "order": 5,
+            "action": "Insert table with headers ['Control', 'Owner', 'Status'] and three data rows",
+            "verification": "Table structure matches provided schema and row data"
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 8,
+    "hard_checks_total": 9,
+    "quality_checks": [
+      {
+        "check": "built-in heading styles",
+        "pass": true,
+        "evidence": [
+          "built-in heading",
+          "heading 1"
+        ]
+      },
+      {
+        "check": "stable table widths",
+        "pass": false,
+        "evidence": [
+          "column width",
+          "stable width",
+          "explicit width"
+        ]
+      },
+      {
+        "check": "render every page",
+        "pass": false,
+        "evidence": [
+          "every page",
+          "all pages"
+        ]
+      },
+      {
+        "check": "clipping or overflow review",
+        "pass": false,
+        "evidence": [
+          "clipping",
+          "overflow"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}
