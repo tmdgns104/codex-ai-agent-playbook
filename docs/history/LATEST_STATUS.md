@@ -1,166 +1,161 @@
 # 최신 진행상황 — 2026-08-24
 
-> 이 문서는 현재 V8.3 외부 Expert Skill Catalog 작업의 최신 체크포인트를 요약합니다. 완료 판정은 항상 Git/Test/Artifact Evidence를 기준으로 하며, 원격에 아직 반영되지 않은 로컬 결과는 별도로 표시합니다.
+> 이 문서는 현재 V8.3 Skill Library Expansion의 최신 체크포인트를 요약합니다. 완료 판정은 Git/Test/Artifact Evidence를 기준으로 합니다.
 
 ## 1. 안정 버전
 
 현재 안정 버전은 `main`의 **V8.2 COMPLETE - VERIFIED**입니다.
 
-V8.3은 Skill Library 확장을 위한 실험·검증 단계이며 두 트랙으로 분리되어 있습니다.
+```text
+Stable branch        main
+Stable version       V8.2
+Core Skills          7
+Optional Skills      10
+Wrappers             2
+Status               COMPLETE - VERIFIED
+```
+
+V8.3은 안정판을 유지한 채 Skill Library를 확장하는 개발 단계입니다.
+
+---
+
+## 2. V8.3 Track 구조
 
 ```text
 Track A
 v8.3-skill-library-expansion
-→ 내부 Candidate 확장 및 promotion 전 검증
+→ 내부 Candidate 확장 / promotion 전 검증
 
 Track B
 v8.3-expert-skill-catalog
 → 외부 Expert Skill catalog / inspection / benchmark
 ```
 
-## 2. Track A 체크포인트
-
-브랜치:
+### Track A 체크포인트
 
 ```text
-v8.3-skill-library-expansion
+Commit               e5a83cdf78a091f68978f46138f402e866bce278
+Candidate             8/8
+activation            72/72
+Skill Audit            9/9
+skills                79/79
+Harness Audit         PASS
+STRICT Gate           PASS / exit 0
+ACTIVE promotion      아직 안 함
 ```
 
-체크포인트:
+---
 
-```text
-e5a83cdf78a091f68978f46138f402e866bce278
-V8.3: register Batch 2A candidate files in manifest
-```
+## 3. Track B — BENCH-003A 완료
 
-Batch 2A 후보 8개는 Candidate 등록과 회귀 검증을 통과했지만 아직 ACTIVE로 promotion하지 않았습니다.
-
-확인된 Evidence:
-
-```text
-Candidate          8/8
-activation         72/72
-Skill Audit         9/9
-skills             79/79
-Harness Audit      PASS
-STRICT Gate        PASS / exit 0
-```
-
-## 3. Track B 원격 체크포인트
-
-브랜치:
-
-```text
-v8.3-expert-skill-catalog
-```
-
-BENCH-003 완료 commit:
-
-```text
-8c5fc7d8818bf9bdc0b972386d640ded04e9d1e9
-V8.3: complete expert skill inspection verification
-```
-
-BENCH-003A Task baseline:
+Task baseline:
 
 ```text
 d8e801f2b668027baafb51f3fbf73507e9e659fe
 V8.3: define 50+ expert skill inspection expansion
 ```
 
-BENCH-003A의 목표는 다음과 같습니다.
+완료 commit:
 
 ```text
-INSPECTED >= 60
-BENCHMARK_READY >= 50
-inspected domain packs >= 20
-external scripts executed = false
-ACTIVE import = 0
+4e1d92531cebb32a995562e922db50b35e0bcb5f
+V8.3: expand expert skill inspection to 50+ ready candidates
 ```
 
-## 4. 현재 로컬 Evidence
+GitHub 원격 `v8.3-expert-skill-catalog` HEAD가 위 SHA와 동일함을 확인했습니다.
 
-2026-08-24 현재 실제 로컬 baseline은 다음과 같습니다.
+### 최종 Catalog Evidence
 
 ```text
-FILE_EXISTS               True
-INSPECTED                  53
-BENCHMARK_READY            43
-EXTERNAL_SCRIPTS_EXECUTED  False
+INSPECTED                  62
+BENCHMARK_READY            52
+INSPECTION_DOMAINS         20
+INSPECTION_SOURCES          5
+SHORTLIST                  15
+SHORTLIST_DOMAINS          15
+SHORTLIST_SOURCES           2
+DUPLICATE_CLUSTERS          5
+ACTIVE_IMPORTS              0
+ACTIVE_REGISTRY_UNCHANGED  True
+EXTERNAL_SCRIPTS_EXECUTED   0
 ```
 
-현재 working tree에는 다음 파일의 미커밋 변경이 있습니다.
+BENCH-003A 목표:
 
 ```text
-evaluation/external-skills/inspections.json
+INSPECTED >= 60                  PASS
+BENCHMARK_READY >= 50            PASS
+inspected domain packs >= 20     PASS
+external scripts executed=false  PASS
+ACTIVE import=0                  PASS
 ```
 
-따라서 이 숫자는 아직 Track B 원격 HEAD의 완료 상태가 아닙니다.
+---
 
-## 5. ECC path drift 조사 결과
+## 4. 최종 검증 Evidence
 
-초기 catalog에 등록됐던 다음 4개 후보는 고정 revision에서 실제 경로가 존재하지 않았습니다.
+### 외부 Catalog 계열
 
 ```text
-ecc-aws          -> skills/aws
-ecc-azure-bicep  -> skills/azure-bicep
-ecc-api-security -> skills/api-security
-ecc-arm-cortex-m -> skills/arm-cortex-m
+External Catalog       12/12 PASS
+Effective Coverage      5/5 PASS
+Candidate Wave          5/5 PASS
+Inspection Wave         8/8 PASS
 ```
 
-처리 결과:
+### V8.2 정상 경로 회귀
 
 ```text
-ecc-aws          REJECTED
-ecc-azure-bicep  REJECTED
-ecc-api-security REJECTED
-ecc-arm-cortex-m REJECTED
+Capability Manager     12/12 PASS
+Skill Materializer     10/10 PASS
+Discovery Bridge       10/10 PASS
+Playbook Launcher      12/12 PASS
+Capability Router      28/28 PASS
+--------------------------------
+TOTAL                   72/72 PASS
 ```
 
-공통 안전 기록:
+### Harness / Quality
 
 ```text
-upstream-path-missing-at-pinned-revision
+Harness Audit           PASS
+Harness Audit warnings  0
+STRICT Quality Gate     PASS
+git diff --check        PASS
+working tree            CLEAN before push
 ```
 
-비슷한 이름의 다른 Skill로 조용히 대체하지 않았습니다.
+STRICT Quality Gate 안에서도 다음 검증 명령이 PASS했습니다.
 
-### ECC 재탐색에서 실제 존재가 확인된 유력 후보
+```cmd
+python evaluation\external-skills\tools\inspect_catalog.py --root .
+```
 
-다음 Skill은 실제 ECC 트리에서 별도 후보로 검토할 가치가 있음을 확인했습니다.
+결과:
 
 ```text
-ecc-api-design
-ecc-backend-patterns
-ecc-coding-standards
-ecc-agent-introspection-debugging
-ecc-security-review
-ecc-deployment-patterns
-ecc-react-testing
-ecc-verification-loop
+RESULT PASS
 ```
 
-이 후보들은 기존 잘못된 후보를 덮어쓰지 않고 별도 catalog correction Task에서 새 Candidate로 등록하는 방향이 적절합니다.
+---
 
-## 6. K-Dense 저장소 이름 변경 확인
+## 5. BENCH-003A 추가 inspection 기록
 
-기존 조사 과정에서 사용하던 K-Dense 저장소는 현재 다음 정식 이름으로 확인됐습니다.
+### K-Dense 추가 8개
+
+정식 저장소:
 
 ```text
 K-Dense-AI/scientific-agent-skills
 ```
 
-기존 pinned revision은 새 정식 저장소에서도 유효합니다.
+pinned revision:
 
 ```text
 390f5146bf3c1877cf15636a3dd7b775e4f0f185
 ```
 
-따라서 이전 조회 실패의 원인은 pinned SHA 손상이 아니라 저장소 이름 변경에 따른 경로 문제였습니다.
-
-## 7. K-Dense 추가 8개 정적검사 결과
-
-다음 8개는 pinned revision의 실제 `SKILL.md`, 디렉터리 구조, 라이선스, dependency, network/credential 요구, bundled script 여부를 정적으로 검사했습니다.
+추가 inspection:
 
 ```text
 kd-statsmodels
@@ -173,113 +168,131 @@ kd-scientific-schematics
 kd-infographics
 ```
 
-현재 판정:
+모두 정적 inspection으로 처리했으며 external script/API/install은 실행하지 않았습니다.
+
+### Anthropic `anth-claude-api`
+
+기존 100 Candidate 중 `anth-claude-api`를 추가 검사했습니다.
 
 ```text
-8/8 BENCHMARK_READY 판정 가능
+source          anthropic-reference-skills
+path            skills/claude-api
+license         Apache-2.0
+domain          backend-api
+decision        BENCHMARK_READY
 ```
 
-단, 이 8개는 **아직 로컬 `inspections.json`에 반영되지 않았습니다.** 따라서 현재 공식 로컬 수치는 계속 `INSPECTED 53 / BENCHMARK_READY 43`입니다.
+실제 사용에서는 Anthropic API/network/API key가 필요할 수 있으나 inspection 중에는 실행하지 않았습니다.
 
-### 주요 안전 메모
+---
 
-#### `kd-statsmodels`
+## 6. ECC path drift
 
-- BSD-3-Clause
-- 통계 추론 결과는 사람의 검증 필요
-- bundled script 없음
-
-#### `kd-matplotlib`
-
-- upstream license 확인
-- bundled `scripts/` 존재
-- script 실행하지 않음
-- 파일 출력 및 GUI 사용 가능성 기록 필요
-
-#### `kd-seaborn`
-
-- BSD-3-Clause
-- `sns.load_dataset()`은 캐시가 없을 때 public example data를 네트워크로 받을 수 있음
-- private/offline 작업은 local file 사용 권고
-
-#### `kd-vaex`
-
-- MIT
-- 대용량 파일 read/write 가능
-- S3/GCS/Azure 계열 optional cloud I/O는 사용자 credential이 필요할 수 있음
-- 실제 cloud 접근은 수행하지 않음
-
-#### `kd-zarr-python`
-
-- MIT
-- S3/GCS 등 remote store는 optional dependency와 credential이 필요할 수 있음
-- 실제 network 접근은 수행하지 않음
-
-#### `kd-peer-review`
-
-- MIT
-- confidential manuscript는 authorization과 venue policy 확인이 선행되어야 함
-- local-only deterministic CLI가 bundled되어 있음
-- bundled script 실행하지 않음
-
-#### `kd-scientific-schematics`
-
-- MIT
-- OpenRouter API key를 사용할 수 있음
-- prompt와 생성 이미지가 외부 서비스로 전송될 수 있음
-- external API, script 모두 실행하지 않음
-
-#### `kd-infographics`
-
-- Skill frontmatter에는 개별 license가 없었음
-- pinned repository의 `LICENSE.md`가 MIT임을 별도 확인
-- OpenRouter/Perplexity 계열 외부 API 사용 가능
-- external API, script 모두 실행하지 않음
-
-## 8. README 및 한국어 문서 최신화
-
-`docs-history-v8.3` 문서 브랜치에서 GitHub 첫 화면과 상세 가이드를 현재 상태에 맞춰 갱신했습니다.
+기존 Catalog의 다음 후보는 pinned ECC revision에서 실제 경로가 존재하지 않았습니다.
 
 ```text
-README.md
-README_KO.md
-docs/DOCUMENTATION_POLICY.md
-docs/history/README.md
-docs/history/LATEST_STATUS.md
-docs/history/DEVELOPMENT_JOURNAL.md
-docs/history/TROUBLESHOOTING_LOG.md
-docs/history/RESEARCH_LOG.md
+ecc-aws          -> skills/aws
+ecc-azure-bicep  -> skills/azure-bicep
+ecc-api-security -> skills/api-security
+ecc-arm-cortex-m -> skills/arm-cortex-m
 ```
 
-두 README는 이제 다음을 동시에 보여줍니다.
+결과:
 
 ```text
-안정판  V8.2 COMPLETE / VERIFIED
-개발판  V8.3 Skill Library Expansion
+REJECTED
+safety_findings = upstream-path-missing-at-pinned-revision
 ```
 
-설치·일반 사용 명령은 검증된 `main` 기준으로 유지하고, V8.3 Track A/Track B의 개발 현황과 BENCH-003A 수치는 별도 개발 상태로 표시합니다.
+비슷한 다른 Skill로 자동 대체하지 않았습니다.
 
-설명 문장은 한국어를 기본으로 하며 코드, 명령어, 파일 경로, Skill ID, 상태 enum, commit SHA 등 실제 계약 식별자만 원문을 유지합니다.
-
-## 9. 다음 실행 단계
-
-BENCH-003A 범위를 유지하기 위해 새 ECC 후보를 현재 Task에 억지로 추가하지 않습니다.
-
-다음 순서는 다음과 같습니다.
+실제 ECC 트리에서 별도 후보로 확인한 Skill:
 
 ```text
-1. K-Dense Batch A 4개를 inspections.json에 반영
-2. focused inspection test
-3. 수치 확인: INSPECTED 57 / READY 47 목표
-4. K-Dense Batch B 4개 반영
-5. 수치 확인: INSPECTED 61 / READY 51 목표
-6. external catalog / coverage / candidate / inspection tests
-7. 기존 shortlist >= 15 확인
-8. normal path regression
-9. Harness Audit
-10. STRICT Gate
-11. git diff --check
-12. working tree 검증
-13. 완료 Evidence가 모두 PASS일 때만 commit/push
+ecc-api-design
+ecc-backend-patterns
+ecc-coding-standards
+ecc-agent-introspection-debugging
+ecc-security-review
+ecc-deployment-patterns
+ecc-react-testing
+ecc-verification-loop
 ```
+
+이 후보들은 BENCH-003A 범위를 넓히지 않기 위해 별도 catalog-correction Task로 분리합니다.
+
+---
+
+## 7. 이번 Task의 주요 트러블슈팅
+
+### 특정 candidate 하드코딩 fixture
+
+`test_uninspected_cluster_member_rejected`가 `anth-claude-api`를 미검사 후보로 하드코딩하고 있어 실제 inspection 후 테스트가 실패했습니다.
+
+Validator를 변경하거나 검증을 약화하지 않고 fixture만 일반화했습니다.
+
+```text
+실제 duplicate cluster member 선택
+→ temp inspections에서 제거
+→ uninspected member rejection 확인
+```
+
+재검증:
+
+```text
+Inspection Wave 8/8 PASS
+```
+
+### LF → CRLF 경고
+
+`test_inspection_wave.py`가 LF로 저장되며 Git의 다음 경고가 발생했습니다.
+
+```text
+LF will be replaced by CRLF
+```
+
+Quality Gate의 conflict 검사에서 이 경고를 conflict 경로처럼 읽어 한 차례 FAIL했습니다. 실제 Git conflict는 없었습니다.
+
+조치:
+
+```text
+CRLF 복구
+→ focused test 8/8 PASS
+→ STRICT Quality Gate 재실행
+→ RESULT PASS
+```
+
+테스트나 Gate를 약화하지 않았습니다.
+
+---
+
+## 8. 현재 결론
+
+BENCH-003A는 다음 상태입니다.
+
+```text
+BENCH-003A
+COMPLETE - VERIFIED
+```
+
+외부 Skill은 많이 모을 수 있지만, 현재도 **ACTIVE import는 0**입니다. 즉 이번 단계는 Library의 usable pool을 넓힌 것이지 Runtime ACTIVE Skill을 무차별 확대한 것이 아닙니다.
+
+---
+
+## 9. 다음 단계
+
+다음 Track B Task는 **BENCH-004 controlled benchmark / adoption decision**입니다.
+
+```text
+BENCH-003A COMPLETE - VERIFIED
+→ BENCH-004 controlled benchmark
+→ 후보 간 실제 비교
+→ ADOPT / ADAPT / REFERENCE / REJECT 판단
+→ 충분한 Evidence가 있는 일부만 promotion 후보
+```
+
+새로 확인한 ECC 실존 후보 등록은 별도 catalog-correction Task로 분리합니다.
+
+원칙은 계속 동일합니다.
+
+> **정확성과 검증 신뢰성을 낮추지 않는 범위에서 Skill Library를 확장하고 Runtime Context는 최소화합니다.**
