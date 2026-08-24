@@ -1,0 +1,1091 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "shortlist_count": 15,
+  "stage_a_count": 15,
+  "stage_b_count": 20,
+  "external_scripts_executed": false,
+  "active_import_count": 0,
+  "stage_a": [
+    {
+      "candidate_id": "kd-scientific-writing",
+      "fixture_id": "bench004-01",
+      "domain_pack": "documentation-guide",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/scientific-writing",
+      "license_status": "MIT",
+      "dependency_burden": "low",
+      "dependencies": [],
+      "permissions": [],
+      "network_auth_notes": "No mandatory network/auth identified for writing workflow.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [
+        "guide-ppt-creator"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 13047,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-dask",
+      "fixture_id": "bench004-02",
+      "domain_pack": "big-data",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/dask",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "dask"
+      ],
+      "permissions": [],
+      "network_auth_notes": "No auth required by the skill metadata; runtime data access depends on user workload.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [
+        "data-pipeline",
+        "distributed-dataframe"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 15413,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "fixture_id": "bench004-03",
+      "domain_pack": "data-analysis",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/exploratory-data-analysis",
+      "license_status": "MIT",
+      "dependency_burden": "low",
+      "dependencies": [],
+      "permissions": [],
+      "network_auth_notes": "No mandatory network or auth identified in static scope.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 12633,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [
+          "root-cause-debugging",
+          "testing"
+        ],
+        "count": 2,
+        "result": "READY",
+        "bridge": true
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-exploratory-data-analysis/SKILL.md",
+        "sha256": "ed1c66ba8de6add4af4a19423ff6c43fc5dafb56a0a8e142992ebae907c1b194",
+        "loaded_context_bytes": 12633,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "fixture_id": "bench004-04",
+      "domain_pack": "machine-learning",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/scikit-learn",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "scikit-learn"
+      ],
+      "permissions": [],
+      "network_auth_notes": "No mandatory auth identified in static scope.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 10284,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [],
+        "count": 0,
+        "result": "READY",
+        "bridge": false
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-scikit-learn/SKILL.md",
+        "sha256": "a3064abd47efdad11265518208b327bd237656264a969942e6731367c7d97820",
+        "loaded_context_bytes": 10284,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-pytorch-lightning",
+      "fixture_id": "bench004-05",
+      "domain_pack": "deep-learning-gpu",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/pytorch-lightning",
+      "license_status": "MIT",
+      "dependency_burden": "high",
+      "dependencies": [
+        "pytorch",
+        "pytorch-lightning"
+      ],
+      "permissions": [],
+      "network_auth_notes": "GPU/package/model access depends on benchmark workload; no external script execution allowed.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "gpu-runtime-dependency"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 7489,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "fixture_id": "bench004-06",
+      "domain_pack": "scientific-computing",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/sympy",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "sympy"
+      ],
+      "permissions": [],
+      "network_auth_notes": "No mandatory network/auth identified.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 9824,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [],
+        "count": 0,
+        "result": "READY",
+        "bridge": false
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-sympy/SKILL.md",
+        "sha256": "5445c2f5dadb95d6653681c30060b4ab9686fe02ab6729d8fc41f4a2c19a90cf",
+        "loaded_context_bytes": 9824,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "fixture_id": "bench004-07",
+      "domain_pack": "research-literature",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/citation-management",
+      "license_status": "MIT",
+      "dependency_burden": "low",
+      "dependencies": [],
+      "permissions": [],
+      "network_auth_notes": "Online DOI/database lookup may be optional; benchmark should use supplied citations first.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "optional-network-research-workflow"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 14719,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [],
+        "count": 0,
+        "result": "READY",
+        "bridge": false
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-citation-management/SKILL.md",
+        "sha256": "e52459a2c78f6b51250ee418e53bb34494c2e35814e5b4a29cc293c6914c0141",
+        "loaded_context_bytes": 14719,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-scientific-slides",
+      "fixture_id": "bench004-08",
+      "domain_pack": "presentation-visual",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/scientific-slides",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [],
+      "permissions": [],
+      "network_auth_notes": "No mandatory auth identified in static scope.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [
+        "guide-ppt-creator"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 20563,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-docx",
+      "fixture_id": "bench004-09",
+      "domain_pack": "office-documents",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/docx",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "python-docx-or-equivalent"
+      ],
+      "permissions": [
+        "filesystem-write-for-user-requested-artifacts"
+      ],
+      "network_auth_notes": "No mandatory network/auth identified.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "artifact-write-capability-requires-user-path-scope"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 7244,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [],
+        "count": 0,
+        "result": "NETWORK_REVIEW_REQUIRED",
+        "bridge": false
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-docx/SKILL.md",
+        "sha256": "5b9ba52c1172b3675e8139b9c0c9b1959d0ba85d60375b9ab9269b8e9e4ff67e",
+        "loaded_context_bytes": 7244,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-pylabrobot",
+      "fixture_id": "bench004-10",
+      "domain_pack": "robotics-ros",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/pylabrobot",
+      "license_status": "MIT",
+      "dependency_burden": "high",
+      "dependencies": [
+        "pylabrobot",
+        "hardware-specific-drivers"
+      ],
+      "permissions": [
+        "potential-hardware-control"
+      ],
+      "network_auth_notes": "Hardware access is environment-specific; benchmark must be simulation/text-only.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "physical-device-control-capability"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 9757,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-pydicom",
+      "fixture_id": "bench004-11",
+      "domain_pack": "computer-vision",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/pydicom",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "pydicom"
+      ],
+      "permissions": [
+        "filesystem-read-user-data"
+      ],
+      "network_auth_notes": "No mandatory network/auth identified; datasets can contain sensitive metadata and require fixture-only testing.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "medical-data-privacy-sensitive"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 15873,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "nv-aiq-deploy",
+      "fixture_id": "bench004-12",
+      "domain_pack": "cloud-infra",
+      "source_id": "nvidia-verified-skills",
+      "source_revision": "7149a886d50da8db72cdc1f20ff01cefeadfe6a9",
+      "upstream_path": "skills/aiq-deploy",
+      "license_status": "Apache-2.0 AND CC-BY-4.0",
+      "dependency_burden": "high",
+      "dependencies": [
+        "nvidia-aiq-stack"
+      ],
+      "permissions": [
+        "deployment-guidance"
+      ],
+      "network_auth_notes": "Real deployment may require cloud/container credentials; benchmark uses dry static fixtures only.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "credential-bearing-real-world-workflow"
+      ],
+      "overlap_with_current": [
+        "docker-container"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 13321,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "nv-holoscan-setup",
+      "fixture_id": "bench004-13",
+      "domain_pack": "edge-ai-nvidia",
+      "source_id": "nvidia-verified-skills",
+      "source_revision": "7149a886d50da8db72cdc1f20ff01cefeadfe6a9",
+      "upstream_path": "skills/holoscan-setup",
+      "license_status": "Apache-2.0 AND CC-BY-4.0",
+      "dependency_burden": "high",
+      "dependencies": [
+        "holoscan",
+        "conda-or-container-runtime"
+      ],
+      "permissions": [
+        "shell-command-guidance"
+      ],
+      "network_auth_notes": "Bundled shell helpers check local Conda/NGC image state; not executed during intake.",
+      "bundled_scripts": true,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "bundled-shell-scripts-present-not-executed"
+      ],
+      "overlap_with_current": [
+        "docker-container"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 10174,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "nv-dynamo-interconnect-check",
+      "fixture_id": "bench004-14",
+      "domain_pack": "networking",
+      "source_id": "nvidia-verified-skills",
+      "source_revision": "7149a886d50da8db72cdc1f20ff01cefeadfe6a9",
+      "upstream_path": "skills/dynamo-interconnect-check",
+      "license_status": "Apache-2.0 AND CC-BY-4.0",
+      "dependency_burden": "high",
+      "dependencies": [
+        "nvidia-dynamo-stack"
+      ],
+      "permissions": [
+        "system-network-inspection-guidance"
+      ],
+      "network_auth_notes": "Bundled check_interconnect.py exists and was not executed.",
+      "bundled_scripts": true,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "bundled-scripts-present-not-executed",
+        "system-network-inspection-capability"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 6405,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "nv-dynamo-troubleshoot",
+      "fixture_id": "bench004-15",
+      "domain_pack": "debug-performance",
+      "source_id": "nvidia-verified-skills",
+      "source_revision": "7149a886d50da8db72cdc1f20ff01cefeadfe6a9",
+      "upstream_path": "skills/dynamo-troubleshoot",
+      "license_status": "Apache-2.0 AND CC-BY-4.0",
+      "dependency_burden": "high",
+      "dependencies": [
+        "nvidia-dynamo-stack"
+      ],
+      "permissions": [
+        "diagnostic-collection-guidance"
+      ],
+      "network_auth_notes": "Bundled collect_dynamo_debug_bundle.py exists and was not executed.",
+      "bundled_scripts": true,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "bundled-scripts-present-not-executed",
+        "diagnostic-collection-may-expose-environment-data"
+      ],
+      "overlap_with_current": [
+        "root-cause-debugging",
+        "performance-profiling"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 5130,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    }
+  ],
+  "stage_b": [
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "current-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "external-expert",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 12633,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "adapted-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "variant": "current-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "variant": "external-expert",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 10284,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "variant": "adapted-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "variant": "current-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "variant": "external-expert",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 9824,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "variant": "adapted-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "variant": "current-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "variant": "external-expert",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 14719,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "variant": "adapted-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 1,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "variant": "current-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 1,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "variant": "external-expert",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 7244,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 1,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "variant": "adapted-playbook",
+      "runtime_metadata": null,
+      "acceptance_pass": null,
+      "acceptance_details": null,
+      "selected_capability": null,
+      "loaded_context_bytes": 0,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "execution_time_ms": null,
+      "dependency_burden": "medium",
+      "permission_burden": 1,
+      "safety_gate": "PENDING_EXECUTION",
+      "external_access_attempted": false,
+      "notes": "Execution not started."
+    }
+  ]
+}

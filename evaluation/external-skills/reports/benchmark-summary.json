@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "shortlist_count": 15,
+  "stage_a_complete": true,
+  "stage_b_candidates": 5,
+  "stage_b_executed": false,
+  "decisions_pending": 15,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "active_import_count": 0,
+  "status": "PENDING_STAGE_B_EXECUTION"
+}

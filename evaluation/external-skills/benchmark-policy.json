@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "status": "CONTROLLED_BENCHMARK_POLICY",
+  "shortlist_count": 15,
+  "variants": [
+    "baseline-no-optional",
+    "current-playbook",
+    "external-expert",
+    "adapted-playbook"
+  ],
+  "stages": {
+    "A": "deterministic-pre-benchmark",
+    "B": "controlled-execution-benchmark"
+  },
+  "priority_order": [
+    "correctness",
+    "safety-permission-boundary",
+    "verification-quality",
+    "capability-differentiation",
+    "context-token-burden",
+    "dependency-burden",
+    "execution-cost-time"
+  ],
+  "decision_enums": [
+    "ADOPT_CANDIDATE",
+    "ADAPT_CANDIDATE",
+    "REFERENCE_ONLY",
+    "REJECTED"
+  ],
+  "protected_domain_packs": [
+    "documentation-guide",
+    "big-data"
+  ],
+  "stage_b_required_for": [
+    "ADOPT_CANDIDATE",
+    "ADAPT_CANDIDATE"
+  ],
+  "fixture_policy": "local-synthetic-supplied-only",
+  "token_policy": "actual-tokenizer-or-null-with-reason",
+  "runtime_policy": "record-runtime-metadata-do-not-hardcode-provider-or-model",
+  "external_network_allowed": false,
+  "external_api_allowed": false,
+  "credentials_allowed": false,
+  "external_scripts_executed": false,
+  "hardware_actuation_allowed": false,
+  "cloud_write_allowed": false,
+  "destructive_actions_allowed": false,
+  "active_import_count": 0,
+  "active_registry_changes_allowed": false,
+  "router_scoring_changes_allowed": false,
+  "global_agents_changes_allowed": false,
+  "promotion_allowed": false
+}
