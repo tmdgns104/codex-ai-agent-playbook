@@ -8,120 +8,45 @@ V8.2 이후 핵심 질문은 다음이었습니다.
 
 > Skill을 많이 모아도 되는가?
 
-결론은 단순한 YES가 아니었습니다.
+결론:
 
 ```text
 Library는 크게 가져갈 수 있다.
 하지만 ACTIVE는 통제해야 한다.
-그리고 Runtime Context에는 필요한 Skill만 materialize해야 한다.
+Runtime Context에는 필요한 Skill만 materialize해야 한다.
 ```
 
-즉 문제의 병목은 저장된 Skill 수 자체가 아니라:
+즉 병목은 저장된 Skill 수 자체보다 다음으로 이동합니다.
 
-- trigger overlap
-- routing precision
-- permission/risk boundary
-- stale metadata
-- duplicate workflow
-- license/dependency burden
-
-으로 이동했습니다.
+```text
+trigger overlap
+routing precision
+permission/risk boundary
+stale metadata
+duplicate workflow
+license/dependency burden
+```
 
 ---
 
 ## 2. Skill Library 계층 전략
-
-현재 목표 구조:
 
 ```text
 Layer 1 — DISCOVERED / Catalog
 100~300개 이상 가능
 
 Layer 2 — INSPECTED / BENCHMARK_READY
-실제 path/content/license를 확인한 usable pool
+path/content/license/dependency/permission을 실제 확인한 usable pool
 
 Layer 3 — ACTIVE
-실제 routing evidence가 충분한 소수
+실제 routing evidence와 promotion gate를 통과한 Skill
 ```
 
-초기 ACTIVE 목표는 20~30 수준으로 보수적으로 유지하고, evidence가 쌓이면 50 → 100 → 200으로 단계 확대하는 전략입니다.
-
-Runtime은 library 전체를 로드하지 않습니다.
-
-```text
-Task
-→ deterministic metadata router
-→ 0~3 skills
-→ temporary materialization
-```
+현재 원칙은 **많이 발견하되 천천히 ACTIVE로 승격**하는 것입니다.
 
 ---
 
-## 3. 외부 Expert Source 조사
-
-### Tier A
-
-#### `agentskills/agentskills`
-
-Agent Skill 형식/생태계 참고.
-
-#### `anthropics/skills`
-
-공식/대표적인 문서형 Skill과 workflow 패턴 참고.
-
-주의:
-
-- source-available / proprietary 계열 문서 Skill 존재 가능
-- 공개 저장소라는 이유만으로 재배포/채택 가능하다고 간주하지 않음
-
-#### `NVIDIA/skills`
-
-GPU, DeepStream, Holoscan, AI-Q, HSB 등 강한 도메인 전문성을 보유.
-
-주의:
-
-- GPU/Container/SSH/Hardware side effect
-- per-skill license 확인 필요
-- script/setup은 inspection 단계에서 실행 금지
-
-### Tier B
-
-#### `K-Dense/scientific-agent-skills`
-
-Scientific Python, research, simulation, data analysis 영역에서 강함.
-
-주의:
-
-- root MIT와 개별 Skill license가 다를 수 있음
-- bundled scripts 다수
-
-### Tier C
-
-#### ECC
-
-개발 workflow, verification, coding standards, security, backend patterns 영역에서 강함.
-
-초기 candidate path 정확도 문제가 발견되어 실제 tree 기반 재탐색 필요.
-
-#### `alirezarezvani/claude-skills`
-
-광범위한 engineering/product/research Skill을 제공.
-
-주의:
-
-- repository 변화 속도가 빠름
-- symlink/cross-agent layout 존재
-- revision/path preflight가 특히 중요
-
-### Discovery 참고
-
-- VoltAgent
-
----
-
-## 4. 25 Domain Packs
-
-외부 Skill을 무작위로 수집하지 않도록 25개 Domain Pack을 정의했습니다.
+## 3. 25개 Domain Pack
 
 ```text
 documentation-guide
@@ -151,114 +76,87 @@ scientific-computing
 office-documents
 ```
 
-이 구조의 목적은 단순 개수 경쟁을 막는 것입니다.
-
-```text
-Skill 100개
-```
-
-보다 중요한 것은:
-
-```text
-어느 Domain이 비어 있는가?
-어느 Domain에 중복이 과도한가?
-실제 전문성이 있는가?
-```
-
-입니다.
+Domain 수를 채우는 것 자체가 목적이 아니라, 실제 활용 가능한 Skill의 coverage를 관리하기 위한 분류입니다.
 
 ---
 
-## 5. BENCH-001 — Source Strategy
+## 4. 외부 Source 계층
 
-BENCH-001에서 외부 소스의 역할과 위험도를 정리했습니다.
+### Tier A
 
-핵심 정책:
+```text
+agentskills/agentskills
+anthropics/skills
+NVIDIA/skills
+```
 
-- external full harness auto-install 금지
-- 개별 Skill 또는 pattern 단위 inspection
-- unknown license는 READY 진입 금지
-- external instruction은 우리 governance보다 우선하지 않음
-- script/install 자동 실행 금지
+### Tier B
+
+```text
+K-Dense scientific skills
+```
+
+### Tier C
+
+```text
+ECC
+alirezarezvani/claude-skills
+```
+
+### Discovery 참고
+
+```text
+VoltAgent
+```
+
+Source tier가 높다고 개별 Skill을 자동 신뢰하지 않습니다. 실제 pinned revision의 파일과 license를 다시 확인합니다.
 
 ---
 
-## 6. BENCH-002 — 100 Candidate Discovery
+## 5. BENCH-002 — 100 Candidate Catalog
 
-결과:
+초기 catalog 결과:
 
 ```text
-Total candidates      100
-Domain coverage       23/25
+Candidate            100
+covered domains       23/25
 K-Dense               35
 NVIDIA                30
 alirezarezvani        22
 Anthropic              8
 ECC                    5
 ACTIVE import          0
-External scripts       0 executed
+external script exec   0
 ```
 
-이 단계의 중요한 의미:
-
-> 100개를 설치한 것이 아니라, 검증할 후보 100개를 확보한 것.
-
-이 구분은 BENCH-003에서 매우 중요해졌습니다.
-
----
-
-## 7. Candidate 상태 모델
+이 단계의 중요한 성격:
 
 ```text
-DISCOVERED
-↓
-INSPECTED
-↓
-BENCHMARK_READY
-↓
-ADOPT_CANDIDATE / ADAPT_CANDIDATE / REFERENCE_ONLY / REJECTED
-↓
-PROMOTED
+DISCOVERY
+!=
+VERIFICATION
 ```
 
-의미:
-
-### BENCHMARK_READY
-
-- path 확인
-- revision 확인
-- license 검토
-- dependency/permission/safety 기록
-- benchmark에 넣어볼 가치가 있음
-
-**ACTIVE와 동일하지 않습니다.**
-
-### REFERENCE_ONLY
-
-내용은 참고할 가치가 있지만 license/side effect/구조 때문에 직접 채택 후보로 올리지 않는 상태.
-
-### REJECTED
-
-현재 pinned source 기준으로 경로 부재, 정책 위반, 부적합 등의 이유로 후보에서 제외.
+이후 실제 inspection에서 path drift와 license 차이가 발견되며 이 구분이 중요하다는 것이 확인됐습니다.
 
 ---
 
-## 8. BENCH-003 — 32개 Actual Inspection
+## 6. BENCH-003 — 실제 upstream inspection
 
-결과:
+완료 결과:
 
 ```text
 INSPECTED              32
-BENCHMARK_READY        28
-duplicate clusters      5
-shortlist              15
-shortlist domains      15
-industrial gap        true
-ACTIVE import           0
-external scripts        0 executed
+BENCHMARK_READY         28
+DUPLICATE_CLUSTERS       5
+SHORTLIST               15
+SHORTLIST_DOMAINS       15
+SHORTLIST_SOURCES        2
+ACTIVE_IMPORT             0
+external scripts          0
 ```
 
-### 대표 shortlist
+대표 shortlist:
 
 ```text
 kd-scientific-writing
@@ -278,7 +176,7 @@ nv-dynamo-interconnect-check
 nv-dynamo-troubleshoot
 ```
 
-### 검증
+검증:
 
 ```text
 inspection tests     30/30
@@ -295,7 +193,7 @@ STRICT Gate          PASS / exit 0
 
 ---
 
-## 9. BENCH-003A — 목표 50+ BENCHMARK_READY
+## 7. BENCH-003A 연구 목표
 
 Task baseline:
 
@@ -303,122 +201,106 @@ Task baseline:
 d8e801f2b668027baafb51f3fbf73507e9e659fe
 ```
 
-Acceptance target:
+목표:
 
 ```text
 INSPECTED >= 60
 BENCHMARK_READY >= 50
 inspected domain packs >= 20
-existing shortlist >= 15
-external_scripts_executed = false
+external scripts executed = false
 ACTIVE import = 0
 ```
 
+핵심은 단순히 숫자를 늘리는 것이 아니라 **기존 100 Candidate 안에서 실제 usable pool을 50+로 만드는 것**이었습니다.
+
 ---
 
-## 10. K-Dense Wave 연구 결과
+## 8. K-Dense 연구
 
-Pinned revision:
+### 저장소 rename
+
+기존 이름에서 현재 정식 이름으로 이동했음을 확인했습니다.
+
+```text
+K-Dense-AI/scientific-agent-skills
+```
+
+pinned revision:
 
 ```text
 390f5146bf3c1877cf15636a3dd7b775e4f0f185
 ```
 
-추가 inspection 7개:
+은 새 정식 저장소에서도 유효했습니다.
 
-- kd-statistical-analysis
-- kd-pdf
-- kd-scientific-visualization
-- kd-experimental-design
-- kd-hypothesis-generation
-- kd-simpy
-- kd-pymoo
+### 추가 inspection
 
-### 판정
+1차 Wave에서 다음과 같은 후보를 검사했습니다.
 
 ```text
-kd-statistical-analysis      BENCHMARK_READY
-kd-pdf                       REFERENCE_ONLY
-kd-scientific-visualization  BENCHMARK_READY
-kd-experimental-design       BENCHMARK_READY
-kd-hypothesis-generation     BENCHMARK_READY
-kd-simpy                     BENCHMARK_READY
-kd-pymoo                     BENCHMARK_READY
+kd-statistical-analysis
+kd-pdf
+kd-scientific-visualization
+kd-experimental-design
+kd-hypothesis-generation
+kd-simpy
+kd-pymoo
 ```
 
-### `kd-pdf` 교훈
+`kd-pdf`는 per-skill Proprietary라 `REFERENCE_ONLY`로 처리했습니다.
 
-K-Dense root는 MIT 계열이지만 해당 Skill은 per-skill Proprietary로 확인되었습니다.
+추가 Wave:
 
-따라서 root license만 보면 안 됩니다.
+```text
+kd-statsmodels
+kd-matplotlib
+kd-seaborn
+kd-vaex
+kd-zarr-python
+kd-peer-review
+kd-scientific-schematics
+kd-infographics
+```
+
+### 안전 관찰
+
+- `kd-matplotlib`: bundled scripts 존재 가능, 실행하지 않음
+- `kd-seaborn`: `sns.load_dataset()`은 optional network 가능
+- `kd-vaex`: optional cloud I/O/credential 가능
+- `kd-zarr-python`: remote store 사용 시 network/credential 가능
+- `kd-peer-review`: confidential manuscript 취급 주의
+- `kd-scientific-schematics`: OpenRouter/Gemini 계열 외부 전송 가능
+- `kd-infographics`: OpenRouter/Perplexity 계열 외부 전송 가능
+
+모든 항목은 inspection 중 external script/API/install을 실행하지 않았습니다.
 
 ---
 
-## 11. NVIDIA Wave 연구 결과
+## 9. NVIDIA 연구
 
-Pinned revision:
-
-```text
-7149a886d50da8db72cdc1f20ff01cefeadfe6a9
-```
-
-10개 inspection:
-
-- nv-cupynumeric-hdf5
-- nv-rtvi-cv-customize-model
-- nv-rtvi-cv-scaffold-vss-service
-- nv-holohub-debug-build-run
-- nv-deepstream-generate-pipeline
-- nv-deepstream-profile-pipeline
-- nv-hsb-setup
-- nv-hsb-app
-- nv-aiq-research
-- nv-hsb-test
-
-### 결과
+10개 추가 inspection에서:
 
 ```text
-BENCHMARK_READY 9
-REFERENCE_ONLY  1
+9 BENCHMARK_READY
+1 REFERENCE_ONLY
 ```
 
-`nv-rtvi-cv-scaffold-vss-service`는 명시적 `NVIDIA Proprietary`로 REFERENCE_ONLY 처리했습니다.
+`nv-rtvi-cv-scaffold-vss-service`는 `NVIDIA Proprietary`라 `REFERENCE_ONLY` 처리했습니다.
 
-### Side-effect 연구
+관찰된 dependency/permission 특성:
 
-NVIDIA Skill은 실무성이 높은 대신 권한 범위가 큽니다.
+- GPU/runtime 의존 가능
+- Docker/SSH/network setup 가능
+- DeepStream/Holoscan 등 특정 runtime 필요 가능
+- AI-Q backend/API 사용 가능
 
-#### HSB
-
-- SSH remote execution
-- Docker
-- hardware access
-- network configuration
-- privileged command 가능성
-
-#### DeepStream
-
-- GPU runtime
-- GStreamer
-- generated pipeline
-- profiling
-
-#### AI-Q
-
-- configurable HTTP backend
-- non-local backend trust 필요
-
-따라서 BENCH 단계에서는 모두 **text/fixture-only inspection**으로 제한했습니다.
-
-```text
-external_scripts_executed = false
-```
+inspection 단계에서는 실행하지 않고 정적 기록만 남겼습니다.
 
 ---
 
-## 12. ECC 심층 연구
+## 10. ECC 연구 — path drift와 실존 후보 분리
 
-초기 Candidate:
+초기 Catalog의 다음 후보는 pinned revision에서 경로가 없었습니다.
 
 ```text
 ecc-aws
@@ -427,253 +309,207 @@ ecc-api-security
 ecc-arm-cortex-m
 ```
 
-각각 다음 path로 catalog되어 있었습니다.
-
-```text
-skills/aws
-skills/azure-bicep
-skills/api-security
-skills/arm-cortex-m
-```
-
-Pinned revision에서 실제 조회 결과 4개 모두 path가 없었습니다.
-
-### 보안 비공개 가설
-
-처음에는 특정 Skill을 보안상 숨긴 것인지 의심했습니다.
-
-하지만 실제 ECC 저장소의 다른 Skill과 `skills/`, `.agents/skills/` 구조는 정상 공개되어 있었습니다.
-
-결론:
-
-> 보안 비공개보다 discovery path drift / 잘못된 candidate path 가능성이 높음.
-
-### 처리
-
-4개 모두:
+결정:
 
 ```text
 REJECTED
-upstream-path-missing-at-pinned-revision
+safety_findings = upstream-path-missing-at-pinned-revision
 ```
 
-로 기록했습니다.
+중요한 원칙:
 
-### 실제 재탐색에서 발견한 ECC Skill
+> “비슷한 Skill이 있으니 같은 후보로 치자”라고 처리하지 않는다.
+
+재탐색에서 실제 존재가 확인된 후보:
 
 ```text
-.agents/skills/api-design
-.agents/skills/backend-patterns
-.agents/skills/coding-standards
-.agents/skills/agent-introspection-debugging
-.agents/skills/security-review
-skills/deployment-patterns
-skills/react-testing
-.agents/skills/verification-loop
+ecc-api-design
+ecc-backend-patterns
+ecc-coding-standards
+ecc-agent-introspection-debugging
+ecc-security-review
+ecc-deployment-patterns
+ecc-react-testing
+ecc-verification-loop
 ```
 
-이 후보들은 실제 `SKILL.md` 존재와 실질적 본문을 확인했습니다.
+이 후보들은 BENCH-003A의 기존 100 Candidate 범위를 깨지 않기 위해 별도 catalog-correction Task로 분리합니다.
 
-### 의미가 다른 이름 발견
+---
 
-`benchmark-methodology`는 이름만 보면 software benchmark처럼 보이지만 실제 내용은 경쟁사/브랜드 positioning 평가 workflow였습니다.
+## 11. Anthropic `anth-claude-api` 연구
+
+BENCH-003A에서 domain pack이 19에 머물러 목표 20을 만족하지 못했습니다.
+
+기존 100 Candidate 중 아직 검사하지 않은 후보를 다시 확인해 `anth-claude-api`를 선택했습니다.
+
+검사 정보:
+
+```text
+candidate_id     anth-claude-api
+source           anthropic-reference-skills
+upstream_path    skills/claude-api
+license          Apache-2.0
+domain           backend-api
+decision         BENCHMARK_READY
+```
+
+실제 사용 시에는 Anthropic SDK/raw HTTP, network, `ANTHROPIC_API_KEY`가 필요할 수 있습니다.
+
+하지만 inspection 중에는:
+
+```text
+network 실행 없음
+API 호출 없음
+credential 사용 없음
+install 실행 없음
+external script 실행 없음
+```
+
+을 유지했습니다.
+
+이 후보 추가 후 최종 domain pack coverage는 20이 됐습니다.
+
+---
+
+## 12. Duplicate/overlap 연구
+
+같은 목적과 workflow를 가진 후보가 여러 source에 존재할 수 있습니다.
+
+현재 원칙:
+
+```text
+same purpose
++ same workflow
++ meaningful differentiation 없음
+→ duplicate cluster 후보
+```
+
+반대로 runtime/tool/workflow가 실제로 다르면 별도 후보로 유지할 수 있습니다.
+
+현재 duplicate cluster는 5개이며 실제 merge/archive 판단은 BENCH-004에서 다룹니다.
+
+---
+
+## 13. Test fixture 연구에서 얻은 교훈
+
+`anth-claude-api`를 실제 inspection에 추가하자 `test_uninspected_cluster_member_rejected`가 실패했습니다.
+
+원인은 validator가 아니라 테스트 fixture가 특정 candidate ID를 영구적인 미검사 후보로 가정한 것이었습니다.
+
+개선:
+
+```text
+특정 ID 하드코딩 제거
+→ 실제 cluster member를 temp inspections에서 제거
+→ rejection invariant 검증
+```
+
+결과:
+
+```text
+Inspection Wave 8/8 PASS
+```
 
 교훈:
 
-> Skill name이 아니라 본문과 activation contract로 domain을 판정한다.
-
-### Task Scope 결정
-
-BENCH-003A는 기존 100 Candidate inspection이 목적입니다.
-
-따라서 새 ECC 후보는 즉시 추가하지 않고:
-
-```text
-003A 완료
-→ 별도 ECC catalog-correction Task
-```
-
-로 분리하기로 했습니다.
+> Catalog가 성장하는 시스템의 테스트는 “현재 우연히 미검사인 특정 ID”가 아니라 invariant를 검증해야 한다.
 
 ---
 
-## 13. alirezarezvani Source 연구
+## 14. Windows 줄바꿈과 Gate 연구
 
-이 소스는 매우 많은 Skill을 제공하고 변화 속도도 빠릅니다.
+STRICT Gate 첫 실행에서 Git의 LF→CRLF 경고가 conflict 파일처럼 해석돼 FAIL했습니다.
 
-2026-08-21 기준 확인된 current commit 예:
+실제 conflict는 없었습니다.
 
-```text
-98180dafc4f0bc9d629bd479fc6107674cfb3cf8
-```
-
-해당 commit 설명에서는 Skill 수가 364까지 증가했고 Codex용 Skill symlink 자동 동기화 이력도 확인됐습니다.
-
-### 발견한 문제
-
-기존 기록에 있던 특정 SHA를 재사용하려 했을 때 GitHub commit/tree API에서 resolve되지 않는 문제가 발견됐습니다.
-
-따라서 이 소스에서는 특히:
+검증을 완화하지 않고 CRLF를 복구한 뒤:
 
 ```text
-revision resolve
-→ path resolve
-→ symlink/layout 확인
-→ inspection
+Inspection Wave 8/8 PASS
+STRICT Quality Gate PASS
 ```
 
-순서를 엄격히 적용해야 합니다.
+를 재확인했습니다.
+
+이 사례는 **환경 경고와 실제 repository state를 구분해서 판정해야 한다**는 점을 보여줍니다.
 
 ---
 
-## 14. Duplicate 처리 연구
+## 15. BENCH-003A 최종 결과
 
-중복 판단 원칙:
+완료 commit:
 
 ```text
-목적이 같고
-workflow가 같고
-실질적 차별점이 없으면
-duplicate cluster
+4e1d92531cebb32a995562e922db50b35e0bcb5f
+V8.3: expand expert skill inspection to 50+ ready candidates
 ```
 
-반대로 다음은 별도 유지할 수 있습니다.
+최종 Evidence:
 
-- runtime이 다름
-- toolchain이 다름
-- permission model이 다름
-- domain-specific workflow가 다름
-- benchmark에서 비교할 가치가 있음
+```text
+INSPECTED                  62
+BENCHMARK_READY            52
+INSPECTION_DOMAINS         20
+INSPECTION_SOURCES          5
+SHORTLIST                  15
+ACTIVE_IMPORTS              0
+ACTIVE_REGISTRY_UNCHANGED  True
+EXTERNAL_SCRIPTS_EXECUTED   0
+```
 
-merge/archive 판단은 BENCH-004에서 수행하고 inspection 단계에서 성급히 합치지 않습니다.
+검증:
+
+```text
+External Catalog          12/12 PASS
+Effective Coverage         5/5 PASS
+Candidate Wave             5/5 PASS
+Inspection Wave            8/8 PASS
+V8.2 normal regression    72/72 PASS
+Harness Audit             PASS / warnings 0
+STRICT Quality Gate       PASS
+git diff --check          PASS
+```
+
+GitHub 원격 `v8.3-expert-skill-catalog` HEAD도 완료 SHA와 동일함을 확인했습니다.
+
+결론:
+
+```text
+BENCH-003A COMPLETE - VERIFIED
+```
 
 ---
 
-## 15. License 처리 연구
+## 16. 현재 연구 결론
 
-우선순위:
-
-```text
-1. per-skill explicit license
-2. source-specific policy
-3. repository root license
-```
-
-다음은 READY 차단 요인입니다.
-
-- Proprietary
-- Unknown
-- source-available이지만 재사용 범위 불명확
-- revision/path가 검증되지 않음
-
-REFERENCE_ONLY는 실패가 아닙니다.
-
-> 참고 가치와 채택 가능성을 분리하기 위한 상태입니다.
+1. **Skill을 많이 모으는 것 자체는 문제의 핵심이 아니다.**
+2. Runtime Context에는 필요한 Skill만 materialize하면 된다.
+3. 진짜 병목은 routing precision, overlap, permission, license, stale metadata다.
+4. Discovery와 Verification을 분리해야 한다.
+5. 공개 저장소라고 개별 Skill license가 자유 사용 가능한 것은 아니다.
+6. 외부 Skill은 static inspection을 먼저 하고 실행은 별도 sandbox/Task로 분리해야 한다.
+7. 특정 candidate ID보다 invariant 중심 테스트가 Catalog 성장에 더 강하다.
+8. 좋은 새 후보를 발견해도 현재 Task 범위를 깨면서 즉시 흡수하지 않는다.
 
 ---
 
-## 16. Dependency / Permission 연구
+## 17. 다음 연구 단계
 
-Skill 품질을 내용만으로 평가하지 않습니다.
-
-각 inspection record에 다음을 기록합니다.
+다음 단계는 **BENCH-004 controlled benchmark / adoption decision**입니다.
 
 ```text
-candidate_id
-source_id
-upstream_path
-domain_pack
-source_revision
-license_status
-dependency_burden
-dependencies
-permissions
-network_auth_notes
-bundled_scripts
-external_scripts_executed
-safety_findings
-overlap_with_current
-provisional_decision
-inspection_notes
+BENCH-003A COMPLETE - VERIFIED
+→ BENCH-004
+→ 실제 benchmark
+→ duplicate/overlap 비교
+→ dependency/permission burden 비교
+→ ADOPT / ADAPT / REFERENCE / REJECT
+→ promotion 후보 선정
 ```
 
-특히 다음은 별도 위험으로 봅니다.
+새 ECC 실존 후보 등록은 별도 catalog-correction Task로 분리합니다.
 
-- SSH
-- sudo / privileged command
-- filesystem write
-- credential handling
-- network backend
-- Docker/container
-- GPU runtime
-- hardware access
-- destructive cleanup
+연구 원칙은 유지합니다.
 
----
-
-## 17. 현재 연구 결론
-
-### 결론 1 — Skill은 많이 모아도 된다
-
-단, lazy materialization과 deterministic router가 유지되어야 합니다.
-
-### 결론 2 — ACTIVE 수를 무작정 늘리면 안 된다
-
-Library 크기보다 routing precision이 먼저 병목이 됩니다.
-
-### 결론 3 — 유명 Repository도 그대로 신뢰하지 않는다
-
-공식/유명 source라도:
-
-- path drift
-- proprietary skill
-- heavy dependency
-- executable side effect
-
-가 존재합니다.
-
-### 결론 4 — Discovery와 Inspection을 분리한 설계는 유효했다
-
-이번 BENCH 과정에서 실제로 잘못된 candidate path와 license 문제를 걸러냈습니다.
-
-### 결론 5 — 외부 Skill은 실행 전에 정적 검증이 먼저다
-
-현재까지 external script 실행은 0을 유지했습니다.
-
----
-
-## 18. 다음 연구 계획
-
-### BENCH-003A
-
-- 기존 100 Candidate 중 정상 path 후보 추가 검사
-- `INSPECTED >=60`
-- `BENCHMARK_READY >=50`
-- full regression / audit / strict gate
-
-### ECC Catalog Correction
-
-- 실제 recursive tree 기반 후보 생성
-- `api-design`, `security-review`, `verification-loop` 등 재등록 검토
-- 기존 path-drift candidate 이력은 삭제하지 않고 보존
-
-### BENCH-004
-
-- 동일 목적 Skill 간 benchmark
-- ADOPT / ADAPT / REFERENCE 판단
-- duplicate cluster merge/archive 제안
-- promotion candidate 선정
-
-### 장기
-
-```text
-Catalog 100~300+
-↓
-Verified/Usable 50~100+
-↓
-ACTIVE는 router evidence에 맞춰 점진 확대
-```
-
-연구의 최종 목표는 Skill 숫자 자체가 아닙니다.
-
-> **적은 Context로 더 정확하게 필요한 전문 workflow를 꺼내 쓰는 것**이 목표입니다.
+> **많이 발견하고, 엄격히 검사하고, 적게 활성화한다.**
