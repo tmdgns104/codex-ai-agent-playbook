@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_4-EXPERT-CONTEXT-002",
+  "status": "DECISION_COMPLETE_IMPLEMENTATION_NOT_STARTED",
+  "decision": {
+    "selected_option": "C_VERSIONED_OPT_IN_LAUNCHER_CONTRACT",
+    "transport_mode": "SEPARATE_VERIFIED_CONTEXT_V1",
+    "existing_v1_launcher_unchanged": true,
+    "structured_prompt_concatenation_allowed": false,
+    "supported_attachment_role": "Allowed only as a verified backend binding beneath option C.",
+    "current_codex_binding_status": "DISABLED_UNTIL_SUPPORT_AND_CONFORMANCE_EVIDENCE",
+    "current_repository_has_supported_context_attachment": false,
+    "implementation_started": false
+  },
+  "current_structure": {
+    "activation": "build_activation_plan routes task_text against the ACTIVE registry and classifies permission gates without executing side effects.",
+    "materialization": "skill_materializer copies eligible complete Skill bundles to a managed session and verifies source/destination file hashes.",
+    "discovery_bridge": "discovery_bridge relocates complete Skill bundles under session/cwd/.agents/skills and builds a Codex argv using -C and --add-dir.",
+    "launcher": "playbook_launch appends [--, task_text] to the base argv, runs it without shell interpolation, and cleans the bridge in finally.",
+    "exact_task_test": "test_playbook_launch asserts that task_text occurs exactly once after the option terminator.",
+    "unsupported_features": [
+      "arbitrary context attachment input contract",
+      "separate system or context role launcher argument",
+      "adapted envelope backend adapter",
+      "verified automatic model ingestion of a session context artifact"
+    ]
+  },
+  "source_evidence": {
+    "architecture_documents": [
+      "V8_1_ARCHITECTURE.md",
+      "V8_2_LLM_INDEPENDENT_CONTROL_PLANE.md",
+      "V8_2_SELF_MANAGING_SKILLS_ARCHITECTURE.md",
+      "V8_3_EXPERT_SKILL_CATALOG_ARCHITECTURE.md",
+      "tasks/V8_4-EXPERT-CONTEXT-001.md"
+    ],
+    "code_paths": [
+      "harness/activation/playbook_launch.py",
+      "harness/activation/capability_manager.py",
+      "harness/activation/skill_materializer.py",
+      "harness/activation/discovery_bridge.py",
+      "harness/activation/test_playbook_launch.py"
+    ],
+    "sha256_before_decision": {
+      "tasks/V8_4-EXPERT-CONTEXT-001.md": "bea3db0a7351a10358290b603b3cfe329190c379c364983ed9b8e652521c58fd",
+      "evaluation/external-skills/reports/v8.4-design-summary.json": "6d29f8ae11aac29a5fd8d5cb2b03299e6213a9d5fa8940705b6ea47e70960548",
+      "evaluation/external-skills/benchmark-results.json": "21cb7165c4e02397fdafa9bc5d20f715e723ff351965cf71e00e42f6e7e80249",
+      "evaluation/external-skills/adoption-decisions.json": "4078ba8597bc9483606c41dcae2a88d5096de13ce22cb6c1084665079433bbe3",
+      "evaluation/external-skills/adapted-contexts.json": "f972f89a57dd853eaf7f88648e8a5ce9f6a26f9335e6f03131a48222246e9816",
+      "evaluation/external-skills/reports/stage-b-failure-analysis.json": "22f590325b312ec52b9ab54e889eff7f6c23eb0c3064229d738a4dada307c692",
+      "evaluation/external-skills/reports/stage-b-wave2-comparison.json": "7566322a62064797df4fefbf0319794aab40b1cd66df8cec77c934047f031a6e",
+      "evaluation/external-skills/reports/stage-b-wave2-execution-summary.json": "48ba11e17931c406fc8c1026727bb6dbbce58c2c52652c16e895b15fff7f3c9b",
+      "harness/router/capability_router.py": "f6897fa59fa02e6b2dc21bc3295e79f41c648b9c795bb5df03cb12ceb5b3f2b2",
+      "harness/router/scoring.py": "80866867ba3997b537233b2d8134ace8504126c53a7804d03c94966a98f5bf0e",
+      "harness/activation/playbook_launch.py": "7e53c79e40635bfc98b14fee77213051a0576a0f8e567a2fe36ea0fa5d19540d",
+      "harness/activation/capability_manager.py": "05aa3e36c82e9cb0ac3baf661b05072d5962437ae1704035e0db013123f90b95",
+      "harness/activation/skill_materializer.py": "ab211d9b0b956f15c29f8d391c6b5b2016c8450d08007a6f00b877547790dd0f",
+      "harness/activation/discovery_bridge.py": "40d3ecf319998b5708d83d9de8d5acb993ab462856d95ec3c649210ca26c306f",
+      "capability-library/registry.json": "2c2aec89ea40655d99497064c91d74b6c905bf0ce1d87bbbcdda2a071480a4a9",
+      ".codex/AGENTS.md": "ebcd3c6627b4679101f98ce59897f528622db9f50d2cd601693f3940b968320c",
+      "C:/Users/user/.codex/AGENTS.md": "aea66a6489df1f2e13d844011427f8cf3975c752124ca3bfb4660d5ccd2b1e3e"
+    },
+    "v8_3_usage": "Transport rationale only; no V8.3 result, Evidence, or adoption decision is changed."
+  },
+  "problem_definition": {
+    "invariant": "The original UTF-8 task text must remain a separate value and occur exactly once as the positional user task.",
+    "required_boundary": "Verified adapted context must be conveyed through a typed, separate, backend-supported channel without being concatenated into task_text.",
+    "fail_closed_rule": "If separate context support is not proven for the exact backend/version, context-enabled launch is unsupported rather than approximated with prompt concatenation."
+  },
+  "alternatives": [
+    {
+      "id": "A_STRUCTURED_PROMPT_SEGMENT",
+      "decision": "REJECTED",
+      "architecture_fit": "LOW",
+      "exact_user_task_impact": "VIOLATED when context is concatenated into the positional task",
+      "token_efficiency": "Inline and measurable but repeated in the task prompt",
+      "implementation_complexity": "LOW superficially; HIGH security and role ambiguity",
+      "prompt_injection_risk": "HIGH",
+      "permission_propagation": "WEAK after string composition",
+      "provenance_hash": "Possible for a composed string but weakly attributable",
+      "session_isolation_cleanup": "No explicit context artifact lifecycle",
+      "failure_fallback": "Ambiguous after composition",
+      "environment_dependency": "Depends on role and prompt semantics not present in the current launcher contract",
+      "backend_portability": "Superficially broad but semantically inconsistent",
+      "testability": "String shape is testable; security and role behavior are not strongly isolated",
+      "rollback": "Possible but risks mixing old and composed prompt behavior"
+    },
+    {
+      "id": "B_SUPPORTED_CONTEXT_ATTACHMENT",
+      "decision": "CONDITIONAL_BACKEND_BINDING_ONLY",
+      "architecture_fit": "GOOD in principle, UNVERIFIED in the current Repository",
+      "exact_user_task_impact": "PRESERVED only if the backend exposes a genuinely separate channel",
+      "token_efficiency": "Backend-dependent and must be measured",
+      "implementation_complexity": "MEDIUM if supported; impossible to claim without support",
+      "prompt_injection_risk": "MEDIUM and reducible with a typed trust boundary",
+      "permission_propagation": "STRONG if manifest binding is supported",
+      "provenance_hash": "STRONG artifact hashing",
+      "session_isolation_cleanup": "STRONG if backend lifecycle is controllable",
+      "failure_fallback": "Safe only before spawn or injection",
+      "environment_dependency": "HIGH",
+      "backend_portability": "LOW to MEDIUM because attachment contracts differ",
+      "testability": "BLOCKED until a supported API or CLI contract exists",
+      "rollback": "STRONG when isolated behind an adapter"
+    },
+    {
+      "id": "C_VERSIONED_OPT_IN_LAUNCHER_CONTRACT",
+      "decision": "SELECTED",
+      "architecture_fit": "HIGH because v1 remains untouched and the new path is explicit",
+      "exact_user_task_impact": "PRESERVED by separate task and context fields",
+      "token_efficiency": "Pre-measurable canonical envelope with backend consumption Evidence",
+      "implementation_complexity": "HIGH",
+      "prompt_injection_risk": "LOWEST of the options through typed fields and a compliant adapter gate",
+      "permission_propagation": "STRONG and mandatory",
+      "provenance_hash": "STRONG across definition, envelope, artifact, request, and receipt",
+      "session_isolation_cleanup": "STRONG and contractually required",
+      "failure_fallback": "Deterministic pre-spawn-only fallback",
+      "environment_dependency": "Contained in backend adapters",
+      "backend_portability": "HIGH through a common request/result contract",
+      "testability": "HIGH with fake adapters and per-backend conformance suites",
+      "rollback": "HIGH by disabling the opt-in v2 path and retaining v1"
+    }
+  ],
+  "architecture_boundary": {
+    "authoritative_adapted_context_source": "An immutable APPROVED Adapted Capability Definition version in the separate Approved Adapted Capability Catalog.",
+    "non_authoritative_sources": [
+      "pinned raw snapshot",
+      "V8.3 adapted-contexts.json evaluation prototype",
+      "benchmark results",
+      "runtime envelope",
+      "cache"
+    ],
+    "initial_eligible_candidates": [
+      "kd-sympy",
+      "kd-citation-management"
+    ],
+    "final_integrity_verification_owner": "Context Launch Coordinator",
+    "final_integrity_verification_time": "Immediately before child spawn, over the exact immutable bytes consumed by the adapter.",
+    "permission_checks": [
+      "early selector and assembly preflight",
+      "final transport gate using the union and strongest gate of current and adapted permissions"
+    ],
+    "injection_policy": {
+      "canonical_envelopes_per_launch": 1,
+      "attempt_limit": 1,
+      "valid_count": 1,
+      "retry_after_partial_injection": false,
+      "fallback_after_child_spawn": false
+    },
+    "task_context_boundary": {
+      "task_text_copied_into_context": false,
+      "context_concatenated_into_task": false,
+      "context_written_to_agents_or_skill_discovery": false,
+      "context_trust_label": "untrusted-derived-approved-reference",
+      "separate_hashes_required": true
+    },
+    "cleanup": {
+      "orchestration_owner": "Context Launch Coordinator",
+      "context_delete_primitive_owner": "Context Materializer",
+      "existing_bridge_cleanup_owner": "Discovery Bridge",
+      "order": [
+        "close backend context handle and clean managed context artifact",
+        "run existing bridge cleanup"
+      ],
+      "any_failure_result": "QUARANTINED_AND_OVERALL_FAIL"
+    }
+  },
+  "transport_contract": {
+    "request_contract": "ContextLaunchRequest v1",
+    "result_contract": "ContextLaunchResult v1",
+    "backend_capability_contract": "Backend Capability Probe v1",
+    "request_required_groups": [
+      "task",
+      "current_plan",
+      "adapted_context",
+      "permission_decision",
+      "backend",
+      "execution_policy",
+      "cleanup_policy"
+    ],
+    "result_required_metadata": [
+      "request and result hashes",
+      "adapter identity and capability probe",
+      "task fingerprint and actual occurrence count",
+      "definition, snapshot, envelope, content, and artifact hashes",
+      "selected unit IDs and actual bytes/tokens",
+      "effective permissions, strongest gate, and approval refs",
+      "integrity, permission, and budget results",
+      "injection attempt/count and child spawn status",
+      "timing, exit, failure, fallback, cleanup, and quarantine results",
+      "external access and side-effect flags"
+    ],
+    "hard_invariants": [
+      "CURRENT_ONLY requires no adapted context and zero injections.",
+      "SEPARATE_VERIFIED_CONTEXT_V1 requires a compliant adapter and non-null verified context.",
+      "The original task occurs exactly once and is never concatenated with context.",
+      "Unknown or false backend capability blocks context-enabled spawn.",
+      "Any final integrity, permission, or budget failure blocks child spawn.",
+      "Context is not written to .agents/skills or AGENTS files.",
+      "Missing or unknown values are not converted to PASS."
+    ]
+  },
+  "failure_fallback_policy": {
+    "degraded_current_allowed_only_if": [
+      "no injection attempt and no child spawn occurred",
+      "the existing v1 current path is independently safe and READY or safe NO_ACTION",
+      "the user did not explicitly require adapted or external expert capability",
+      "acceptance does not define adapted capability as required",
+      "the cause is availability, no approved match, or optional materialization failure",
+      "the cause is not security, permission, integrity, provenance, or source ambiguity",
+      "the degraded result is explicitly recorded and reported"
+    ],
+    "human_gate_or_block": {
+      "required_adapted_context_but_transport_unavailable": "HUMAN_GATE_REQUIRED",
+      "integrity_mismatch": "INTEGRITY_BLOCKED",
+      "permission_drift_or_expansion": "HUMAN_GATE_REQUIRED_OR_PERMISSION_BLOCKED",
+      "required_units_over_budget": "BUDGET_BLOCKED_OR_LARGER_TIER_HUMAN_GATE",
+      "failure_after_injection_attempt": "TRANSPORT_FAILED_NO_RETRY_NO_FALLBACK",
+      "cleanup_failure": "QUARANTINED_AND_OVERALL_FAIL"
+    },
+    "oversize_context": {
+      "optional_units": "Exclude whole optional units in stable priority order and revalidate once.",
+      "required_units": "Never truncate or summarize.",
+      "required_only_overflow": "BUDGET_BLOCKED",
+      "raw_external_fallback": false
+    }
+  },
+  "human_gates": [
+    "first activation of the context-enabled v2 path",
+    "transport contract or invariant version change",
+    "new backend adapter or backend capability-probe approval",
+    "any structured prompt concatenation exception",
+    "effective permission expansion or stronger operational gate",
+    "candidate eligibility beyond kd-sympy and kd-citation-management",
+    "token, byte, or selected-capability budget expansion",
+    "fallback that removes a required adapted capability",
+    "integrity, provenance, source, or license ambiguity",
+    "automated recovery, deletion, or reuse of quarantined artifacts"
+  ],
+  "implementation_prohibitions": [
+    "Do not change the existing Router, launcher, activation, Skill Materializer, or Discovery Bridge in this task.",
+    "Do not concatenate context or artifact-read instructions into task_text.",
+    "Do not assume --add-dir is a context attachment.",
+    "Do not write adapted context to .agents/skills, registry, or AGENTS files.",
+    "Do not claim backend support without conformance Evidence.",
+    "Do not use a raw snapshot or V8.3 adapted-contexts.json as runtime authority.",
+    "Do not weaken permissions by deleting text.",
+    "Do not truncate or summarize required units to satisfy a budget.",
+    "Do not retry or fallback after partial injection or child spawn.",
+    "Do not run an LLM, Ollama, or benchmark in this task."
+  ],
+  "next_implementation_task": {
+    "task_id": "V8_4-EXPERT-CONTEXT-003",
+    "title": "Contract Schema and Deterministic Validator",
+    "scope": [
+      "JSON Schemas for Adapted Definition, Runtime Envelope, ContextLaunchRequest v1, ContextLaunchResult v1, and Backend Capability Probe v1",
+      "canonical serialization and hashing rules",
+      "deterministic validation of task separation, injection count, path containment, hashes, budget, and effective permission union",
+      "fake compliant and non-compliant backend fixtures and contract unit tests"
+    ],
+    "must_not": [
+      "modify or invoke the existing launcher",
+      "run a real backend, LLM, Ollama, or benchmark",
+      "enable a physical Codex context binding"
+    ]
+  },
+  "protected_artifacts_modified": false,
+  "files_created_by_this_task": [
+    "tasks/V8_4-EXPERT-CONTEXT-002.md",
+    "evaluation/external-skills/reports/v8.4-transport-decision-summary.json"
+  ]
+}
