@@ -91,9 +91,13 @@ class InspectionWaveTests(unittest.TestCase):
     def test_uninspected_cluster_member_rejected(self) -> None:
         holder, root = self._temp_repo()
         with holder:
-            data = self._load(root, "duplicate-clusters.json")
-            data["clusters"][0]["candidate_ids"].append("anth-claude-api")
-            self._write(root, "duplicate-clusters.json", data)
+            clusters = self._load(root, "duplicate-clusters.json")
+            victim = clusters["clusters"][0]["candidate_ids"][0]
+            records = self._load(root, "inspections.json")
+            records["inspections"] = [
+                item for item in records["inspections"] if item["candidate_id"] != victim
+            ]
+            self._write(root, "inspections.json", records)
             with self.assertRaises(ExternalCatalogError):
                 validate_repository(root)
 
