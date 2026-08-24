@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "status": "EXECUTION_COMPLETE",
+  "runtime": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_used": false
+  },
+  "execution_window": {
+    "start_utc": "2026-08-24T04:36:25.327Z",
+    "end_utc": "2026-08-24T04:42:29.528Z",
+    "slot_wall_time_sum_ms": 363927.436
+  },
+  "totals": {
+    "slots": 20,
+    "generation_completed": 20,
+    "generation_failed": 0,
+    "acceptance_pass": 2,
+    "acceptance_fail": 18,
+    "not_executed": 0,
+    "loaded_variant_context_bytes": 62207,
+    "prompt_tokens": 41900,
+    "output_tokens": 11044
+  },
+  "variants": [
+    {
+      "variant": "baseline-no-optional",
+      "slots": 5,
+      "acceptance_pass": 0,
+      "acceptance_fail": 5,
+      "loaded_context_bytes": 0,
+      "prompt_tokens": 6694,
+      "output_tokens": 2492,
+      "execution_time_ms": 92468.057
+    },
+    {
+      "variant": "current-playbook",
+      "slots": 5,
+      "acceptance_pass": 0,
+      "acceptance_fail": 5,
+      "loaded_context_bytes": 4704,
+      "prompt_tokens": 7725,
+      "output_tokens": 2826,
+      "execution_time_ms": 86931.478
+    },
+    {
+      "variant": "external-expert",
+      "slots": 5,
+      "acceptance_pass": 0,
+      "acceptance_fail": 5,
+      "loaded_context_bytes": 54704,
+      "prompt_tokens": 20351,
+      "output_tokens": 2819,
+      "execution_time_ms": 94712.988
+    },
+    {
+      "variant": "adapted-playbook",
+      "slots": 5,
+      "acceptance_pass": 2,
+      "acceptance_fail": 3,
+      "loaded_context_bytes": 2799,
+      "prompt_tokens": 7130,
+      "output_tokens": 2907,
+      "execution_time_ms": 89814.913
+    }
+  ],
+  "candidate_results": [
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant_results": {"baseline-no-optional": "FAIL", "current-playbook": "FAIL", "external-expert": "FAIL", "adapted-playbook": "FAIL"},
+      "decision": "REJECTED"
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "variant_results": {"baseline-no-optional": "FAIL", "current-playbook": "FAIL", "external-expert": "FAIL", "adapted-playbook": "FAIL"},
+      "decision": "REJECTED"
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "variant_results": {"baseline-no-optional": "FAIL", "current-playbook": "FAIL", "external-expert": "FAIL", "adapted-playbook": "PASS"},
+      "decision": "ADAPT_CANDIDATE"
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "variant_results": {"baseline-no-optional": "FAIL", "current-playbook": "FAIL", "external-expert": "FAIL", "adapted-playbook": "PASS"},
+      "decision": "ADAPT_CANDIDATE"
+    },
+    {
+      "candidate_id": "kd-docx",
+      "variant_results": {"baseline-no-optional": "FAIL", "current-playbook": "FAIL", "external-expert": "FAIL", "adapted-playbook": "FAIL"},
+      "decision": "REJECTED"
+    }
+  ],
+  "safety": {
+    "external_access_attempted": false,
+    "external_scripts_executed": false,
+    "credentials_used": false,
+    "hardware_or_cloud_write": false,
+    "destructive_action": false
+  },
+  "limitations": [
+    "One fixed local model and one attempt per slot were approved; results do not estimate model-to-model or repeated-run variance.",
+    "The benchmark tasks request workflow plans rather than executing domain packages or producing a DOCX artifact.",
+    "Quality scores are supplemental deterministic text checks and cannot compensate for hard acceptance failures."
+  ]
+}

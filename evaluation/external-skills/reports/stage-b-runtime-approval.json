@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "recorded_at_utc": "2026-08-24T04:24:25Z",
+  "status": "MODEL_APPROVAL_GRANTED_PREFLIGHT_PASS",
+  "resolves_evidence": "evaluation/external-skills/reports/stage-b-model-approval-blocker.json",
+  "approval_source": "explicit user approval",
+  "preflight": {
+    "model_identifier_check": "PASS",
+    "model_digest_check": "PASS",
+    "runtime_metadata_check": "PASS",
+    "generation_control_check": "PASS",
+    "execution_gate": "OPEN"
+  },
+  "runtime": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "http://127.0.0.1:11434",
+    "remote_network_allowed": false,
+    "remote_api_allowed": false,
+    "credentials_allowed": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "model_list_short_id": "6488c96fa5fa",
+    "model_modified_at": "2026-08-18T04:39:47.5783713+09:00",
+    "format": "gguf",
+    "family": "qwen35",
+    "parameter_size": "9.7B",
+    "parameter_count": 9653104368,
+    "quantization": "Q4_K_M",
+    "model_context_capacity_tokens": 262144,
+    "embedding_length": 4096,
+    "capabilities": [
+      "completion",
+      "vision",
+      "tools",
+      "thinking"
+    ]
+  },
+  "execution_control": {
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "temperature": 0,
+    "top_p": 0.95,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "seed": 42,
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "think": false,
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "model_fallback_allowed": false,
+    "repetition_policy": "one-attempt-per-slot-no-rerun",
+    "failure_policy": "record-failure-and-continue-with-next-slot",
+    "slot_order_policy": "candidate-order-then-fixed-variant-order",
+    "candidate_order": [
+      "kd-exploratory-data-analysis",
+      "kd-scikit-learn",
+      "kd-sympy",
+      "kd-citation-management",
+      "kd-docx"
+    ],
+    "variant_order": [
+      "baseline-no-optional",
+      "current-playbook",
+      "external-expert",
+      "adapted-playbook"
+    ]
+  },
+  "baseline": {
+    "git_commit": "b6aa702872f4558bce64d9457ff213a06e452a37",
+    "protected_sha256": {
+      ".codex/AGENTS.md": "ebcd3c6627b4679101f98ce59897f528622db9f50d2cd601693f3940b968320c",
+      "capability-library/registry.json": "2c2aec89ea40655d99497064c91d74b6c905bf0ce1d87bbbcdda2a071480a4a9",
+      "harness/router/scoring.py": "80866867ba3997b537233b2d8134ace8504126c53a7804d03c94966a98f5bf0e",
+      "evaluation/external-skills/benchmark-fixtures.json": "bf33aa6efa11b021ee51ac975ec3913fd4bf3f1b2b2ae2a564156d3afacdfc1c",
+      "evaluation/external-skills/snapshots/manifest.json": "265a2ad0ed15d847eac43a46d6477389cba18ffd9044f983bb33c0d88c049135"
+    }
+  },
+  "notes": "Metadata was read from the local Ollama list/tags/show interfaces without a generation call. The prior blocker Evidence is retained and resolved by this approval record."
+}

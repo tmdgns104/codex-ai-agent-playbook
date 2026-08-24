@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-sympy",
+  "fixture_id": "bench004-06",
+  "variant": "baseline-no-optional",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:39:07.315Z",
+    "execution_end_utc": "2026-08-24T04:39:18.769Z",
+    "wall_time_ms": 11453.418
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 0,
+    "loaded_context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_capabilities": [],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "9692613b427cf898919b73d2052f5d10b5920170c70323ff360eb96b76a7075a",
+    "response_schema_sha256": "7d474c771ef4f10fbf24eb3b7005b46e1070d270bfbef6ca368efa780d614dda"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1219,
+    "output_token_count_available": true,
+    "output_token_count": 372
+  },
+  "provider_duration": {
+    "total_duration_ns": 11433924900,
+    "load_duration_ns": 495049600,
+    "prompt_eval_duration_ns": 241761000,
+    "eval_duration_ns": 10685728000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"symbol\": \"x\",\n  \"domain\": \"real\",\n  \"method\": \"factorization_and_roots\",\n  \"factorization\": \"(x - 1)*(x + 1)*(x - 2)*(x + 2)\",\n  \"exact_roots\": [\n    \"-2\",\n    \"-1\",\n    \"1\",\n    \"2\"\n  ],\n  \"verification_residuals\": {\n    \"method\": \"substitution_check\",\n    \"description\": \"각 근을 원래 식에 대입하여 결과가 0인지 확인\",\n    \"expected_result\": \"0\"\n  },\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"symbol_definition\",\n      \"verification\": \"Symbol('x') 가 생성되었는지 확인\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"expression_simplification\",\n      \"verification\": \"x**4 - 5*x**2 + 4 가 factor() 로 분해됨을 확인\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"root_extraction\",\n      \"verification\": \"solve() 또는 factor() 결과에서 근 추출\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"result_verification\",\n      \"verification\": \"각 근을 대입하여 식의 값이 0인지 확인\"\n    }\n  ],\n  \"additional_controls\": [\n    \"real_domain_constraint: real_roots_only=True 사용\",\n    \"precision_control: Rational 타입 유지하여 정밀도 보장\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "symbol": "x",
+    "domain": "real",
+    "method": "factorization_and_roots",
+    "factorization": "(x - 1)*(x + 1)*(x - 2)*(x + 2)",
+    "exact_roots": [
+      "-2",
+      "-1",
+      "1",
+      "2"
+    ],
+    "verification_residuals": {
+      "method": "substitution_check",
+      "description": "각 근을 원래 식에 대입하여 결과가 0인지 확인",
+      "expected_result": "0"
+    },
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "symbol_definition",
+        "verification": "Symbol('x') 가 생성되었는지 확인"
+      },
+      {
+        "order": 2,
+        "action": "expression_simplification",
+        "verification": "x**4 - 5*x**2 + 4 가 factor() 로 분해됨을 확인"
+      },
+      {
+        "order": 3,
+        "action": "root_extraction",
+        "verification": "solve() 또는 factor() 결과에서 근 추출"
+      },
+      {
+        "order": 4,
+        "action": "result_verification",
+        "verification": "각 근을 대입하여 식의 값이 0인지 확인"
+      }
+    ],
+    "additional_controls": [
+      "real_domain_constraint: real_roots_only=True 사용",
+      "precision_control: Rational 타입 유지하여 정밀도 보장"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "symbol x and real domain",
+        "pass": true,
+        "evidence": [
+          "x",
+          "real"
+        ]
+      },
+      {
+        "check": "exact symbolic method",
+        "pass": false,
+        "evidence": "factorization_and_roots"
+      },
+      {
+        "check": "exact roots",
+        "pass": true,
+        "evidence": [
+          "-2",
+          "-1",
+          "1",
+          "2"
+        ]
+      },
+      {
+        "check": "zero substitution residuals",
+        "pass": false,
+        "evidence": {
+          "method": "substitution_check",
+          "description": "각 근을 원래 식에 대입하여 결과가 0인지 확인",
+          "expected_result": "0"
+        }
+      },
+      {
+        "check": "factorization present",
+        "pass": true,
+        "evidence": "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "symbol_definition",
+            "verification": "Symbol('x') 가 생성되었는지 확인"
+          },
+          {
+            "order": 2,
+            "action": "expression_simplification",
+            "verification": "x**4 - 5*x**2 + 4 가 factor() 로 분해됨을 확인"
+          },
+          {
+            "order": 3,
+            "action": "root_extraction",
+            "verification": "solve() 또는 factor() 결과에서 근 추출"
+          },
+          {
+            "order": 4,
+            "action": "result_verification",
+            "verification": "각 근을 대입하여 식의 값이 0인지 확인"
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 5,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "explicit assumptions",
+        "pass": false,
+        "evidence": [
+          "assumption",
+          "real domain"
+        ]
+      },
+      {
+        "check": "exact arithmetic",
+        "pass": false,
+        "evidence": [
+          "exact arithmetic",
+          "no floating",
+          "integer"
+        ]
+      },
+      {
+        "check": "factor before solve",
+        "pass": false,
+        "evidence": [
+          "factor before",
+          "factor the"
+        ]
+      },
+      {
+        "check": "verify original expression",
+        "pass": true,
+        "evidence": [
+          "original expression",
+          "substitut"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

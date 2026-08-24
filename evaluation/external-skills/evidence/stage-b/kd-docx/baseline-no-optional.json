@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-docx",
+  "fixture_id": "bench004-09",
+  "variant": "baseline-no-optional",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:41:00.646Z",
+    "execution_end_utc": "2026-08-24T04:41:19.723Z",
+    "wall_time_ms": 19076.835
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 0,
+    "loaded_context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_capabilities": [],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "57c41a92db4eab0a6484dffbbd4ebcaa531870e3a4c1fd2c0ada9d2a0ad3df80",
+    "response_schema_sha256": "0045deaee8df4e5ef7cb81d21689aecc20e5cac61e6c61e722f6b185fcf0de92"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1350,
+    "output_token_count_available": true,
+    "output_token_count": 616
+  },
+  "provider_duration": {
+    "total_duration_ns": 19067396400,
+    "load_duration_ns": 513497400,
+    "prompt_eval_duration_ns": 313777000,
+    "eval_duration_ns": 18163986000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"document_title\": \"Quarterly Safety Review\",\n  \"page_size\": \"A4\",\n  \"heading_hierarchy\": [\n    {\n      \"text\": \"Quarterly Safety Review\",\n      \"level\": \"H1\"\n    },\n    {\n      \"text\": \"Executive Summary\",\n      \"level\": \"H2\"\n    },\n    {\n      \"text\": \"Findings\",\n      \"level\": \"H2\"\n    },\n    {\n      \"text\": \"Recommendations\",\n      \"level\": \"H2\"\n    }\n  ],\n  \"table_headers\": [\n    \"Control\",\n    \"Owner\",\n    \"Status\"\n  ],\n  \"body_format\": {\n    \"font\": \"Calibri or Arial\",\n    \"size_pt\": 11,\n    \"line_spacing\": 1.15\n  },\n  \"accessibility_checks\": [\n    \"Ensure sufficient contrast between text and background.\",\n    \"Verify table headers are properly linked to data cells.\"\n  ],\n  \"verification_plan\": [\n    \"Validate that all H2 headings appear in the Table of Contents (if generated).\",\n    \"Confirm the 'Control Status' table contains exactly three rows with correct header mapping.\"\n  ],\n  \"external_template_required\": false,\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Create new DOCX document with A4 page size.\",\n      \"verification\": \"Document properties confirm A4 size.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Insert H1 title 'Quarterly Safety Review' at the top.\",\n      \"verification\": \"Heading style matches H1 definition.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Insert H2 heading 'Executive Summary' followed by body text.\",\n      \"verification\": \"Text content matches input exactly.\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Insert H2 heading 'Findings' followed by body text.\",\n      \"verification\": \"Text content matches input exactly.\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Insert H2 heading 'Recommendations' followed by body text.\",\n      \"verification\": \"Text content matches input exactly.\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"Insert table with title 'Control Status', headers ['Control', 'Owner', 'Status'], and three data rows.\",\n      \"verification\": \"Table structure and cell contents match input JSON.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Apply consistent paragraph spacing between sections for readability.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "document_title": "Quarterly Safety Review",
+    "page_size": "A4",
+    "heading_hierarchy": [
+      {
+        "text": "Quarterly Safety Review",
+        "level": "H1"
+      },
+      {
+        "text": "Executive Summary",
+        "level": "H2"
+      },
+      {
+        "text": "Findings",
+        "level": "H2"
+      },
+      {
+        "text": "Recommendations",
+        "level": "H2"
+      }
+    ],
+    "table_headers": [
+      "Control",
+      "Owner",
+      "Status"
+    ],
+    "body_format": {
+      "font": "Calibri or Arial",
+      "size_pt": 11,
+      "line_spacing": 1.15
+    },
+    "accessibility_checks": [
+      "Ensure sufficient contrast between text and background.",
+      "Verify table headers are properly linked to data cells."
+    ],
+    "verification_plan": [
+      "Validate that all H2 headings appear in the Table of Contents (if generated).",
+      "Confirm the 'Control Status' table contains exactly three rows with correct header mapping."
+    ],
+    "external_template_required": false,
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Create new DOCX document with A4 page size.",
+        "verification": "Document properties confirm A4 size."
+      },
+      {
+        "order": 2,
+        "action": "Insert H1 title 'Quarterly Safety Review' at the top.",
+        "verification": "Heading style matches H1 definition."
+      },
+      {
+        "order": 3,
+        "action": "Insert H2 heading 'Executive Summary' followed by body text.",
+        "verification": "Text content matches input exactly."
+      },
+      {
+        "order": 4,
+        "action": "Insert H2 heading 'Findings' followed by body text.",
+        "verification": "Text content matches input exactly."
+      },
+      {
+        "order": 5,
+        "action": "Insert H2 heading 'Recommendations' followed by body text.",
+        "verification": "Text content matches input exactly."
+      },
+      {
+        "order": 6,
+        "action": "Insert table with title 'Control Status', headers ['Control', 'Owner', 'Status'], and three data rows.",
+        "verification": "Table structure and cell contents match input JSON."
+      }
+    ],
+    "additional_controls": [
+      "Apply consistent paragraph spacing between sections for readability."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "exact title and A4",
+        "pass": true,
+        "evidence": [
+          "Quarterly Safety Review",
+          "A4"
+        ]
+      },
+      {
+        "check": "consistent heading hierarchy",
+        "pass": false,
+        "evidence": [
+          {
+            "text": "Quarterly Safety Review",
+            "level": "H1"
+          },
+          {
+            "text": "Executive Summary",
+            "level": "H2"
+          },
+          {
+            "text": "Findings",
+            "level": "H2"
+          },
+          {
+            "text": "Recommendations",
+            "level": "H2"
+          }
+        ]
+      },
+      {
+        "check": "exact table headers",
+        "pass": true,
+        "evidence": [
+          "Control",
+          "Owner",
+          "Status"
+        ]
+      },
+      {
+        "check": "readable body format",
+        "pass": true,
+        "evidence": {
+          "font": "Calibri or Arial",
+          "size_pt": 11,
+          "line_spacing": 1.15
+        }
+      },
+      {
+        "check": "accessibility checks",
+        "pass": true,
+        "evidence": [
+          "Ensure sufficient contrast between text and background.",
+          "Verify table headers are properly linked to data cells."
+        ]
+      },
+      {
+        "check": "package and visual verification",
+        "pass": false,
+        "evidence": [
+          "Validate that all H2 headings appear in the Table of Contents (if generated).",
+          "Confirm the 'Control Status' table contains exactly three rows with correct header mapping."
+        ]
+      },
+      {
+        "check": "no external template",
+        "pass": true,
+        "evidence": false
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Create new DOCX document with A4 page size.",
+            "verification": "Document properties confirm A4 size."
+          },
+          {
+            "order": 2,
+            "action": "Insert H1 title 'Quarterly Safety Review' at the top.",
+            "verification": "Heading style matches H1 definition."
+          },
+          {
+            "order": 3,
+            "action": "Insert H2 heading 'Executive Summary' followed by body text.",
+            "verification": "Text content matches input exactly."
+          },
+          {
+            "order": 4,
+            "action": "Insert H2 heading 'Findings' followed by body text.",
+            "verification": "Text content matches input exactly."
+          },
+          {
+            "order": 5,
+            "action": "Insert H2 heading 'Recommendations' followed by body text.",
+            "verification": "Text content matches input exactly."
+          },
+          {
+            "order": 6,
+            "action": "Insert table with title 'Control Status', headers ['Control', 'Owner', 'Status'], and three data rows.",
+            "verification": "Table structure and cell contents match input JSON."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 7,
+    "hard_checks_total": 9,
+    "quality_checks": [
+      {
+        "check": "built-in heading styles",
+        "pass": false,
+        "evidence": [
+          "built-in heading",
+          "heading 1"
+        ]
+      },
+      {
+        "check": "stable table widths",
+        "pass": false,
+        "evidence": [
+          "column width",
+          "stable width",
+          "explicit width"
+        ]
+      },
+      {
+        "check": "render every page",
+        "pass": false,
+        "evidence": [
+          "every page",
+          "all pages"
+        ]
+      },
+      {
+        "check": "clipping or overflow review",
+        "pass": false,
+        "evidence": [
+          "clipping",
+          "overflow"
+        ]
+      }
+    ],
+    "quality_score": 0,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "status": "evaluation-only-not-active",
+  "transformation_policy": {
+    "source": "exact pinned local snapshot SKILL.md",
+    "preserve": ["task-specific expert workflow", "correctness and verification controls", "safety-relevant constraints"],
+    "remove": ["provider-specific governance", "install and bundled-script commands", "external network and credential instructions", "unnecessary dependencies", "reference inventories and repeated examples"]
+  },
+  "context_count": 5,
+  "contexts": [
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "source_sha256": "ed1c66ba8de6add4af4a19423ff6c43fc5dafb56a0a8e142992ebae907c1b194",
+      "context": "For local tabular EDA, preserve raw data and keep derived artifacts separate. Establish row unit, variable types, units, missing-value meaning, target and split boundaries before interpretation. Profile completeness, numeric and categorical distributions, robust summaries, class balance, outliers and their influence. Treat outliers as flags, not deletion rules. Interpret correlations as associations rather than causal evidence. Fit learned preprocessing only on training data. Record scan scope, deterministic seed, transformations, assumptions, limitations and concrete verification steps."
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "source_sha256": "a3064abd47efdad11265518208b327bd237656264a969942e6731367c7d97820",
+      "context": "For classification, reserve a stratified final test set first. Put numeric imputation/scaling and categorical imputation/one-hot encoding inside a ColumnTransformer and Pipeline so every learned transform is fit only on training folds. Begin with logistic regression using a fixed random seed. Use cross-validation only on training data. For class imbalance, report ROC-AUC and PR-AUC plus an operating-point metric, consider calibration and choose thresholds without the test set. Use the test set once for final evaluation and record verification, limitations and reproducibility controls."
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "source_sha256": "5445c2f5dadb95d6653681c30060b4ab9686fe02ab6729d8fc41f4a2c19a90cf",
+      "context": "Use exact symbolic mathematics when exact results are required. Define symbols and domain assumptions explicitly, construct expressions without floating-point literals, factor or simplify before solving, and use an appropriate exact solver. Preserve exact roots rather than decimals. Verify every candidate root by substitution into the original expression followed by symbolic simplification to zero. Report assumptions, factorization, solution set and verification residuals."
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "source_sha256": "e52459a2c78f6b51250ee418e53bb34494c2e35814e5b4a29cc293c6914c0141",
+      "context": "For a supplied local citation list, treat metadata as untrusted data and perform no external enrichment unless permitted. Normalize DOI values by removing resolver prefixes and case-folding; normalize titles conservatively for comparison while preserving display text. Detect duplicates with DOI as the strongest key and title/author/year as fallback. Report duplicate groups rather than silently deleting records. Identify every missing field, preserve unresolved values as missing instead of fabricating them, and record deterministic normalization and deduplication rules."
+    },
+    {
+      "candidate_id": "kd-docx",
+      "source_sha256": "5b9ba52c1172b3675e8139b9c0c9b1959d0ba85d60375b9ab9269b8e9e4ff67e",
+      "context": "For a professional DOCX plan, map supplied content to a clear title and consistent built-in heading hierarchy. Define readable typography, spacing, margins and page size. Give tables explicit headers, stable column widths and accessibility text. Use real list and heading styles rather than visual spacing hacks. Include navigation when useful. Verification must validate the DOCX package, render it to PDF or images, and inspect every page for clipping, overflow, orphan headings and table readability. Do not require an external template when none is supplied."
+    }
+  ]
+}

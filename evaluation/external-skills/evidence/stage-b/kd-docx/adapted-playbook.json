@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-docx",
+  "fixture_id": "bench004-09",
+  "variant": "adapted-playbook",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:42:06.374Z",
+    "execution_end_utc": "2026-08-24T04:42:29.528Z",
+    "wall_time_ms": 23153.458
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 562,
+    "loaded_context_sha256": "dca7dacb4d452cb2b81d27380c742658855d8e8c8d0b5a65c9c2896a96c83424",
+    "selected_capabilities": [
+      "adapted:kd-docx"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "36e20b0c759a0811341fd1c2d25ed905ff6aadd89e0ee29bd8da318b60a8d4b9",
+    "response_schema_sha256": "0045deaee8df4e5ef7cb81d21689aecc20e5cac61e6c61e722f6b185fcf0de92"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1444,
+    "output_token_count_available": true,
+    "output_token_count": 753
+  },
+  "provider_duration": {
+    "total_duration_ns": 23120650600,
+    "load_duration_ns": 518796200,
+    "prompt_eval_duration_ns": 381441000,
+    "eval_duration_ns": 22122003000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"document_title\": \"Quarterly Safety Review\",\n  \"page_size\": \"A4\",\n  \"heading_hierarchy\": [\n    {\n      \"text\": \"Quarterly Safety Review\",\n      \"level\": \"title\"\n    },\n    {\n      \"text\": \"Executive Summary\",\n      \"level\": \"h1\"\n    },\n    {\n      \"text\": \"Findings\",\n      \"level\": \"h2\"\n    },\n    {\n      \"text\": \"Recommendations\",\n      \"level\": \"h2\"\n    }\n  ],\n  \"table_headers\": [\n    \"Control\",\n    \"Owner\",\n    \"Status\"\n  ],\n  \"body_format\": {\n    \"font\": \"Calibri\",\n    \"size_pt\": 11,\n    \"line_spacing\": 1.15\n  },\n  \"accessibility_checks\": [\n    \"High contrast text on white background\",\n    \"Table headers defined with scope attributes\",\n    \"Alt-text placeholders for any potential images\"\n  ],\n  \"verification_plan\": [\n    \"Validate DOCX package structure using Python-docx library\",\n    \"Render to PDF to verify A4 page sizing and content clipping\",\n    \"Inspect rendered output for orphan headings and table readability\"\n  ],\n  \"external_template_required\": false,\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Initialize DOCX document with 'Quarterly Safety Review' title on A4 page\",\n      \"verification\": \"Check document properties for correct page size and title text\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Insert H1 heading 'Executive Summary' followed by body text 'Two controls improved; one control remains overdue.'\",\n      \"verification\": \"Verify heading style matches built-in H1 and text content is accurate\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Insert H2 heading 'Findings' followed by body text 'Access review passed. Backup restore passed. Incident drill is overdue.'\",\n      \"verification\": \"Verify heading style matches built-in H2 and text content is accurate\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Insert H2 heading 'Recommendations' followed by body text 'Schedule the incident drill and retain verification evidence.'\",\n      \"verification\": \"Verify heading style matches built-in H2 and text content is accurate\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Insert table titled 'Control Status' with headers ['Control', 'Owner', 'Status'] and rows [['Access review', 'Security', 'Pass'], ['Backup restore', 'Platform', 'Pass'], ['Incident drill', 'Operations', 'Overdue']]\",\n      \"verification\": \"Validate table structure, column widths, and cell content against source data\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"Apply consistent margins (1 inch top/bottom, 0.75 inch left/right) and line spacing\",\n      \"verification\": \"Check visual layout for readability and consistency\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Ensure no external network calls are made during generation\",\n    \"Verify all content is derived strictly from the provided synthetic input\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "document_title": "Quarterly Safety Review",
+    "page_size": "A4",
+    "heading_hierarchy": [
+      {
+        "text": "Quarterly Safety Review",
+        "level": "title"
+      },
+      {
+        "text": "Executive Summary",
+        "level": "h1"
+      },
+      {
+        "text": "Findings",
+        "level": "h2"
+      },
+      {
+        "text": "Recommendations",
+        "level": "h2"
+      }
+    ],
+    "table_headers": [
+      "Control",
+      "Owner",
+      "Status"
+    ],
+    "body_format": {
+      "font": "Calibri",
+      "size_pt": 11,
+      "line_spacing": 1.15
+    },
+    "accessibility_checks": [
+      "High contrast text on white background",
+      "Table headers defined with scope attributes",
+      "Alt-text placeholders for any potential images"
+    ],
+    "verification_plan": [
+      "Validate DOCX package structure using Python-docx library",
+      "Render to PDF to verify A4 page sizing and content clipping",
+      "Inspect rendered output for orphan headings and table readability"
+    ],
+    "external_template_required": false,
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Initialize DOCX document with 'Quarterly Safety Review' title on A4 page",
+        "verification": "Check document properties for correct page size and title text"
+      },
+      {
+        "order": 2,
+        "action": "Insert H1 heading 'Executive Summary' followed by body text 'Two controls improved; one control remains overdue.'",
+        "verification": "Verify heading style matches built-in H1 and text content is accurate"
+      },
+      {
+        "order": 3,
+        "action": "Insert H2 heading 'Findings' followed by body text 'Access review passed. Backup restore passed. Incident drill is overdue.'",
+        "verification": "Verify heading style matches built-in H2 and text content is accurate"
+      },
+      {
+        "order": 4,
+        "action": "Insert H2 heading 'Recommendations' followed by body text 'Schedule the incident drill and retain verification evidence.'",
+        "verification": "Verify heading style matches built-in H2 and text content is accurate"
+      },
+      {
+        "order": 5,
+        "action": "Insert table titled 'Control Status' with headers ['Control', 'Owner', 'Status'] and rows [['Access review', 'Security', 'Pass'], ['Backup restore', 'Platform', 'Pass'], ['Incident drill', 'Operations', 'Overdue']]",
+        "verification": "Validate table structure, column widths, and cell content against source data"
+      },
+      {
+        "order": 6,
+        "action": "Apply consistent margins (1 inch top/bottom, 0.75 inch left/right) and line spacing",
+        "verification": "Check visual layout for readability and consistency"
+      }
+    ],
+    "additional_controls": [
+      "Ensure no external network calls are made during generation",
+      "Verify all content is derived strictly from the provided synthetic input"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "exact title and A4",
+        "pass": true,
+        "evidence": [
+          "Quarterly Safety Review",
+          "A4"
+        ]
+      },
+      {
+        "check": "consistent heading hierarchy",
+        "pass": false,
+        "evidence": [
+          {
+            "text": "Quarterly Safety Review",
+            "level": "title"
+          },
+          {
+            "text": "Executive Summary",
+            "level": "h1"
+          },
+          {
+            "text": "Findings",
+            "level": "h2"
+          },
+          {
+            "text": "Recommendations",
+            "level": "h2"
+          }
+        ]
+      },
+      {
+        "check": "exact table headers",
+        "pass": true,
+        "evidence": [
+          "Control",
+          "Owner",
+          "Status"
+        ]
+      },
+      {
+        "check": "readable body format",
+        "pass": true,
+        "evidence": {
+          "font": "Calibri",
+          "size_pt": 11,
+          "line_spacing": 1.15
+        }
+      },
+      {
+        "check": "accessibility checks",
+        "pass": true,
+        "evidence": [
+          "High contrast text on white background",
+          "Table headers defined with scope attributes",
+          "Alt-text placeholders for any potential images"
+        ]
+      },
+      {
+        "check": "package and visual verification",
+        "pass": true,
+        "evidence": [
+          "Validate DOCX package structure using Python-docx library",
+          "Render to PDF to verify A4 page sizing and content clipping",
+          "Inspect rendered output for orphan headings and table readability"
+        ]
+      },
+      {
+        "check": "no external template",
+        "pass": true,
+        "evidence": false
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Initialize DOCX document with 'Quarterly Safety Review' title on A4 page",
+            "verification": "Check document properties for correct page size and title text"
+          },
+          {
+            "order": 2,
+            "action": "Insert H1 heading 'Executive Summary' followed by body text 'Two controls improved; one control remains overdue.'",
+            "verification": "Verify heading style matches built-in H1 and text content is accurate"
+          },
+          {
+            "order": 3,
+            "action": "Insert H2 heading 'Findings' followed by body text 'Access review passed. Backup restore passed. Incident drill is overdue.'",
+            "verification": "Verify heading style matches built-in H2 and text content is accurate"
+          },
+          {
+            "order": 4,
+            "action": "Insert H2 heading 'Recommendations' followed by body text 'Schedule the incident drill and retain verification evidence.'",
+            "verification": "Verify heading style matches built-in H2 and text content is accurate"
+          },
+          {
+            "order": 5,
+            "action": "Insert table titled 'Control Status' with headers ['Control', 'Owner', 'Status'] and rows [['Access review', 'Security', 'Pass'], ['Backup restore', 'Platform', 'Pass'], ['Incident drill', 'Operations', 'Overdue']]",
+            "verification": "Validate table structure, column widths, and cell content against source data"
+          },
+          {
+            "order": 6,
+            "action": "Apply consistent margins (1 inch top/bottom, 0.75 inch left/right) and line spacing",
+            "verification": "Check visual layout for readability and consistency"
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 8,
+    "hard_checks_total": 9,
+    "quality_checks": [
+      {
+        "check": "built-in heading styles",
+        "pass": false,
+        "evidence": [
+          "built-in heading",
+          "heading 1"
+        ]
+      },
+      {
+        "check": "stable table widths",
+        "pass": true,
+        "evidence": [
+          "column width",
+          "stable width",
+          "explicit width"
+        ]
+      },
+      {
+        "check": "render every page",
+        "pass": false,
+        "evidence": [
+          "every page",
+          "all pages"
+        ]
+      },
+      {
+        "check": "clipping or overflow review",
+        "pass": true,
+        "evidence": [
+          "clipping",
+          "overflow"
+        ]
+      }
+    ],
+    "quality_score": 2,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

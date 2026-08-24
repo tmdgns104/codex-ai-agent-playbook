@@ -1,6 +1,6 @@
 # V8.3-SKILL-BENCH-004 - Expert Skill Benchmark and Adoption Decisions
 
-상태: **APPROVED - READY TO IMPLEMENT**
+상태: **COMPLETE - VERIFIED**
 
 선행:
 - V8_3-SKILL-BENCH-003 COMPLETE - VERIFIED
@@ -357,3 +357,96 @@ ADOPT_CANDIDATE / ADAPT_CANDIDATE 검토
 ```
 
 새 ECC 실존 후보는 별도 catalog-correction Task에서 먼저 Candidate 등록/inspection한 뒤 후속 Benchmark Wave에 넣는다.
+
+## Stage B 실행 Evidence
+
+승인된 controlled runtime:
+
+```text
+Provider             Ollama / local-only
+Model                qwen3.5:9b
+Digest               6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7
+Model context         262144 tokens
+Runtime context       16384 tokens
+Output limit          1024 tokens
+Generation            temperature 0 / top_p 0.95 / top_k 20 / presence_penalty 1.5
+Seed                  fixed 42
+Thinking              false
+Timeout / retry       180 seconds / 0 retries
+Fallback              disabled
+Remote network/API    disabled
+```
+
+실행 결과:
+
+```text
+Stage B slots               20/20 executed
+Generation completed        20
+Generation failed            0
+Acceptance PASS              2
+Acceptance FAIL             18
+Not executed                 0
+
+baseline-no-optional         0/5 PASS
+current-playbook             0/5 PASS
+external-expert              0/5 PASS
+adapted-playbook             2/5 PASS
+```
+
+Candidate별 결정:
+
+```text
+kd-exploratory-data-analysis  REJECTED
+kd-scikit-learn               REJECTED
+kd-sympy                      ADAPT_CANDIDATE
+kd-citation-management        ADAPT_CANDIDATE
+kd-docx                       REJECTED
+
+Stage B 미선정 10개           REFERENCE_ONLY
+ADOPT_CANDIDATE                0
+```
+
+Acceptance PASS는 `kd-sympy/adapted-playbook`과
+`kd-citation-management/adapted-playbook` 두 슬롯이다. Codex/모델 자기보고가
+아니라 고정 rubric의 모든 hard check 통과로 판정했다. 나머지 18개 FAIL은
+추측하거나 보간하지 않았으며 check별 Evidence를 그대로 보존했다.
+
+Evidence 위치:
+
+```text
+evaluation/external-skills/reports/stage-b-model-approval-blocker.json
+evaluation/external-skills/reports/stage-b-runtime-approval.json
+evaluation/external-skills/reports/stage-b-execution-summary.json
+evaluation/external-skills/evidence/stage-b/<candidate>/<variant>.json
+evaluation/external-skills/benchmark-results.json
+evaluation/external-skills/adoption-decisions.json
+```
+
+검증 Evidence:
+
+```text
+Benchmark Wave          12/12 PASS
+Snapshot Wave             9/9 PASS
+External Catalog         12/12 PASS
+Effective Coverage        5/5 PASS
+Candidate Wave            5/5 PASS
+Inspection Wave           8/8 PASS
+V8.2 normal regression   72/72 PASS
+Harness Audit             PASS / warnings 0
+STRICT Quality Gate       PASS
+git diff --check          PASS
+
+External access attempts  0
+External scripts           0
+Credentials                0
+Hardware/cloud writes      0
+Destructive actions        0
+ACTIVE imports             0
+```
+
+첫 STRICT 실행은 Git LF→CRLF warning이 conflict 검사 stderr로 전달되어 Gate
+자체가 FAIL했으나 모든 verification command는 PASS했다. 의도된 변경을 stage해
+warning을 해소한 뒤 동일 Gate를 재실행하여 최종 PASS를 확인했다.
+
+기존 fixture와 snapshot manifest SHA, ACTIVE registry, Router scoring,
+Global AGENTS.md는 실행 전 approval Evidence의 baseline hash와 일치한다.

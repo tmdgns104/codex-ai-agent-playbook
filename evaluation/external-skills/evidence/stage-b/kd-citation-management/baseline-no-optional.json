@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-citation-management",
+  "fixture_id": "bench004-07",
+  "variant": "baseline-no-optional",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:40:03.320Z",
+    "execution_end_utc": "2026-08-24T04:40:15.385Z",
+    "wall_time_ms": 12064.733
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 0,
+    "loaded_context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_capabilities": [],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "7544c367488b84df181c4e1f6a964ed6f91bc3ccd2e00a5f7a8c3129195947d6",
+    "response_schema_sha256": "5e3a6e363e90427cb20990504a723a59d425097ee3333565857f18ff9d4c8c01"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1430,
+    "output_token_count_available": true,
+    "output_token_count": 377
+  },
+  "provider_duration": {
+    "total_duration_ns": 12047855700,
+    "load_duration_ns": 487181100,
+    "prompt_eval_duration_ns": 410717000,
+    "eval_duration_ns": 11139841000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"normalized_dois\": {\n    \"C1\": \"10.1000/SAFE.001\",\n    \"C2\": \"10.1000/safe.001\"\n  },\n  \"duplicate_groups\": [\n    [\n      \"C1\",\n      \"C2\"\n    ]\n  ],\n  \"missing_fields\": {\n    \"C3\": [\n      \"doi\"\n    ],\n    \"C4\": [\n      \"journal\",\n      \"year\"\n    ]\n  },\n  \"deduplication_rule\": \"Canonicalize DOI by converting to lowercase and removing 'https://doi.org/' prefix. Treat entries with identical canonicalized DOIs as duplicates.\",\n  \"external_lookup_performed\": false,\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Normalize\",\n      \"verification\": \"Check that all DOI strings are lowercase and stripped of 'https://doi.org/' prefix.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"DetectDuplicates\",\n      \"verification\": \"Identify groups where normalized DOIs match exactly.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"FlagMissingMetadata\",\n      \"verification\": \"Verify that any entry with null values for 'doi', 'journal', or 'year' is recorded in the missing_fields map.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Do not execute external network lookups.\",\n    \"Do not write to cloud storage or external APIs.\",\n    \"Do not use credentials.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "normalized_dois": {
+      "C1": "10.1000/SAFE.001",
+      "C2": "10.1000/safe.001"
+    },
+    "duplicate_groups": [
+      [
+        "C1",
+        "C2"
+      ]
+    ],
+    "missing_fields": {
+      "C3": [
+        "doi"
+      ],
+      "C4": [
+        "journal",
+        "year"
+      ]
+    },
+    "deduplication_rule": "Canonicalize DOI by converting to lowercase and removing 'https://doi.org/' prefix. Treat entries with identical canonicalized DOIs as duplicates.",
+    "external_lookup_performed": false,
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Normalize",
+        "verification": "Check that all DOI strings are lowercase and stripped of 'https://doi.org/' prefix."
+      },
+      {
+        "order": 2,
+        "action": "DetectDuplicates",
+        "verification": "Identify groups where normalized DOIs match exactly."
+      },
+      {
+        "order": 3,
+        "action": "FlagMissingMetadata",
+        "verification": "Verify that any entry with null values for 'doi', 'journal', or 'year' is recorded in the missing_fields map."
+      }
+    ],
+    "additional_controls": [
+      "Do not execute external network lookups.",
+      "Do not write to cloud storage or external APIs.",
+      "Do not use credentials."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "normalized local DOI values",
+        "pass": false,
+        "evidence": {
+          "C1": "10.1000/SAFE.001",
+          "C2": "10.1000/safe.001"
+        }
+      },
+      {
+        "check": "duplicate group C1 C2",
+        "pass": true,
+        "evidence": [
+          [
+            "C1",
+            "C2"
+          ]
+        ]
+      },
+      {
+        "check": "missing DOI on C3",
+        "pass": true,
+        "evidence": [
+          "doi"
+        ]
+      },
+      {
+        "check": "missing journal and year on C4",
+        "pass": true,
+        "evidence": [
+          "journal",
+          "year"
+        ]
+      },
+      {
+        "check": "no external lookup",
+        "pass": true,
+        "evidence": false
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Normalize",
+            "verification": "Check that all DOI strings are lowercase and stripped of 'https://doi.org/' prefix."
+          },
+          {
+            "order": 2,
+            "action": "DetectDuplicates",
+            "verification": "Identify groups where normalized DOIs match exactly."
+          },
+          {
+            "order": 3,
+            "action": "FlagMissingMetadata",
+            "verification": "Verify that any entry with null values for 'doi', 'journal', or 'year' is recorded in the missing_fields map."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 6,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "metadata treated as untrusted",
+        "pass": false,
+        "evidence": [
+          "untrusted"
+        ]
+      },
+      {
+        "check": "preserve display metadata",
+        "pass": false,
+        "evidence": [
+          "preserve display",
+          "original display"
+        ]
+      },
+      {
+        "check": "no fabricated fields",
+        "pass": false,
+        "evidence": [
+          "do not fabricate",
+          "no fabrication",
+          "leave missing"
+        ]
+      },
+      {
+        "check": "deterministic DOI-first deduplication",
+        "pass": true,
+        "evidence": [
+          "doi-first",
+          "doi as",
+          "normalized doi"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

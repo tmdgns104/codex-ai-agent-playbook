@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-scikit-learn",
+  "fixture_id": "bench004-04",
+  "variant": "baseline-no-optional",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:37:56.059Z",
+    "execution_end_utc": "2026-08-24T04:38:13.979Z",
+    "wall_time_ms": 17919.904
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 0,
+    "loaded_context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_capabilities": [],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "93b22e4a68083657a1383297b268f69555fec1a967bd6cbd01db21f42f04b34c",
+    "response_schema_sha256": "b438c23c5b066e805e955dc18531dffce83a114b181e55902d55cb6745ea4273"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1289,
+    "output_token_count_available": true,
+    "output_token_count": 596
+  },
+  "provider_duration": {
+    "total_duration_ns": 17912120800,
+    "load_duration_ns": 496243800,
+    "prompt_eval_duration_ns": 255654000,
+    "eval_duration_ns": 17074699000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"split_strategy\": \"train_test_split with test_fraction=0.2\",\n  \"test_fraction\": 0.2,\n  \"preprocessing_location\": \"inside_pipeline_before_split\",\n  \"numeric_preprocessing\": [\"impute_missing_values\", \"standardize\"],\n  \"categorical_preprocessing\": [\"handle_missing_values\", \"one_hot_encode\"],\n  \"baseline_model\": \"LogisticRegression\",\n  \"evaluation_metrics\": [\"accuracy\", \"precision\", \"recall\", \"f1_score\"],\n  \"cross_validation_scope\": \"none\",\n  \"test_set_usage\": \"single_holdout_for_final_evaluation_only\",\n  \"random_seed\": 42,\n  \"verification_steps\": [\n    \"verify_train_test_split_ratio_is_0.8_0.2\",\n    \"verify_no_data_leakage_from_target_to_features\",\n    \"verify_missing_values_handled_in_pipeline_not_before_split\",\n    \"verify_model_fits_on_processed_training_data_only\",\n    \"verify_metrics_computed_on_test_set_only\"\n  ],\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"generate_synthetic_dataset_with_missing_values_and_target_column_will_renew\",\"verification\": \"check_sample_count_equals_1200\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"create_pipeline_with_imputer_for_numeric_and_categorical_encoders\",\n      \"verification\": \"verify_encoder_types_match_feature_counts\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"fit_transform_training_data_through_pipeline\",\n      \"verification\": \"verify_no_warnings_about_missing_values\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"transform_test_data_through_fitted_pipeline\",\n      \"verification\": \"verify_test_data_shape_matches_processed_features\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"fit_baseline_logistic_regression_model_on_processed_training_data\",\n      \"verification\": \"verify_model_converged_without_warnings\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"predict_on_processed_test_data\",\n      \"verification\": \"verify_prediction_shape_matches_test_count\"\n    },\n    {\n      \"order\": 7,\n      \"action\": \"compute_evaluation_metrics_on_predictions_and_true_labels\",\n      \"verification\": \"verify_all_required_metrics_computed\"\n    }\n  ],\n  \"additional_controls\": [\n    \"set_random_seed_42_for_all_stochastic_operations\",\n    \"ensure_no_external_network_calls_during_execution\",\n    \"ensure_no_cloud_write_operations_performed\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "split_strategy": "train_test_split with test_fraction=0.2",
+    "test_fraction": 0.2,
+    "preprocessing_location": "inside_pipeline_before_split",
+    "numeric_preprocessing": [
+      "impute_missing_values",
+      "standardize"
+    ],
+    "categorical_preprocessing": [
+      "handle_missing_values",
+      "one_hot_encode"
+    ],
+    "baseline_model": "LogisticRegression",
+    "evaluation_metrics": [
+      "accuracy",
+      "precision",
+      "recall",
+      "f1_score"
+    ],
+    "cross_validation_scope": "none",
+    "test_set_usage": "single_holdout_for_final_evaluation_only",
+    "random_seed": 42,
+    "verification_steps": [
+      "verify_train_test_split_ratio_is_0.8_0.2",
+      "verify_no_data_leakage_from_target_to_features",
+      "verify_missing_values_handled_in_pipeline_not_before_split",
+      "verify_model_fits_on_processed_training_data_only",
+      "verify_metrics_computed_on_test_set_only"
+    ],
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "generate_synthetic_dataset_with_missing_values_and_target_column_will_renew",
+        "verification": "check_sample_count_equals_1200"
+      },
+      {
+        "order": 2,
+        "action": "create_pipeline_with_imputer_for_numeric_and_categorical_encoders",
+        "verification": "verify_encoder_types_match_feature_counts"
+      },
+      {
+        "order": 3,
+        "action": "fit_transform_training_data_through_pipeline",
+        "verification": "verify_no_warnings_about_missing_values"
+      },
+      {
+        "order": 4,
+        "action": "transform_test_data_through_fitted_pipeline",
+        "verification": "verify_test_data_shape_matches_processed_features"
+      },
+      {
+        "order": 5,
+        "action": "fit_baseline_logistic_regression_model_on_processed_training_data",
+        "verification": "verify_model_converged_without_warnings"
+      },
+      {
+        "order": 6,
+        "action": "predict_on_processed_test_data",
+        "verification": "verify_prediction_shape_matches_test_count"
+      },
+      {
+        "order": 7,
+        "action": "compute_evaluation_metrics_on_predictions_and_true_labels",
+        "verification": "verify_all_required_metrics_computed"
+      }
+    ],
+    "additional_controls": [
+      "set_random_seed_42_for_all_stochastic_operations",
+      "ensure_no_external_network_calls_during_execution",
+      "ensure_no_cloud_write_operations_performed"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "stratified 0.2 split",
+        "pass": false,
+        "evidence": [
+          "train_test_split with test_fraction=0.2",
+          0.2
+        ]
+      },
+      {
+        "check": "preprocessing inside pipeline",
+        "pass": true,
+        "evidence": "inside_pipeline_before_split"
+      },
+      {
+        "check": "numeric preprocessing",
+        "pass": false,
+        "evidence": [
+          "impute_missing_values",
+          "standardize"
+        ]
+      },
+      {
+        "check": "categorical preprocessing",
+        "pass": false,
+        "evidence": [
+          "handle_missing_values",
+          "one_hot_encode"
+        ]
+      },
+      {
+        "check": "logistic regression baseline",
+        "pass": true,
+        "evidence": "LogisticRegression"
+      },
+      {
+        "check": "ROC-AUC and PR-AUC",
+        "pass": false,
+        "evidence": [
+          "accuracy",
+          "precision",
+          "recall",
+          "f1_score"
+        ]
+      },
+      {
+        "check": "training-only cross-validation",
+        "pass": false,
+        "evidence": "none"
+      },
+      {
+        "check": "final-once test usage",
+        "pass": false,
+        "evidence": "single_holdout_for_final_evaluation_only"
+      },
+      {
+        "check": "seed 42",
+        "pass": true,
+        "evidence": 42
+      },
+      {
+        "check": "verification steps",
+        "pass": true,
+        "evidence": [
+          "verify_train_test_split_ratio_is_0.8_0.2",
+          "verify_no_data_leakage_from_target_to_features",
+          "verify_missing_values_handled_in_pipeline_not_before_split",
+          "verify_model_fits_on_processed_training_data_only",
+          "verify_metrics_computed_on_test_set_only"
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 5,
+    "hard_checks_total": 11,
+    "quality_checks": [
+      {
+        "check": "class imbalance handling",
+        "pass": false,
+        "evidence": [
+          "class imbalance",
+          "imbalanced",
+          "class weight"
+        ]
+      },
+      {
+        "check": "threshold selection",
+        "pass": false,
+        "evidence": [
+          "threshold"
+        ]
+      },
+      {
+        "check": "calibration",
+        "pass": false,
+        "evidence": [
+          "calibrat"
+        ]
+      },
+      {
+        "check": "model comparison or uncertainty",
+        "pass": false,
+        "evidence": [
+          "model comparison",
+          "confidence interval",
+          "uncertainty"
+        ]
+      }
+    ],
+    "quality_score": 0,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

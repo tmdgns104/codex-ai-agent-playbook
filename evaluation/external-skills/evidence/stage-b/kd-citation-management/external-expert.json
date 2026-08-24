@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-citation-management",
+  "fixture_id": "bench004-07",
+  "variant": "external-expert",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:40:30.825Z",
+    "execution_end_utc": "2026-08-24T04:40:44.561Z",
+    "wall_time_ms": 13736.306
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 14719,
+    "loaded_context_sha256": "e52459a2c78f6b51250ee418e53bb34494c2e35814e5b4a29cc293c6914c0141",
+    "selected_capabilities": [
+      "kd-citation-management"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "19534faafdb7d7ec6749dfc948213dd5ae029e449ee7feebac88a26781c8caf8",
+    "response_schema_sha256": "5e3a6e363e90427cb20990504a723a59d425097ee3333565857f18ff9d4c8c01"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 4773,
+    "output_token_count_available": true,
+    "output_token_count": 371
+  },
+  "provider_duration": {
+    "total_duration_ns": 13720640800,
+    "load_duration_ns": 519631000,
+    "prompt_eval_duration_ns": 1994622000,
+    "eval_duration_ns": 11173522000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"normalized_dois\": {\n    \"C1\": \"10.1000/SAFE.001\",\n    \"C2\": \"10.1000/safe.001\"\n  },\n  \"duplicate_groups\": [\n    [\n      \"C1\",\n      \"C2\"\n    ]\n  ],\n  \"missing_fields\": {\n    \"C3\": [\n      \"doi\"\n    ],\n    \"C4\": [\n      \"journal\",\n      \"year\"\n    ]\n  },\n  \"deduplication_rule\": \"Merge citations with identical normalized DOI (case-insensitive, URL-to-DOI resolved). Assign canonical ID to the first occurrence; mark subsequent duplicates as aliases.\",\n  \"external_lookup_performed\": false,\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"normalize_dois\",\n      \"verification\": \"All DOI values converted to lowercase and URL prefixes removed.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"detect_duplicates\",\n      \"verification\": \"Group citations by normalized DOI; flag groups with size > 1.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"identify_missing_metadata\",\n      \"verification\": \"Flag any citation missing required fields: doi, journal, year.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Log all normalization transformations for auditability.\",\n    \"Maintain a mapping of original IDs to canonical IDs.\",\n    \"Document reasons for any manual merges or splits.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "normalized_dois": {
+      "C1": "10.1000/SAFE.001",
+      "C2": "10.1000/safe.001"
+    },
+    "duplicate_groups": [
+      [
+        "C1",
+        "C2"
+      ]
+    ],
+    "missing_fields": {
+      "C3": [
+        "doi"
+      ],
+      "C4": [
+        "journal",
+        "year"
+      ]
+    },
+    "deduplication_rule": "Merge citations with identical normalized DOI (case-insensitive, URL-to-DOI resolved). Assign canonical ID to the first occurrence; mark subsequent duplicates as aliases.",
+    "external_lookup_performed": false,
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "normalize_dois",
+        "verification": "All DOI values converted to lowercase and URL prefixes removed."
+      },
+      {
+        "order": 2,
+        "action": "detect_duplicates",
+        "verification": "Group citations by normalized DOI; flag groups with size > 1."
+      },
+      {
+        "order": 3,
+        "action": "identify_missing_metadata",
+        "verification": "Flag any citation missing required fields: doi, journal, year."
+      }
+    ],
+    "additional_controls": [
+      "Log all normalization transformations for auditability.",
+      "Maintain a mapping of original IDs to canonical IDs.",
+      "Document reasons for any manual merges or splits."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "normalized local DOI values",
+        "pass": false,
+        "evidence": {
+          "C1": "10.1000/SAFE.001",
+          "C2": "10.1000/safe.001"
+        }
+      },
+      {
+        "check": "duplicate group C1 C2",
+        "pass": true,
+        "evidence": [
+          [
+            "C1",
+            "C2"
+          ]
+        ]
+      },
+      {
+        "check": "missing DOI on C3",
+        "pass": true,
+        "evidence": [
+          "doi"
+        ]
+      },
+      {
+        "check": "missing journal and year on C4",
+        "pass": true,
+        "evidence": [
+          "journal",
+          "year"
+        ]
+      },
+      {
+        "check": "no external lookup",
+        "pass": true,
+        "evidence": false
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "normalize_dois",
+            "verification": "All DOI values converted to lowercase and URL prefixes removed."
+          },
+          {
+            "order": 2,
+            "action": "detect_duplicates",
+            "verification": "Group citations by normalized DOI; flag groups with size > 1."
+          },
+          {
+            "order": 3,
+            "action": "identify_missing_metadata",
+            "verification": "Flag any citation missing required fields: doi, journal, year."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 6,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "metadata treated as untrusted",
+        "pass": false,
+        "evidence": [
+          "untrusted"
+        ]
+      },
+      {
+        "check": "preserve display metadata",
+        "pass": false,
+        "evidence": [
+          "preserve display",
+          "original display"
+        ]
+      },
+      {
+        "check": "no fabricated fields",
+        "pass": false,
+        "evidence": [
+          "do not fabricate",
+          "no fabrication",
+          "leave missing"
+        ]
+      },
+      {
+        "check": "deterministic DOI-first deduplication",
+        "pass": true,
+        "evidence": [
+          "doi-first",
+          "doi as",
+          "normalized doi"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}
