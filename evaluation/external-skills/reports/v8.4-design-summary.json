@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_4-EXPERT-CONTEXT-001",
+  "status": "DESIGN_PROPOSED_IMPLEMENTATION_NOT_STARTED",
+  "problem": {
+    "statement": "Preserve or improve task acceptance while loading only approved task-relevant knowledge from pinned external Expert Skill snapshots as a small session-scoped adapted context.",
+    "not_the_goal": "Minimizing context independently of quality, verification, provenance, and safety.",
+    "current_gap": "The current Router selects ACTIVE capability IDs and the current Skill Materializer copies complete Skill bundles; there is no approved atomic adapted-context layer between them and the LLM."
+  },
+  "v8_3_evidence": {
+    "interpretation_guard": "V8.3-1 and V8.3-2 are separate waves. Wave 2 does not overwrite Wave 1 results or adoption decisions.",
+    "wave1": {
+      "acceptance_pass": 2,
+      "acceptance_fail": 18,
+      "external_expert_pass": 0,
+      "adapted_playbook_pass": 2,
+      "external_prompt_tokens": 20351,
+      "adapted_prompt_tokens": 7130,
+      "failed_hard_checks": {
+        "external_expert": 9,
+        "adapted_playbook": 3
+      }
+    },
+    "wave2": {
+      "acceptance_pass": 8,
+      "acceptance_fail": 12,
+      "external_expert_pass": 1,
+      "adapted_playbook_pass": 5,
+      "external_prompt_tokens": 20607,
+      "adapted_prompt_tokens": 7386,
+      "failed_hard_checks": {
+        "external_expert": 6,
+        "adapted_playbook": 0
+      },
+      "validator_only_semantic_false_negatives_resolved": 4,
+      "output_contract_fail_to_pass_checks": 10
+    },
+    "shared_context_measurement": {
+      "external_context_bytes": 54704,
+      "adapted_context_bytes": 2799,
+      "bytes_saved": 51905,
+      "reduction_percent": 94.883
+    },
+    "limitations": [
+      "One fixed-seed Qwen run per slot does not establish repeated-run or cross-model causality.",
+      "Wave 2 changed validator semantics and explicit output contracts, so all observed PASS changes cannot be attributed only to context.",
+      "Thirteen of the eighteen Wave 1 failed slots had MODEL_CAPABILITY as the primary classified cause.",
+      "Wave 1 adoption decisions remain authoritative: only kd-sympy and kd-citation-management are ADAPT_CANDIDATE."
+    ],
+    "source_sha256": {
+      "evaluation/external-skills/benchmark-results.json": "21cb7165c4e02397fdafa9bc5d20f715e723ff351965cf71e00e42f6e7e80249",
+      "evaluation/external-skills/adoption-decisions.json": "4078ba8597bc9483606c41dcae2a88d5096de13ce22cb6c1084665079433bbe3",
+      "evaluation/external-skills/adapted-contexts.json": "f972f89a57dd853eaf7f88648e8a5ce9f6a26f9335e6f03131a48222246e9816",
+      "evaluation/external-skills/reports/stage-b-failure-analysis.json": "22f590325b312ec52b9ab54e889eff7f6c23eb0c3064229d738a4dada307c692",
+      "evaluation/external-skills/reports/stage-b-wave2-comparison.json": "7566322a62064797df4fefbf0319794aab40b1cd66df8cec77c934047f031a6e",
+      "evaluation/external-skills/reports/stage-b-wave2-execution-summary.json": "48ba11e17931c406fc8c1026727bb6dbbce58c2c52652c16e895b15fff7f3c9b"
+    }
+  },
+  "requirements": {
+    "preserve_raw_snapshot": true,
+    "approved_candidates_only": true,
+    "runtime_raw_external_loading": false,
+    "runtime_adaptation_llm_calls": 0,
+    "session_scoped_materialization": true,
+    "managed_cleanup_required": true,
+    "quality_before_cost": true,
+    "missing_metrics_auto_pass": false,
+    "implementation_decisions_required": [
+      "context transport contract",
+      "initial eligible candidate set",
+      "tokenizer and hard budgets",
+      "offline extraction authority and review",
+      "cache location, retention, and privacy",
+      "failure fallback and Human Gate conditions",
+      "holdout data and KPI thresholds",
+      "approved architecture integration scope"
+    ]
+  },
+  "architecture": {
+    "preserved": [
+      "ACTIVE capability registry",
+      "Router scoring and cardinality logic",
+      "Capability Manager permission gates",
+      "Skill Materializer responsibility for complete optional Skill bundles",
+      "Discovery Bridge session lifecycle patterns",
+      "V8.3 snapshots, benchmark Evidence, and adoption decisions"
+    ],
+    "new_components": [
+      "Approved Adapted Capability Catalog",
+      "offline Adaptation Compiler",
+      "provenance, permission, safety, and quality Verifier",
+      "approved-only Adapted Context Selector",
+      "Budget Planner and Context Assembler",
+      "session-local Adapted Context Materializer",
+      "approved Context Transport Adapter",
+      "append-only Evidence Recorder"
+    ],
+    "boundaries": {
+      "router": "Remains authoritative for ACTIVE capabilities and is not modified, rescored, or overridden by the adapted selector.",
+      "activation": "Existing permission gates are an authoritative lower bound; adaptation cannot lower a gate by omitting instructions.",
+      "skill_materializer": "Continues to copy full optional Skill bundles only; adapted context is not written into .agents/skills.",
+      "context_materializer": "Writes only a context envelope and manifest to a dedicated session-local contexts directory and performs integrity verification and managed cleanup.",
+      "transport": "Requires a separately approved architecture contract because the current launcher passes the exact user task once."
+    },
+    "adaptation_pipeline": {
+      "offline": [
+        "SOURCE_PINNED",
+        "SOURCE_INSPECTED",
+        "UNITS_EXTRACTED",
+        "UNITS_NORMALIZED",
+        "PROVENANCE_BOUND",
+        "POLICY_VERIFIED",
+        "QUALITY_VERIFIED",
+        "APPROVAL_PENDING",
+        "APPROVED"
+      ],
+      "runtime": [
+        "read unchanged route and activation plan",
+        "select from approved adapted catalog",
+        "apply overlap, freshness, permission, quality, and cardinality gates",
+        "plan required and relevant knowledge units",
+        "assemble and hash canonical context envelope",
+        "materialize and verify session-local context",
+        "inject once through approved transport",
+        "record acceptance and KPI Evidence",
+        "cleanup or quarantine"
+      ]
+    },
+    "candidate_selection": {
+      "gate_order": [
+        "approval",
+        "freshness",
+        "task_match",
+        "overlap",
+        "permission",
+        "quality",
+        "budget",
+        "cardinality"
+      ],
+      "initial_eligible_candidates": [
+        "kd-sympy",
+        "kd-citation-management"
+      ],
+      "default_max_selected": 1,
+      "additional_selection_requires": "An explicitly composite task, an approved higher limit, and combined-context evaluation Evidence.",
+      "tie_break": [
+        "specificity",
+        "lower context cost",
+        "lower risk",
+        "stable id"
+      ]
+    },
+    "context_extraction": {
+      "preserve": [
+        "correctness-critical procedures",
+        "prerequisites",
+        "verification controls",
+        "failure modes",
+        "safety constraints"
+      ],
+      "remove": [
+        "provider governance",
+        "installation and bundled-script commands",
+        "network and credential requirements not approved for the adapted workflow",
+        "reference inventories",
+        "repeated examples",
+        "task-irrelevant domain explanation"
+      ],
+      "forbidden": [
+        "embedding benchmark answers as general knowledge",
+        "unbounded fuzzy semantic rewriting",
+        "adding claims not supported by the pinned source",
+        "dropping safety constraints to meet a budget"
+      ]
+    },
+    "adapted_context_schema": {
+      "definition_required_fields": [
+        "schema_version",
+        "adapted_capability_id",
+        "version",
+        "status",
+        "candidate_id",
+        "applicability",
+        "source",
+        "transformation",
+        "permissions",
+        "knowledge_units",
+        "budget",
+        "verification",
+        "content_sha256",
+        "cache_key"
+      ],
+      "runtime_envelope_required_fields": [
+        "schema_version",
+        "session_id",
+        "task_fingerprint",
+        "selected_capabilities",
+        "selected_unit_ids",
+        "source_snapshot_hashes",
+        "adaptation_versions",
+        "effective_permissions",
+        "required_gates",
+        "context_text",
+        "context_sha256",
+        "loaded_context_bytes",
+        "prompt_token_count_or_null",
+        "tokenizer_id_or_null",
+        "cache_key_or_null",
+        "materialized_at_utc",
+        "cleanup_required"
+      ]
+    },
+    "budget_policy": {
+      "gate_order": [
+        "quality and safety completeness",
+        "token budget",
+        "byte budget",
+        "cost preference"
+      ],
+      "pilot_recommendation_requires_approval": true,
+      "recommended_total_tokens": 1024,
+      "recommended_per_capability_tokens": 768,
+      "recommended_total_utf8_bytes": 4096,
+      "max_runtime_context_fraction": 0.1,
+      "required_units_may_be_truncated": false,
+      "tokenizer_unavailable_behavior": "Record null plus reason and enforce the UTF-8 byte hard gate.",
+      "overflow_result": "BUDGET_BLOCKED"
+    },
+    "cache": {
+      "compiled_definition_cache_allowed": true,
+      "cross_task_user_data_cache_allowed": false,
+      "runtime_cache_scope": "session-only",
+      "cache_key_inputs": [
+        "source_sha256",
+        "schema_version",
+        "policy_version",
+        "extractor_version",
+        "validator_version",
+        "permission_policy_version",
+        "knowledge_unit_hashes"
+      ],
+      "invalidation_inputs": [
+        "source hash, revision, or license",
+        "schema or transformation policy",
+        "selector or tokenizer",
+        "validator or permission policy",
+        "knowledge unit content",
+        "adoption or eligibility status",
+        "relevant acceptance contract"
+      ],
+      "invalidated_fallback_to_raw": false
+    }
+  },
+  "data_flow": [
+    "pinned snapshot",
+    "hash, license, and inspection verification",
+    "offline compile into atomic knowledge units",
+    "provenance, permission, safety, fixture, and holdout verification",
+    "Human approval",
+    "approved adapted catalog",
+    "unchanged Router and activation plan",
+    "approved-only selector",
+    "budget planner and canonical assembler",
+    "session-local context materialization and integrity check",
+    "approved one-time context transport",
+    "task execution and acceptance Evidence",
+    "managed cleanup or quarantine"
+  ],
+  "state_transitions": {
+    "offline_terminal_states": [
+      "APPROVED",
+      "REJECTED",
+      "REVOKED"
+    ],
+    "runtime_terminal_states": [
+      "NO_CONTEXT",
+      "INVALIDATED",
+      "PERMISSION_BLOCKED",
+      "BUDGET_BLOCKED",
+      "CLEANED",
+      "QUARANTINED"
+    ],
+    "checkpoint_policy": "Atomically record each verified state with the previous checkpoint hash; resume only after the last verified state without implicit re-extraction, retry, or LLM call.",
+    "privacy_policy": "Persist a minimal task fingerprint and selected IDs, not raw task data, in resumable runtime checkpoints."
+  },
+  "safety_boundaries": {
+    "external_snapshot_trust": "untrusted reference data",
+    "deny_overrides_allow": true,
+    "raw_external_automatic_fallback": false,
+    "stale_cache_use": false,
+    "broad_destructive_cleanup": false,
+    "final_acceptance_source": "deterministic output and artifact verification, not context or model self-report",
+    "failure_policy": {
+      "no_match": "Continue the independent current path and record NO_CONTEXT.",
+      "ambiguity": "Use deterministic tie-break only when quality is established; otherwise no context or Human Gate.",
+      "source_or_cache_drift": "Invalidate and require recompile/review.",
+      "permission_block": "Stop at the existing gate.",
+      "budget_overflow": "Record BUDGET_BLOCKED; do not truncate or load raw context.",
+      "verification_failure": "Reject or quarantine the adapted version.",
+      "transport_unavailable": "Use current path only when independently safe and sufficient; otherwise block.",
+      "cleanup_failure": "Record QUARANTINED with path and hash evidence."
+    }
+  },
+  "kpi": [
+    {
+      "name": "acceptance_quality",
+      "unit": "passed slots and failed hard checks",
+      "direction": "higher pass rate and fewer failed checks",
+      "priority": 1
+    },
+    {
+      "name": "prompt_tokens",
+      "unit": "actual provider or approved tokenizer tokens",
+      "direction": "lower only when quality is non-inferior",
+      "priority": 2
+    },
+    {
+      "name": "loaded_context_bytes",
+      "unit": "UTF-8 bytes actually injected",
+      "direction": "lower only when quality is non-inferior",
+      "priority": 2
+    },
+    {
+      "name": "selected_capability_count",
+      "unit": "adapted capabilities injected per task",
+      "direction": "minimum necessary",
+      "priority": 3
+    },
+    {
+      "name": "llm_calls",
+      "unit": "calls separated by execution, extraction, and judge role",
+      "direction": "zero additional runtime adaptation calls",
+      "priority": 3
+    },
+    {
+      "name": "execution_time",
+      "unit": "end-to-end and per-stage milliseconds",
+      "direction": "lower only when quality is non-inferior",
+      "priority": 4
+    },
+    {
+      "name": "failure_rate",
+      "unit": "failures by generation, schema, acceptance, budget, permission, integrity, and cleanup denominator",
+      "direction": "lower",
+      "priority": 1
+    }
+  ],
+  "acceptance_criteria": [
+    "Wave 1 and Wave 2 facts remain separate and source-linked.",
+    "Only approved candidates enter runtime selection.",
+    "Raw external snapshots are never injected or used as automatic fallback.",
+    "Required correctness, verification, and safety units are never silently truncated.",
+    "Every adapted version and runtime envelope has immutable provenance and content hashes.",
+    "Permission propagation cannot weaken existing gates.",
+    "Router scoring, ACTIVE registry, and the existing Skill Materializer remain unchanged.",
+    "Runtime artifacts are session-scoped, integrity-checked, and cleaned or quarantined.",
+    "Development and holdout evaluation sets are separated.",
+    "Adapted acceptance is non-inferior to current-playbook per candidate before context savings count as success.",
+    "Safety, permission, and integrity hard gates pass 100 percent.",
+    "Runtime adaptation adds zero LLM calls.",
+    "Metric definitions, denominators, thresholds, repetition policy, and missing-data behavior are frozen before a controlled benchmark.",
+    "Context transport and architecture integration receive explicit Human Gate approval before implementation."
+  ],
+  "implementation_phases": [
+    "Decision freeze",
+    "Schema and isolated offline harness",
+    "SymPy and Citation approved-candidate compile pilot",
+    "Selector and budget planner shadow mode",
+    "Session-local context materialization and approved transport",
+    "Controlled development and blinded holdout benchmark",
+    "Limited opt-in pilot",
+    "Separate expansion and adoption review"
+  ],
+  "follow_up_tasks": [
+    "V8_4-EXPERT-CONTEXT-002: context transport and architecture boundary decision",
+    "V8_4-EXPERT-CONTEXT-003: definition and runtime envelope schemas and validators",
+    "V8_4-EXPERT-CONTEXT-004: pinned-snapshot offline compiler and provenance/safety harness",
+    "V8_4-EXPERT-CONTEXT-005: approved-only selector, overlap detector, and budget planner shadow mode",
+    "V8_4-EXPERT-CONTEXT-006: session-local Context Materializer, integrity, cleanup, and quarantine",
+    "V8_4-EXPERT-CONTEXT-007: development/holdout fixtures and controlled benchmark policy",
+    "V8_4-EXPERT-CONTEXT-008: SymPy/Citation limited pilot and KPI report",
+    "V8_4-EXPERT-CONTEXT-009: Wave 2 candidate reassessment and expansion Human Gate"
+  ],
+  "final_summary": {
+    "existing_architecture_retained": "ACTIVE registry, Router scoring, activation permission gates, full-Skill Materializer, Discovery Bridge lifecycle patterns, and immutable V8.3 Evidence.",
+    "new_parts_required": "Approved adapted catalog, offline compiler/verifier, separate selector, budget planner/assembler, context materializer, transport adapter, and provenance/cache/evidence contracts.",
+    "risks": [
+      "overfitting to five fixtures and one Qwen run",
+      "confounding validator/output-contract changes with context effects",
+      "loss of required knowledge or safety during compression",
+      "permission laundering and external prompt injection",
+      "stale cache or source hash drift",
+      "selector over-selection or under-selection",
+      "tokenizer drift and task-fingerprint privacy",
+      "cleanup failure",
+      "breaking the current exact-user-task launcher invariant"
+    ],
+    "must_decide_before_implementation": [
+      "transport and approved architecture scope",
+      "initial eligible candidates",
+      "extraction and review authority",
+      "tokenizer and hard budgets",
+      "cache and privacy policy",
+      "failure fallback",
+      "holdout, repetitions, KPI thresholds, and non-inferiority margins"
+    ]
+  },
+  "changes_outside_design_artifacts": false
+}
