@@ -1,13 +1,16 @@
 # Codex AI Agent Playbook
 
-> **현재 안정 버전: V8.2 (`main`)**  
+> **현재 안정 버전: V8.2 (`main`)**
+>
+> **Experimental / Release Candidate: V8.4-001~006 (`v8.3-expert-skill-catalog`) — Global rollout NOT APPROVED**
+>
 > 적은 고정 Context + 필요한 Skill만 자동 선택 + 실제 Evidence 기반 검증 + Self-Managing Skill Control Plane
 
-Codex를 여러 프로젝트에서 사용할 때 **매 작업마다 거대한 지침과 모든 Skill을 읽게 하지 않고**, 현재 작업에 필요한 기능만 선택해 사용하는 경량 Playbook + Skills + Harness입니다.
+Codex를 여러 프로젝트에서 사용할 때 **매 작업마다 거대한 지침과 모든 Skill을 읽게 하지 않고**, 현재 작업에 필요한 기능만 선택해 사용하는 경량 Playbook + Skills + Harness입니다. V8.3과 V8.4에서는 pinned external Skill에서 검증된 지식만 작은 adapted context로 사용하는 방법을 별도 experimental control plane으로 연구합니다.
 
 V8.2는 Windows 실제 환경에서 설치, 자동 Skill 선택, 별도 Git Repository 실행, cleanup, 재설치 멱등성, Self-Managing Skill Lifecycle, STRICT Quality Gate까지 검증했습니다.
 
-[상세 한글 가이드](README_KO.md) · [빠른 시작](docs/QUICKSTART.md) · [동작 원리](docs/HOW_IT_WORKS.md) · [Skills 가이드](docs/SKILLS.md)
+[상세 한글 가이드](README_KO.md) · [빠른 시작](docs/QUICKSTART.md) · [동작 원리](docs/HOW_IT_WORKS.md) · [Skills 가이드](docs/SKILLS.md) · [V8.4 RC 상태](docs/V8.4_RELEASE_CANDIDATE_STATUS.md)
 
 ---
 
@@ -16,6 +19,11 @@ V8.2는 Windows 실제 환경에서 설치, 자동 Skill 선택, 별도 Git Repo
 ```text
 Stable branch       main
 Stable version      V8.2
+Experimental branch v8.3-expert-skill-catalog
+V8.3 benchmark      COMPLETE
+V8.4 control plane  001~006 COMPLETE
+Codex transport     NOT VERIFIED
+Global rollout      NOT APPROVED
 Core Skills         7
 Optional Skills     10
 Capability wrappers 2
@@ -43,6 +51,31 @@ V8.2에서 추가된 핵심은 **Self-Managing Skill Library**입니다.
 ```
 
 Creator/Evolver/Curator는 매 작업마다 실행되지 않습니다. 정상 작업 경로는 계속 가볍게 유지합니다.
+
+### Stable과 Experimental / Release Candidate 경계
+
+| 구분 | 상태 | 현재 의미 |
+|---|---|---|
+| V8.2 | Stable | `main`에서 설치·업데이트 가능한 검증된 Router, activation, launcher, lifecycle |
+| V8.3 | Benchmark complete | pinned external Skill의 current/raw/adapted 비교 Evidence와 adoption candidate 기록 |
+| V8.4-001~006 | Experimental / Release Candidate | 계약, validator, offline compiler, selector, budget planner, session materializer를 fake backend로 결정론적 검증 |
+| V8.4-006A | Not implemented | 실제 Codex transport 검증은 수행하지 않음 |
+| V8.4-007 | Not implemented | Native Codex vs Current Playbook vs Adapted Context 비교 미수행 |
+| Global rollout | Not approved | 실제 transport와 일반화 Evidence가 부족하므로 전역 설치 경로에 연결하지 않음 |
+
+현재 stable 사용자에게 제공되는 기능은 V8.2 Router, permission/verification profile,
+session-local Skill activation, launcher, cleanup, self-managing control plane입니다. V8.4의
+adapted context compiler/selector/materializer는 repository 내부의 실험·검증 구성요소이며
+기존 launcher나 전역 설치에 연결되어 있지 않습니다.
+
+V8.3 Wave 2에서는 adapted-playbook이 5개 fixture 모두 PASS하고 raw external context보다
+작은 context를 사용해 유망한 결과를 보였습니다. 그러나 전체 결과는 20개 slot 중
+8 PASS/12 FAIL이며, 단일 모델·고정 fixture·validator/output contract 변경이 포함된
+실험입니다. 따라서 다른 모델과 실제 작업으로 일반화됐다고 판단하지 않습니다. 별도로
+수행된 DNN 실전 실험은 탐색적 보조 실험이며 V8.4 본선 acceptance Evidence가 아닙니다.
+
+자세한 완료 범위, blocker와 rollback 방향은
+[V8.4 Release Candidate Status](docs/V8.4_RELEASE_CANDIDATE_STATUS.md)를 참고하세요.
 
 ---
 
@@ -86,6 +119,9 @@ JWT 인증 오류 수정 + regression test
 ---
 
 ## 설치 - Windows CMD
+
+아래 설치 절차는 안정 브랜치 `main`의 V8.2용입니다. Experimental branch의 V8.4
+구성요소는 아직 global rollout 승인을 받지 않았으므로 전역 설치 대상으로 사용하지 마세요.
 
 필요한 프로그램:
 
@@ -323,7 +359,7 @@ STRICT인데 실행 Evidence가 필요한 상황에서 `--verify`가 없으면 �
 
 ## 업데이트
 
-이미 설치했다면 Playbook Repository에서:
+안정 버전을 이미 설치했다면 Playbook Repository에서:
 
 ```cmd
 git switch main
@@ -345,6 +381,27 @@ OK       playbook harness
 ```cmd
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\verify-install.ps1"
 ```
+
+V8.4 Release Candidate를 코드와 Evidence 검토 목적으로만 확인하려면 별도 clone 또는
+깨끗한 worktree에서 experimental branch를 checkout합니다.
+
+```cmd
+git fetch origin
+git switch v8.3-expert-skill-catalog
+```
+
+이 branch에서 `install.ps1` 또는 `install.sh`를 실행해 전역 환경에 적용하는 절차는
+현재 승인되지 않았습니다. 특히 기존 global AGENTS, Registry, launcher를 V8.4
+experimental 구성요소에 수동 연결하지 마세요.
+
+### 전역 적용 시 주의사항
+
+- 현재 V8.4 compiler output은 `DRAFT`이며 자동 승인 대상이 아닙니다.
+- 실제 Codex가 separate verified context를 소비하는 transport는 검증하지 않았습니다.
+- Native Codex, Current Playbook, Adapted Context의 통제 비교도 아직 수행하지 않았습니다.
+- V8.4 코드를 전역 경로로 복사하거나 기존 launcher/Registry에 수동 연결하면 검증된
+  V8.2 경계를 벗어납니다.
+- 전역 적용은 V8.4-006A/007 Evidence와 별도의 Human approval 이후에만 검토합니다.
 
 ---
 
