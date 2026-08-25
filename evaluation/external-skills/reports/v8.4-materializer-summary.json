@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "task_id": "V8.4-EXPERT-CONTEXT-006",
+  "status": "PASS",
+  "scope": {
+    "mode": "SESSION_LOCAL_FAKE_BACKEND_CONTRACT_ONLY",
+    "runtime_integration": false,
+    "actual_backend_transport": false,
+    "existing_launcher_modified": false,
+    "router_or_scoring_modified": false,
+    "activation_or_skill_materializer_modified": false,
+    "discovery_bridge_modified": false,
+    "registry_or_agents_modified": false,
+    "raw_external_fallback": false,
+    "silent_launcher_v1_fallback": false
+  },
+  "versions": {
+    "materializer": "v8.4-context-materializer-1",
+    "coordinator": "v8.4-launch-coordinator-1",
+    "lifecycle": "v8.4-context-lifecycle-1",
+    "policy": "v8.4-context-materializer-policy-1",
+    "compiler": "v8.4-offline-compiler-1",
+    "selector": "v8.4-adapted-selector-1",
+    "budget_planner": "v8.4-budget-planner-1",
+    "validator": "v8.4-context-validator-1",
+    "permission_policy": "v8.4-source-permission-union-1"
+  },
+  "lifecycle": {
+    "states": [
+      "CREATED",
+      "VALIDATED",
+      "MATERIALIZED",
+      "READY",
+      "CLEANUP_PENDING",
+      "CLEANED",
+      "QUARANTINED",
+      "INVALIDATED"
+    ],
+    "normal_flow": [
+      "CREATED",
+      "VALIDATED",
+      "MATERIALIZED",
+      "READY",
+      "CLEANUP_PENDING",
+      "CLEANED"
+    ],
+    "illegal_transition_rejected": true,
+    "stale_flow": [
+      "MATERIALIZED",
+      "INVALIDATED",
+      "QUARANTINED"
+    ],
+    "cleanup_failure_terminal": "QUARANTINED"
+  },
+  "materialization_results": [
+    {
+      "scenario": "test-only-approved-sympy",
+      "candidate_ids": ["kd-sympy"],
+      "selected_unit_count": 4,
+      "loaded_context_bytes": 1202,
+      "context_sha256": "8187a4dfd91694a22c1490c7747f83d0cdbccdd2a0f5d10f97307138d55d1e06",
+      "strongest_gate": "NETWORK_REVIEW",
+      "result": "READY"
+    },
+    {
+      "scenario": "test-only-approved-citation",
+      "candidate_ids": ["kd-citation-management"],
+      "selected_unit_count": 5,
+      "loaded_context_bytes": 1670,
+      "context_sha256": "0377c498b7ffa5bc8106b94d38d4b4c1e0b859eea14051470c16609d4ef7abb6",
+      "strongest_gate": "HUMAN_GATE_REQUIRED",
+      "result": "READY"
+    },
+    {
+      "scenario": "test-only-approved-composition",
+      "candidate_ids": ["kd-sympy", "kd-citation-management"],
+      "selected_unit_count": 8,
+      "loaded_context_bytes": 2562,
+      "context_sha256": "14758e27e30355ba04790f5572facea14771f85c14f6f9ebefdf6bb15c9a0363",
+      "strongest_gate": "HUMAN_GATE_REQUIRED",
+      "result": "READY"
+    }
+  ],
+  "prelaunch_gates": [
+    "request_schema",
+    "task_integrity",
+    "context_integrity",
+    "source_integrity",
+    "definition_integrity",
+    "selected_unit_integrity",
+    "budget",
+    "permission_strongest_gate",
+    "session_path_containment",
+    "backend_capability",
+    "injection_policy",
+    "freshness"
+  ],
+  "acceptance": {
+    "session_isolation": "PASS",
+    "path_containment": "PASS",
+    "symlink_defense": "PASS",
+    "hash_integrity": "PASS",
+    "permission_strongest_gate": "PASS",
+    "budget_enforcement": "PASS",
+    "lifecycle_transition": "PASS",
+    "cleanup": "PASS",
+    "quarantine": "PASS",
+    "deterministic_rebuild": "PASS",
+    "no_raw_fallback": "PASS",
+    "no_silent_fallback": "PASS",
+    "malformed_and_stale_fail_closed": "PASS"
+  },
+  "determinism": {
+    "same_input_context_bytes": "IDENTICAL",
+    "same_input_context_hash": "IDENTICAL",
+    "same_input_envelope_bytes": "IDENTICAL",
+    "same_input_manifest_bytes": "IDENTICAL",
+    "wall_clock_in_canonical_artifacts": false,
+    "timestamp_is_explicit_input": true
+  },
+  "cleanup_and_quarantine": {
+    "recursive_session_delete": false,
+    "normal_removed_files": [
+      "contexts/context.jsonl",
+      "contexts/envelope.json"
+    ],
+    "normal_retained_audit_files": [
+      "manifest.json",
+      "lifecycle.json",
+      "evidence.json"
+    ],
+    "cleanup_allowlist_bound_to_ready_manifest_hash": true,
+    "unexpected_file_quarantined": true,
+    "cleanup_failure_quarantined": true,
+    "quarantine_cross_session_mutation": false
+  },
+  "tests": {
+    "new_materializer_coordinator": {"passed": 26, "failed": 0},
+    "v8_4_003_context_contract": {"passed": 21, "failed": 0},
+    "v8_4_004_compiler": {"passed": 20, "failed": 0},
+    "v8_4_005_selector_budget": {"passed": 24, "failed": 0},
+    "external_skill_validation": {"passed": 68, "failed": 0},
+    "activation_normal_path": {"passed": 46, "failed": 0},
+    "router_registry": {"passed": 40, "failed": 0},
+    "total": {"passed": 245, "failed": 0}
+  },
+  "protected_artifacts": {
+    "v8_4_001_through_005_files": "UNCHANGED",
+    "context_contract_aggregate_before": "98fc03d723cddfab69811e075bb98377eed3abcad11eeb961d64550b0fa62f4f",
+    "context_contract_aggregate_after": "98fc03d723cddfab69811e075bb98377eed3abcad11eeb961d64550b0fa62f4f",
+    "context_compiler_aggregate_before": "5f20cd02868ea8c9fcf9e3ae8b54e4e8b04ede55213c586e87ea6183749f72a2",
+    "context_compiler_aggregate_after": "5f20cd02868ea8c9fcf9e3ae8b54e4e8b04ede55213c586e87ea6183749f72a2",
+    "adapted_context_outputs_aggregate_before": "b08b81615e246f4f5c5a3209596867d21b6a34dd6445efd6a331f3b31fb2282d",
+    "adapted_context_outputs_aggregate_after": "b08b81615e246f4f5c5a3209596867d21b6a34dd6445efd6a331f3b31fb2282d",
+    "context_selector_aggregate_before": "46791ddf9f03c3348c7b11cc75a6c37430746fa535342b5c5c4e97d02202c5a7",
+    "context_selector_aggregate_after": "46791ddf9f03c3348c7b11cc75a6c37430746fa535342b5c5c4e97d02202c5a7",
+    "v8_3_evidence_aggregate_before": "001ed39bc3d95c8506b8ca98ec9d9aa792389a5e1361622fa4a81c6ca07f06ab",
+    "v8_3_evidence_aggregate_after": "001ed39bc3d95c8506b8ca98ec9d9aa792389a5e1361622fa4a81c6ca07f06ab",
+    "launcher_router_activation_registry_agents": "UNCHANGED"
+  },
+  "execution": {
+    "whole_task_elapsed_seconds_or_null": null,
+    "elapsed_unavailable_reason_or_null": "A whole-task monotonic timer was not started before repository inspection.",
+    "focused_test_iterations": 3,
+    "initial_focused_failures": 2,
+    "initial_failure_note": "Two result-classification assertions exposed flattened symlink and budget statuses; classifications were corrected without weakening gates.",
+    "regression_retry_count": 1,
+    "regression_retry_note": "Parallel suites generated __pycache__ inside a legacy protected-tree test that counts every file. Generated caches were removed and the suite was rerun with bytecode writes disabled; tracked hashes never changed.",
+    "dependency_installs": 0,
+    "dependency_download_bytes": 0,
+    "backend_executions": 0,
+    "transport_executions": 0,
+    "llm_or_ollama_executions": 0,
+    "benchmark_executions": 0,
+    "external_network_api_calls": 0,
+    "credential_accesses": 0,
+    "hardware_or_cloud_actions": 0,
+    "requested_git_push_required": true
+  },
+  "final_repository_checks": {
+    "json_validity": "PASS_101_JSON_DOCUMENTS",
+    "git_diff_check": "PASS",
+    "change_allowlist": "PASS_11_NEW_FILES",
+    "protected_hashes": "PASS",
+    "commit_push_and_clean_tree": "RECORDED_IN_FINAL_REPORT"
+  }
+}

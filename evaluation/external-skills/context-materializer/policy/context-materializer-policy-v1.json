@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "policy_version": "v8.4-context-materializer-policy-1",
+  "materializer_version": "v8.4-context-materializer-1",
+  "coordinator_version": "v8.4-launch-coordinator-1",
+  "lifecycle_version": "v8.4-context-lifecycle-1",
+  "compiler_version": "v8.4-offline-compiler-1",
+  "selector_version": "v8.4-adapted-selector-1",
+  "budget_planner_version": "v8.4-budget-planner-1",
+  "validator_version": "v8.4-context-validator-1",
+  "permission_policy_version": "v8.4-source-permission-union-1",
+  "transport_mode": "SEPARATE_VERIFIED_CONTEXT_V1",
+  "backend_binding": "FAKE_BACKEND_ONLY",
+  "managed_files": [
+    "contexts/context.jsonl",
+    "contexts/envelope.json",
+    "manifest.json",
+    "lifecycle.json",
+    "evidence.json"
+  ],
+  "immutable_files": [
+    "contexts/context.jsonl",
+    "contexts/envelope.json",
+    "manifest.json"
+  ],
+  "cleanup_content_files": [
+    "contexts/context.jsonl",
+    "contexts/envelope.json"
+  ],
+  "allowed_states": [
+    "CREATED",
+    "VALIDATED",
+    "MATERIALIZED",
+    "READY",
+    "CLEANUP_PENDING",
+    "CLEANED",
+    "QUARANTINED",
+    "INVALIDATED"
+  ],
+  "context_injection_attempt_limit": 1,
+  "task_occurrence_limit": 1,
+  "session_id_pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+  "session_artifact_reuse": false,
+  "symlink_components_allowed": false,
+  "raw_external_fallback": false,
+  "silent_launcher_v1_fallback": false,
+  "current_only_before_injection_only": true,
+  "runtime_integration": false,
+  "external_access": false,
+  "backend_execution": false
+}
