@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "policy_id": "v8.4-offline-adaptation-policy-v1",
+  "policy_version": "v8.4-offline-adaptation-policy-1",
+  "extractor_version": "v8.4-deterministic-extractor-1",
+  "definition_schema_version": 1,
+  "validator_version": "v8.4-context-validator-1",
+  "permission_policy_version": "v8.4-source-permission-union-1",
+  "definition_created_at_utc": "2026-08-25T00:00:00Z",
+  "allowed_candidates": [
+    "kd-citation-management",
+    "kd-sympy"
+  ],
+  "definition_status": "DRAFT",
+  "review_state": "APPROVAL_PENDING",
+  "automatic_approval": false,
+  "runtime_adaptation": false,
+  "model_assisted_extraction": false,
+  "source_execution_allowed": false,
+  "external_access_allowed": false,
+  "token_policy": {
+    "tokenizer_id_or_null": null,
+    "token_count_or_null": null,
+    "unavailable_reason_or_null": "No tokenizer or model is invoked by the offline deterministic compiler."
+  },
+  "source_categories": [
+    "procedure",
+    "prerequisites",
+    "verification_checklist",
+    "failure_modes",
+    "safety_constraints",
+    "examples_reference",
+    "provider_specific_governance",
+    "install_instructions",
+    "network_credential_requirements",
+    "scripts_destructive_actions",
+    "unrelated_explanatory_content"
+  ],
+  "preserve_categories": [
+    "procedure",
+    "prerequisites",
+    "verification_checklist",
+    "failure_modes",
+    "safety_constraints"
+  ],
+  "remove_categories": [
+    "examples_reference",
+    "provider_specific_governance",
+    "install_instructions",
+    "network_credential_requirements",
+    "scripts_destructive_actions",
+    "unrelated_explanatory_content"
+  ],
+  "classification_patterns": {
+    "procedure": [
+      "(?i)workflow|phase [0-9]|best practices|common use case patterns|use appropriate solvers|formatting|validation"
+    ],
+    "prerequisites": [
+      "(?i)requires|compatibility|dependencies|define symbols|assumptions"
+    ],
+    "verification_checklist": [
+      "(?i)verify|validation|assert|check|spot-check|exits non-zero"
+    ],
+    "failure_modes": [
+      "(?i)troubleshooting|pitfalls|issue|error|missing|required fields|duplicate|blocked|slow performance"
+    ],
+    "safety_constraints": [
+      "(?i)untrusted|escape|do not|never|non-zero|left alone|opt-in"
+    ],
+    "examples_reference": [
+      "(?i)example|quick reference|reference files|resources|integration with"
+    ],
+    "provider_specific_governance": [
+      "(?i)allowed-tools|skill-author|openclaw|use this skill|other skills"
+    ],
+    "install_instructions": [
+      "(?i)installation|pip install|uv pip|requires python|required python packages|optional"
+    ],
+    "network_credential_requirements": [
+      "(?i)https?://|network access|websearch|webfetch|api[_ -]?key|envvars|openalex|pubmed|crossref|google scholar|datacite|arxiv"
+    ],
+    "scripts_destructive_actions": [
+      "(?i)scripts?/|```bash|subprocess|--in-place|rm\\s+-rf|delete|overwrite"
+    ]
+  },
+  "high_risk_source_patterns": [
+    {
+      "rule_id": "source-install-command",
+      "category": "install_instructions",
+      "pattern": "(?i)\\b(?:uv|pip)\\s+install\\b"
+    },
+    {
+      "rule_id": "source-script-command",
+      "category": "scripts_destructive_actions",
+      "pattern": "(?i)\\bpython\\s+scripts?[/\\\\]"
+    },
+    {
+      "rule_id": "source-network-tool",
+      "category": "network_credential_requirements",
+      "pattern": "(?i)\\b(?:websearch|webfetch|google scholar|openalex|pubmed|crossref)\\b"
+    },
+    {
+      "rule_id": "source-credential",
+      "category": "network_credential_requirements",
+      "pattern": "(?i)\\b(?:[A-Z][A-Z0-9_]*API_KEY|OPENALEX_EMAIL|NCBI_EMAIL|credential)\\b"
+    },
+    {
+      "rule_id": "source-destructive-command",
+      "category": "scripts_destructive_actions",
+      "pattern": "(?i)\\b(?:rm\\s+-rf|del\\s+/[sq]|format\\s+[a-z]:)\\b"
+    }
+  ],
+  "forbidden_adapted_content_patterns": [
+    {
+      "rule_id": "adapted-url",
+      "pattern": "(?i)https?://"
+    },
+    {
+      "rule_id": "adapted-install-command",
+      "pattern": "(?i)\\b(?:uv|pip)\\s+install\\b"
+    },
+    {
+      "rule_id": "adapted-script-command",
+      "pattern": "(?i)\\bpython\\s+scripts?[/\\\\]"
+    },
+    {
+      "rule_id": "adapted-network-tool",
+      "pattern": "(?i)\\b(?:websearch|webfetch|curl|wget)\\b"
+    },
+    {
+      "rule_id": "adapted-credential",
+      "pattern": "(?i)\\b(?:[A-Z][A-Z0-9_]*API_KEY|api[_ -]?key|OPENALEX_EMAIL|NCBI_EMAIL|credential)\\b"
+    },
+    {
+      "rule_id": "adapted-destructive-command",
+      "pattern": "(?i)\\b(?:rm\\s+-rf|del\\s+/[sq]|format\\s+[a-z]:)\\b"
+    },
+    {
+      "rule_id": "adapted-shell-block",
+      "pattern": "(?i)```(?:bash|sh|powershell|cmd)"
+    }
+  ],
+  "permission_signals": {
+    "local_read": [
+      "(?i)allowed-tools:[^\\n]*\\bread\\b"
+    ],
+    "local_write": [
+      "(?i)allowed-tools:[^\\n]*\\b(?:write|edit)\\b|--output|--in-place"
+    ],
+    "process_exec": [
+      "(?i)allowed-tools:[^\\n]*\\bbash\\b|```(?:python|bash)|scripts?/"
+    ],
+    "network": [
+      "(?i)allowed-tools:[^\\n]*\\b(?:websearch|webfetch)\\b|https?://|network access|\\b(?:openalex|pubmed|crossref|google scholar)\\b"
+    ],
+    "credential_access": [
+      "(?i)\\b(?:[A-Z][A-Z0-9_]*API_KEY|OPENALEX_EMAIL|NCBI_EMAIL|envvars)\\b"
+    ],
+    "destructive": [
+      "(?i)\\b(?:rm\\s+-rf|del\\s+/[sq]|format\\s+[a-z]:)\\b"
+    ]
+  },
+  "forbidden_actions": [
+    "activate a compiled draft at runtime without human approval",
+    "access credentials",
+    "execute source instructions",
+    "execute source or referenced scripts",
+    "install dependencies",
+    "perform destructive actions",
+    "perform external network access"
+  ]
+}

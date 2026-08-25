@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "task_id": "V8.4-EXPERT-CONTEXT-004",
+  "status": "PASS",
+  "scope": {
+    "compiler_mode": "OFFLINE_DETERMINISTIC_ONLY",
+    "allowed_candidates": [
+      "kd-sympy",
+      "kd-citation-management"
+    ],
+    "definition_status": "DRAFT",
+    "review_state": "APPROVAL_PENDING",
+    "automatic_approval": false,
+    "runtime_integration": false,
+    "runtime_adaptation": false,
+    "model_assisted_extraction": false
+  },
+  "versions": {
+    "compiler": "v8.4-offline-compiler-1",
+    "adaptation_policy": "v8.4-offline-adaptation-policy-1",
+    "extractor": "v8.4-deterministic-extractor-1",
+    "definition_schema": 1,
+    "validator": "v8.4-context-contract-validator-1",
+    "permission_policy": "v8.4-source-permission-union-1"
+  },
+  "outputs": [
+    {
+      "candidate_id": "kd-sympy",
+      "source_sha256": "5445c2f5dadb95d6653681c30060b4ab9686fe02ab6729d8fc41f4a2c19a90cf",
+      "knowledge_units": 5,
+      "required_units": 4,
+      "definition_utf8_bytes": 1155,
+      "definition_content_sha256": "cf6eab1a19bfddb3d1690da80f18fb06ad748a2af05687100b5285251fd50fec",
+      "cache_key": "097a1c6fec7c0de6456f6b3260b8982ecbb7d4b5a2ccaf27cd5bb03af88049e3",
+      "source_permissions": [
+        "local_read",
+        "local_write",
+        "network",
+        "process_exec"
+      ],
+      "retained_permissions": [
+        "local_read"
+      ],
+      "removed_permissions": [
+        "local_write",
+        "network",
+        "process_exec"
+      ],
+      "strongest_gate": "NETWORK_REVIEW",
+      "compile_checks_pass": 10,
+      "compile_checks_fail": 0,
+      "deterministic_rebuild": "PASS"
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "source_sha256": "e52459a2c78f6b51250ee418e53bb34494c2e35814e5b4a29cc293c6914c0141",
+      "knowledge_units": 5,
+      "required_units": 4,
+      "definition_utf8_bytes": 1192,
+      "definition_content_sha256": "00c5e8286b345aa908a037197b50c81551a233cc022ab69a69e473dce05a61ed",
+      "cache_key": "a15c4c2c7d34747c7fe2c90922e6d5b95d37177dfc5ff44bed644ca0185f7ed3",
+      "source_permissions": [
+        "credential_access",
+        "local_read",
+        "local_write",
+        "network",
+        "process_exec"
+      ],
+      "retained_permissions": [
+        "local_read"
+      ],
+      "removed_permissions": [
+        "credential_access",
+        "local_write",
+        "network",
+        "process_exec"
+      ],
+      "strongest_gate": "HUMAN_GATE_REQUIRED",
+      "compile_checks_pass": 10,
+      "compile_checks_fail": 0,
+      "deterministic_rebuild": "PASS"
+    }
+  ],
+  "acceptance": {
+    "deterministic_rebuild": "PASS",
+    "schema_validation": "PASS",
+    "provenance_completeness": "PASS",
+    "permission_consistency": "PASS",
+    "forbidden_instruction_exclusion": "PASS",
+    "required_knowledge_preservation": "PASS",
+    "source_hash_verification": "PASS",
+    "cache_invalidation": "PASS",
+    "malformed_input_fail_closed": "PASS"
+  },
+  "tests": {
+    "new_compiler": {
+      "passed": 20,
+      "failed": 0
+    },
+    "v8_4_003_context_contract": {
+      "passed": 21,
+      "failed": 0
+    },
+    "external_skill_validation": {
+      "passed": 68,
+      "failed": 0
+    },
+    "activation_normal_path": {
+      "passed": 46,
+      "failed": 0
+    },
+    "router_registry": {
+      "passed": 40,
+      "failed": 0
+    },
+    "total": {
+      "passed": 195,
+      "failed": 0
+    }
+  },
+  "protected_artifacts": {
+    "v8_4_001_002_003_and_design_summaries": "UNCHANGED",
+    "context_contract_14_file_aggregate_before": "98fc03d723cddfab69811e075bb98377eed3abcad11eeb961d64550b0fa62f4f",
+    "context_contract_14_file_aggregate_after": "98fc03d723cddfab69811e075bb98377eed3abcad11eeb961d64550b0fa62f4f",
+    "v8_3_evidence_40_file_aggregate_before": "001ed39bc3d95c8506b8ca98ec9d9aa792389a5e1361622fa4a81c6ca07f06ab",
+    "v8_3_evidence_40_file_aggregate_after": "001ed39bc3d95c8506b8ca98ec9d9aa792389a5e1361622fa4a81c6ca07f06ab",
+    "benchmark_adoption_existing_adapted_contexts": "UNCHANGED",
+    "launcher_router_activation_registry_agents": "UNCHANGED"
+  },
+  "execution": {
+    "started_at_utc": "2026-08-25T02:17:12Z",
+    "finished_at_utc": "2026-08-25T02:43:45Z",
+    "elapsed_seconds_to_summary_draft": 1593,
+    "dependency_install_count": 0,
+    "network_calls": 0,
+    "credential_accesses": 0,
+    "source_script_executions": 0,
+    "backend_executions": 0,
+    "llm_or_ollama_executions": 0,
+    "benchmark_executions": 0,
+    "hardware_or_cloud_executions": 0,
+    "focused_validation_iterations": 2,
+    "initial_test_issue": "The first focused run exposed one incomplete forbidden-content matcher and protection fixture transcription errors; both test/policy issues were corrected before final verification."
+  },
+  "final_repository_checks": {
+    "json_validity": "PASS_9_NEW_JSON_DOCUMENTS",
+    "git_diff_check": "PASS",
+    "change_allowlist": "PASS_14_FILES",
+    "commit": "RECORDED_IN_FINAL_REPORT",
+    "push": "RECORDED_IN_FINAL_REPORT",
+    "working_tree_clean": "VERIFIED_AFTER_COMMIT_AND_PUSH"
+  },
+  "prohibited_execution_evidence": {
+    "actual_codex_backend": false,
+    "actual_runtime_transport": false,
+    "llm_or_ollama": false,
+    "benchmark": false,
+    "external_network_api_or_credentials": false,
+    "hardware_or_cloud_write": false
+  }
+}
