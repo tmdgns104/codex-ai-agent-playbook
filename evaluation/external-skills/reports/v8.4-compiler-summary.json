@@ -133,7 +133,7 @@
     "elapsed_seconds_to_summary_draft": 1593,
     "dependency_install_count": 0,
     "compiler_external_network_calls": 0,
-    "requested_git_pushes": 1,
+    "requested_git_push_performed": true,
     "credential_accesses": 0,
     "source_script_executions": 0,
     "backend_executions": 0,
