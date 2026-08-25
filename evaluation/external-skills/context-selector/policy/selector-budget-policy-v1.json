@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "policy_version": "v8.4-selector-budget-policy-1",
+  "selector_version": "v8.4-adapted-selector-1",
+  "budget_planner_version": "v8.4-budget-planner-1",
+  "definition_schema_version": 1,
+  "definition_validator_version": "v8.4-context-validator-1",
+  "allowed_candidates": [
+    "kd-sympy",
+    "kd-citation-management"
+  ],
+  "gate_order": [
+    "approval",
+    "freshness",
+    "task_applicability",
+    "exclusion",
+    "overlap",
+    "permission",
+    "quality_evidence",
+    "budget",
+    "cardinality"
+  ],
+  "risk_rank": {
+    "low": 0,
+    "medium": 1,
+    "high": 2,
+    "critical": 3
+  },
+  "candidate_risk": {
+    "kd-sympy": "medium",
+    "kd-citation-management": "high"
+  },
+  "default_max_capabilities": 1,
+  "approved_composite_max_capabilities": 2,
+  "explicit_multi_domain_phrases": [
+    "both symbolic mathematics and citation management",
+    "symbolic mathematics and citation management together"
+  ],
+  "approved_compositions": [],
+  "budget": {
+    "total_utf8_bytes": 4096,
+    "per_capability_utf8_bytes": 2048,
+    "tokenizer_id_or_null": null,
+    "token_count_or_null": null,
+    "unavailable_reason_or_null": "No approved tokenizer is invoked by the deterministic shadow-mode selector.",
+    "total_token_limit_or_null": null,
+    "per_capability_token_limit_or_null": null
+  },
+  "auto_satisfied_gates": [
+    "NONE",
+    "AUTO_ALLOWED"
+  ],
+  "optional_pruning_order": "highest_numeric_priority_then_stable_capability_and_unit_id",
+  "raw_external_fallback": false,
+  "required_unit_truncation": false,
+  "optional_unit_truncation": false,
+  "fuzzy_matching": false,
+  "runtime_integration": false,
+  "external_access": false,
+  "model_calls": false
+}

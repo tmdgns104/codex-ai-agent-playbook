@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "task_id": "V8.4-EXPERT-CONTEXT-005",
+  "status": "PASS",
+  "scope": {
+    "mode": "DETERMINISTIC_SHADOW_ONLY",
+    "allowed_candidates": [
+      "kd-sympy",
+      "kd-citation-management"
+    ],
+    "router_preserved": true,
+    "activation_plan_preserved": true,
+    "runtime_integration": false,
+    "automatic_approval": false,
+    "raw_external_fallback": false
+  },
+  "versions": {
+    "selector": "v8.4-adapted-selector-1",
+    "budget_planner": "v8.4-budget-planner-1",
+    "policy": "v8.4-selector-budget-policy-1",
+    "definition_validator": "v8.4-context-validator-1"
+  },
+  "gate_order": [
+    "approval",
+    "freshness",
+    "task_applicability",
+    "exclusion",
+    "overlap",
+    "permission",
+    "quality_evidence",
+    "budget",
+    "cardinality"
+  ],
+  "ranking_order": [
+    "higher specificity",
+    "lower measured context UTF-8 bytes",
+    "lower frozen risk rank",
+    "lexicographically stable candidate ID"
+  ],
+  "selection_results": [
+    {
+      "scenario": "actual-v8.4-004-draft-shadow",
+      "authority": "CHECKED_IN_DRAFT",
+      "task": "exact symbolic algebra",
+      "decision": "NO_ACTION",
+      "selected_candidates": [],
+      "selected_unit_count": 0,
+      "total_utf8_bytes": 0,
+      "strongest_gate": "NONE",
+      "output_sha256": "4db549fae54f5950703df8966d4b253b92e29e9df2010d47ed8657297cf16c47",
+      "interpretation": "Both compiler outputs remain DRAFT/APPROVAL_PENDING and are correctly not selected."
+    },
+    {
+      "scenario": "test-only-approved-sympy",
+      "authority": "IN_MEMORY_TEST_FIXTURE_ONLY",
+      "decision": "ADAPTED_SELECTED",
+      "selected_candidates": [
+        "kd-sympy"
+      ],
+      "selected_unit_count": 4,
+      "excluded_optional_unit_count": 1,
+      "total_utf8_bytes": 1202,
+      "strongest_gate": "NETWORK_REVIEW",
+      "output_sha256": "9ebde2b10f4a5c13c6a1705824578d051c06c9f9a0be9b8832a54f11134658e6"
+    },
+    {
+      "scenario": "test-only-approved-citation",
+      "authority": "IN_MEMORY_TEST_FIXTURE_ONLY",
+      "decision": "ADAPTED_SELECTED",
+      "selected_candidates": [
+        "kd-citation-management"
+      ],
+      "selected_unit_count": 5,
+      "excluded_optional_unit_count": 0,
+      "total_utf8_bytes": 1670,
+      "strongest_gate": "HUMAN_GATE_REQUIRED",
+      "output_sha256": "6b09aa248c04e79c9871f06f0983152dcea034dfa8a1cabb6f2ef04a9ea22d45"
+    },
+    {
+      "scenario": "test-only-approved-composition",
+      "authority": "IN_MEMORY_TEST_FIXTURE_ONLY",
+      "decision": "ADAPTED_SELECTED",
+      "selected_candidates": [
+        "kd-sympy",
+        "kd-citation-management"
+      ],
+      "selected_unit_count": 8,
+      "excluded_optional_unit_count": 2,
+      "total_utf8_bytes": 2562,
+      "strongest_gate": "HUMAN_GATE_REQUIRED",
+      "output_sha256": "8cabecb9b55967c90f72c9a7e698fccdac92d6d806fbd9b59f5468d9b6a33e0a"
+    }
+  ],
+  "budget": {
+    "total_utf8_bytes_limit": 4096,
+    "per_capability_utf8_bytes_limit": 2048,
+    "byte_count_always_measured": true,
+    "tokenizer_id_or_null": null,
+    "token_count_or_null": null,
+    "unavailable_reason_or_null": "No approved tokenizer is invoked by the deterministic shadow-mode selector.",
+    "required_units_truncated": false,
+    "optional_units_truncated": false,
+    "optional_pruning": "whole units, highest numeric priority then stable capability/unit ID",
+    "required_overflow_result": "BUDGET_BLOCKED"
+  },
+  "acceptance": {
+    "gate_ordering_deterministic": "PASS",
+    "candidate_ranking_deterministic": "PASS",
+    "unauthorized_candidate_never_selected": "PASS",
+    "router_result_preserved": "PASS",
+    "required_unit_preservation": "PASS",
+    "optional_budget_pruning_deterministic": "PASS",
+    "required_overflow_blocked": "PASS",
+    "permission_strongest_gate_enforced": "PASS",
+    "tie_break_deterministic": "PASS",
+    "identical_input_identical_output": "PASS",
+    "unknown_or_missing_evidence_never_passes": "PASS"
+  },
+  "tests": {
+    "new_selector_budget": {
+      "passed": 24,
+      "failed": 0
+    },
+    "v8_4_003_context_contract": {
+      "passed": 21,
+      "failed": 0
+    },
+    "v8_4_004_compiler": {
+      "passed": 20,
+      "failed": 0
+    },
+    "external_skill_validation": {
+      "passed": 68,
+      "failed": 0
+    },
+    "activation_normal_path": {
+      "passed": 46,
+      "failed": 0
+    },
+    "router_registry": {
+      "passed": 40,
+      "failed": 0
+    },
+    "total": {
+      "passed": 219,
+      "failed": 0
+    }
+  },
+  "protected_artifacts": {
+    "v8_4_001_through_004_files": "UNCHANGED",
+    "context_contract_aggregate_before": "98fc03d723cddfab69811e075bb98377eed3abcad11eeb961d64550b0fa62f4f",
+    "context_contract_aggregate_after": "98fc03d723cddfab69811e075bb98377eed3abcad11eeb961d64550b0fa62f4f",
+    "context_compiler_aggregate_before": "5f20cd02868ea8c9fcf9e3ae8b54e4e8b04ede55213c586e87ea6183749f72a2",
+    "context_compiler_aggregate_after": "5f20cd02868ea8c9fcf9e3ae8b54e4e8b04ede55213c586e87ea6183749f72a2",
+    "adapted_context_outputs_aggregate_before": "b08b81615e246f4f5c5a3209596867d21b6a34dd6445efd6a331f3b31fb2282d",
+    "adapted_context_outputs_aggregate_after": "b08b81615e246f4f5c5a3209596867d21b6a34dd6445efd6a331f3b31fb2282d",
+    "v8_3_evidence_aggregate_before": "001ed39bc3d95c8506b8ca98ec9d9aa792389a5e1361622fa4a81c6ca07f06ab",
+    "v8_3_evidence_aggregate_after": "001ed39bc3d95c8506b8ca98ec9d9aa792389a5e1361622fa4a81c6ca07f06ab",
+    "router_activation_registry_agents": "UNCHANGED"
+  },
+  "execution": {
+    "started_at_utc": "2026-08-25T03:16:03Z",
+    "finished_at_utc": "2026-08-25T03:33:42Z",
+    "elapsed_seconds_to_summary_draft": 1059,
+    "focused_test_iterations": 2,
+    "initial_focused_failures": 2,
+    "dependency_installs": 0,
+    "selector_external_network_calls": 0,
+    "credential_accesses": 0,
+    "backend_executions": 0,
+    "llm_or_ollama_executions": 0,
+    "benchmark_executions": 0,
+    "hardware_or_cloud_actions": 0,
+    "requested_git_push_required": true
+  },
+  "final_repository_checks": {
+    "json_validity": "PASS_2_NEW_JSON_DOCUMENTS",
+    "git_diff_check": "PASS",
+    "change_allowlist": "PASS_8_FILES",
+    "commit_push_and_clean_tree": "RECORDED_IN_FINAL_REPORT"
+  }
+}
