@@ -124,4 +124,4 @@ The conservative source permission union is retained in Evidence even though ope
 - Both generated artifacts report 10/10 compile checks PASS and deterministic rebuild PASS.
 - JSON parse/schema validation, protected hashes, change allowlist, `git diff --check`, commit/push, and final clean-tree Evidence are recorded in `v8.4-compiler-summary.json` after the final repository checks.
 - One focused-test iteration initially exposed an incomplete `curl`/plain `API key` exclusion pattern and incorrectly transcribed protection-test paths/hashes. The policy/test fixture was corrected; no protected artifact changed.
-- Actual Codex backend, runtime transport, LLM, Ollama, benchmark, external network/API/credential, hardware, cloud write, dependency install, and source script execution count: zero.
+- Compiler/source processing의 actual Codex backend, runtime transport, LLM, Ollama, benchmark, external network/API/credential, hardware, cloud write, dependency install, and source script execution count: zero. 완료 절차로 사용자가 명시적으로 요청한 Git push 1회는 별도 control-plane action이다.
