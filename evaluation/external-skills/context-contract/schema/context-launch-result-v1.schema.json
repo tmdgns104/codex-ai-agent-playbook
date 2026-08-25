@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/v8.4/context-launch-result-v1.schema.json",
+  "title": "ContextLaunchResult v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "session_id",
+    "request_sha256",
+    "result_sha256",
+    "transport_status",
+    "backend_receipt",
+    "task_occurrence_count",
+    "context_injection_attempt_count",
+    "context_injection_count",
+    "child_spawned",
+    "child_exit_code_or_null",
+    "degraded_fallback_used",
+    "degraded_reason_or_null",
+    "integrity_result",
+    "permission_result",
+    "budget_result",
+    "context_cleanup_result",
+    "bridge_cleanup_result",
+    "quarantine_paths",
+    "started_at_utc",
+    "finished_at_utc",
+    "failure_code_or_null",
+    "evidence_path",
+    "side_effects"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_id": {"const": "v8.4-context-launch-result-v1"},
+    "session_id": {"$ref": "#/$defs/session"},
+    "request_sha256": {"$ref": "#/$defs/sha256"},
+    "result_sha256": {"$ref": "#/$defs/sha256"},
+    "transport_status": {"enum": ["PASS", "FAIL", "BLOCKED", "QUARANTINED"]},
+    "backend_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter_id", "adapter_version", "capability_probe_sha256", "task_channel_sha256", "context_channel_sha256_or_null", "task_context_channels_separate"],
+      "properties": {
+        "adapter_id": {"$ref": "#/$defs/nonempty"},
+        "adapter_version": {"$ref": "#/$defs/nonempty"},
+        "capability_probe_sha256": {"$ref": "#/$defs/sha256"},
+        "task_channel_sha256": {"$ref": "#/$defs/sha256"},
+        "context_channel_sha256_or_null": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "task_context_channels_separate": {"anyOf": [{"type": "boolean"}, {"type": "null"}]}
+      }
+    },
+    "task_occurrence_count": {"type": "integer", "minimum": 0, "maximum": 1},
+    "context_injection_attempt_count": {"type": "integer", "minimum": 0, "maximum": 1},
+    "context_injection_count": {"type": "integer", "minimum": 0, "maximum": 1},
+    "child_spawned": {"type": "boolean"},
+    "child_exit_code_or_null": {"anyOf": [{"type": "integer"}, {"type": "null"}]},
+    "degraded_fallback_used": {"type": "boolean"},
+    "degraded_reason_or_null": {"anyOf": [{"$ref": "#/$defs/nonempty"}, {"type": "null"}]},
+    "integrity_result": {"$ref": "#/$defs/checkResult"},
+    "permission_result": {"$ref": "#/$defs/checkResult"},
+    "budget_result": {"$ref": "#/$defs/checkResult"},
+    "context_cleanup_result": {"$ref": "#/$defs/checkResult"},
+    "bridge_cleanup_result": {"$ref": "#/$defs/checkResult"},
+    "quarantine_paths": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+    "started_at_utc": {"type": "string", "format": "date-time"},
+    "finished_at_utc": {"type": "string", "format": "date-time"},
+    "failure_code_or_null": {
+      "anyOf": [
+        {"enum": ["BACKEND_CAPABILITY_FALSE", "BACKEND_CAPABILITY_UNKNOWN", "BUDGET_BLOCKED", "CLEANUP_FAILED", "HASH_MISMATCH", "INJECTION_INVALID", "MALFORMED_REQUEST", "PATH_ESCAPE", "PERMISSION_DOWNGRADE", "STALE_CACHE", "TASK_CONTEXT_CONCATENATED", "VALIDATION_FAILED"]},
+        {"type": "null"}
+      ]
+    },
+    "evidence_path": {"$ref": "#/$defs/nonempty"},
+    "side_effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["external_access", "credentials", "external_write", "destructive"],
+      "properties": {
+        "external_access": {"const": false},
+        "credentials": {"const": false},
+        "external_write": {"const": false},
+        "destructive": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "nonempty": {"type": "string", "minLength": 1},
+    "session": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "checkResult": {"enum": ["PASS", "FAIL", "UNKNOWN", "NOT_REQUIRED"]}
+  }
+}

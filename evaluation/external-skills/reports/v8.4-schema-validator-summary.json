@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "task_id": "V8.4-EXPERT-CONTEXT-003",
+  "generated_at_utc": "2026-08-25T02:01:34Z",
+  "status": "PASS",
+  "purpose": "Deterministically validate the V8.4 Adapted Context and Context Launch Contract before any real backend integration.",
+  "implementation": {
+    "runtime_integration_added": false,
+    "existing_launcher_modified": false,
+    "router_or_scoring_modified": false,
+    "activation_components_modified": false,
+    "registry_modified": false,
+    "agents_or_global_policy_modified": false,
+    "standard_library_only": true,
+    "schema_draft": "2020-12",
+    "schema_count": 5,
+    "validator_version": "v8.4-context-validator-1",
+    "canonical_json": {
+      "encoding": "UTF-8",
+      "object_key_order": "lexicographic",
+      "separators": "compact",
+      "nulls": "preserved",
+      "floating_point": "forbidden",
+      "hash": "SHA-256"
+    }
+  },
+  "schemas": [
+    "evaluation/external-skills/context-contract/schema/adapted-capability-definition-v1.schema.json",
+    "evaluation/external-skills/context-contract/schema/runtime-context-envelope-v1.schema.json",
+    "evaluation/external-skills/context-contract/schema/context-launch-request-v1.schema.json",
+    "evaluation/external-skills/context-contract/schema/context-launch-result-v1.schema.json",
+    "evaluation/external-skills/context-contract/schema/backend-capability-probe-v1.schema.json"
+  ],
+  "validator_files": [
+    "evaluation/external-skills/context-contract/validator/schema_validation.py",
+    "evaluation/external-skills/context-contract/validator/context_contract.py",
+    "evaluation/external-skills/context-contract/validator/fake_backend.py"
+  ],
+  "fake_fixture_outcomes": [
+    {"fixture_id": "compliant", "expected_status": "PASS"},
+    {"fixture_id": "false-capability", "expected_status": "FAIL"},
+    {"fixture_id": "unknown-capability", "expected_status": "FAIL"},
+    {"fixture_id": "malformed-request", "expected_status": "FAIL"},
+    {"fixture_id": "task-context-concatenation", "expected_status": "FAIL"},
+    {"fixture_id": "duplicate-injection", "expected_status": "FAIL"},
+    {"fixture_id": "hash-mismatch", "expected_status": "FAIL"},
+    {"fixture_id": "permission-downgrade", "expected_status": "FAIL"},
+    {"fixture_id": "budget-overflow", "expected_status": "BUDGET_BLOCKED"},
+    {"fixture_id": "path-escape", "expected_status": "FAIL"},
+    {"fixture_id": "stale-cache", "expected_status": "INVALIDATED"},
+    {"fixture_id": "cleanup-failure", "expected_status": "QUARANTINED"}
+  ],
+  "fake_fixture_status_counts": {
+    "PASS": 1,
+    "FAIL": 8,
+    "BUDGET_BLOCKED": 1,
+    "INVALIDATED": 1,
+    "QUARANTINED": 1
+  },
+  "acceptance": [
+    {"id": 1, "name": "all schema JSON valid", "status": "PASS"},
+    {"id": 2, "name": "same input produces same hash", "status": "PASS"},
+    {"id": 3, "name": "task/context separation violation fails", "status": "PASS"},
+    {"id": 4, "name": "backend false or unknown fails", "status": "PASS"},
+    {"id": 5, "name": "injection count is zero or one", "status": "PASS"},
+    {"id": 6, "name": "hash mismatch fails", "status": "PASS"},
+    {"id": 7, "name": "strongest permission is deterministic", "status": "PASS"},
+    {"id": 8, "name": "required-only overflow is BUDGET_BLOCKED", "status": "PASS"},
+    {"id": 9, "name": "path escape and symlink fail", "status": "PASS"},
+    {"id": 10, "name": "stale cache is INVALIDATED", "status": "PASS"},
+    {"id": 11, "name": "unknown or missing never becomes PASS", "status": "PASS"},
+    {"id": 12, "name": "compliant fake backend passes", "status": "PASS"},
+    {"id": 13, "name": "existing normal path regression remains green", "status": "PASS"}
+  ],
+  "test_results": {
+    "new_context_contract": {"passed": 21, "failed": 0},
+    "existing_external_skill_validation": {"passed": 39, "failed": 0},
+    "existing_activation_normal_path": {"passed": 46, "failed": 0},
+    "existing_router_and_registry": {"passed": 40, "failed": 0},
+    "total": {"passed": 146, "failed": 0}
+  },
+  "protected_evidence": {
+    "explicit_artifact_count": 18,
+    "explicit_hashes_unchanged": true,
+    "v8_3_stage_b_evidence_file_count": 40,
+    "v8_3_stage_b_evidence_aggregate_sha256_before": "001ed39bc3d95c8506b8ca98ec9d9aa792389a5e1361622fa4a81c6ca07f06ab",
+    "v8_3_stage_b_evidence_aggregate_sha256_after": "001ed39bc3d95c8506b8ca98ec9d9aa792389a5e1361622fa4a81c6ca07f06ab",
+    "v8_4_001_002_artifacts_unchanged": true
+  },
+  "execution": {
+    "actual_codex_backend_runs": 0,
+    "llm_runs": 0,
+    "ollama_runs": 0,
+    "benchmark_runs": 0,
+    "network_calls": 0,
+    "api_calls": 0,
+    "credential_accesses": 0,
+    "dependency_installs": 0,
+    "dependency_download_bytes": 0,
+    "overall_elapsed_seconds_or_null": null,
+    "elapsed_unavailable_reason_or_null": "A whole-task timer was not started before repository inspection.",
+    "non_test_diagnostic_failures": 1,
+    "non_test_diagnostic_retries": 1,
+    "diagnostic_note": "An unsupported PowerShell Get-Date parameter was replaced with ToUniversalTime; no task artifact or validation was affected."
+  },
+  "limitations": [
+    "This is a schema and offline validator layer, not runtime integration.",
+    "The JSON Schema engine deliberately supports only the explicit subset used by the five checked-in schemas.",
+    "Backend capability evidence is a pure fake fixture; real backend support remains unproven and disabled.",
+    "Token count is intentionally null in fixtures because no tokenizer or model is invoked; exact UTF-8 bytes remain enforced."
+  ]
+}

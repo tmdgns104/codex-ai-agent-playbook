@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "fixture_id": "false-capability",
+      "expected_status": "FAIL",
+      "expected_code": "BACKEND_CAPABILITY_FALSE",
+      "mutations": [
+        {"op": "set", "path": "probe.support_status", "value": "UNSUPPORTED"},
+        {"op": "set", "path": "probe.supports_separate_verified_context", "value": false},
+        {"op": "set", "path": "probe.task_channel_separate", "value": false},
+        {"op": "set", "path": "probe.context_channel_separate", "value": false}
+      ],
+      "rehash": ["probe", "request", "result"]
+    },
+    {
+      "fixture_id": "unknown-capability",
+      "expected_status": "FAIL",
+      "expected_code": "BACKEND_CAPABILITY_UNKNOWN",
+      "mutations": [
+        {"op": "set", "path": "probe.support_status", "value": "UNKNOWN"},
+        {"op": "set", "path": "probe.supports_separate_verified_context", "value": null},
+        {"op": "set", "path": "probe.task_channel_separate", "value": null},
+        {"op": "set", "path": "probe.context_channel_separate", "value": null}
+      ],
+      "rehash": ["probe", "request", "result"]
+    },
+    {
+      "fixture_id": "malformed-request",
+      "expected_status": "FAIL",
+      "expected_code": "SCHEMA_INVALID",
+      "mutations": [
+        {"op": "delete", "path": "request.backend"}
+      ],
+      "rehash": ["request", "result"]
+    },
+    {
+      "fixture_id": "task-context-concatenation",
+      "expected_status": "FAIL",
+      "expected_code": "TASK_CONTEXT_CONCATENATED",
+      "mutations": [
+        {"op": "set", "path": "envelope.context_text", "value": "분리된 적응 컨텍스트를 사용해 이 작업을 검증한다."}
+      ],
+      "rehash": ["envelope", "request", "result"]
+    },
+    {
+      "fixture_id": "duplicate-injection",
+      "expected_status": "FAIL",
+      "expected_code": "SCHEMA_INVALID",
+      "mutations": [
+        {"op": "set", "path": "result.context_injection_attempt_count", "value": 2},
+        {"op": "set", "path": "result.context_injection_count", "value": 2}
+      ],
+      "rehash": ["result"]
+    },
+    {
+      "fixture_id": "hash-mismatch",
+      "expected_status": "FAIL",
+      "expected_code": "REQUEST_ENVELOPE_MISMATCH",
+      "mutations": [
+        {"op": "set", "path": "request.adapted_context.content_sha256", "value": "0000000000000000000000000000000000000000000000000000000000000000"}
+      ],
+      "rehash": ["request", "result"]
+    },
+    {
+      "fixture_id": "permission-downgrade",
+      "expected_status": "FAIL",
+      "expected_code": "PERMISSION_DOWNGRADE",
+      "mutations": [
+        {"op": "set", "path": "request.permission_decision.strongest_gate", "value": "AUTO_ALLOWED"}
+      ],
+      "rehash": ["request", "result"]
+    },
+    {
+      "fixture_id": "budget-overflow",
+      "expected_status": "BUDGET_BLOCKED",
+      "expected_code": "REQUIRED_ONLY_BUDGET_OVERFLOW",
+      "mutations": [
+        {"op": "set", "path": "request.adapted_context.budget.max_utf8_bytes", "value": 1}
+      ],
+      "rehash": ["request", "result"]
+    },
+    {
+      "fixture_id": "path-escape",
+      "expected_status": "FAIL",
+      "expected_code": "PATH_ESCAPE_BLOCKED",
+      "mutations": [
+        {"op": "set", "path": "request.adapted_context.envelope_relative_path", "value": "../escape/envelope.json"}
+      ],
+      "rehash": ["request", "result"]
+    },
+    {
+      "fixture_id": "stale-cache",
+      "expected_status": "INVALIDATED",
+      "expected_code": "STALE_CACHE",
+      "mutations": [
+        {"op": "set", "path": "envelope.cache_key_or_null", "value": "0000000000000000000000000000000000000000000000000000000000000000"},
+        {"op": "set", "path": "request.adapted_context.cache_key_or_null", "value": "0000000000000000000000000000000000000000000000000000000000000000"}
+      ],
+      "rehash": ["envelope", "request", "result"]
+    },
+    {
+      "fixture_id": "cleanup-failure",
+      "expected_status": "QUARANTINED",
+      "expected_code": null,
+      "mutations": [
+        {"op": "set", "path": "result.transport_status", "value": "QUARANTINED"},
+        {"op": "set", "path": "result.context_cleanup_result", "value": "FAIL"},
+        {"op": "set", "path": "result.failure_code_or_null", "value": "CLEANUP_FAILED"},
+        {"op": "set", "path": "result.quarantine_paths", "value": ["contexts/envelope.json"]}
+      ],
+      "rehash": ["result"]
+    }
+  ]
+}

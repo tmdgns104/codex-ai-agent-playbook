@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/v8.4/backend-capability-probe-v1.schema.json",
+  "title": "Backend Capability Probe v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "probe_id",
+    "backend_id",
+    "backend_version",
+    "adapter_id",
+    "adapter_version",
+    "support_status",
+    "supports_separate_verified_context",
+    "task_channel_separate",
+    "context_channel_separate",
+    "supported_transport_modes",
+    "probed_at_utc",
+    "expires_at_utc",
+    "evidence_refs",
+    "external_access_performed"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_id": {"const": "v8.4-backend-capability-probe-v1"},
+    "probe_id": {"$ref": "#/$defs/nonempty"},
+    "backend_id": {"$ref": "#/$defs/nonempty"},
+    "backend_version": {"$ref": "#/$defs/nonempty"},
+    "adapter_id": {"$ref": "#/$defs/nonempty"},
+    "adapter_version": {"$ref": "#/$defs/nonempty"},
+    "support_status": {"enum": ["SUPPORTED", "UNSUPPORTED", "UNKNOWN"]},
+    "supports_separate_verified_context": {"anyOf": [{"type": "boolean"}, {"type": "null"}]},
+    "task_channel_separate": {"anyOf": [{"type": "boolean"}, {"type": "null"}]},
+    "context_channel_separate": {"anyOf": [{"type": "boolean"}, {"type": "null"}]},
+    "supported_transport_modes": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+    "probed_at_utc": {"type": "string", "format": "date-time"},
+    "expires_at_utc": {"type": "string", "format": "date-time"},
+    "evidence_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+    "external_access_performed": {"const": false}
+  },
+  "$defs": {
+    "nonempty": {"type": "string", "minLength": 1}
+  }
+}
