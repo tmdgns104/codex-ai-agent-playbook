@@ -1,0 +1,23 @@
+{
+  "policy_id": "V8.4_MAIN_PROMOTION_V1",
+  "stable_target": "main",
+  "required_gates": [
+    "internal_regression",
+    "transport_conformance",
+    "native_vs_playbook_controlled_comparison",
+    "generalization_holdout",
+    "candidate_approval",
+    "stable_runtime_rollback"
+  ],
+  "performance_policy": {
+    "adapted_quality_min_delta_vs_native": 0.0,
+    "adapted_latency_max_ratio_vs_native": 1.15,
+    "adapted_prompt_token_max_ratio_vs_native": 1.15,
+    "adapted_context_bytes_max_ratio_vs_current": 0.75,
+    "minimum_holdout_tasks": 12,
+    "minimum_task_categories": 4,
+    "minimum_repeats_per_variant": 3
+  },
+  "fail_closed": true,
+  "unknown_is_pass": false
+}
