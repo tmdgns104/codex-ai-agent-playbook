@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-scikit-learn",
+  "fixture_id": "bench004-04",
+  "variant": "baseline-no-optional",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:46:08.295Z",
+    "execution_end_utc": "2026-08-24T05:46:22.071Z",
+    "wall_time_ms": 13774.76
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 0,
+    "loaded_context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_capabilities": [],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "45cef53a733074ab902e9ce473dd1938c7a3bdacd7368a7b3ee1b6e839f8ab85",
+    "response_schema_sha256": "b438c23c5b066e805e955dc18531dffce83a114b181e55902d55cb6745ea4273",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1294,
+    "output_token_count_available": true,
+    "output_token_count": 447
+  },
+  "provider_duration": {
+    "total_duration_ns": 13767668100,
+    "load_duration_ns": 478609400,
+    "prompt_eval_duration_ns": 284188000,
+    "eval_duration_ns": 12935440000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"split_strategy\": \"train_test_split\",\n  \"test_fraction\": 0.2,\n  \"preprocessing_location\": \"inside_pipeline\",\n  \"numeric_preprocessing\": [\"impute_mean\", \"standardize\"],\n  \"categorical_preprocessing\": [\"one_hot_encode\"],\n  \"baseline_model\": \"LogisticRegression\",\n  \"evaluation_metrics\": [\"accuracy\", \"precision\", \"recall\", \"f1_score\"],\n  \"cross_validation_scope\": \"none\",\n  \"test_set_usage\": \"single_holdout\",\n  \"random_seed\": 42,\n  \"verification_steps\": [\n    \"verify_train_test_split_ratio\",\n    \"verify_no_target_leakage_in_preprocessing\",\n    \"verify_model_fits_training_data_only\",\n    \"verify_metrics_computed_on_test_set\"\n  ],\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"generate_synthetic_dataset\",\n      \"verification\": \"check_sample_count_and_target_rate\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"split_data_into_train_test\",\n      \"verification\": \"confirm_test_fraction_is_0.2\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"construct_pipeline_with_imputation_and_encoding\",\n      \"verification\": \"ensure_preprocessing_fits_on_train_only\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"fit_baseline_model\",\n      \"verification\": \"confirm_no_error_on_fit\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"evaluate_model_on_test_set\",\n      \"verification\": \"check_all_metrics_are_present\"\n    }\n  ],\n  \"additional_controls\": [\n    \"set_random_seed_to_42_for_reproducibility\",\n    \"handle_missing_values_before_split_or_inside_pipeline\",\n    \"avoid_fitting_transformers_on_full_dataset\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "split_strategy": "train_test_split",
+    "test_fraction": 0.2,
+    "preprocessing_location": "inside_pipeline",
+    "numeric_preprocessing": [
+      "impute_mean",
+      "standardize"
+    ],
+    "categorical_preprocessing": [
+      "one_hot_encode"
+    ],
+    "baseline_model": "LogisticRegression",
+    "evaluation_metrics": [
+      "accuracy",
+      "precision",
+      "recall",
+      "f1_score"
+    ],
+    "cross_validation_scope": "none",
+    "test_set_usage": "single_holdout",
+    "random_seed": 42,
+    "verification_steps": [
+      "verify_train_test_split_ratio",
+      "verify_no_target_leakage_in_preprocessing",
+      "verify_model_fits_training_data_only",
+      "verify_metrics_computed_on_test_set"
+    ],
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "generate_synthetic_dataset",
+        "verification": "check_sample_count_and_target_rate"
+      },
+      {
+        "order": 2,
+        "action": "split_data_into_train_test",
+        "verification": "confirm_test_fraction_is_0.2"
+      },
+      {
+        "order": 3,
+        "action": "construct_pipeline_with_imputation_and_encoding",
+        "verification": "ensure_preprocessing_fits_on_train_only"
+      },
+      {
+        "order": 4,
+        "action": "fit_baseline_model",
+        "verification": "confirm_no_error_on_fit"
+      },
+      {
+        "order": 5,
+        "action": "evaluate_model_on_test_set",
+        "verification": "check_all_metrics_are_present"
+      }
+    ],
+    "additional_controls": [
+      "set_random_seed_to_42_for_reproducibility",
+      "handle_missing_values_before_split_or_inside_pipeline",
+      "avoid_fitting_transformers_on_full_dataset"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "stratified 0.2 split",
+        "pass": false,
+        "evidence": [
+          "train_test_split",
+          0.2
+        ]
+      },
+      {
+        "check": "preprocessing inside pipeline",
+        "pass": true,
+        "evidence": "inside_pipeline"
+      },
+      {
+        "check": "numeric preprocessing",
+        "pass": false,
+        "evidence": [
+          "impute_mean",
+          "standardize"
+        ]
+      },
+      {
+        "check": "categorical preprocessing",
+        "pass": false,
+        "evidence": [
+          "one_hot_encode"
+        ]
+      },
+      {
+        "check": "logistic regression baseline",
+        "pass": true,
+        "evidence": "LogisticRegression"
+      },
+      {
+        "check": "ROC-AUC and PR-AUC",
+        "pass": false,
+        "evidence": [
+          "accuracy",
+          "precision",
+          "recall",
+          "f1_score"
+        ]
+      },
+      {
+        "check": "training-only cross-validation",
+        "pass": false,
+        "evidence": "none"
+      },
+      {
+        "check": "final-once test usage",
+        "pass": false,
+        "evidence": "single_holdout"
+      },
+      {
+        "check": "seed 42",
+        "pass": true,
+        "evidence": 42
+      },
+      {
+        "check": "verification steps",
+        "pass": true,
+        "evidence": [
+          "verify_train_test_split_ratio",
+          "verify_no_target_leakage_in_preprocessing",
+          "verify_model_fits_training_data_only",
+          "verify_metrics_computed_on_test_set"
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 5,
+    "hard_checks_total": 11,
+    "quality_checks": [
+      {
+        "check": "class imbalance handling",
+        "pass": false,
+        "evidence": [
+          "class imbalance",
+          "imbalanced",
+          "class weight"
+        ]
+      },
+      {
+        "check": "threshold selection",
+        "pass": false,
+        "evidence": [
+          "threshold"
+        ]
+      },
+      {
+        "check": "calibration",
+        "pass": false,
+        "evidence": [
+          "calibrat"
+        ]
+      },
+      {
+        "check": "model comparison or uncertainty",
+        "pass": false,
+        "evidence": [
+          "model comparison",
+          "confidence interval",
+          "uncertainty"
+        ]
+      }
+    ],
+    "quality_score": 0,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

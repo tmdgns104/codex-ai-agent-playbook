@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-exploratory-data-analysis",
+  "fixture_id": "bench004-03",
+  "variant": "current-playbook",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:45:12.301Z",
+    "execution_end_utc": "2026-08-24T05:45:26.891Z",
+    "wall_time_ms": 14590.143
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 4473,
+    "loaded_context_sha256": "16022f47a50774877e08ab8b5f99a74bacd45d0b9a009ee436ec0e7a7046b309",
+    "selected_capabilities": [
+      "root-cause-debugging",
+      "testing"
+    ],
+    "routing_result": {
+      "task": "제공된 synthetic tabular dataset 요약을 기반으로 재현 가능한 EDA 계획을 작성한다.",
+      "selected": [
+        {
+          "id": "root-cause-debugging",
+          "type": "skill",
+          "score": 6,
+          "threshold": 5,
+          "eligible": true,
+          "profile": "standard",
+          "approval": "none",
+          "context_cost": "medium",
+          "risk": "low",
+          "matched_triggers": [
+            "재현"
+          ],
+          "matched_domains": [],
+          "summary_overlap": [
+            "재현"
+          ]
+        },
+        {
+          "id": "testing",
+          "type": "skill",
+          "score": 6,
+          "threshold": 5,
+          "eligible": true,
+          "profile": "standard",
+          "approval": "none",
+          "context_cost": "medium",
+          "risk": "low",
+          "matched_triggers": [
+            "재현"
+          ],
+          "matched_domains": [],
+          "summary_overlap": [
+            "재현"
+          ]
+        }
+      ],
+      "profile": "standard",
+      "count": 2,
+      "result": "ROUTED"
+    },
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "bcb70e1803038f69dcbac25cdb2f6714fac8bbcb3308bf46ed0f77f605a60418",
+    "response_schema_sha256": "ad489d048c859cb1f7355f3b49fa8424d7241ee84b277b9d07e63268913d9171",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 2402,
+    "output_token_count_available": true,
+    "output_token_count": 460
+  },
+  "provider_duration": {
+    "total_duration_ns": 14581171800,
+    "load_duration_ns": 443962800,
+    "prompt_eval_duration_ns": 780671000,
+    "eval_duration_ns": 13341747000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"missing_columns\": [\n    \"age\"\n  ],\n  \"outlier_columns\": [\n    \"annual_income\"\n  ],\n  \"distribution_checks\": [\n    \"age\",\n    \"annual_income\",\n    \"churned\"\n  ],\n  \"correlation_interpretation\": \"age와 annual_income 간 상관계수 0.41은 중등도의 양의 상관관계를 나타내나, 인과 관계를 단정할 수 없으며, 다른 변수(예: region)가 통제되지 않았을 경우 편향될 수 있음.\",\n  \"reproducibility_controls\": [\n    \"synthetic_data_source_version\",\n    \"analysis_script_determinism\",\n    \"random_seed_fixation\"\n  ],\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"결측치 확인 및 보고\",\n      \"verification\": \"age 컬럼의 결측값 수 (20) 를 기록.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"분포 확인\",\n      \"verification\": \"age(18~82), annual_income(58,000 중앙값), churned(180 긍정) 의 통계량을 시각화하거나 요약.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"이상치 확인\",\n      \"verification\": \"annual_income > 250,000 인 경우 3 건이 존재함을 기록하고 IQR 또는 Z-score 기준 이상치를 식별.\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"상관관계 해석 주의사항 문서화\",\n      \"verification\": \"age-annual_income 상관관계의 한계와 confounding 변수 가능성을 명시.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"결측치 처리 전략 정의 (예: 제거 또는 평균 대체)\",\n    \"이상치 탐지 임계값 문서화\",\n    \"EDA 결과 보고서 버전 관리\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "missing_columns": [
+      "age"
+    ],
+    "outlier_columns": [
+      "annual_income"
+    ],
+    "distribution_checks": [
+      "age",
+      "annual_income",
+      "churned"
+    ],
+    "correlation_interpretation": "age와 annual_income 간 상관계수 0.41은 중등도의 양의 상관관계를 나타내나, 인과 관계를 단정할 수 없으며, 다른 변수(예: region)가 통제되지 않았을 경우 편향될 수 있음.",
+    "reproducibility_controls": [
+      "synthetic_data_source_version",
+      "analysis_script_determinism",
+      "random_seed_fixation"
+    ],
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "결측치 확인 및 보고",
+        "verification": "age 컬럼의 결측값 수 (20) 를 기록."
+      },
+      {
+        "order": 2,
+        "action": "분포 확인",
+        "verification": "age(18~82), annual_income(58,000 중앙값), churned(180 긍정) 의 통계량을 시각화하거나 요약."
+      },
+      {
+        "order": 3,
+        "action": "이상치 확인",
+        "verification": "annual_income > 250,000 인 경우 3 건이 존재함을 기록하고 IQR 또는 Z-score 기준 이상치를 식별."
+      },
+      {
+        "order": 4,
+        "action": "상관관계 해석 주의사항 문서화",
+        "verification": "age-annual_income 상관관계의 한계와 confounding 변수 가능성을 명시."
+      }
+    ],
+    "additional_controls": [
+      "결측치 처리 전략 정의 (예: 제거 또는 평균 대체)",
+      "이상치 탐지 임계값 문서화",
+      "EDA 결과 보고서 버전 관리"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "exact missing columns",
+        "pass": false,
+        "evidence": [
+          "age"
+        ]
+      },
+      {
+        "check": "annual_income outlier review",
+        "pass": true,
+        "evidence": [
+          "annual_income"
+        ]
+      },
+      {
+        "check": "distribution checks",
+        "pass": true,
+        "evidence": [
+          "age",
+          "annual_income",
+          "churned"
+        ]
+      },
+      {
+        "check": "non-causal correlation interpretation",
+        "pass": false,
+        "evidence": "age와 annual_income 간 상관계수 0.41은 중등도의 양의 상관관계를 나타내나, 인과 관계를 단정할 수 없으며, 다른 변수(예: region)가 통제되지 않았을 경우 편향될 수 있음."
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "결측치 확인 및 보고",
+            "verification": "age 컬럼의 결측값 수 (20) 를 기록."
+          },
+          {
+            "order": 2,
+            "action": "분포 확인",
+            "verification": "age(18~82), annual_income(58,000 중앙값), churned(180 긍정) 의 통계량을 시각화하거나 요약."
+          },
+          {
+            "order": 3,
+            "action": "이상치 확인",
+            "verification": "annual_income > 250,000 인 경우 3 건이 존재함을 기록하고 IQR 또는 Z-score 기준 이상치를 식별."
+          },
+          {
+            "order": 4,
+            "action": "상관관계 해석 주의사항 문서화",
+            "verification": "age-annual_income 상관관계의 한계와 confounding 변수 가능성을 명시."
+          }
+        ]
+      },
+      {
+        "check": "reproducibility controls",
+        "pass": true,
+        "evidence": [
+          "synthetic_data_source_version",
+          "analysis_script_determinism",
+          "random_seed_fixation"
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 5,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "preserve raw data",
+        "pass": false,
+        "evidence": [
+          "read-only",
+          "preserve raw",
+          "raw data"
+        ]
+      },
+      {
+        "check": "split before learned transforms",
+        "pass": false,
+        "evidence": [
+          "training data only",
+          "training split",
+          "before preprocessing"
+        ]
+      },
+      {
+        "check": "record scope or provenance",
+        "pass": false,
+        "evidence": [
+          "scope",
+          "provenance",
+          "scan"
+        ]
+      },
+      {
+        "check": "report uncertainty or limitations",
+        "pass": false,
+        "evidence": [
+          "uncertainty",
+          "limitation"
+        ]
+      }
+    ],
+    "quality_score": 0,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

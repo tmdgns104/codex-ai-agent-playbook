@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-sympy",
+  "fixture_id": "bench004-06",
+  "variant": "current-playbook",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:39:18.779Z",
+    "execution_end_utc": "2026-08-24T04:39:33.418Z",
+    "wall_time_ms": 14638.501
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 0,
+    "loaded_context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_capabilities": [],
+    "routing_result": {
+      "task": "제공된 symbolic equation 조건을 바탕으로 SymPy를 활용한 해석 workflow를 설계한다.",
+      "selected": [],
+      "profile": "minimal",
+      "count": 0,
+      "result": "NO_CAPABILITY"
+    },
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "d9539a82e77a3d713cfb5713f4247496f732a2dcadf6d771930b542468e33ec3",
+    "response_schema_sha256": "7d474c771ef4f10fbf24eb3b7005b46e1070d270bfbef6ca368efa780d614dda"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1218,
+    "output_token_count_available": true,
+    "output_token_count": 487
+  },
+  "provider_duration": {
+    "total_duration_ns": 14631340100,
+    "load_duration_ns": 489284800,
+    "prompt_eval_duration_ns": 242793000,
+    "eval_duration_ns": 13888535000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"symbol\": \"x\",\n  \"domain\": \"real\",\n  \"method\": \"factorization_and_roots\",\n  \"factorization\": \"(x - 1)*(x + 1)*(x - 2)*(x + 2)\",\n  \"exact_roots\": [\n    \"-2\",\n    \"-1\",\n    \"1\",\n    \"2\"\n  ],\n  \"verification_residuals\": {\n    \"description\": \"Substitute each root back into the original expression and verify that the result equals zero.\",\n    \"formula\": \"f(x) = x**4 - 5*x**2 + 4, check f(root) == 0\"\n  },\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Define symbol 'x' in the real domain.\",\n      \"verification\": \"Check that x is declared as a Symbol with real=True.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Define the expression f(x) = x**4 - 5*x**2 + 4.\",\n      \"verification\": \"Confirm the polynomial matches the input specification.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Factorize the expression using sympy.factor().\",\n      \"verification\": \"Ensure the output is (x - 1)*(x + 1)*(x - 2)*(x + 2).\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Extract roots from the factored form.\",\n      \"verification\": \"Identify x = ±1 and x = ±2 as the solutions to f(x) = 0.\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Verify each root by substituting into the original expression.\",\n      \"verification\": \"Confirm that substituting any root yields exactly zero.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Ensure no external network calls are made during execution.\",\n    \"Do not execute code; this is a design specification only.\",\n    \"Maintain symbolic precision throughout the workflow.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "symbol": "x",
+    "domain": "real",
+    "method": "factorization_and_roots",
+    "factorization": "(x - 1)*(x + 1)*(x - 2)*(x + 2)",
+    "exact_roots": [
+      "-2",
+      "-1",
+      "1",
+      "2"
+    ],
+    "verification_residuals": {
+      "description": "Substitute each root back into the original expression and verify that the result equals zero.",
+      "formula": "f(x) = x**4 - 5*x**2 + 4, check f(root) == 0"
+    },
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Define symbol 'x' in the real domain.",
+        "verification": "Check that x is declared as a Symbol with real=True."
+      },
+      {
+        "order": 2,
+        "action": "Define the expression f(x) = x**4 - 5*x**2 + 4.",
+        "verification": "Confirm the polynomial matches the input specification."
+      },
+      {
+        "order": 3,
+        "action": "Factorize the expression using sympy.factor().",
+        "verification": "Ensure the output is (x - 1)*(x + 1)*(x - 2)*(x + 2)."
+      },
+      {
+        "order": 4,
+        "action": "Extract roots from the factored form.",
+        "verification": "Identify x = ±1 and x = ±2 as the solutions to f(x) = 0."
+      },
+      {
+        "order": 5,
+        "action": "Verify each root by substituting into the original expression.",
+        "verification": "Confirm that substituting any root yields exactly zero."
+      }
+    ],
+    "additional_controls": [
+      "Ensure no external network calls are made during execution.",
+      "Do not execute code; this is a design specification only.",
+      "Maintain symbolic precision throughout the workflow."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "symbol x and real domain",
+        "pass": true,
+        "evidence": [
+          "x",
+          "real"
+        ]
+      },
+      {
+        "check": "exact symbolic method",
+        "pass": false,
+        "evidence": "factorization_and_roots"
+      },
+      {
+        "check": "exact roots",
+        "pass": true,
+        "evidence": [
+          "-2",
+          "-1",
+          "1",
+          "2"
+        ]
+      },
+      {
+        "check": "zero substitution residuals",
+        "pass": false,
+        "evidence": {
+          "description": "Substitute each root back into the original expression and verify that the result equals zero.",
+          "formula": "f(x) = x**4 - 5*x**2 + 4, check f(root) == 0"
+        }
+      },
+      {
+        "check": "factorization present",
+        "pass": true,
+        "evidence": "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Define symbol 'x' in the real domain.",
+            "verification": "Check that x is declared as a Symbol with real=True."
+          },
+          {
+            "order": 2,
+            "action": "Define the expression f(x) = x**4 - 5*x**2 + 4.",
+            "verification": "Confirm the polynomial matches the input specification."
+          },
+          {
+            "order": 3,
+            "action": "Factorize the expression using sympy.factor().",
+            "verification": "Ensure the output is (x - 1)*(x + 1)*(x - 2)*(x + 2)."
+          },
+          {
+            "order": 4,
+            "action": "Extract roots from the factored form.",
+            "verification": "Identify x = ±1 and x = ±2 as the solutions to f(x) = 0."
+          },
+          {
+            "order": 5,
+            "action": "Verify each root by substituting into the original expression.",
+            "verification": "Confirm that substituting any root yields exactly zero."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 5,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "explicit assumptions",
+        "pass": true,
+        "evidence": [
+          "assumption",
+          "real domain"
+        ]
+      },
+      {
+        "check": "exact arithmetic",
+        "pass": false,
+        "evidence": [
+          "exact arithmetic",
+          "no floating",
+          "integer"
+        ]
+      },
+      {
+        "check": "factor before solve",
+        "pass": false,
+        "evidence": [
+          "factor before",
+          "factor the"
+        ]
+      },
+      {
+        "check": "verify original expression",
+        "pass": true,
+        "evidence": [
+          "original expression",
+          "substitut"
+        ]
+      }
+    ],
+    "quality_score": 2,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

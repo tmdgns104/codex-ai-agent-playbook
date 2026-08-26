@@ -2,3 +2,5 @@ __pycache__/
 *.py[cod]
 .playbook-runtime/
 .playbook-state/
+evaluation/external-skills/reports/coverage-current.json
+evaluation/external-skills/reports/effective-current.json

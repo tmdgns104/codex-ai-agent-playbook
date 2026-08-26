@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "snapshot_type": "foundation-summary",
+  "domain_pack_count": 25,
+  "candidate_count": 0,
+  "active_registry_capability_count": 12,
+  "protected_domain_packs": [
+    "big-data",
+    "documentation-guide"
+  ],
+  "active_exact_match_examples": {
+    "database-sql": ["sql-optimization"],
+    "security-auth": ["security-review"],
+    "git-delivery": ["code-review"]
+  },
+  "protected_pack_status": {
+    "big-data": "taxonomy-defined; external candidate wave pending",
+    "documentation-guide": "taxonomy-defined; external candidate wave pending"
+  },
+  "interpretation": "This is the pre-candidate foundation baseline. Run harness/skills/external_catalog.py for the full deterministic per-domain report. Candidate Wave 1 will populate external expert metadata without changing ACTIVE registry."
+}

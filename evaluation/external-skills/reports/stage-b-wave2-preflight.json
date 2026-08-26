@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "status": "READY",
+  "checked_at_utc": "2026-08-24T05:44:24.473Z",
+  "generation_started": false,
+  "runtime_control": {
+    "approval_status": "APPROVED",
+    "approved_at_utc": "2026-08-24T04:24:25Z",
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "http://127.0.0.1:11434",
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "model_fallback_allowed": false,
+    "remote_network_allowed": false,
+    "remote_api_allowed": false,
+    "credentials_allowed": false,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "slot_order_policy": "candidate-order-then-fixed-variant-order",
+    "candidate_order": [
+      "kd-exploratory-data-analysis",
+      "kd-scikit-learn",
+      "kd-sympy",
+      "kd-citation-management",
+      "kd-docx"
+    ],
+    "variant_order": [
+      "baseline-no-optional",
+      "current-playbook",
+      "external-expert",
+      "adapted-playbook"
+    ],
+    "repetition_policy": "one-attempt-per-slot-no-rerun",
+    "failure_policy": "record-failure-and-continue-with-next-slot",
+    "token_measurement": "Ollama prompt_eval_count and eval_count when returned"
+  },
+  "installed_model": {
+    "name": "qwen3.5:9b",
+    "model": "qwen3.5:9b",
+    "modified_at": "2026-08-18T04:39:47.5783713+09:00",
+    "size": 6594474711,
+    "digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen35",
+      "families": [
+        "qwen35"
+      ],
+      "parameter_size": "9.7B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 262144,
+      "embedding_length": 4096
+    },
+    "capabilities": [
+      "vision",
+      "completion",
+      "tools",
+      "thinking"
+    ]
+  },
+  "matrix": {
+    "candidate_order": [
+      "kd-exploratory-data-analysis",
+      "kd-scikit-learn",
+      "kd-sympy",
+      "kd-citation-management",
+      "kd-docx"
+    ],
+    "variant_order": [
+      "baseline-no-optional",
+      "current-playbook",
+      "external-expert",
+      "adapted-playbook"
+    ],
+    "slot_count": 20
+  },
+  "path_isolation": {
+    "wave1_evidence_root": "evaluation/external-skills/evidence/stage-b",
+    "wave2_evidence_root": "evaluation/external-skills/evidence/stage-b-wave2",
+    "wave2_summary": "evaluation/external-skills/reports/stage-b-wave2-execution-summary.json",
+    "wave2_comparison": "evaluation/external-skills/reports/stage-b-wave2-comparison.json",
+    "separated": true
+  },
+  "wave1_protection": {
+    "baseline_commit": "cb10e1a9f81cbce5cedf354c071202f30dc72b5c",
+    "protected_sha256": {
+      "evaluation/external-skills/benchmark-results.json": "21cb7165c4e02397fdafa9bc5d20f715e723ff351965cf71e00e42f6e7e80249",
+      "evaluation/external-skills/adoption-decisions.json": "4078ba8597bc9483606c41dcae2a88d5096de13ce22cb6c1084665079433bbe3",
+      "evaluation/external-skills/reports/stage-b-execution-summary.json": "6ff9a6a08186250768153acab19fa63501b4fee08e22fe6ff10deecb370e6e25",
+      "evaluation/external-skills/reports/stage-b-failure-analysis.json": "22f590325b312ec52b9ab54e889eff7f6c23eb0c3064229d738a4dada307c692"
+    },
+    "evidence_file_count": 20,
+    "evidence_set_sha256": "a3aa40c312ff5fa91c76d75775f6b9bf4c173da9cc4fefa9df7090e8273e9392",
+    "acceptance_pass": 2,
+    "acceptance_fail": 18
+  },
+  "postfix_inputs": {
+    "file_sha256": {
+      "evaluation/external-skills/benchmark-fixtures.json": "bf33aa6efa11b021ee51ac975ec3913fd4bf3f1b2b2ae2a564156d3afacdfc1c",
+      "evaluation/external-skills/fixtures/stage-b-local-inputs.json": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+      "evaluation/external-skills/stage-b-acceptance-rubrics.json": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5",
+      "evaluation/external-skills/adapted-contexts.json": "f972f89a57dd853eaf7f88648e8a5ce9f6a26f9335e6f03131a48222246e9816",
+      "evaluation/external-skills/snapshots/manifest.json": "265a2ad0ed15d847eac43a46d6477389cba18ffd9044f983bb33c0d88c049135",
+      "capability-library/registry.json": "2c2aec89ea40655d99497064c91d74b6c905bf0ce1d87bbbcdda2a071480a4a9",
+      "harness/router/scoring.py": "80866867ba3997b537233b2d8134ace8504126c53a7804d03c94966a98f5bf0e",
+      ".codex/AGENTS.md": "ebcd3c6627b4679101f98ce59897f528622db9f50d2cd601693f3940b968320c"
+    },
+    "snapshot_skill_count": 15,
+    "snapshot_skill_set_sha256": "eb284731c29f848a29e536b7a11729c0b74984b8add07bf4f4283954b4cc58a8"
+  },
+  "static_matrix_valid": true,
+  "retry_count": 0,
+  "fallback_allowed": false,
+  "external_network_allowed": false,
+  "remote_api_allowed": false,
+  "credentials_allowed": false
+}

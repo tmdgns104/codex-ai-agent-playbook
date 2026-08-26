@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "status": "EXECUTION_COMPLETE",
+  "runtime": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_used": false
+  },
+  "execution_window": {
+    "start_utc": "2026-08-24T05:44:45.771Z",
+    "end_utc": "2026-08-24T05:50:30.912Z",
+    "slot_wall_time_sum_ms": 344911.33
+  },
+  "totals": {
+    "slots": 20,
+    "generation_completed": 20,
+    "generation_failed": 0,
+    "acceptance_pass": 8,
+    "acceptance_fail": 12,
+    "failed_hard_checks": 25,
+    "loaded_context_bytes": 62207,
+    "prompt_tokens": 42924,
+    "output_tokens": 10527,
+    "execution_time_ms": 344911.33
+  },
+  "variants": [
+    {
+      "variant": "baseline-no-optional",
+      "slots": 5,
+      "generation_completed": 5,
+      "generation_failed": 0,
+      "acceptance_pass": 1,
+      "acceptance_fail": 4,
+      "failed_hard_checks": 11,
+      "loaded_context_bytes": 0,
+      "prompt_tokens": 6950,
+      "output_tokens": 2449,
+      "execution_time_ms": 88132.217
+    },
+    {
+      "variant": "current-playbook",
+      "slots": 5,
+      "generation_completed": 5,
+      "generation_failed": 0,
+      "acceptance_pass": 1,
+      "acceptance_fail": 4,
+      "failed_hard_checks": 8,
+      "loaded_context_bytes": 4704,
+      "prompt_tokens": 7981,
+      "output_tokens": 2543,
+      "execution_time_ms": 78637.554
+    },
+    {
+      "variant": "external-expert",
+      "slots": 5,
+      "generation_completed": 5,
+      "generation_failed": 0,
+      "acceptance_pass": 1,
+      "acceptance_fail": 4,
+      "failed_hard_checks": 6,
+      "loaded_context_bytes": 54704,
+      "prompt_tokens": 20607,
+      "output_tokens": 2705,
+      "execution_time_ms": 90832.361
+    },
+    {
+      "variant": "adapted-playbook",
+      "slots": 5,
+      "generation_completed": 5,
+      "generation_failed": 0,
+      "acceptance_pass": 5,
+      "acceptance_fail": 0,
+      "failed_hard_checks": 0,
+      "loaded_context_bytes": 2799,
+      "prompt_tokens": 7386,
+      "output_tokens": 2830,
+      "execution_time_ms": 87309.198
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "slots": 4,
+      "generation_completed": 4,
+      "generation_failed": 0,
+      "acceptance_pass": 1,
+      "acceptance_fail": 3,
+      "failed_hard_checks": 7,
+      "loaded_context_bytes": 17700,
+      "prompt_tokens": 10077,
+      "output_tokens": 2227,
+      "execution_time_ms": 82480.894
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "slots": 4,
+      "generation_completed": 4,
+      "generation_failed": 0,
+      "acceptance_pass": 1,
+      "acceptance_fail": 3,
+      "failed_hard_checks": 12,
+      "loaded_context_bytes": 10875,
+      "prompt_tokens": 7571,
+      "output_tokens": 2273,
+      "execution_time_ms": 69852.264
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "slots": 4,
+      "generation_completed": 4,
+      "generation_failed": 0,
+      "acceptance_pass": 1,
+      "acceptance_fail": 3,
+      "failed_hard_checks": 3,
+      "loaded_context_bytes": 10301,
+      "prompt_tokens": 8015,
+      "output_tokens": 1571,
+      "execution_time_ms": 50540.489
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "slots": 4,
+      "generation_completed": 4,
+      "generation_failed": 0,
+      "acceptance_pass": 4,
+      "acceptance_fail": 0,
+      "failed_hard_checks": 0,
+      "loaded_context_bytes": 15294,
+      "prompt_tokens": 9465,
+      "output_tokens": 1776,
+      "execution_time_ms": 57854.693
+    },
+    {
+      "candidate_id": "kd-docx",
+      "slots": 4,
+      "generation_completed": 4,
+      "generation_failed": 0,
+      "acceptance_pass": 1,
+      "acceptance_fail": 3,
+      "failed_hard_checks": 3,
+      "loaded_context_bytes": 8037,
+      "prompt_tokens": 7796,
+      "output_tokens": 2680,
+      "execution_time_ms": 84182.99
+    }
+  ],
+  "preflight_evidence": "evaluation/external-skills/reports/stage-b-wave2-preflight.json",
+  "evidence_root": "evaluation/external-skills/evidence/stage-b-wave2",
+  "wave1_protection_after_execution": {
+    "baseline_commit": "cb10e1a9f81cbce5cedf354c071202f30dc72b5c",
+    "protected_sha256": {
+      "evaluation/external-skills/benchmark-results.json": "21cb7165c4e02397fdafa9bc5d20f715e723ff351965cf71e00e42f6e7e80249",
+      "evaluation/external-skills/adoption-decisions.json": "4078ba8597bc9483606c41dcae2a88d5096de13ce22cb6c1084665079433bbe3",
+      "evaluation/external-skills/reports/stage-b-execution-summary.json": "6ff9a6a08186250768153acab19fa63501b4fee08e22fe6ff10deecb370e6e25",
+      "evaluation/external-skills/reports/stage-b-failure-analysis.json": "22f590325b312ec52b9ab54e889eff7f6c23eb0c3064229d738a4dada307c692"
+    },
+    "evidence_file_count": 20,
+    "evidence_set_sha256": "a3aa40c312ff5fa91c76d75775f6b9bf4c173da9cc4fefa9df7090e8273e9392",
+    "acceptance_pass": 2,
+    "acceptance_fail": 18
+  },
+  "safety": {
+    "external_access_attempted": false,
+    "external_scripts_executed": false,
+    "credentials_used": false,
+    "hardware_or_cloud_write": false,
+    "destructive_action": false
+  },
+  "adoption_decisions_updated": false,
+  "limitations": [
+    "Each slot has one fixed-seed generation attempt; no retry, fallback, or repeated-run variance estimate is present.",
+    "Wave 2 changes both validator semantics and the explicit output contract supplied to generation, so observed output changes are not validator-only effects.",
+    "The read-only Wave 1 rescore diagnostic isolates validator behavior but does not replace or modify historical acceptance Evidence."
+  ]
+}

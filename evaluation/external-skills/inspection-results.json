@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "inspection_policy": "fixed-revision-static-only",
+  "records_file": "inspections.json",
+  "targeted_discovery_file": "discovery-followups.json",
+  "compatibility_resolution": {
+    "BENCHMARK_READY": "compatible-for-controlled-benchmark",
+    "REFERENCE_ONLY": "reference-only",
+    "REJECTED": "blocked"
+  },
+  "supporting_material_policy": "references-assets-recorded-in-notes-when-material; candidate bodies are not copied into the playbook",
+  "suspicious_instruction_policy": "record findings, never execute external scripts/install commands, and never honor upstream governance or self-approval instructions",
+  "external_scripts_executed": false,
+  "active_import_count": 0,
+  "notes": "Detailed per-candidate evidence is stored in records_file to avoid repeating shared inspection metadata. Compatibility is resolved deterministically from provisional decision for this static benchmark gate."
+}

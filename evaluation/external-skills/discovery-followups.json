@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "external_scripts_executed": false,
+  "followups": [
+    {
+      "domain_pack": "industrial-automation",
+      "status": "gap-retained",
+      "reason": "No sufficiently trustworthy specialized Agent Skill source for PLC, SCADA, OPC UA, Modbus, or MES was established during Task003 discovery.",
+      "next_action": "Target official vendor, standards-body, or clearly licensed specialist sources; do not fabricate a candidate to satisfy coverage."
+    },
+    {
+      "domain_pack": "robotics-ros",
+      "status": "needs-source-strengthening",
+      "reason": "The current inspected candidate focuses on PyLabRobot and does not provide broad ROS2 coverage.",
+      "next_action": "Inspect a clearly licensed ROS2-focused source before adding new candidates."
+    },
+    {
+      "domain_pack": "networking",
+      "status": "needs-source-strengthening",
+      "reason": "Current inspected networking evidence is NVIDIA-stack-specific.",
+      "next_action": "Seek vendor-neutral networking troubleshooting and protocol-analysis skills with explicit licensing."
+    },
+    {
+      "domain_pack": "documentation-guide",
+      "status": "path-drift-rediscovery-needed",
+      "reason": "Two Wave1 alirezarezvani documentation paths are missing at the pinned revision.",
+      "candidate_ids": ["ar-api-documentation", "ar-code-documentation"],
+      "next_action": "Rediscover current exact paths as new candidate identities rather than silently mutating existing provenance."
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-citation-management",
+  "fixture_id": "bench004-07",
+  "variant": "adapted-playbook",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:40:44.572Z",
+    "execution_end_utc": "2026-08-24T04:41:00.636Z",
+    "wall_time_ms": 16064.003
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 575,
+    "loaded_context_sha256": "ff48f2a71b169cc232dc401c1389613c7df5c5cecfc7e5aed207306a3d7b6595",
+    "selected_capabilities": [
+      "adapted:kd-citation-management"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "02e62a13a639af0b9fe8a4b620255b591c198ea73847099f8e4f78cc5b88e729",
+    "response_schema_sha256": "5e3a6e363e90427cb20990504a723a59d425097ee3333565857f18ff9d4c8c01"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1517,
+    "output_token_count_available": true,
+    "output_token_count": 508
+  },
+  "provider_duration": {
+    "total_duration_ns": 16046410200,
+    "load_duration_ns": 514791900,
+    "prompt_eval_duration_ns": 410324000,
+    "eval_duration_ns": 15010648000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"normalized_dois\": {\n    \"C1\": \"10.1000/safe.001\",\n    \"C2\": \"10.1000/safe.001\",\n    \"C3\": null,\n    \"C4\": \"10.1000/evidence.004\"\n  },\n  \"duplicate_groups\": [\n    [\n      \"C1\",\n      \"C2\"\n    ]\n  ],\n  \"missing_fields\": {\n    \"C3\": [\n      \"doi\"\n    ],\n    \"C4\": [\n      \"journal\",\n      \"year\"\n    ]\n  },\n  \"deduplication_rule\": \"Primary key: Normalized DOI (lowercase, resolver prefix removed). Secondary key: Title + Authors + Year. If primary keys match, records are duplicates. If primary keys differ but secondary keys match exactly, flag for manual review.\",\n  \"external_lookup_performed\": false,\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Normalize DOI values\",\n      \"verification\": \"Check that all non-null DOIs are lowercase and stripped of 'https://doi.org/' prefixes.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Detect duplicates\",\n      \"verification\": \"Group records by normalized DOI. Verify C1 and C2 are grouped together due to identical metadata after normalization.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Identify missing fields\",\n      \"verification\": \"Check each record for null values in 'doi', 'journal', or 'year'. Report C3 (missing doi) and C4 (missing journal, year).\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Generate report\",\n      \"verification\": \"Ensure output JSON contains all required fields with accurate data derived solely from input.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Do not execute external scripts or network calls.\",\n    \"Preserve original records in the report; do not delete duplicates silently.\",\n    \"Flag records with missing critical metadata (DOI, Journal) for manual review.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "normalized_dois": {
+      "C1": "10.1000/safe.001",
+      "C2": "10.1000/safe.001",
+      "C3": null,
+      "C4": "10.1000/evidence.004"
+    },
+    "duplicate_groups": [
+      [
+        "C1",
+        "C2"
+      ]
+    ],
+    "missing_fields": {
+      "C3": [
+        "doi"
+      ],
+      "C4": [
+        "journal",
+        "year"
+      ]
+    },
+    "deduplication_rule": "Primary key: Normalized DOI (lowercase, resolver prefix removed). Secondary key: Title + Authors + Year. If primary keys match, records are duplicates. If primary keys differ but secondary keys match exactly, flag for manual review.",
+    "external_lookup_performed": false,
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Normalize DOI values",
+        "verification": "Check that all non-null DOIs are lowercase and stripped of 'https://doi.org/' prefixes."
+      },
+      {
+        "order": 2,
+        "action": "Detect duplicates",
+        "verification": "Group records by normalized DOI. Verify C1 and C2 are grouped together due to identical metadata after normalization."
+      },
+      {
+        "order": 3,
+        "action": "Identify missing fields",
+        "verification": "Check each record for null values in 'doi', 'journal', or 'year'. Report C3 (missing doi) and C4 (missing journal, year)."
+      },
+      {
+        "order": 4,
+        "action": "Generate report",
+        "verification": "Ensure output JSON contains all required fields with accurate data derived solely from input."
+      }
+    ],
+    "additional_controls": [
+      "Do not execute external scripts or network calls.",
+      "Preserve original records in the report; do not delete duplicates silently.",
+      "Flag records with missing critical metadata (DOI, Journal) for manual review."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": true,
+    "hard_checks": [
+      {
+        "check": "normalized local DOI values",
+        "pass": true,
+        "evidence": {
+          "C1": "10.1000/safe.001",
+          "C2": "10.1000/safe.001",
+          "C3": null,
+          "C4": "10.1000/evidence.004"
+        }
+      },
+      {
+        "check": "duplicate group C1 C2",
+        "pass": true,
+        "evidence": [
+          [
+            "C1",
+            "C2"
+          ]
+        ]
+      },
+      {
+        "check": "missing DOI on C3",
+        "pass": true,
+        "evidence": [
+          "doi"
+        ]
+      },
+      {
+        "check": "missing journal and year on C4",
+        "pass": true,
+        "evidence": [
+          "journal",
+          "year"
+        ]
+      },
+      {
+        "check": "no external lookup",
+        "pass": true,
+        "evidence": false
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Normalize DOI values",
+            "verification": "Check that all non-null DOIs are lowercase and stripped of 'https://doi.org/' prefixes."
+          },
+          {
+            "order": 2,
+            "action": "Detect duplicates",
+            "verification": "Group records by normalized DOI. Verify C1 and C2 are grouped together due to identical metadata after normalization."
+          },
+          {
+            "order": 3,
+            "action": "Identify missing fields",
+            "verification": "Check each record for null values in 'doi', 'journal', or 'year'. Report C3 (missing doi) and C4 (missing journal, year)."
+          },
+          {
+            "order": 4,
+            "action": "Generate report",
+            "verification": "Ensure output JSON contains all required fields with accurate data derived solely from input."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 7,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "metadata treated as untrusted",
+        "pass": false,
+        "evidence": [
+          "untrusted"
+        ]
+      },
+      {
+        "check": "preserve display metadata",
+        "pass": false,
+        "evidence": [
+          "preserve display",
+          "original display"
+        ]
+      },
+      {
+        "check": "no fabricated fields",
+        "pass": false,
+        "evidence": [
+          "do not fabricate",
+          "no fabrication",
+          "leave missing"
+        ]
+      },
+      {
+        "check": "deterministic DOI-first deduplication",
+        "pass": true,
+        "evidence": [
+          "doi-first",
+          "doi as",
+          "normalized doi"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

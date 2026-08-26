@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/v8.4/runtime-context-envelope-v1.schema.json",
+  "title": "Runtime Context Envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "session_id",
+    "task_fingerprint",
+    "selected_capabilities",
+    "selected_unit_ids",
+    "selected_units",
+    "source_snapshot_hashes",
+    "adaptation_versions",
+    "definition_content_hashes",
+    "effective_permissions",
+    "required_gates",
+    "trust_label",
+    "context_text",
+    "context_sha256",
+    "loaded_context_bytes",
+    "prompt_token_count_or_null",
+    "tokenizer_id_or_null",
+    "token_unavailable_reason_or_null",
+    "cache_key_or_null",
+    "materialized_at_utc",
+    "cleanup_required"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_id": {"const": "v8.4-runtime-context-envelope-v1"},
+    "session_id": {"$ref": "#/$defs/session"},
+    "task_fingerprint": {"$ref": "#/$defs/sha256"},
+    "selected_capabilities": {"$ref": "#/$defs/nonemptyStrings"},
+    "selected_unit_ids": {"$ref": "#/$defs/nonemptyStrings"},
+    "selected_units": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/selectedUnit"}
+    },
+    "source_snapshot_hashes": {"$ref": "#/$defs/hashes"},
+    "adaptation_versions": {"$ref": "#/$defs/nonemptyStrings"},
+    "definition_content_hashes": {"$ref": "#/$defs/hashes"},
+    "effective_permissions": {"$ref": "#/$defs/permissions"},
+    "required_gates": {"type": "array", "items": {"$ref": "#/$defs/gate"}, "uniqueItems": true},
+    "trust_label": {"const": "untrusted-derived-approved-reference"},
+    "context_text": {"$ref": "#/$defs/nonempty"},
+    "context_sha256": {"$ref": "#/$defs/sha256"},
+    "loaded_context_bytes": {"type": "integer", "minimum": 0},
+    "prompt_token_count_or_null": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+    "tokenizer_id_or_null": {"anyOf": [{"$ref": "#/$defs/nonempty"}, {"type": "null"}]},
+    "token_unavailable_reason_or_null": {"anyOf": [{"$ref": "#/$defs/nonempty"}, {"type": "null"}]},
+    "cache_key_or_null": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "materialized_at_utc": {"type": "string", "format": "date-time"},
+    "cleanup_required": {"const": true}
+  },
+  "$defs": {
+    "nonempty": {"type": "string", "minLength": 1},
+    "session": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonemptyStrings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+    "hashes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sha256"}, "uniqueItems": true},
+    "permission": {"enum": ["browser_control", "credential_access", "database_write", "destructive", "external_write", "local_read", "local_write", "network", "process_exec", "production"]},
+    "permissions": {"type": "array", "items": {"$ref": "#/$defs/permission"}, "uniqueItems": true},
+    "gate": {"enum": ["NONE", "AUTO_ALLOWED", "PROFILE_GATED", "NETWORK_REVIEW", "MANUAL_ONLY", "HUMAN_GATE_REQUIRED"]},
+    "selectedUnit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit_id", "required", "content_sha256", "utf8_bytes"],
+      "properties": {
+        "unit_id": {"$ref": "#/$defs/nonempty"},
+        "required": {"type": "boolean"},
+        "content_sha256": {"$ref": "#/$defs/sha256"},
+        "utf8_bytes": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

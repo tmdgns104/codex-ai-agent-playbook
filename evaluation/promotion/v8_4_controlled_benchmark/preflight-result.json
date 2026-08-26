@@ -1,0 +1,13 @@
+{
+  "candidate_count": 2,
+  "category_count": 4,
+  "execution_state": "EXECUTION_BLOCKED_BY_TRANSPORT",
+  "failures": [],
+  "fixture_count": 12,
+  "generalization_holdout": false,
+  "holdout_frozen": true,
+  "native_vs_playbook_controlled_comparison": false,
+  "policy_frozen": true,
+  "repeats_per_variant": 3,
+  "status": "PASS"
+}

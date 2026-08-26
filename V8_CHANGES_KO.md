@@ -20,6 +20,43 @@ GitHub `main` 병합 commit:
 3d18991 V8: add context-aware routing and deterministic harness gates
 ```
 
+## 2026-08-25 후속 Experimental / Release Candidate 상태
+
+이 문서의 V8 Harness Core와 `main`의 안정 상태는 그대로 유지됩니다. 후속 연구는
+`v8.3-expert-skill-catalog` branch에서만 진행했으며 global rollout은 승인되지 않았습니다.
+
+### V8.3 완료
+
+- pinned external Expert Skill catalog와 Stage B benchmark를 완료했습니다.
+- Wave 2에서 adapted-playbook은 5/5 fixture PASS, 전체 비교는 8 PASS/12 FAIL이었습니다.
+- 이 결과는 단일 모델, 고정 fixture, validator/output contract 변화가 포함된 실험이므로
+  다른 모델이나 실제 작업으로의 일반화를 확정하지 않습니다.
+- 별도 DNN 실전 실험은 탐색적 보조 실험이며 V8.3/V8.4 본선 acceptance Evidence가 아닙니다.
+
+### V8.4-001~006 완료
+
+- 001: task-scoped Adapted Capability Context 설계
+- 002: versioned opt-in launch contract와 transport 경계 결정
+- 003: schema, canonical hash, deterministic validator와 fake backend fixtures
+- 004: pinned snapshot offline compiler와 provenance/permission 검증
+- 005: approved-only selector와 context budget planner
+- 006: session-local materializer, pre-launch coordinator, lifecycle, cleanup/quarantine
+
+V8.4-006 최종 회귀는 245 PASS/0 FAIL이지만 실제 Codex backend나 transport를 실행한
+결과가 아닙니다. 현재 `kd-sympy`와 `kd-citation-management` compiler output도 `DRAFT`
+상태이며 자동 승인하지 않습니다.
+
+### 미완료와 rollout blocker
+
+- V8.4-006A: 실제 Codex transport 검증 미구현
+- V8.4-007: Native Codex vs Current Playbook vs Adapted Context 통제 비교 미수행
+- 실제 backend capability와 context separation/injection invariant 미검증
+- 반복 실행, 복수 모델, 실제 task에 대한 일반화 Evidence 부족
+
+따라서 V8.4는 **Experimental / Release Candidate**이며 **Global rollout: NOT APPROVED**입니다.
+상세 상태와 rollback 방향은
+[`docs/V8.4_RELEASE_CANDIDATE_STATUS.md`](docs/V8.4_RELEASE_CANDIDATE_STATUS.md)를 참고하세요.
+
 ## 목표
 
 V8은 Everything Claude Code/Claude Code 계열에서 다음 운영 패턴만 선별해 Codex 친화적으로 흡수합니다.

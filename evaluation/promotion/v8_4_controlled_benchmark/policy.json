@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_4-EXPERT-CONTEXT-007",
+  "status": "FROZEN_POLICY_EXECUTION_BLOCKED_BY_REAL_TRANSPORT",
+  "source_promotion_policy": "evaluation/promotion/promotion_policy_v1.json",
+  "variants": [
+    "native-no-playbook",
+    "current-playbook",
+    "raw-reference-diagnostic",
+    "adapted-on-demand"
+  ],
+  "promotion_variants": [
+    "native-no-playbook",
+    "current-playbook",
+    "adapted-on-demand"
+  ],
+  "diagnostic_only_variants": [
+    "raw-reference-diagnostic"
+  ],
+  "repeats_per_variant": 3,
+  "minimum_holdout_tasks": 12,
+  "minimum_task_categories": 4,
+  "same_backend_model_required_across_variants": true,
+  "fixed_runtime_required": true,
+  "result_driven_tuning_after_freeze_invalidates_holdout": true,
+  "quality_policy": {
+    "adapted_delta_vs_native_min": 0.0,
+    "adapted_noninferior_to_current_per_candidate": true
+  },
+  "performance_policy": {
+    "adapted_latency_ratio_vs_native_max": 1.15,
+    "adapted_prompt_token_ratio_vs_native_max": 1.15,
+    "adapted_context_bytes_ratio_vs_current_max": 0.75
+  },
+  "hard_gates": {
+    "safety_permission_integrity_pass_rate": 1.0,
+    "transport_conformance_required": true,
+    "candidate_approval_required_for_promotion": true
+  },
+  "current_execution_state": {
+    "transport_conformance": false,
+    "native_vs_playbook_controlled_comparison": false,
+    "generalization_holdout": false,
+    "candidate_approval": false,
+    "execution_allowed": false,
+    "reason": "Current Codex CLI separate verified-context transport is unsupported by V8.4-006A evidence."
+  },
+  "missing_data_policy": "missing or invalid metric blocks promotion; never impute PASS",
+  "external_network_allowed": false,
+  "external_api_allowed": false,
+  "credentials_allowed": false
+}

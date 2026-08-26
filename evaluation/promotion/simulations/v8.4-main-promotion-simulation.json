@@ -1,0 +1,36 @@
+{
+  "simulation_type": "promotion-gate-only",
+  "not_main_promotion": true,
+  "source": "V8.4 RC evidence as documented on v8.3-expert-skill-catalog",
+  "current_rc": {
+    "decision": "NOT_READY",
+    "failure_count": 7,
+    "blocked_gates": [
+      "transport_conformance",
+      "native_vs_playbook_controlled_comparison",
+      "generalization_holdout",
+      "candidate_approval"
+    ],
+    "holdout_task_count": 0,
+    "holdout_category_count": 0,
+    "repeats_per_variant": 0,
+    "latency_ratio_vs_native": 1.0,
+    "token_ratio_vs_native": 1.0,
+    "context_ratio_vs_current": 0.05116627668909038
+  },
+  "hypothetical_ready_case": {
+    "decision": "READY_FOR_PROMOTION",
+    "transport_conformance": true,
+    "native_vs_playbook_controlled_comparison": true,
+    "generalization_holdout": true,
+    "candidate_approval": true,
+    "adapted_quality_delta_vs_native": 0.01,
+    "adapted_latency_ratio_vs_native": 1.05,
+    "adapted_prompt_token_ratio_vs_native": 1.05,
+    "adapted_context_ratio_vs_current": 0.05116627668909038,
+    "holdout_task_count": 24,
+    "holdout_category_count": 6,
+    "repeats_per_variant": 3
+  },
+  "interpretation": "The gate correctly refuses promotion on today's evidence and would permit promotion only after the explicit missing evidence is supplied. This is a simulation, not a release approval."
+}

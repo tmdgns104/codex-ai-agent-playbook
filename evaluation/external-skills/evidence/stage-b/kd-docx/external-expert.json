@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-docx",
+  "fixture_id": "bench004-09",
+  "variant": "external-expert",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:41:41.949Z",
+    "execution_end_utc": "2026-08-24T04:42:06.347Z",
+    "wall_time_ms": 24398.435
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 7244,
+    "loaded_context_sha256": "5b9ba52c1172b3675e8139b9c0c9b1959d0ba85d60375b9ab9269b8e9e4ff67e",
+    "selected_capabilities": [
+      "kd-docx"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "0618807ef2ac4dfeaa6e402407fc4677612a73e3cd5c3edc607aeeeba74b23a9",
+    "response_schema_sha256": "0045deaee8df4e5ef7cb81d21689aecc20e5cac61e6c61e722f6b185fcf0de92"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 3253,
+    "output_token_count_available": true,
+    "output_token_count": 760
+  },
+  "provider_duration": {
+    "total_duration_ns": 24386106400,
+    "load_duration_ns": 487513800,
+    "prompt_eval_duration_ns": 1229964000,
+    "eval_duration_ns": 22581968000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"document_title\": \"Quarterly Safety Review\",\n  \"page_size\": \"A4\",\n  \"heading_hierarchy\": [\n    {\n      \"text\": \"Executive Summary\",\n      \"level\": \"HeadingLevel1\"\n    },\n    {\n      \"text\": \"Findings\",\n      \"level\": \"HeadingLevel2\"\n    },\n    {\n      \"text\": \"Recommendations\",\n      \"level\": \"HeadingLevel3\"\n    }\n  ],\n  \"table_headers\": [\n    \"Control\",\n    \"Owner\",\n    \"Status\"\n  ],\n  \"body_format\": {\n    \"font\": \"Calibri\",\n    \"size_pt\": 11,\n    \"line_spacing\": 1.15\n  },\n  \"accessibility_checks\": [\n    \"Alt text for table caption\",\n    \"High contrast shading (ShadingType.CLEAR)\",\n    \"Semantic heading structure\"\n  ],\n  \"verification_plan\": [\n    \"Render document to PDF via soffice.py --headless --convert-to pdf\",\n    \"Verify all headings appear in TOC\",\n    \"Confirm table renders with correct column widths\",\n    \"Check for stray empty paragraphs or bullets\"\n  ],\n  \"external_template_required\": false,\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Initialize docx document with A4 page size and default styles\",\n      \"verification\": \"Document created successfully\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Insert 'Executive Summary' heading (HeadingLevel1)\",\n      \"verification\": \"Heading rendered at correct level\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Insert Executive Summary body text\",\n      \"verification\": \"Text content matches input\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Insert 'Findings' heading (HeadingLevel2)\",\n      \"verification\": \"Heading rendered at correct level\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Insert Findings body text\",\n      \"verification\": \"Text content matches input\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"Insert 'Recommendations' heading (HeadingLevel3)\",\n      \"verification\": \"Heading rendered at correct level\"\n    },\n    {\n      \"order\": 7,\n      \"action\": \"Insert Recommendations body text\",\n      \"verification\": \"Text content matches input\"\n    },\n    {\n      \"order\": 8,\n      \"action\": \"Insert table with headers and rows, set column widths in DXA units\",\n      \"verification\": \"Table renders with correct data and no broken columns\"\n    },\n    {\n      \"order\": 9,\n      \"action\": \"Add table caption 'Control Status'\",\n      \"verification\": \"Caption visible above table\"\n    },\n    {\n      \"order\": 10,\n      \"action\": \"Save document as output.docx\",\n      \"verification\": \"File created locally without external writes\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Ensure no external network calls are made\",\n    \"Do not use cloud storage or APIs\",\n    \"Validate final PDF conversion for layout integrity\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "document_title": "Quarterly Safety Review",
+    "page_size": "A4",
+    "heading_hierarchy": [
+      {
+        "text": "Executive Summary",
+        "level": "HeadingLevel1"
+      },
+      {
+        "text": "Findings",
+        "level": "HeadingLevel2"
+      },
+      {
+        "text": "Recommendations",
+        "level": "HeadingLevel3"
+      }
+    ],
+    "table_headers": [
+      "Control",
+      "Owner",
+      "Status"
+    ],
+    "body_format": {
+      "font": "Calibri",
+      "size_pt": 11,
+      "line_spacing": 1.15
+    },
+    "accessibility_checks": [
+      "Alt text for table caption",
+      "High contrast shading (ShadingType.CLEAR)",
+      "Semantic heading structure"
+    ],
+    "verification_plan": [
+      "Render document to PDF via soffice.py --headless --convert-to pdf",
+      "Verify all headings appear in TOC",
+      "Confirm table renders with correct column widths",
+      "Check for stray empty paragraphs or bullets"
+    ],
+    "external_template_required": false,
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Initialize docx document with A4 page size and default styles",
+        "verification": "Document created successfully"
+      },
+      {
+        "order": 2,
+        "action": "Insert 'Executive Summary' heading (HeadingLevel1)",
+        "verification": "Heading rendered at correct level"
+      },
+      {
+        "order": 3,
+        "action": "Insert Executive Summary body text",
+        "verification": "Text content matches input"
+      },
+      {
+        "order": 4,
+        "action": "Insert 'Findings' heading (HeadingLevel2)",
+        "verification": "Heading rendered at correct level"
+      },
+      {
+        "order": 5,
+        "action": "Insert Findings body text",
+        "verification": "Text content matches input"
+      },
+      {
+        "order": 6,
+        "action": "Insert 'Recommendations' heading (HeadingLevel3)",
+        "verification": "Heading rendered at correct level"
+      },
+      {
+        "order": 7,
+        "action": "Insert Recommendations body text",
+        "verification": "Text content matches input"
+      },
+      {
+        "order": 8,
+        "action": "Insert table with headers and rows, set column widths in DXA units",
+        "verification": "Table renders with correct data and no broken columns"
+      },
+      {
+        "order": 9,
+        "action": "Add table caption 'Control Status'",
+        "verification": "Caption visible above table"
+      },
+      {
+        "order": 10,
+        "action": "Save document as output.docx",
+        "verification": "File created locally without external writes"
+      }
+    ],
+    "additional_controls": [
+      "Ensure no external network calls are made",
+      "Do not use cloud storage or APIs",
+      "Validate final PDF conversion for layout integrity"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "exact title and A4",
+        "pass": true,
+        "evidence": [
+          "Quarterly Safety Review",
+          "A4"
+        ]
+      },
+      {
+        "check": "consistent heading hierarchy",
+        "pass": false,
+        "evidence": [
+          {
+            "text": "Executive Summary",
+            "level": "HeadingLevel1"
+          },
+          {
+            "text": "Findings",
+            "level": "HeadingLevel2"
+          },
+          {
+            "text": "Recommendations",
+            "level": "HeadingLevel3"
+          }
+        ]
+      },
+      {
+        "check": "exact table headers",
+        "pass": true,
+        "evidence": [
+          "Control",
+          "Owner",
+          "Status"
+        ]
+      },
+      {
+        "check": "readable body format",
+        "pass": true,
+        "evidence": {
+          "font": "Calibri",
+          "size_pt": 11,
+          "line_spacing": 1.15
+        }
+      },
+      {
+        "check": "accessibility checks",
+        "pass": true,
+        "evidence": [
+          "Alt text for table caption",
+          "High contrast shading (ShadingType.CLEAR)",
+          "Semantic heading structure"
+        ]
+      },
+      {
+        "check": "package and visual verification",
+        "pass": false,
+        "evidence": [
+          "Render document to PDF via soffice.py --headless --convert-to pdf",
+          "Verify all headings appear in TOC",
+          "Confirm table renders with correct column widths",
+          "Check for stray empty paragraphs or bullets"
+        ]
+      },
+      {
+        "check": "no external template",
+        "pass": true,
+        "evidence": false
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Initialize docx document with A4 page size and default styles",
+            "verification": "Document created successfully"
+          },
+          {
+            "order": 2,
+            "action": "Insert 'Executive Summary' heading (HeadingLevel1)",
+            "verification": "Heading rendered at correct level"
+          },
+          {
+            "order": 3,
+            "action": "Insert Executive Summary body text",
+            "verification": "Text content matches input"
+          },
+          {
+            "order": 4,
+            "action": "Insert 'Findings' heading (HeadingLevel2)",
+            "verification": "Heading rendered at correct level"
+          },
+          {
+            "order": 5,
+            "action": "Insert Findings body text",
+            "verification": "Text content matches input"
+          },
+          {
+            "order": 6,
+            "action": "Insert 'Recommendations' heading (HeadingLevel3)",
+            "verification": "Heading rendered at correct level"
+          },
+          {
+            "order": 7,
+            "action": "Insert Recommendations body text",
+            "verification": "Text content matches input"
+          },
+          {
+            "order": 8,
+            "action": "Insert table with headers and rows, set column widths in DXA units",
+            "verification": "Table renders with correct data and no broken columns"
+          },
+          {
+            "order": 9,
+            "action": "Add table caption 'Control Status'",
+            "verification": "Caption visible above table"
+          },
+          {
+            "order": 10,
+            "action": "Save document as output.docx",
+            "verification": "File created locally without external writes"
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 7,
+    "hard_checks_total": 9,
+    "quality_checks": [
+      {
+        "check": "built-in heading styles",
+        "pass": false,
+        "evidence": [
+          "built-in heading",
+          "heading 1"
+        ]
+      },
+      {
+        "check": "stable table widths",
+        "pass": true,
+        "evidence": [
+          "column width",
+          "stable width",
+          "explicit width"
+        ]
+      },
+      {
+        "check": "render every page",
+        "pass": false,
+        "evidence": [
+          "every page",
+          "all pages"
+        ]
+      },
+      {
+        "check": "clipping or overflow review",
+        "pass": false,
+        "evidence": [
+          "clipping",
+          "overflow"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

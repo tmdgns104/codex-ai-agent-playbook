@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-exploratory-data-analysis",
+  "fixture_id": "bench004-03",
+  "variant": "baseline-no-optional",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:36:25.327Z",
+    "execution_end_utc": "2026-08-24T04:36:57.281Z",
+    "wall_time_ms": 31953.167
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 0,
+    "loaded_context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_capabilities": [],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "a84c665a982dabbd34e57e58b0afb5e3f390f429b0869e649f83481cb351602b",
+    "response_schema_sha256": "ad489d048c859cb1f7355f3b49fa8424d7241ee84b277b9d07e63268913d9171"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1406,
+    "output_token_count_available": true,
+    "output_token_count": 531
+  },
+  "provider_duration": {
+    "total_duration_ns": 31925163200,
+    "load_duration_ns": 15251706500,
+    "prompt_eval_duration_ns": 1023151000,
+    "eval_duration_ns": 15631663000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"missing_columns\": [\n    \"age\"\n  ],\n  \"outlier_columns\": [\n    \"annual_income\"\n  ],\n  \"distribution_checks\": [\n    \"age\",\n    \"annual_income\"\n  ],\n  \"correlation_interpretation\": \"age__annual_income: 0.41 (Positive correlation exists; caution required when inferring causality or predicting income solely from age without controlling for other factors like region).\",\n  \"reproducibility_controls\": [\n    \"Use fixed random seed for any imputation or sampling steps.\",\n    \"Document all filtering thresholds (e.g., IQR method for outliers).\"\n  ],\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Load synthetic dataset and verify row/column counts match metadata.\",\"verification\": \"Assert row_count == 1000 and column names match schema.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Check missing values per column.\",\"verification\": \"Assert 'age' has 20 missing entries; others have 0.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Inspect distribution of numeric columns (age, annual_income).\",\"verification\": \"Confirm min/max/median match provided metadata.\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Detect outliers in 'annual_income' using IQR or Z-score.\",\"verification\": \"Flag rows where income > Q3 + 1.5*IQR (or similar).\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Analyze categorical distribution of 'region'.\",\"verification\": \"Confirm 4 unique categories.\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"Summarize binary target 'churned' counts.\",\"verification\": \"Assert positive_count == 180.\"\n    },\n    {\n      \"order\": 7,\n      \"action\": \"Compute pairwise correlations and interpret 'age__annual_income'.\",\"verification\": \"Confirm correlation coefficient approx 0.41; note non-causal implication.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Ensure no external network calls or API usage.\",\n    \"Do not modify original data (raw_data_mutation_allowed == false).\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "missing_columns": [
+      "age"
+    ],
+    "outlier_columns": [
+      "annual_income"
+    ],
+    "distribution_checks": [
+      "age",
+      "annual_income"
+    ],
+    "correlation_interpretation": "age__annual_income: 0.41 (Positive correlation exists; caution required when inferring causality or predicting income solely from age without controlling for other factors like region).",
+    "reproducibility_controls": [
+      "Use fixed random seed for any imputation or sampling steps.",
+      "Document all filtering thresholds (e.g., IQR method for outliers)."
+    ],
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Load synthetic dataset and verify row/column counts match metadata.",
+        "verification": "Assert row_count == 1000 and column names match schema."
+      },
+      {
+        "order": 2,
+        "action": "Check missing values per column.",
+        "verification": "Assert 'age' has 20 missing entries; others have 0."
+      },
+      {
+        "order": 3,
+        "action": "Inspect distribution of numeric columns (age, annual_income).",
+        "verification": "Confirm min/max/median match provided metadata."
+      },
+      {
+        "order": 4,
+        "action": "Detect outliers in 'annual_income' using IQR or Z-score.",
+        "verification": "Flag rows where income > Q3 + 1.5*IQR (or similar)."
+      },
+      {
+        "order": 5,
+        "action": "Analyze categorical distribution of 'region'.",
+        "verification": "Confirm 4 unique categories."
+      },
+      {
+        "order": 6,
+        "action": "Summarize binary target 'churned' counts.",
+        "verification": "Assert positive_count == 180."
+      },
+      {
+        "order": 7,
+        "action": "Compute pairwise correlations and interpret 'age__annual_income'.",
+        "verification": "Confirm correlation coefficient approx 0.41; note non-causal implication."
+      }
+    ],
+    "additional_controls": [
+      "Ensure no external network calls or API usage.",
+      "Do not modify original data (raw_data_mutation_allowed == false)."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "exact missing columns",
+        "pass": false,
+        "evidence": [
+          "age"
+        ]
+      },
+      {
+        "check": "annual_income outlier review",
+        "pass": true,
+        "evidence": [
+          "annual_income"
+        ]
+      },
+      {
+        "check": "distribution checks",
+        "pass": false,
+        "evidence": [
+          "age",
+          "annual_income"
+        ]
+      },
+      {
+        "check": "non-causal correlation interpretation",
+        "pass": false,
+        "evidence": "age__annual_income: 0.41 (positive correlation exists; caution required when inferring causality or predicting income solely from age without controlling for other factors like region)."
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Load synthetic dataset and verify row/column counts match metadata.",
+            "verification": "Assert row_count == 1000 and column names match schema."
+          },
+          {
+            "order": 2,
+            "action": "Check missing values per column.",
+            "verification": "Assert 'age' has 20 missing entries; others have 0."
+          },
+          {
+            "order": 3,
+            "action": "Inspect distribution of numeric columns (age, annual_income).",
+            "verification": "Confirm min/max/median match provided metadata."
+          },
+          {
+            "order": 4,
+            "action": "Detect outliers in 'annual_income' using IQR or Z-score.",
+            "verification": "Flag rows where income > Q3 + 1.5*IQR (or similar)."
+          },
+          {
+            "order": 5,
+            "action": "Analyze categorical distribution of 'region'.",
+            "verification": "Confirm 4 unique categories."
+          },
+          {
+            "order": 6,
+            "action": "Summarize binary target 'churned' counts.",
+            "verification": "Assert positive_count == 180."
+          },
+          {
+            "order": 7,
+            "action": "Compute pairwise correlations and interpret 'age__annual_income'.",
+            "verification": "Confirm correlation coefficient approx 0.41; note non-causal implication."
+          }
+        ]
+      },
+      {
+        "check": "reproducibility controls",
+        "pass": true,
+        "evidence": [
+          "Use fixed random seed for any imputation or sampling steps.",
+          "Document all filtering thresholds (e.g., IQR method for outliers)."
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 4,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "preserve raw data",
+        "pass": false,
+        "evidence": [
+          "read-only",
+          "preserve raw",
+          "raw data"
+        ]
+      },
+      {
+        "check": "split before learned transforms",
+        "pass": false,
+        "evidence": [
+          "training data only",
+          "training split",
+          "before preprocessing"
+        ]
+      },
+      {
+        "check": "record scope or provenance",
+        "pass": false,
+        "evidence": [
+          "scope",
+          "provenance",
+          "scan"
+        ]
+      },
+      {
+        "check": "report uncertainty or limitations",
+        "pass": false,
+        "evidence": [
+          "uncertainty",
+          "limitation"
+        ]
+      }
+    ],
+    "quality_score": 0,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

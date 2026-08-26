@@ -1,0 +1,4347 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "shortlist_count": 15,
+  "stage_a_count": 15,
+  "stage_b_count": 20,
+  "stage_b_executed": true,
+  "stage_b_executed_count": 20,
+  "stage_b_acceptance_pass_count": 2,
+  "stage_b_acceptance_fail_count": 18,
+  "stage_b_pending_count": 0,
+  "stage_b_runtime_approval": "evaluation/external-skills/reports/stage-b-runtime-approval.json",
+  "stage_b_evidence_root": "evaluation/external-skills/evidence/stage-b",
+  "external_scripts_executed": false,
+  "active_import_count": 0,
+  "stage_a": [
+    {
+      "candidate_id": "kd-scientific-writing",
+      "fixture_id": "bench004-01",
+      "domain_pack": "documentation-guide",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/scientific-writing",
+      "license_status": "MIT",
+      "dependency_burden": "low",
+      "dependencies": [],
+      "permissions": [],
+      "network_auth_notes": "No mandatory network/auth identified for writing workflow.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [
+        "guide-ppt-creator"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 13047,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-dask",
+      "fixture_id": "bench004-02",
+      "domain_pack": "big-data",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/dask",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "dask"
+      ],
+      "permissions": [],
+      "network_auth_notes": "No auth required by the skill metadata; runtime data access depends on user workload.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [
+        "data-pipeline",
+        "distributed-dataframe"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 15413,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "fixture_id": "bench004-03",
+      "domain_pack": "data-analysis",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/exploratory-data-analysis",
+      "license_status": "MIT",
+      "dependency_burden": "low",
+      "dependencies": [],
+      "permissions": [],
+      "network_auth_notes": "No mandatory network or auth identified in static scope.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 12633,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [
+          "root-cause-debugging",
+          "testing"
+        ],
+        "count": 2,
+        "result": "READY",
+        "bridge": true
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-exploratory-data-analysis/SKILL.md",
+        "sha256": "ed1c66ba8de6add4af4a19423ff6c43fc5dafb56a0a8e142992ebae907c1b194",
+        "loaded_context_bytes": 12633,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "fixture_id": "bench004-04",
+      "domain_pack": "machine-learning",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/scikit-learn",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "scikit-learn"
+      ],
+      "permissions": [],
+      "network_auth_notes": "No mandatory auth identified in static scope.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 10284,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [],
+        "count": 0,
+        "result": "READY",
+        "bridge": false
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-scikit-learn/SKILL.md",
+        "sha256": "a3064abd47efdad11265518208b327bd237656264a969942e6731367c7d97820",
+        "loaded_context_bytes": 10284,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-pytorch-lightning",
+      "fixture_id": "bench004-05",
+      "domain_pack": "deep-learning-gpu",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/pytorch-lightning",
+      "license_status": "MIT",
+      "dependency_burden": "high",
+      "dependencies": [
+        "pytorch",
+        "pytorch-lightning"
+      ],
+      "permissions": [],
+      "network_auth_notes": "GPU/package/model access depends on benchmark workload; no external script execution allowed.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "gpu-runtime-dependency"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 7489,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "fixture_id": "bench004-06",
+      "domain_pack": "scientific-computing",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/sympy",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "sympy"
+      ],
+      "permissions": [],
+      "network_auth_notes": "No mandatory network/auth identified.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 9824,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [],
+        "count": 0,
+        "result": "READY",
+        "bridge": false
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-sympy/SKILL.md",
+        "sha256": "5445c2f5dadb95d6653681c30060b4ab9686fe02ab6729d8fc41f4a2c19a90cf",
+        "loaded_context_bytes": 9824,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "fixture_id": "bench004-07",
+      "domain_pack": "research-literature",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/citation-management",
+      "license_status": "MIT",
+      "dependency_burden": "low",
+      "dependencies": [],
+      "permissions": [],
+      "network_auth_notes": "Online DOI/database lookup may be optional; benchmark should use supplied citations first.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "optional-network-research-workflow"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 14719,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [],
+        "count": 0,
+        "result": "READY",
+        "bridge": false
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-citation-management/SKILL.md",
+        "sha256": "e52459a2c78f6b51250ee418e53bb34494c2e35814e5b4a29cc293c6914c0141",
+        "loaded_context_bytes": 14719,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-scientific-slides",
+      "fixture_id": "bench004-08",
+      "domain_pack": "presentation-visual",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/scientific-slides",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [],
+      "permissions": [],
+      "network_auth_notes": "No mandatory auth identified in static scope.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "no-blocking-finding-in-current-static-scope"
+      ],
+      "overlap_with_current": [
+        "guide-ppt-creator"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 20563,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-docx",
+      "fixture_id": "bench004-09",
+      "domain_pack": "office-documents",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/docx",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "python-docx-or-equivalent"
+      ],
+      "permissions": [
+        "filesystem-write-for-user-requested-artifacts"
+      ],
+      "network_auth_notes": "No mandatory network/auth identified.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "artifact-write-capability-requires-user-path-scope"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 7244,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection 결과와 pinned snapshot byte size를 확인했으며 실행/외부 접근 없이 local fixture로만 Stage B 후보성을 평가할 수 있음.",
+      "stage_b_candidate": true,
+      "stage_b_selection_reason": "Stage A shows low/medium dependency burden, no current overlap, fixture applicability, and meaningful capability comparison value.",
+      "current_playbook_plan": {
+        "skills": [],
+        "count": 0,
+        "result": "NETWORK_REVIEW_REQUIRED",
+        "bridge": false
+      },
+      "baseline_definition": {
+        "variant": "baseline-no-optional",
+        "policy": "최소 공통 Playbook만 사용하고 optional Skill은 사용하지 않는다. fixture에 제공된 데이터와 요구사항만을 직접 처리한다.",
+        "skills": [],
+        "external_context_loaded": false,
+        "loaded_context_bytes": 0,
+        "external_access_attempted": false,
+        "safety_gate": "PASS",
+        "execution_status": "NOT_EXECUTED"
+      },
+      "external_expert_definition": {
+        "variant": "external-expert",
+        "snapshot_path": "evaluation/external-skills/snapshots/kd-docx/SKILL.md",
+        "sha256": "5b9ba52c1172b3675e8139b9c0c9b1959d0ba85d60375b9ab9269b8e9e4ff67e",
+        "loaded_context_bytes": 7244,
+        "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      },
+      "adapted_playbook_definition": {
+        "variant": "adapted-playbook",
+        "source": "evaluation-only transformation of the pinned external snapshot",
+        "remove": [
+          "provider-specific governance",
+          "unsafe execution instructions",
+          "unnecessary dependency instructions",
+          "duplicate explanatory content"
+        ],
+        "preserve": [
+          "task-relevant workflow",
+          "acceptance-relevant reasoning",
+          "verification steps",
+          "safety constraints"
+        ],
+        "external_context_loaded": true,
+        "network_access": false,
+        "scripts_executed": false,
+        "execution_status": "NOT_EXECUTED"
+      }
+    },
+    {
+      "candidate_id": "kd-pylabrobot",
+      "fixture_id": "bench004-10",
+      "domain_pack": "robotics-ros",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/pylabrobot",
+      "license_status": "MIT",
+      "dependency_burden": "high",
+      "dependencies": [
+        "pylabrobot",
+        "hardware-specific-drivers"
+      ],
+      "permissions": [
+        "potential-hardware-control"
+      ],
+      "network_auth_notes": "Hardware access is environment-specific; benchmark must be simulation/text-only.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "physical-device-control-capability"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 9757,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "kd-pydicom",
+      "fixture_id": "bench004-11",
+      "domain_pack": "computer-vision",
+      "source_id": "k-dense-scientific",
+      "source_revision": "390f5146bf3c1877cf15636a3dd7b775e4f0f185",
+      "upstream_path": "skills/pydicom",
+      "license_status": "MIT",
+      "dependency_burden": "medium",
+      "dependencies": [
+        "pydicom"
+      ],
+      "permissions": [
+        "filesystem-read-user-data"
+      ],
+      "network_auth_notes": "No mandatory network/auth identified; datasets can contain sensitive metadata and require fixture-only testing.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "medical-data-privacy-sensitive"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 15873,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "nv-aiq-deploy",
+      "fixture_id": "bench004-12",
+      "domain_pack": "cloud-infra",
+      "source_id": "nvidia-verified-skills",
+      "source_revision": "7149a886d50da8db72cdc1f20ff01cefeadfe6a9",
+      "upstream_path": "skills/aiq-deploy",
+      "license_status": "Apache-2.0 AND CC-BY-4.0",
+      "dependency_burden": "high",
+      "dependencies": [
+        "nvidia-aiq-stack"
+      ],
+      "permissions": [
+        "deployment-guidance"
+      ],
+      "network_auth_notes": "Real deployment may require cloud/container credentials; benchmark uses dry static fixtures only.",
+      "bundled_scripts": false,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "credential-bearing-real-world-workflow"
+      ],
+      "overlap_with_current": [
+        "docker-container"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 13321,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "nv-holoscan-setup",
+      "fixture_id": "bench004-13",
+      "domain_pack": "edge-ai-nvidia",
+      "source_id": "nvidia-verified-skills",
+      "source_revision": "7149a886d50da8db72cdc1f20ff01cefeadfe6a9",
+      "upstream_path": "skills/holoscan-setup",
+      "license_status": "Apache-2.0 AND CC-BY-4.0",
+      "dependency_burden": "high",
+      "dependencies": [
+        "holoscan",
+        "conda-or-container-runtime"
+      ],
+      "permissions": [
+        "shell-command-guidance"
+      ],
+      "network_auth_notes": "Bundled shell helpers check local Conda/NGC image state; not executed during intake.",
+      "bundled_scripts": true,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "bundled-shell-scripts-present-not-executed"
+      ],
+      "overlap_with_current": [
+        "docker-container"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 10174,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "nv-dynamo-interconnect-check",
+      "fixture_id": "bench004-14",
+      "domain_pack": "networking",
+      "source_id": "nvidia-verified-skills",
+      "source_revision": "7149a886d50da8db72cdc1f20ff01cefeadfe6a9",
+      "upstream_path": "skills/dynamo-interconnect-check",
+      "license_status": "Apache-2.0 AND CC-BY-4.0",
+      "dependency_burden": "high",
+      "dependencies": [
+        "nvidia-dynamo-stack"
+      ],
+      "permissions": [
+        "system-network-inspection-guidance"
+      ],
+      "network_auth_notes": "Bundled check_interconnect.py exists and was not executed.",
+      "bundled_scripts": true,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "bundled-scripts-present-not-executed",
+        "system-network-inspection-capability"
+      ],
+      "overlap_with_current": [],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 6405,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    },
+    {
+      "candidate_id": "nv-dynamo-troubleshoot",
+      "fixture_id": "bench004-15",
+      "domain_pack": "debug-performance",
+      "source_id": "nvidia-verified-skills",
+      "source_revision": "7149a886d50da8db72cdc1f20ff01cefeadfe6a9",
+      "upstream_path": "skills/dynamo-troubleshoot",
+      "license_status": "Apache-2.0 AND CC-BY-4.0",
+      "dependency_burden": "high",
+      "dependencies": [
+        "nvidia-dynamo-stack"
+      ],
+      "permissions": [
+        "diagnostic-collection-guidance"
+      ],
+      "network_auth_notes": "Bundled collect_dynamo_debug_bundle.py exists and was not executed.",
+      "bundled_scripts": true,
+      "external_scripts_executed": false,
+      "safety_findings": [
+        "bundled-scripts-present-not-executed",
+        "diagnostic-collection-may-expose-environment-data"
+      ],
+      "overlap_with_current": [
+        "root-cause-debugging",
+        "performance-profiling"
+      ],
+      "inspection_decision": "BENCHMARK_READY",
+      "loaded_context_bytes": 5130,
+      "token_count": null,
+      "token_count_reason": "No benchmark tokenizer/model configuration is declared in the repository.",
+      "fixture_applicable": true,
+      "safety_gate": "PASS_WITH_GUARDRAILS",
+      "stage_a_status": "COMPLETE",
+      "stage_a_notes": "정적 inspection은 BENCHMARK_READY이나 runtime/hardware/network/credential/환경 의존성이 있어 실행 시 safety guardrail이 필요함.",
+      "stage_b_candidate": false
+    }
+  ],
+  "stage_b": [
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:36:25.327Z",
+        "execution_end_utc": "2026-08-24T04:36:57.281Z",
+        "wall_time_ms": 31953.167
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "exact missing columns",
+            "pass": false,
+            "evidence": [
+              "age"
+            ]
+          },
+          {
+            "check": "annual_income outlier review",
+            "pass": true,
+            "evidence": [
+              "annual_income"
+            ]
+          },
+          {
+            "check": "distribution checks",
+            "pass": false,
+            "evidence": [
+              "age",
+              "annual_income"
+            ]
+          },
+          {
+            "check": "non-causal correlation interpretation",
+            "pass": false,
+            "evidence": "age__annual_income: 0.41 (positive correlation exists; caution required when inferring causality or predicting income solely from age without controlling for other factors like region)."
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Load synthetic dataset and verify row/column counts match metadata.",
+                "verification": "Assert row_count == 1000 and column names match schema."
+              },
+              {
+                "order": 2,
+                "action": "Check missing values per column.",
+                "verification": "Assert 'age' has 20 missing entries; others have 0."
+              },
+              {
+                "order": 3,
+                "action": "Inspect distribution of numeric columns (age, annual_income).",
+                "verification": "Confirm min/max/median match provided metadata."
+              },
+              {
+                "order": 4,
+                "action": "Detect outliers in 'annual_income' using IQR or Z-score.",
+                "verification": "Flag rows where income > Q3 + 1.5*IQR (or similar)."
+              },
+              {
+                "order": 5,
+                "action": "Analyze categorical distribution of 'region'.",
+                "verification": "Confirm 4 unique categories."
+              },
+              {
+                "order": 6,
+                "action": "Summarize binary target 'churned' counts.",
+                "verification": "Assert positive_count == 180."
+              },
+              {
+                "order": 7,
+                "action": "Compute pairwise correlations and interpret 'age__annual_income'.",
+                "verification": "Confirm correlation coefficient approx 0.41; note non-causal implication."
+              }
+            ]
+          },
+          {
+            "check": "reproducibility controls",
+            "pass": true,
+            "evidence": [
+              "Use fixed random seed for any imputation or sampling steps.",
+              "Document all filtering thresholds (e.g., IQR method for outliers)."
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 4,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "preserve raw data",
+            "pass": false,
+            "evidence": [
+              "read-only",
+              "preserve raw",
+              "raw data"
+            ]
+          },
+          {
+            "check": "split before learned transforms",
+            "pass": false,
+            "evidence": [
+              "training data only",
+              "training split",
+              "before preprocessing"
+            ]
+          },
+          {
+            "check": "record scope or provenance",
+            "pass": false,
+            "evidence": [
+              "scope",
+              "provenance",
+              "scan"
+            ]
+          },
+          {
+            "check": "report uncertainty or limitations",
+            "pass": false,
+            "evidence": [
+              "uncertainty",
+              "limitation"
+            ]
+          }
+        ],
+        "quality_score": 0,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [],
+      "loaded_context_bytes": 0,
+      "token_count": 1406,
+      "token_count_reason": null,
+      "execution_time_ms": 31953.167,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/baseline-no-optional.json",
+      "output_token_count": 531,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "current-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:36:57.305Z",
+        "execution_end_utc": "2026-08-24T04:37:17.338Z",
+        "wall_time_ms": 20033.02
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "exact missing columns",
+            "pass": true,
+            "evidence": [
+              "age",
+              "annual_income"
+            ]
+          },
+          {
+            "check": "annual_income outlier review",
+            "pass": true,
+            "evidence": [
+              "annual_income"
+            ]
+          },
+          {
+            "check": "distribution checks",
+            "pass": true,
+            "evidence": [
+              "age: numeric distribution (min=18, max=82, median=34)",
+              "annual_income: numeric distribution (min=?, max=410000, median=58000, values_above_250000=3)",
+              "churned: binary target distribution (positive_count=180)",
+              "region: categorical distribution (categories=4)"
+            ]
+          },
+          {
+            "check": "non-causal correlation interpretation",
+            "pass": false,
+            "evidence": "age__annual_income correlation is 0.41, indicating a moderate positive relationship. interpret with caution due to potential confounding variables and the small number of high-income outliers."
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Load synthetic data into analysis environment",
+                "verification": "Confirm row_count=1000 and column names match expected schema"
+              },
+              {
+                "order": 2,
+                "action": "Check for missing values in 'age' and 'annual_income'",
+                "verification": "Confirm missing counts: age=20, annual_income=85"
+              },
+              {
+                "order": 3,
+                "action": "Analyze distribution of 'age', 'annual_income', 'churned', and 'region'",
+                "verification": "Confirm min, max, median for numeric columns; count categories for 'region'"
+              },
+              {
+                "order": 4,
+                "action": "Identify outliers in 'annual_income' (values_above_250000=3)",
+                "verification": "Flag rows with annual_income > 250000 as potential outliers"
+              },
+              {
+                "order": 5,
+                "action": "Calculate pairwise correlation between 'age' and 'annual_income'",
+                "verification": "Confirm correlation coefficient is approximately 0.41"
+              },
+              {
+                "order": 6,
+                "action": "Interpret correlation with caution",
+                "verification": "Document potential confounding variables and limitations of correlation analysis"
+              }
+            ]
+          },
+          {
+            "check": "reproducibility controls",
+            "pass": true,
+            "evidence": [
+              "Use synthetic input data directly without external sources",
+              "Ensure no raw_data_mutation occurs (raw_data_mutation_allowed=false)",
+              "Document all steps in a script or notebook for reproducibility"
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 6,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "preserve raw data",
+            "pass": false,
+            "evidence": [
+              "read-only",
+              "preserve raw",
+              "raw data"
+            ]
+          },
+          {
+            "check": "split before learned transforms",
+            "pass": false,
+            "evidence": [
+              "training data only",
+              "training split",
+              "before preprocessing"
+            ]
+          },
+          {
+            "check": "record scope or provenance",
+            "pass": false,
+            "evidence": [
+              "scope",
+              "provenance",
+              "scan"
+            ]
+          },
+          {
+            "check": "report uncertainty or limitations",
+            "pass": true,
+            "evidence": [
+              "uncertainty",
+              "limitation"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "root-cause-debugging",
+        "testing"
+      ],
+      "loaded_context_bytes": 4473,
+      "token_count": 2397,
+      "token_count_reason": null,
+      "execution_time_ms": 20033.02,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/current-playbook.json",
+      "output_token_count": 640,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "external-expert",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:37:17.354Z",
+        "execution_end_utc": "2026-08-24T04:37:36.597Z",
+        "wall_time_ms": 19242.193
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "exact missing columns",
+            "pass": false,
+            "evidence": [
+              "age"
+            ]
+          },
+          {
+            "check": "annual_income outlier review",
+            "pass": true,
+            "evidence": [
+              "annual_income"
+            ]
+          },
+          {
+            "check": "distribution checks",
+            "pass": true,
+            "evidence": [
+              "age: min=18, max=82, median=34 (skewed right)",
+              "annual_income: min=?, max=410000, median=58000 (highly skewed, 3 values >250k)",
+              "region: 4 categories, no missing",
+              "churned: binary target, positive_count=180"
+            ]
+          },
+          {
+            "check": "non-causal correlation interpretation",
+            "pass": false,
+            "evidence": "age and annual_income show moderate positive correlation (r=0.41). this association is exploratory; causal claims are unsupported."
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Inspect column metadata (missingness, types, ranges)",
+                "verification": "Confirm missing counts match provided summary"
+              },
+              {
+                "order": 2,
+                "action": "Check distribution of numeric columns (age, annual_income)",
+                "verification": "Compare mean/median; flag skewness"
+              },
+              {
+                "order": 3,
+                "action": "Identify outliers in annual_income using IQR or MAD",
+                "verification": "Count extreme values; do not delete"
+              },
+              {
+                "order": 4,
+                "action": "Summarize categorical region frequencies",
+                "verification": "Ensure all 4 categories are represented"
+              },
+              {
+                "order": 5,
+                "action": "Report binary target balance (churned)",
+                "verification": "Confirm positive_count=180 out of 1000 rows"
+              },
+              {
+                "order": 6,
+                "action": "Interpret pairwise correlation cautiously",
+                "verification": "Note confounding and non-causal nature"
+              }
+            ]
+          },
+          {
+            "check": "reproducibility controls",
+            "pass": true,
+            "evidence": [
+              "Use fixed random seed for any stochastic operations",
+              "Document all analysis steps in a script",
+              "Avoid data mutation; keep raw data read-only"
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 5,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "preserve raw data",
+            "pass": true,
+            "evidence": [
+              "read-only",
+              "preserve raw",
+              "raw data"
+            ]
+          },
+          {
+            "check": "split before learned transforms",
+            "pass": false,
+            "evidence": [
+              "training data only",
+              "training split",
+              "before preprocessing"
+            ]
+          },
+          {
+            "check": "record scope or provenance",
+            "pass": false,
+            "evidence": [
+              "scope",
+              "provenance",
+              "scan"
+            ]
+          },
+          {
+            "check": "report uncertainty or limitations",
+            "pass": false,
+            "evidence": [
+              "uncertainty",
+              "limitation"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "kd-exploratory-data-analysis"
+      ],
+      "loaded_context_bytes": 12633,
+      "token_count": 4758,
+      "token_count_reason": null,
+      "execution_time_ms": 19242.193,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/external-expert.json",
+      "output_token_count": 554,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "variant": "adapted-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:37:36.608Z",
+        "execution_end_utc": "2026-08-24T04:37:56.048Z",
+        "wall_time_ms": 19440.452
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "exact missing columns",
+            "pass": false,
+            "evidence": [
+              "age"
+            ]
+          },
+          {
+            "check": "annual_income outlier review",
+            "pass": true,
+            "evidence": [
+              "annual_income"
+            ]
+          },
+          {
+            "check": "distribution checks",
+            "pass": true,
+            "evidence": [
+              "age: numeric distribution analysis (min=18, max=82, median=34)",
+              "annual_income: numeric distribution analysis (min=0, max=410000, median=58000)",
+              "region: categorical frequency distribution (4 categories)",
+              "churned: binary target balance check (positive_count=180)"
+            ]
+          },
+          {
+            "check": "non-causal correlation interpretation",
+            "pass": true,
+            "evidence": "age and annual_income show a moderate positive correlation (r=0.41). this indicates an association but does not imply causation."
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Load and inspect raw dataset structure (row_count=1000).",
+                "verification": "Confirm column names and types match input schema."
+              },
+              {
+                "order": 2,
+                "action": "Check for missing values in all columns.",
+                "verification": "Identify 'age' as having 20 missing entries; confirm others are complete."
+              },
+              {
+                "order": 3,
+                "action": "Analyze distributions for numeric columns (age, annual_income).",
+                "verification": "Compare min, max, median values against expected ranges."
+              },
+              {
+                "order": 4,
+                "action": "Identify outliers in 'annual_income' (values > 250,000).",
+                "verification": "Count instances (expected 3) and flag for further review."
+              },
+              {
+                "order": 5,
+                "action": "Analyze categorical distribution for 'region'.",
+                "verification": "Ensure all 4 categories are represented."
+              },
+              {
+                "order": 6,
+                "action": "Assess class balance for binary target 'churned'.",
+                "verification": "Confirm positive count is 180 out of 1000 rows."
+              },
+              {
+                "order": 7,
+                "action": "Interpret pairwise correlation between 'age' and 'annual_income'.",
+                "verification": "Report r=0.41 as an association only."
+              }
+            ]
+          },
+          {
+            "check": "reproducibility controls",
+            "pass": true,
+            "evidence": [
+              "Use deterministic random seed for any sampling or shuffling operations.",
+              "Ensure raw data is preserved without mutation.",
+              "Document all transformation steps explicitly."
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 6,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "preserve raw data",
+            "pass": true,
+            "evidence": [
+              "read-only",
+              "preserve raw",
+              "raw data"
+            ]
+          },
+          {
+            "check": "split before learned transforms",
+            "pass": false,
+            "evidence": [
+              "training data only",
+              "training split",
+              "before preprocessing"
+            ]
+          },
+          {
+            "check": "record scope or provenance",
+            "pass": false,
+            "evidence": [
+              "scope",
+              "provenance",
+              "scan"
+            ]
+          },
+          {
+            "check": "report uncertainty or limitations",
+            "pass": false,
+            "evidence": [
+              "uncertainty",
+              "limitation"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "adapted:kd-exploratory-data-analysis"
+      ],
+      "loaded_context_bytes": 594,
+      "token_count": 1496,
+      "token_count_reason": null,
+      "execution_time_ms": 19440.452,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-exploratory-data-analysis/adapted-playbook.json",
+      "output_token_count": 629,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:37:56.059Z",
+        "execution_end_utc": "2026-08-24T04:38:13.979Z",
+        "wall_time_ms": 17919.904
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "stratified 0.2 split",
+            "pass": false,
+            "evidence": [
+              "train_test_split with test_fraction=0.2",
+              0.2
+            ]
+          },
+          {
+            "check": "preprocessing inside pipeline",
+            "pass": true,
+            "evidence": "inside_pipeline_before_split"
+          },
+          {
+            "check": "numeric preprocessing",
+            "pass": false,
+            "evidence": [
+              "impute_missing_values",
+              "standardize"
+            ]
+          },
+          {
+            "check": "categorical preprocessing",
+            "pass": false,
+            "evidence": [
+              "handle_missing_values",
+              "one_hot_encode"
+            ]
+          },
+          {
+            "check": "logistic regression baseline",
+            "pass": true,
+            "evidence": "LogisticRegression"
+          },
+          {
+            "check": "ROC-AUC and PR-AUC",
+            "pass": false,
+            "evidence": [
+              "accuracy",
+              "precision",
+              "recall",
+              "f1_score"
+            ]
+          },
+          {
+            "check": "training-only cross-validation",
+            "pass": false,
+            "evidence": "none"
+          },
+          {
+            "check": "final-once test usage",
+            "pass": false,
+            "evidence": "single_holdout_for_final_evaluation_only"
+          },
+          {
+            "check": "seed 42",
+            "pass": true,
+            "evidence": 42
+          },
+          {
+            "check": "verification steps",
+            "pass": true,
+            "evidence": [
+              "verify_train_test_split_ratio_is_0.8_0.2",
+              "verify_no_data_leakage_from_target_to_features",
+              "verify_missing_values_handled_in_pipeline_not_before_split",
+              "verify_model_fits_on_processed_training_data_only",
+              "verify_metrics_computed_on_test_set_only"
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 5,
+        "hard_checks_total": 11,
+        "quality_checks": [
+          {
+            "check": "class imbalance handling",
+            "pass": false,
+            "evidence": [
+              "class imbalance",
+              "imbalanced",
+              "class weight"
+            ]
+          },
+          {
+            "check": "threshold selection",
+            "pass": false,
+            "evidence": [
+              "threshold"
+            ]
+          },
+          {
+            "check": "calibration",
+            "pass": false,
+            "evidence": [
+              "calibrat"
+            ]
+          },
+          {
+            "check": "model comparison or uncertainty",
+            "pass": false,
+            "evidence": [
+              "model comparison",
+              "confidence interval",
+              "uncertainty"
+            ]
+          }
+        ],
+        "quality_score": 0,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [],
+      "loaded_context_bytes": 0,
+      "token_count": 1289,
+      "token_count_reason": null,
+      "execution_time_ms": 17919.904,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/baseline-no-optional.json",
+      "output_token_count": 596,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "variant": "current-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:38:13.992Z",
+        "execution_end_utc": "2026-08-24T04:38:28.639Z",
+        "wall_time_ms": 14647.419
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "stratified 0.2 split",
+            "pass": true,
+            "evidence": [
+              "train_test_split with test_fraction=0.2, stratify on target",
+              0.2
+            ]
+          },
+          {
+            "check": "preprocessing inside pipeline",
+            "pass": true,
+            "evidence": "inside_pipeline_before_split"
+          },
+          {
+            "check": "numeric preprocessing",
+            "pass": false,
+            "evidence": [
+              "impute_missing_values",
+              "standardize"
+            ]
+          },
+          {
+            "check": "categorical preprocessing",
+            "pass": false,
+            "evidence": [
+              "handle_missing_values",
+              "one_hot_encode"
+            ]
+          },
+          {
+            "check": "logistic regression baseline",
+            "pass": true,
+            "evidence": "LogisticRegression with L2 regularization"
+          },
+          {
+            "check": "ROC-AUC and PR-AUC",
+            "pass": false,
+            "evidence": [
+              "accuracy",
+              "precision",
+              "recall",
+              "f1_score",
+              "roc_auc"
+            ]
+          },
+          {
+            "check": "training-only cross-validation",
+            "pass": false,
+            "evidence": "none"
+          },
+          {
+            "check": "final-once test usage",
+            "pass": false,
+            "evidence": "single_holdout_for_final_evaluation_only"
+          },
+          {
+            "check": "seed 42",
+            "pass": true,
+            "evidence": 42
+          },
+          {
+            "check": "verification steps",
+            "pass": true,
+            "evidence": [
+              "verify_train_test_split_ratio",
+              "verify_no_data_leakage_in_preprocessing",
+              "verify_baseline_model_fits_synthetic_constraints"
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 6,
+        "hard_checks_total": 11,
+        "quality_checks": [
+          {
+            "check": "class imbalance handling",
+            "pass": false,
+            "evidence": [
+              "class imbalance",
+              "imbalanced",
+              "class weight"
+            ]
+          },
+          {
+            "check": "threshold selection",
+            "pass": false,
+            "evidence": [
+              "threshold"
+            ]
+          },
+          {
+            "check": "calibration",
+            "pass": false,
+            "evidence": [
+              "calibrat"
+            ]
+          },
+          {
+            "check": "model comparison or uncertainty",
+            "pass": false,
+            "evidence": [
+              "model comparison",
+              "confidence interval",
+              "uncertainty"
+            ]
+          }
+        ],
+        "quality_score": 0,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [],
+      "loaded_context_bytes": 0,
+      "token_count": 1288,
+      "token_count_reason": null,
+      "execution_time_ms": 14647.419,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/current-playbook.json",
+      "output_token_count": 475,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "variant": "external-expert",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:38:28.655Z",
+        "execution_end_utc": "2026-08-24T04:38:49.820Z",
+        "wall_time_ms": 21165.62
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "stratified 0.2 split",
+            "pass": true,
+            "evidence": [
+              "stratified_train_test_split",
+              0.2
+            ]
+          },
+          {
+            "check": "preprocessing inside pipeline",
+            "pass": true,
+            "evidence": "inside_pipeline"
+          },
+          {
+            "check": "numeric preprocessing",
+            "pass": true,
+            "evidence": [
+              "SimpleImputer(strategy='median')",
+              "StandardScaler()"
+            ]
+          },
+          {
+            "check": "categorical preprocessing",
+            "pass": true,
+            "evidence": [
+              "SimpleImputer(strategy='most_frequent')",
+              "OneHotEncoder(handle_unknown='ignore')"
+            ]
+          },
+          {
+            "check": "logistic regression baseline",
+            "pass": true,
+            "evidence": "LogisticRegression(max_iter=1000, random_state=42)"
+          },
+          {
+            "check": "ROC-AUC and PR-AUC",
+            "pass": false,
+            "evidence": [
+              "accuracy_score",
+              "precision_score",
+              "recall_score",
+              "f1_score",
+              "roc_auc_score"
+            ]
+          },
+          {
+            "check": "training-only cross-validation",
+            "pass": true,
+            "evidence": "train_only"
+          },
+          {
+            "check": "final-once test usage",
+            "pass": false,
+            "evidence": "single_holdout_evaluation"
+          },
+          {
+            "check": "seed 42",
+            "pass": true,
+            "evidence": 42
+          },
+          {
+            "check": "verification steps",
+            "pass": true,
+            "evidence": [
+              "verify_train_test_split_preserves_class_distribution",
+              "verify_preprocessing_fits_only_on_training_data",
+              "verify_no_external_network_calls",
+              "verify_model_evaluated_on_held_out_test_set"
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 9,
+        "hard_checks_total": 11,
+        "quality_checks": [
+          {
+            "check": "class imbalance handling",
+            "pass": true,
+            "evidence": [
+              "class imbalance",
+              "imbalanced",
+              "class weight"
+            ]
+          },
+          {
+            "check": "threshold selection",
+            "pass": false,
+            "evidence": [
+              "threshold"
+            ]
+          },
+          {
+            "check": "calibration",
+            "pass": false,
+            "evidence": [
+              "calibrat"
+            ]
+          },
+          {
+            "check": "model comparison or uncertainty",
+            "pass": false,
+            "evidence": [
+              "model comparison",
+              "confidence interval",
+              "uncertainty"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "kd-scikit-learn"
+      ],
+      "loaded_context_bytes": 10284,
+      "token_count": 3586,
+      "token_count_reason": null,
+      "execution_time_ms": 21165.62,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/external-expert.json",
+      "output_token_count": 662,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "variant": "adapted-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:38:49.829Z",
+        "execution_end_utc": "2026-08-24T04:39:07.306Z",
+        "wall_time_ms": 17476.161
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "stratified 0.2 split",
+            "pass": true,
+            "evidence": [
+              "Stratified train/test split",
+              0.2
+            ]
+          },
+          {
+            "check": "preprocessing inside pipeline",
+            "pass": true,
+            "evidence": "Inside Pipeline/ColumnTransformer fitted only on training data"
+          },
+          {
+            "check": "numeric preprocessing",
+            "pass": true,
+            "evidence": [
+              "Imputer(strategy='median')",
+              "StandardScaler"
+            ]
+          },
+          {
+            "check": "categorical preprocessing",
+            "pass": true,
+            "evidence": [
+              "Imputer(strategy='most_frequent')",
+              "OneHotEncoder(handle='drop', sparse_output=False)"
+            ]
+          },
+          {
+            "check": "logistic regression baseline",
+            "pass": true,
+            "evidence": "LogisticRegression(random_state=42)"
+          },
+          {
+            "check": "ROC-AUC and PR-AUC",
+            "pass": true,
+            "evidence": [
+              "ROC-AUC",
+              "PR-AUC",
+              "F1-score (weighted)"
+            ]
+          },
+          {
+            "check": "training-only cross-validation",
+            "pass": true,
+            "evidence": "Training data only"
+          },
+          {
+            "check": "final-once test usage",
+            "pass": false,
+            "evidence": "Single use for final evaluation after model selection and hyperparameter tuning"
+          },
+          {
+            "check": "seed 42",
+            "pass": true,
+            "evidence": 42
+          },
+          {
+            "check": "verification steps",
+            "pass": true,
+            "evidence": [
+              "Confirm stratified split preserves class distribution in test set",
+              "Verify no leakage from target to preprocessing steps",
+              "Ensure ColumnTransformer is fit only on training folds"
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 10,
+        "hard_checks_total": 11,
+        "quality_checks": [
+          {
+            "check": "class imbalance handling",
+            "pass": false,
+            "evidence": [
+              "class imbalance",
+              "imbalanced",
+              "class weight"
+            ]
+          },
+          {
+            "check": "threshold selection",
+            "pass": true,
+            "evidence": [
+              "threshold"
+            ]
+          },
+          {
+            "check": "calibration",
+            "pass": false,
+            "evidence": [
+              "calibrat"
+            ]
+          },
+          {
+            "check": "model comparison or uncertainty",
+            "pass": false,
+            "evidence": [
+              "model comparison",
+              "confidence interval",
+              "uncertainty"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "adapted:kd-scikit-learn"
+      ],
+      "loaded_context_bytes": 591,
+      "token_count": 1388,
+      "token_count_reason": null,
+      "execution_time_ms": 17476.161,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-scikit-learn/adapted-playbook.json",
+      "output_token_count": 571,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:39:07.315Z",
+        "execution_end_utc": "2026-08-24T04:39:18.769Z",
+        "wall_time_ms": 11453.418
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "symbol x and real domain",
+            "pass": true,
+            "evidence": [
+              "x",
+              "real"
+            ]
+          },
+          {
+            "check": "exact symbolic method",
+            "pass": false,
+            "evidence": "factorization_and_roots"
+          },
+          {
+            "check": "exact roots",
+            "pass": true,
+            "evidence": [
+              "-2",
+              "-1",
+              "1",
+              "2"
+            ]
+          },
+          {
+            "check": "zero substitution residuals",
+            "pass": false,
+            "evidence": {
+              "method": "substitution_check",
+              "description": "각 근을 원래 식에 대입하여 결과가 0인지 확인",
+              "expected_result": "0"
+            }
+          },
+          {
+            "check": "factorization present",
+            "pass": true,
+            "evidence": "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "symbol_definition",
+                "verification": "Symbol('x') 가 생성되었는지 확인"
+              },
+              {
+                "order": 2,
+                "action": "expression_simplification",
+                "verification": "x**4 - 5*x**2 + 4 가 factor() 로 분해됨을 확인"
+              },
+              {
+                "order": 3,
+                "action": "root_extraction",
+                "verification": "solve() 또는 factor() 결과에서 근 추출"
+              },
+              {
+                "order": 4,
+                "action": "result_verification",
+                "verification": "각 근을 대입하여 식의 값이 0인지 확인"
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 5,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "explicit assumptions",
+            "pass": false,
+            "evidence": [
+              "assumption",
+              "real domain"
+            ]
+          },
+          {
+            "check": "exact arithmetic",
+            "pass": false,
+            "evidence": [
+              "exact arithmetic",
+              "no floating",
+              "integer"
+            ]
+          },
+          {
+            "check": "factor before solve",
+            "pass": false,
+            "evidence": [
+              "factor before",
+              "factor the"
+            ]
+          },
+          {
+            "check": "verify original expression",
+            "pass": true,
+            "evidence": [
+              "original expression",
+              "substitut"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [],
+      "loaded_context_bytes": 0,
+      "token_count": 1219,
+      "token_count_reason": null,
+      "execution_time_ms": 11453.418,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-sympy/baseline-no-optional.json",
+      "output_token_count": 372,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "variant": "current-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:39:18.779Z",
+        "execution_end_utc": "2026-08-24T04:39:33.418Z",
+        "wall_time_ms": 14638.501
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "symbol x and real domain",
+            "pass": true,
+            "evidence": [
+              "x",
+              "real"
+            ]
+          },
+          {
+            "check": "exact symbolic method",
+            "pass": false,
+            "evidence": "factorization_and_roots"
+          },
+          {
+            "check": "exact roots",
+            "pass": true,
+            "evidence": [
+              "-2",
+              "-1",
+              "1",
+              "2"
+            ]
+          },
+          {
+            "check": "zero substitution residuals",
+            "pass": false,
+            "evidence": {
+              "description": "Substitute each root back into the original expression and verify that the result equals zero.",
+              "formula": "f(x) = x**4 - 5*x**2 + 4, check f(root) == 0"
+            }
+          },
+          {
+            "check": "factorization present",
+            "pass": true,
+            "evidence": "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Define symbol 'x' in the real domain.",
+                "verification": "Check that x is declared as a Symbol with real=True."
+              },
+              {
+                "order": 2,
+                "action": "Define the expression f(x) = x**4 - 5*x**2 + 4.",
+                "verification": "Confirm the polynomial matches the input specification."
+              },
+              {
+                "order": 3,
+                "action": "Factorize the expression using sympy.factor().",
+                "verification": "Ensure the output is (x - 1)*(x + 1)*(x - 2)*(x + 2)."
+              },
+              {
+                "order": 4,
+                "action": "Extract roots from the factored form.",
+                "verification": "Identify x = ±1 and x = ±2 as the solutions to f(x) = 0."
+              },
+              {
+                "order": 5,
+                "action": "Verify each root by substituting into the original expression.",
+                "verification": "Confirm that substituting any root yields exactly zero."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 5,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "explicit assumptions",
+            "pass": true,
+            "evidence": [
+              "assumption",
+              "real domain"
+            ]
+          },
+          {
+            "check": "exact arithmetic",
+            "pass": false,
+            "evidence": [
+              "exact arithmetic",
+              "no floating",
+              "integer"
+            ]
+          },
+          {
+            "check": "factor before solve",
+            "pass": false,
+            "evidence": [
+              "factor before",
+              "factor the"
+            ]
+          },
+          {
+            "check": "verify original expression",
+            "pass": true,
+            "evidence": [
+              "original expression",
+              "substitut"
+            ]
+          }
+        ],
+        "quality_score": 2,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [],
+      "loaded_context_bytes": 0,
+      "token_count": 1218,
+      "token_count_reason": null,
+      "execution_time_ms": 14638.501,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-sympy/current-playbook.json",
+      "output_token_count": 487,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "variant": "external-expert",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:39:33.432Z",
+        "execution_end_utc": "2026-08-24T04:39:49.603Z",
+        "wall_time_ms": 16170.434
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "symbol x and real domain",
+            "pass": true,
+            "evidence": [
+              "x",
+              "real"
+            ]
+          },
+          {
+            "check": "exact symbolic method",
+            "pass": true,
+            "evidence": "Symbolic factorization followed by exact root extraction using SymPy's solveset and simplify functions, with verification via residual evaluation."
+          },
+          {
+            "check": "exact roots",
+            "pass": false,
+            "evidence": [
+              "/",
+              "/",
+              "/"
+            ]
+          },
+          {
+            "check": "zero substitution residuals",
+            "pass": false,
+            "evidence": {
+              "method": "Substitute each root into the original expression and simplify to confirm zero.",
+              "expected_result": "All residuals must equal exactly 0."
+            }
+          },
+          {
+            "check": "factorization present",
+            "pass": true,
+            "evidence": "(x - 1)*(x + 2)*(x - 2)"
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Define symbol x with real domain assumption using sympy.symbols('x', real=True).",
+                "verification": "Confirm x is defined and has real=True attribute."
+              },
+              {
+                "order": 2,
+                "action": "Construct expression expr = x**4 - 5*x**2 + 4.",
+                "verification": "Print expr to confirm it matches the input polynomial."
+              },
+              {
+                "order": 3,
+                "action": "Factorize expr using sympy.factor(expr).",
+                "verification": "Confirm factorization yields (x - 1)*(x + 2)*(x - 2)."
+              },
+              {
+                "order": 4,
+                "action": "Solve equation expr = 0 for x using sympy.solve or sympy.solveset.",
+                "verification": "Confirm solutions are [1, -2, 2]."
+              },
+              {
+                "order": 5,
+                "action": "Verify each root by substituting into expr and simplifying to zero.",
+                "verification": "All residuals must be exactly 0."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 5,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "explicit assumptions",
+            "pass": true,
+            "evidence": [
+              "assumption",
+              "real domain"
+            ]
+          },
+          {
+            "check": "exact arithmetic",
+            "pass": true,
+            "evidence": [
+              "exact arithmetic",
+              "no floating",
+              "integer"
+            ]
+          },
+          {
+            "check": "factor before solve",
+            "pass": false,
+            "evidence": [
+              "factor before",
+              "factor the"
+            ]
+          },
+          {
+            "check": "verify original expression",
+            "pass": true,
+            "evidence": [
+              "original expression",
+              "substitut"
+            ]
+          }
+        ],
+        "quality_score": 3,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "kd-sympy"
+      ],
+      "loaded_context_bytes": 9824,
+      "token_count": 3981,
+      "token_count_reason": null,
+      "execution_time_ms": 16170.434,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-sympy/external-expert.json",
+      "output_token_count": 472,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "variant": "adapted-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:39:49.612Z",
+        "execution_end_utc": "2026-08-24T04:40:03.293Z",
+        "wall_time_ms": 13680.839
+      },
+      "acceptance_pass": true,
+      "acceptance_details": {
+        "acceptance_pass": true,
+        "hard_checks": [
+          {
+            "check": "symbol x and real domain",
+            "pass": true,
+            "evidence": [
+              "x",
+              "real"
+            ]
+          },
+          {
+            "check": "exact symbolic method",
+            "pass": true,
+            "evidence": "factorization_and_exact_solve"
+          },
+          {
+            "check": "exact roots",
+            "pass": true,
+            "evidence": [
+              "-2",
+              "-1",
+              "1",
+              "2"
+            ]
+          },
+          {
+            "check": "zero substitution residuals",
+            "pass": true,
+            "evidence": {
+              "-2": "0",
+              "-1": "0",
+              "1": "0",
+              "2": "0"
+            }
+          },
+          {
+            "check": "factorization present",
+            "pass": true,
+            "evidence": "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "symbol_definition",
+                "verification": "Symbol('x') created with real assumption."
+              },
+              {
+                "order": 2,
+                "action": "expression_construction",
+                "verification": "Expression x**4 - 5*x**2 + 4 constructed using exact arithmetic."
+              },
+              {
+                "order": 3,
+                "action": "factorization",
+                "verification": "Expression factored into (x - 1)*(x + 1)*(x - 2)*(x + 2)."
+              },
+              {
+                "order": 4,
+                "action": "root_extraction",
+                "verification": "Roots identified as {-2, -1, 1, 2}."
+              },
+              {
+                "order": 5,
+                "action": "substitution_verification",
+                "verification": "Each root substituted back into original expression; symbolic simplification confirms result equals zero for all roots."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 7,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "explicit assumptions",
+            "pass": true,
+            "evidence": [
+              "assumption",
+              "real domain"
+            ]
+          },
+          {
+            "check": "exact arithmetic",
+            "pass": true,
+            "evidence": [
+              "exact arithmetic",
+              "no floating",
+              "integer"
+            ]
+          },
+          {
+            "check": "factor before solve",
+            "pass": false,
+            "evidence": [
+              "factor before",
+              "factor the"
+            ]
+          },
+          {
+            "check": "verify original expression",
+            "pass": true,
+            "evidence": [
+              "original expression",
+              "substitut"
+            ]
+          }
+        ],
+        "quality_score": 3,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "adapted:kd-sympy"
+      ],
+      "loaded_context_bytes": 477,
+      "token_count": 1285,
+      "token_count_reason": null,
+      "execution_time_ms": 13680.839,
+      "dependency_burden": "medium",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "PASS",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-sympy/adapted-playbook.json",
+      "output_token_count": 446,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:40:03.320Z",
+        "execution_end_utc": "2026-08-24T04:40:15.385Z",
+        "wall_time_ms": 12064.733
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "normalized local DOI values",
+            "pass": false,
+            "evidence": {
+              "C1": "10.1000/SAFE.001",
+              "C2": "10.1000/safe.001"
+            }
+          },
+          {
+            "check": "duplicate group C1 C2",
+            "pass": true,
+            "evidence": [
+              [
+                "C1",
+                "C2"
+              ]
+            ]
+          },
+          {
+            "check": "missing DOI on C3",
+            "pass": true,
+            "evidence": [
+              "doi"
+            ]
+          },
+          {
+            "check": "missing journal and year on C4",
+            "pass": true,
+            "evidence": [
+              "journal",
+              "year"
+            ]
+          },
+          {
+            "check": "no external lookup",
+            "pass": true,
+            "evidence": false
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Normalize",
+                "verification": "Check that all DOI strings are lowercase and stripped of 'https://doi.org/' prefix."
+              },
+              {
+                "order": 2,
+                "action": "DetectDuplicates",
+                "verification": "Identify groups where normalized DOIs match exactly."
+              },
+              {
+                "order": 3,
+                "action": "FlagMissingMetadata",
+                "verification": "Verify that any entry with null values for 'doi', 'journal', or 'year' is recorded in the missing_fields map."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 6,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "metadata treated as untrusted",
+            "pass": false,
+            "evidence": [
+              "untrusted"
+            ]
+          },
+          {
+            "check": "preserve display metadata",
+            "pass": false,
+            "evidence": [
+              "preserve display",
+              "original display"
+            ]
+          },
+          {
+            "check": "no fabricated fields",
+            "pass": false,
+            "evidence": [
+              "do not fabricate",
+              "no fabrication",
+              "leave missing"
+            ]
+          },
+          {
+            "check": "deterministic DOI-first deduplication",
+            "pass": true,
+            "evidence": [
+              "doi-first",
+              "doi as",
+              "normalized doi"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [],
+      "loaded_context_bytes": 0,
+      "token_count": 1430,
+      "token_count_reason": null,
+      "execution_time_ms": 12064.733,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-citation-management/baseline-no-optional.json",
+      "output_token_count": 377,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "variant": "current-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:40:15.397Z",
+        "execution_end_utc": "2026-08-24T04:40:30.813Z",
+        "wall_time_ms": 15416.218
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "normalized local DOI values",
+            "pass": false,
+            "evidence": {
+              "C1": "10.1000/SAFE.001",
+              "C2": "10.1000/safe.001"
+            }
+          },
+          {
+            "check": "duplicate group C1 C2",
+            "pass": true,
+            "evidence": [
+              [
+                "C1",
+                "C2"
+              ]
+            ]
+          },
+          {
+            "check": "missing DOI on C3",
+            "pass": true,
+            "evidence": [
+              "doi"
+            ]
+          },
+          {
+            "check": "missing journal and year on C4",
+            "pass": true,
+            "evidence": [
+              "journal",
+              "year"
+            ]
+          },
+          {
+            "check": "no external lookup",
+            "pass": true,
+            "evidence": false
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Normalize DOI values",
+                "verification": "Ensure all DOIs are in standard format (e.g., 'https://doi.org/...' converted to '10.xxxx/...'). Case-insensitive comparison applied."
+              },
+              {
+                "order": 2,
+                "action": "Detect duplicates",
+                "verification": "Group citations by normalized DOI. Identify groups containing more than one entry."
+              },
+              {
+                "order": 3,
+                "action": "Identify missing metadata",
+                "verification": "Scan for null values in 'doi', 'journal', and 'year' fields. Record specific missing fields per citation ID."
+              },
+              {
+                "order": 4,
+                "action": "Generate report",
+                "verification": "Output JSON object containing normalized DOIs, duplicate groups, missing field lists, deduplication rules, and workflow steps."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 6,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "metadata treated as untrusted",
+            "pass": false,
+            "evidence": [
+              "untrusted"
+            ]
+          },
+          {
+            "check": "preserve display metadata",
+            "pass": false,
+            "evidence": [
+              "preserve display",
+              "original display"
+            ]
+          },
+          {
+            "check": "no fabricated fields",
+            "pass": false,
+            "evidence": [
+              "do not fabricate",
+              "no fabrication",
+              "leave missing"
+            ]
+          },
+          {
+            "check": "deterministic DOI-first deduplication",
+            "pass": true,
+            "evidence": [
+              "doi-first",
+              "doi as",
+              "normalized doi"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [],
+      "loaded_context_bytes": 0,
+      "token_count": 1429,
+      "token_count_reason": null,
+      "execution_time_ms": 15416.218,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-citation-management/current-playbook.json",
+      "output_token_count": 500,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "variant": "external-expert",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:40:30.825Z",
+        "execution_end_utc": "2026-08-24T04:40:44.561Z",
+        "wall_time_ms": 13736.306
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "normalized local DOI values",
+            "pass": false,
+            "evidence": {
+              "C1": "10.1000/SAFE.001",
+              "C2": "10.1000/safe.001"
+            }
+          },
+          {
+            "check": "duplicate group C1 C2",
+            "pass": true,
+            "evidence": [
+              [
+                "C1",
+                "C2"
+              ]
+            ]
+          },
+          {
+            "check": "missing DOI on C3",
+            "pass": true,
+            "evidence": [
+              "doi"
+            ]
+          },
+          {
+            "check": "missing journal and year on C4",
+            "pass": true,
+            "evidence": [
+              "journal",
+              "year"
+            ]
+          },
+          {
+            "check": "no external lookup",
+            "pass": true,
+            "evidence": false
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "normalize_dois",
+                "verification": "All DOI values converted to lowercase and URL prefixes removed."
+              },
+              {
+                "order": 2,
+                "action": "detect_duplicates",
+                "verification": "Group citations by normalized DOI; flag groups with size > 1."
+              },
+              {
+                "order": 3,
+                "action": "identify_missing_metadata",
+                "verification": "Flag any citation missing required fields: doi, journal, year."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 6,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "metadata treated as untrusted",
+            "pass": false,
+            "evidence": [
+              "untrusted"
+            ]
+          },
+          {
+            "check": "preserve display metadata",
+            "pass": false,
+            "evidence": [
+              "preserve display",
+              "original display"
+            ]
+          },
+          {
+            "check": "no fabricated fields",
+            "pass": false,
+            "evidence": [
+              "do not fabricate",
+              "no fabrication",
+              "leave missing"
+            ]
+          },
+          {
+            "check": "deterministic DOI-first deduplication",
+            "pass": true,
+            "evidence": [
+              "doi-first",
+              "doi as",
+              "normalized doi"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "kd-citation-management"
+      ],
+      "loaded_context_bytes": 14719,
+      "token_count": 4773,
+      "token_count_reason": null,
+      "execution_time_ms": 13736.306,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-citation-management/external-expert.json",
+      "output_token_count": 371,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "variant": "adapted-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:40:44.572Z",
+        "execution_end_utc": "2026-08-24T04:41:00.636Z",
+        "wall_time_ms": 16064.003
+      },
+      "acceptance_pass": true,
+      "acceptance_details": {
+        "acceptance_pass": true,
+        "hard_checks": [
+          {
+            "check": "normalized local DOI values",
+            "pass": true,
+            "evidence": {
+              "C1": "10.1000/safe.001",
+              "C2": "10.1000/safe.001",
+              "C3": null,
+              "C4": "10.1000/evidence.004"
+            }
+          },
+          {
+            "check": "duplicate group C1 C2",
+            "pass": true,
+            "evidence": [
+              [
+                "C1",
+                "C2"
+              ]
+            ]
+          },
+          {
+            "check": "missing DOI on C3",
+            "pass": true,
+            "evidence": [
+              "doi"
+            ]
+          },
+          {
+            "check": "missing journal and year on C4",
+            "pass": true,
+            "evidence": [
+              "journal",
+              "year"
+            ]
+          },
+          {
+            "check": "no external lookup",
+            "pass": true,
+            "evidence": false
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Normalize DOI values",
+                "verification": "Check that all non-null DOIs are lowercase and stripped of 'https://doi.org/' prefixes."
+              },
+              {
+                "order": 2,
+                "action": "Detect duplicates",
+                "verification": "Group records by normalized DOI. Verify C1 and C2 are grouped together due to identical metadata after normalization."
+              },
+              {
+                "order": 3,
+                "action": "Identify missing fields",
+                "verification": "Check each record for null values in 'doi', 'journal', or 'year'. Report C3 (missing doi) and C4 (missing journal, year)."
+              },
+              {
+                "order": 4,
+                "action": "Generate report",
+                "verification": "Ensure output JSON contains all required fields with accurate data derived solely from input."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 7,
+        "hard_checks_total": 7,
+        "quality_checks": [
+          {
+            "check": "metadata treated as untrusted",
+            "pass": false,
+            "evidence": [
+              "untrusted"
+            ]
+          },
+          {
+            "check": "preserve display metadata",
+            "pass": false,
+            "evidence": [
+              "preserve display",
+              "original display"
+            ]
+          },
+          {
+            "check": "no fabricated fields",
+            "pass": false,
+            "evidence": [
+              "do not fabricate",
+              "no fabrication",
+              "leave missing"
+            ]
+          },
+          {
+            "check": "deterministic DOI-first deduplication",
+            "pass": true,
+            "evidence": [
+              "doi-first",
+              "doi as",
+              "normalized doi"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "adapted:kd-citation-management"
+      ],
+      "loaded_context_bytes": 575,
+      "token_count": 1517,
+      "token_count_reason": null,
+      "execution_time_ms": 16064.003,
+      "dependency_burden": "low",
+      "permission_burden": 0,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "PASS",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-citation-management/adapted-playbook.json",
+      "output_token_count": 508,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "variant": "baseline-no-optional",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:41:00.646Z",
+        "execution_end_utc": "2026-08-24T04:41:19.723Z",
+        "wall_time_ms": 19076.835
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "exact title and A4",
+            "pass": true,
+            "evidence": [
+              "Quarterly Safety Review",
+              "A4"
+            ]
+          },
+          {
+            "check": "consistent heading hierarchy",
+            "pass": false,
+            "evidence": [
+              {
+                "text": "Quarterly Safety Review",
+                "level": "H1"
+              },
+              {
+                "text": "Executive Summary",
+                "level": "H2"
+              },
+              {
+                "text": "Findings",
+                "level": "H2"
+              },
+              {
+                "text": "Recommendations",
+                "level": "H2"
+              }
+            ]
+          },
+          {
+            "check": "exact table headers",
+            "pass": true,
+            "evidence": [
+              "Control",
+              "Owner",
+              "Status"
+            ]
+          },
+          {
+            "check": "readable body format",
+            "pass": true,
+            "evidence": {
+              "font": "Calibri or Arial",
+              "size_pt": 11,
+              "line_spacing": 1.15
+            }
+          },
+          {
+            "check": "accessibility checks",
+            "pass": true,
+            "evidence": [
+              "Ensure sufficient contrast between text and background.",
+              "Verify table headers are properly linked to data cells."
+            ]
+          },
+          {
+            "check": "package and visual verification",
+            "pass": false,
+            "evidence": [
+              "Validate that all H2 headings appear in the Table of Contents (if generated).",
+              "Confirm the 'Control Status' table contains exactly three rows with correct header mapping."
+            ]
+          },
+          {
+            "check": "no external template",
+            "pass": true,
+            "evidence": false
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Create new DOCX document with A4 page size.",
+                "verification": "Document properties confirm A4 size."
+              },
+              {
+                "order": 2,
+                "action": "Insert H1 title 'Quarterly Safety Review' at the top.",
+                "verification": "Heading style matches H1 definition."
+              },
+              {
+                "order": 3,
+                "action": "Insert H2 heading 'Executive Summary' followed by body text.",
+                "verification": "Text content matches input exactly."
+              },
+              {
+                "order": 4,
+                "action": "Insert H2 heading 'Findings' followed by body text.",
+                "verification": "Text content matches input exactly."
+              },
+              {
+                "order": 5,
+                "action": "Insert H2 heading 'Recommendations' followed by body text.",
+                "verification": "Text content matches input exactly."
+              },
+              {
+                "order": 6,
+                "action": "Insert table with title 'Control Status', headers ['Control', 'Owner', 'Status'], and three data rows.",
+                "verification": "Table structure and cell contents match input JSON."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 7,
+        "hard_checks_total": 9,
+        "quality_checks": [
+          {
+            "check": "built-in heading styles",
+            "pass": false,
+            "evidence": [
+              "built-in heading",
+              "heading 1"
+            ]
+          },
+          {
+            "check": "stable table widths",
+            "pass": false,
+            "evidence": [
+              "column width",
+              "stable width",
+              "explicit width"
+            ]
+          },
+          {
+            "check": "render every page",
+            "pass": false,
+            "evidence": [
+              "every page",
+              "all pages"
+            ]
+          },
+          {
+            "check": "clipping or overflow review",
+            "pass": false,
+            "evidence": [
+              "clipping",
+              "overflow"
+            ]
+          }
+        ],
+        "quality_score": 0,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [],
+      "loaded_context_bytes": 0,
+      "token_count": 1350,
+      "token_count_reason": null,
+      "execution_time_ms": 19076.835,
+      "dependency_burden": "medium",
+      "permission_burden": 1,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-docx/baseline-no-optional.json",
+      "output_token_count": 616,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "variant": "current-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:41:19.737Z",
+        "execution_end_utc": "2026-08-24T04:41:41.933Z",
+        "wall_time_ms": 22196.32
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "exact title and A4",
+            "pass": true,
+            "evidence": [
+              "Quarterly Safety Review",
+              "A4"
+            ]
+          },
+          {
+            "check": "consistent heading hierarchy",
+            "pass": false,
+            "evidence": [
+              {
+                "text": "Quarterly Safety Review",
+                "level": "H1"
+              },
+              {
+                "text": "Executive Summary",
+                "level": "H2"
+              },
+              {
+                "text": "Findings",
+                "level": "H2"
+              },
+              {
+                "text": "Recommendations",
+                "level": "H2"
+              }
+            ]
+          },
+          {
+            "check": "exact table headers",
+            "pass": true,
+            "evidence": [
+              "Control",
+              "Owner",
+              "Status"
+            ]
+          },
+          {
+            "check": "readable body format",
+            "pass": true,
+            "evidence": {
+              "font": "Calibri or Arial",
+              "size_pt": 11,
+              "line_spacing": 1.15
+            }
+          },
+          {
+            "check": "accessibility checks",
+            "pass": true,
+            "evidence": [
+              "Ensure sufficient contrast between text and background.",
+              "Verify table headers are properly linked to data cells."
+            ]
+          },
+          {
+            "check": "package and visual verification",
+            "pass": false,
+            "evidence": [
+              "Validate H1-H2 hierarchy in the DOCX file.",
+              "Confirm all three rows of the 'Control Status' table match input data exactly.",
+              "Check that no external links or macros are present."
+            ]
+          },
+          {
+            "check": "no external template",
+            "pass": true,
+            "evidence": false
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Create new DOCX document with A4 page size.",
+                "verification": "File created successfully."
+              },
+              {
+                "order": 2,
+                "action": "Insert H1 title 'Quarterly Safety Review' centered.",
+                "verification": "Title formatted correctly."
+              },
+              {
+                "order": 3,
+                "action": "Insert H2 heading 'Executive Summary' and body text 'Two controls improved; one control remains overdue.'",
+                "verification": "Section content matches input."
+              },
+              {
+                "order": 4,
+                "action": "Insert H2 heading 'Findings' and body text 'Access review passed. Backup restore passed. Incident drill is overdue.'",
+                "verification": "Section content matches input."
+              },
+              {
+                "order": 5,
+                "action": "Insert H2 heading 'Recommendations' and body text 'Schedule the incident drill and retain verification evidence.'",
+                "verification": "Section content matches input."
+              },
+              {
+                "order": 6,
+                "action": "Insert table titled 'Control Status' with headers ['Control', 'Owner', 'Status'] and rows [['Access review', 'Security', 'Pass'], ['Backup restore', 'Platform', 'Pass'], ['Incident drill', 'Operations', 'Overdue']].",
+                "verification": "Table data matches input exactly."
+              },
+              {
+                "order": 7,
+                "action": "Apply consistent font and spacing for readability.",
+                "verification": "Visual inspection confirms uniformity."
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 7,
+        "hard_checks_total": 9,
+        "quality_checks": [
+          {
+            "check": "built-in heading styles",
+            "pass": false,
+            "evidence": [
+              "built-in heading",
+              "heading 1"
+            ]
+          },
+          {
+            "check": "stable table widths",
+            "pass": false,
+            "evidence": [
+              "column width",
+              "stable width",
+              "explicit width"
+            ]
+          },
+          {
+            "check": "render every page",
+            "pass": false,
+            "evidence": [
+              "every page",
+              "all pages"
+            ]
+          },
+          {
+            "check": "clipping or overflow review",
+            "pass": false,
+            "evidence": [
+              "clipping",
+              "overflow"
+            ]
+          }
+        ],
+        "quality_score": 0,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "documentation-lookup"
+      ],
+      "loaded_context_bytes": 231,
+      "token_count": 1393,
+      "token_count_reason": null,
+      "execution_time_ms": 22196.32,
+      "dependency_burden": "medium",
+      "permission_burden": 1,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-docx/current-playbook.json",
+      "output_token_count": 724,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "variant": "external-expert",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:41:41.949Z",
+        "execution_end_utc": "2026-08-24T04:42:06.347Z",
+        "wall_time_ms": 24398.435
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "exact title and A4",
+            "pass": true,
+            "evidence": [
+              "Quarterly Safety Review",
+              "A4"
+            ]
+          },
+          {
+            "check": "consistent heading hierarchy",
+            "pass": false,
+            "evidence": [
+              {
+                "text": "Executive Summary",
+                "level": "HeadingLevel1"
+              },
+              {
+                "text": "Findings",
+                "level": "HeadingLevel2"
+              },
+              {
+                "text": "Recommendations",
+                "level": "HeadingLevel3"
+              }
+            ]
+          },
+          {
+            "check": "exact table headers",
+            "pass": true,
+            "evidence": [
+              "Control",
+              "Owner",
+              "Status"
+            ]
+          },
+          {
+            "check": "readable body format",
+            "pass": true,
+            "evidence": {
+              "font": "Calibri",
+              "size_pt": 11,
+              "line_spacing": 1.15
+            }
+          },
+          {
+            "check": "accessibility checks",
+            "pass": true,
+            "evidence": [
+              "Alt text for table caption",
+              "High contrast shading (ShadingType.CLEAR)",
+              "Semantic heading structure"
+            ]
+          },
+          {
+            "check": "package and visual verification",
+            "pass": false,
+            "evidence": [
+              "Render document to PDF via soffice.py --headless --convert-to pdf",
+              "Verify all headings appear in TOC",
+              "Confirm table renders with correct column widths",
+              "Check for stray empty paragraphs or bullets"
+            ]
+          },
+          {
+            "check": "no external template",
+            "pass": true,
+            "evidence": false
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Initialize docx document with A4 page size and default styles",
+                "verification": "Document created successfully"
+              },
+              {
+                "order": 2,
+                "action": "Insert 'Executive Summary' heading (HeadingLevel1)",
+                "verification": "Heading rendered at correct level"
+              },
+              {
+                "order": 3,
+                "action": "Insert Executive Summary body text",
+                "verification": "Text content matches input"
+              },
+              {
+                "order": 4,
+                "action": "Insert 'Findings' heading (HeadingLevel2)",
+                "verification": "Heading rendered at correct level"
+              },
+              {
+                "order": 5,
+                "action": "Insert Findings body text",
+                "verification": "Text content matches input"
+              },
+              {
+                "order": 6,
+                "action": "Insert 'Recommendations' heading (HeadingLevel3)",
+                "verification": "Heading rendered at correct level"
+              },
+              {
+                "order": 7,
+                "action": "Insert Recommendations body text",
+                "verification": "Text content matches input"
+              },
+              {
+                "order": 8,
+                "action": "Insert table with headers and rows, set column widths in DXA units",
+                "verification": "Table renders with correct data and no broken columns"
+              },
+              {
+                "order": 9,
+                "action": "Add table caption 'Control Status'",
+                "verification": "Caption visible above table"
+              },
+              {
+                "order": 10,
+                "action": "Save document as output.docx",
+                "verification": "File created locally without external writes"
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 7,
+        "hard_checks_total": 9,
+        "quality_checks": [
+          {
+            "check": "built-in heading styles",
+            "pass": false,
+            "evidence": [
+              "built-in heading",
+              "heading 1"
+            ]
+          },
+          {
+            "check": "stable table widths",
+            "pass": true,
+            "evidence": [
+              "column width",
+              "stable width",
+              "explicit width"
+            ]
+          },
+          {
+            "check": "render every page",
+            "pass": false,
+            "evidence": [
+              "every page",
+              "all pages"
+            ]
+          },
+          {
+            "check": "clipping or overflow review",
+            "pass": false,
+            "evidence": [
+              "clipping",
+              "overflow"
+            ]
+          }
+        ],
+        "quality_score": 1,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "kd-docx"
+      ],
+      "loaded_context_bytes": 7244,
+      "token_count": 3253,
+      "token_count_reason": null,
+      "execution_time_ms": 24398.435,
+      "dependency_burden": "medium",
+      "permission_burden": 1,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-docx/external-expert.json",
+      "output_token_count": 760,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "variant": "adapted-playbook",
+      "runtime_metadata": {
+        "provider": "Ollama",
+        "locality": "local-only",
+        "local_endpoint": "127.0.0.1:11434",
+        "remote_network": false,
+        "remote_api": false,
+        "credentials": false,
+        "model_identifier": "qwen3.5:9b",
+        "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+        "installed_model_size_bytes": 6594474711,
+        "model_context_capacity_tokens": 262144,
+        "runtime_context_limit_tokens": 16384,
+        "output_limit_tokens": 1024,
+        "generation_parameters": {
+          "temperature": 0,
+          "top_p": 0.95,
+          "top_k": 20,
+          "presence_penalty": 1.5,
+          "seed": 42,
+          "think": false
+        },
+        "seed_policy": "fixed-seed-42-for-all-slots",
+        "timeout_seconds": 180,
+        "retry_count": 0,
+        "fallback_allowed": false,
+        "execution_start_utc": "2026-08-24T04:42:06.374Z",
+        "execution_end_utc": "2026-08-24T04:42:29.528Z",
+        "wall_time_ms": 23153.458
+      },
+      "acceptance_pass": false,
+      "acceptance_details": {
+        "acceptance_pass": false,
+        "hard_checks": [
+          {
+            "check": "exact title and A4",
+            "pass": true,
+            "evidence": [
+              "Quarterly Safety Review",
+              "A4"
+            ]
+          },
+          {
+            "check": "consistent heading hierarchy",
+            "pass": false,
+            "evidence": [
+              {
+                "text": "Quarterly Safety Review",
+                "level": "title"
+              },
+              {
+                "text": "Executive Summary",
+                "level": "h1"
+              },
+              {
+                "text": "Findings",
+                "level": "h2"
+              },
+              {
+                "text": "Recommendations",
+                "level": "h2"
+              }
+            ]
+          },
+          {
+            "check": "exact table headers",
+            "pass": true,
+            "evidence": [
+              "Control",
+              "Owner",
+              "Status"
+            ]
+          },
+          {
+            "check": "readable body format",
+            "pass": true,
+            "evidence": {
+              "font": "Calibri",
+              "size_pt": 11,
+              "line_spacing": 1.15
+            }
+          },
+          {
+            "check": "accessibility checks",
+            "pass": true,
+            "evidence": [
+              "High contrast text on white background",
+              "Table headers defined with scope attributes",
+              "Alt-text placeholders for any potential images"
+            ]
+          },
+          {
+            "check": "package and visual verification",
+            "pass": true,
+            "evidence": [
+              "Validate DOCX package structure using Python-docx library",
+              "Render to PDF to verify A4 page sizing and content clipping",
+              "Inspect rendered output for orphan headings and table readability"
+            ]
+          },
+          {
+            "check": "no external template",
+            "pass": true,
+            "evidence": false
+          },
+          {
+            "check": "ordered verifiable workflow",
+            "pass": true,
+            "evidence": [
+              {
+                "order": 1,
+                "action": "Initialize DOCX document with 'Quarterly Safety Review' title on A4 page",
+                "verification": "Check document properties for correct page size and title text"
+              },
+              {
+                "order": 2,
+                "action": "Insert H1 heading 'Executive Summary' followed by body text 'Two controls improved; one control remains overdue.'",
+                "verification": "Verify heading style matches built-in H1 and text content is accurate"
+              },
+              {
+                "order": 3,
+                "action": "Insert H2 heading 'Findings' followed by body text 'Access review passed. Backup restore passed. Incident drill is overdue.'",
+                "verification": "Verify heading style matches built-in H2 and text content is accurate"
+              },
+              {
+                "order": 4,
+                "action": "Insert H2 heading 'Recommendations' followed by body text 'Schedule the incident drill and retain verification evidence.'",
+                "verification": "Verify heading style matches built-in H2 and text content is accurate"
+              },
+              {
+                "order": 5,
+                "action": "Insert table titled 'Control Status' with headers ['Control', 'Owner', 'Status'] and rows [['Access review', 'Security', 'Pass'], ['Backup restore', 'Platform', 'Pass'], ['Incident drill', 'Operations', 'Overdue']]",
+                "verification": "Validate table structure, column widths, and cell content against source data"
+              },
+              {
+                "order": 6,
+                "action": "Apply consistent margins (1 inch top/bottom, 0.75 inch left/right) and line spacing",
+                "verification": "Check visual layout for readability and consistency"
+              }
+            ]
+          },
+          {
+            "check": "no external actions",
+            "pass": true,
+            "evidence": []
+          }
+        ],
+        "hard_checks_passed": 8,
+        "hard_checks_total": 9,
+        "quality_checks": [
+          {
+            "check": "built-in heading styles",
+            "pass": false,
+            "evidence": [
+              "built-in heading",
+              "heading 1"
+            ]
+          },
+          {
+            "check": "stable table widths",
+            "pass": true,
+            "evidence": [
+              "column width",
+              "stable width",
+              "explicit width"
+            ]
+          },
+          {
+            "check": "render every page",
+            "pass": false,
+            "evidence": [
+              "every page",
+              "all pages"
+            ]
+          },
+          {
+            "check": "clipping or overflow review",
+            "pass": true,
+            "evidence": [
+              "clipping",
+              "overflow"
+            ]
+          }
+        ],
+        "quality_score": 2,
+        "quality_score_max": 4,
+        "aggregation": "all hard checks must pass; quality checks are non-compensating"
+      },
+      "selected_capability": [
+        "adapted:kd-docx"
+      ],
+      "loaded_context_bytes": 562,
+      "token_count": 1444,
+      "token_count_reason": null,
+      "execution_time_ms": 23153.458,
+      "dependency_burden": "medium",
+      "permission_burden": 1,
+      "safety_gate": "PASS",
+      "external_access_attempted": false,
+      "notes": "Executed once with the approved local-only runtime; acceptance is based on deterministic checks, not model self-report.",
+      "execution_status": "COMPLETED",
+      "result": "FAIL",
+      "acceptance_evidence": "evaluation/external-skills/evidence/stage-b/kd-docx/adapted-playbook.json",
+      "output_token_count": 753,
+      "output_token_count_reason": null,
+      "external_scripts_executed": false,
+      "failure_reason": null
+    }
+  ]
+}

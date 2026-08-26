@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "policy": "explicit-comparison-only-no-auto-merge-delete",
+  "clusters": [
+    {
+      "cluster_id": "distributed-dataframe",
+      "relation": "overlap-and-complement",
+      "recommended_action": "BENCHMARK_SIDE_BY_SIDE",
+      "reason": "Compare distributed, CPU, and GPU dataframe workflows instead of collapsing them by name.",
+      "candidate_ids": ["kd-dask", "kd-polars", "nv-accelerated-computing-cudf", "nv-cupynumeric-migration-readiness"]
+    },
+    {
+      "cluster_id": "scientific-presentation",
+      "relation": "partial-overlap",
+      "recommended_action": "BENCHMARK_SIDE_BY_SIDE",
+      "reason": "Both candidates can guide technical visual communication and may overlap with the existing presentation Core skill.",
+      "candidate_ids": ["kd-scientific-slides", "kd-markdown-mermaid-writing"]
+    },
+    {
+      "cluster_id": "office-docx",
+      "relation": "partial-overlap-different-license",
+      "recommended_action": "KEEP_DISTINCT",
+      "reason": "Both candidates address DOCX workflows but differ materially in license and bundled tooling.",
+      "candidate_ids": ["kd-docx", "anth-docx"]
+    },
+    {
+      "cluster_id": "documentation-guidance",
+      "relation": "partial-overlap-with-blocked-candidates",
+      "recommended_action": "HUMAN_REVIEW_AFTER_BENCHMARK",
+      "reason": "Unknown-license and path-drift candidates must remain visible and must not be auto-merged.",
+      "candidate_ids": ["kd-scientific-writing", "anth-doc-coauthoring", "ar-api-documentation", "ar-code-documentation"]
+    },
+    {
+      "cluster_id": "nvidia-diagnostics",
+      "relation": "complementary-diagnostics",
+      "recommended_action": "BENCHMARK_SIDE_BY_SIDE",
+      "reason": "Network and troubleshooting candidates both contain diagnostic helpers and require synthetic-fixture benchmarking.",
+      "candidate_ids": ["nv-dynamo-interconnect-check", "nv-dynamo-troubleshoot"]
+    }
+  ],
+  "automatic_merge_count": 0,
+  "automatic_archive_count": 0,
+  "automatic_delete_count": 0
+}

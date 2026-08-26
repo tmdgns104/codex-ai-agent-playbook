@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "input_policy": "local-synthetic-supplied-only",
+  "case_count": 5,
+  "cases": [
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "input_name": "synthetic-tabular-summary",
+      "input": {
+        "row_count": 1000,
+        "columns": [
+          {"name": "customer_id", "type": "integer", "missing": 0, "unique": 1000},
+          {"name": "age", "type": "numeric", "missing": 20, "min": 18, "median": 34, "max": 82},
+          {"name": "annual_income", "type": "numeric", "missing": 85, "median": 58000, "max": 410000, "values_above_250000": 3},
+          {"name": "region", "type": "categorical", "missing": 0, "categories": 4},
+          {"name": "churned", "type": "binary_target", "missing": 0, "positive_count": 180}
+        ],
+        "known_pairwise_correlation": {"age__annual_income": 0.41},
+        "raw_data_mutation_allowed": false
+      },
+      "required_output_fields": [
+        "missing_columns",
+        "outlier_columns",
+        "distribution_checks",
+        "correlation_interpretation",
+        "workflow_steps",
+        "reproducibility_controls",
+        "additional_controls",
+        "external_actions"
+      ]
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "input_name": "synthetic-classification-spec",
+      "input": {
+        "sample_count": 1200,
+        "target": "will_renew",
+        "positive_rate": 0.15,
+        "numeric_features": 12,
+        "categorical_features": 3,
+        "missing_numeric": true,
+        "missing_categorical": true,
+        "required_test_fraction": 0.2,
+        "required_random_seed": 42,
+        "external_data_allowed": false
+      },
+      "required_output_fields": [
+        "split_strategy",
+        "test_fraction",
+        "preprocessing_location",
+        "numeric_preprocessing",
+        "categorical_preprocessing",
+        "baseline_model",
+        "evaluation_metrics",
+        "cross_validation_scope",
+        "test_set_usage",
+        "random_seed",
+        "verification_steps",
+        "workflow_steps",
+        "additional_controls",
+        "external_actions"
+      ]
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "input_name": "synthetic-symbolic-equation-spec",
+      "input": {
+        "symbol": "x",
+        "domain": "real",
+        "expression": "x**4 - 5*x**2 + 4",
+        "relation": "equals_zero",
+        "numeric_only_solution_allowed": false
+      },
+      "required_output_fields": [
+        "symbol",
+        "domain",
+        "method",
+        "factorization",
+        "exact_roots",
+        "verification_residuals",
+        "workflow_steps",
+        "additional_controls",
+        "external_actions"
+      ],
+      "output_contract": {
+        "verification_residuals": {
+          "representation": "object",
+          "required_keys": ["-2", "-1", "1", "2"],
+          "additional_keys_allowed": false,
+          "value_type": "string",
+          "required_value": "0",
+          "semantics": "Each key is an exact root and each value is the exact residual after substitution into the original expression."
+        }
+      }
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "input_name": "synthetic-citation-list",
+      "input": {
+        "citations": [
+          {"id": "C1", "authors": ["Lee, A.", "Kim, B."], "title": "Robust Local Evaluation", "journal": "Journal of Safe AI", "year": 2024, "doi": "10.1000/SAFE.001"},
+          {"id": "C2", "authors": ["Lee, A.", "Kim, B."], "title": "Robust Local Evaluation", "journal": "Journal of Safe AI", "year": 2024, "doi": "https://doi.org/10.1000/safe.001"},
+          {"id": "C3", "authors": ["Park, C."], "title": "Reproducible Benchmarks", "journal": "Evaluation Systems", "year": 2023, "doi": null},
+          {"id": "C4", "authors": ["Choi, D."], "title": "Evidence First", "journal": null, "year": null, "doi": "10.1000/evidence.004"}
+        ],
+        "external_lookup_allowed": false
+      },
+      "required_output_fields": [
+        "normalized_dois",
+        "duplicate_groups",
+        "missing_fields",
+        "deduplication_rule",
+        "workflow_steps",
+        "external_lookup_performed",
+        "additional_controls",
+        "external_actions"
+      ],
+      "output_contract": {
+        "normalized_dois": {
+          "representation": "object",
+          "required_keys": ["C1", "C2", "C3", "C4"],
+          "additional_keys_allowed": false,
+          "key_policy": "Include every supplied citation ID exactly once.",
+          "value_policy": "Use the lowercase DOI without a resolver prefix, or null when the supplied DOI is null."
+        }
+      }
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "input_name": "synthetic-report-content",
+      "input": {
+        "title": "Quarterly Safety Review",
+        "audience": "Engineering leadership",
+        "page_size": "A4",
+        "sections": [
+          {"heading": "Executive Summary", "body": "Two controls improved; one control remains overdue."},
+          {"heading": "Findings", "body": "Access review passed. Backup restore passed. Incident drill is overdue."},
+          {"heading": "Recommendations", "body": "Schedule the incident drill and retain verification evidence."}
+        ],
+        "table": {
+          "title": "Control Status",
+          "headers": ["Control", "Owner", "Status"],
+          "rows": [
+            ["Access review", "Security", "Pass"],
+            ["Backup restore", "Platform", "Pass"],
+            ["Incident drill", "Operations", "Overdue"]
+          ]
+        },
+        "external_template_allowed": false
+      },
+      "required_output_fields": [
+        "document_title",
+        "page_size",
+        "heading_hierarchy",
+        "table_headers",
+        "body_format",
+        "accessibility_checks",
+        "verification_plan",
+        "external_template_required",
+        "workflow_steps",
+        "additional_controls",
+        "external_actions"
+      ],
+      "output_contract": {
+        "heading_hierarchy": {
+          "representation": "array of text/level objects",
+          "canonical_level_labels": ["Title", "Heading 1"],
+          "required_level_by_text": {
+            "Quarterly Safety Review": "Title",
+            "Executive Summary": "Heading 1",
+            "Findings": "Heading 1",
+            "Recommendations": "Heading 1"
+          },
+          "additional_entries_allowed": false,
+          "order_significant": false
+        }
+      }
+    }
+  ]
+}

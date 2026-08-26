@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "shortlist_count": 15,
+  "stage_a_complete": true,
+  "stage_b_candidates": 5,
+  "stage_b_executed": true,
+  "stage_b_slots": 20,
+  "stage_b_acceptance_pass": 2,
+  "stage_b_acceptance_fail": 18,
+  "stage_b_pending": 0,
+  "decisions_pending": 0,
+  "decision_summary": {
+    "ADOPT_CANDIDATE": 0,
+    "ADAPT_CANDIDATE": 2,
+    "REFERENCE_ONLY": 10,
+    "REJECTED": 3
+  },
+  "variant_results": {
+    "baseline-no-optional": {"pass": 0, "fail": 5},
+    "current-playbook": {"pass": 0, "fail": 5},
+    "external-expert": {"pass": 0, "fail": 5},
+    "adapted-playbook": {"pass": 2, "fail": 3}
+  },
+  "runtime_approval_evidence": "evaluation/external-skills/reports/stage-b-runtime-approval.json",
+  "execution_summary_evidence": "evaluation/external-skills/reports/stage-b-execution-summary.json",
+  "acceptance_evidence_root": "evaluation/external-skills/evidence/stage-b",
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "active_import_count": 0,
+  "status": "COMPLETE_VERIFIED"
+}

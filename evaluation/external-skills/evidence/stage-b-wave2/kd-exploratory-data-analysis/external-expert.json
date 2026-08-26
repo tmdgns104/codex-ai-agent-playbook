@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-exploratory-data-analysis",
+  "fixture_id": "bench004-03",
+  "variant": "external-expert",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:45:26.899Z",
+    "execution_end_utc": "2026-08-24T05:45:49.300Z",
+    "wall_time_ms": 22401.283
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 12633,
+    "loaded_context_sha256": "ed1c66ba8de6add4af4a19423ff6c43fc5dafb56a0a8e142992ebae907c1b194",
+    "selected_capabilities": [
+      "kd-exploratory-data-analysis"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "fdc09efa09d6b68fce3bfd2715aef1a899ccb48757a0393f4c84a7737d490a4f",
+    "response_schema_sha256": "ad489d048c859cb1f7355f3b49fa8424d7241ee84b277b9d07e63268913d9171",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 4763,
+    "output_token_count_available": true,
+    "output_token_count": 672
+  },
+  "provider_duration": {
+    "total_duration_ns": 22388117400,
+    "load_duration_ns": 486097800,
+    "prompt_eval_duration_ns": 1978124000,
+    "eval_duration_ns": 19812237000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"missing_columns\": [\n    \"age\",\n    \"annual_income\"\n  ],\n  \"outlier_columns\": [\n    \"annual_income\"\n  ],\n  \"distribution_checks\": [\n    \"age: min=18, max=82, median=34 (skewed right)\",\n    \"annual_income: min=?, max=410000, median=58000, 3 values > 250000 (heavy right tail)\"\n  ],\n  \"correlation_interpretation\": \"age vs annual_income correlation of 0.41 indicates moderate positive association; however, this is an exploratory finding and should not be treated as causal or confirmatory without pre-specified hypothesis testing.\",\n  \"reproducibility_controls\": [\n    \"Use fixed random seed for any stochastic operations\",\n    \"Document all analysis steps in a script\",\n    \"Report software versions (Python, pandas, NumPy)\",\n    \"Store raw data read-only and derive artifacts separately\"\n  ],\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Confirm authorization and root directory for local analysis\",\n      \"verification\": \"Check file paths are within approved project root\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Inspect tabular schema/profile to confirm column types and counts\",\n      \"verification\": \"Match observed metadata (row_count=1000, unique customer_id=1000)\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Audit missingness for age (20) and annual_income (85)\",\n      \"verification\": \"Record missing counts; do not impute automatically\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Check distributions: summarize min/median/max for numeric columns\",\n      \"verification\": \"Confirm age median=34, annual_income median=58000\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Identify outliers in annual_income (values > 250000)\",\n      \"verification\": \"Flag extreme values; do not delete or filter raw data\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"Interpret pairwise correlation between age and annual_income\",\n      \"verification\": \"Report r=0.41 as exploratory association only\"\n    },\n    {\n      \"order\": 7,\n      \"action\": \"Generate EDA report scaffold with evidence, assumptions, and limitations\",\n      \"verification\": \"Ensure no direct identifiers or raw values are exposed\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Preserve raw data read-only; write derived artifacts separately\",\n    \"Label post hoc patterns as exploratory findings\",\n    \"Define hypothesis family before confirmatory tests if needed\",\n    \"Report effect sizes and uncertainty intervals where applicable\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "missing_columns": [
+      "age",
+      "annual_income"
+    ],
+    "outlier_columns": [
+      "annual_income"
+    ],
+    "distribution_checks": [
+      "age: min=18, max=82, median=34 (skewed right)",
+      "annual_income: min=?, max=410000, median=58000, 3 values > 250000 (heavy right tail)"
+    ],
+    "correlation_interpretation": "age vs annual_income correlation of 0.41 indicates moderate positive association; however, this is an exploratory finding and should not be treated as causal or confirmatory without pre-specified hypothesis testing.",
+    "reproducibility_controls": [
+      "Use fixed random seed for any stochastic operations",
+      "Document all analysis steps in a script",
+      "Report software versions (Python, pandas, NumPy)",
+      "Store raw data read-only and derive artifacts separately"
+    ],
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Confirm authorization and root directory for local analysis",
+        "verification": "Check file paths are within approved project root"
+      },
+      {
+        "order": 2,
+        "action": "Inspect tabular schema/profile to confirm column types and counts",
+        "verification": "Match observed metadata (row_count=1000, unique customer_id=1000)"
+      },
+      {
+        "order": 3,
+        "action": "Audit missingness for age (20) and annual_income (85)",
+        "verification": "Record missing counts; do not impute automatically"
+      },
+      {
+        "order": 4,
+        "action": "Check distributions: summarize min/median/max for numeric columns",
+        "verification": "Confirm age median=34, annual_income median=58000"
+      },
+      {
+        "order": 5,
+        "action": "Identify outliers in annual_income (values > 250000)",
+        "verification": "Flag extreme values; do not delete or filter raw data"
+      },
+      {
+        "order": 6,
+        "action": "Interpret pairwise correlation between age and annual_income",
+        "verification": "Report r=0.41 as exploratory association only"
+      },
+      {
+        "order": 7,
+        "action": "Generate EDA report scaffold with evidence, assumptions, and limitations",
+        "verification": "Ensure no direct identifiers or raw values are exposed"
+      }
+    ],
+    "additional_controls": [
+      "Preserve raw data read-only; write derived artifacts separately",
+      "Label post hoc patterns as exploratory findings",
+      "Define hypothesis family before confirmatory tests if needed",
+      "Report effect sizes and uncertainty intervals where applicable"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "exact missing columns",
+        "pass": true,
+        "evidence": [
+          "age",
+          "annual_income"
+        ]
+      },
+      {
+        "check": "annual_income outlier review",
+        "pass": true,
+        "evidence": [
+          "annual_income"
+        ]
+      },
+      {
+        "check": "distribution checks",
+        "pass": false,
+        "evidence": [
+          "age: min=18, max=82, median=34 (skewed right)",
+          "annual_income: min=?, max=410000, median=58000, 3 values > 250000 (heavy right tail)"
+        ]
+      },
+      {
+        "check": "non-causal correlation interpretation",
+        "pass": false,
+        "evidence": "age vs annual_income correlation of 0.41 indicates moderate positive association; however, this is an exploratory finding and should not be treated as causal or confirmatory without pre-specified hypothesis testing."
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Confirm authorization and root directory for local analysis",
+            "verification": "Check file paths are within approved project root"
+          },
+          {
+            "order": 2,
+            "action": "Inspect tabular schema/profile to confirm column types and counts",
+            "verification": "Match observed metadata (row_count=1000, unique customer_id=1000)"
+          },
+          {
+            "order": 3,
+            "action": "Audit missingness for age (20) and annual_income (85)",
+            "verification": "Record missing counts; do not impute automatically"
+          },
+          {
+            "order": 4,
+            "action": "Check distributions: summarize min/median/max for numeric columns",
+            "verification": "Confirm age median=34, annual_income median=58000"
+          },
+          {
+            "order": 5,
+            "action": "Identify outliers in annual_income (values > 250000)",
+            "verification": "Flag extreme values; do not delete or filter raw data"
+          },
+          {
+            "order": 6,
+            "action": "Interpret pairwise correlation between age and annual_income",
+            "verification": "Report r=0.41 as exploratory association only"
+          },
+          {
+            "order": 7,
+            "action": "Generate EDA report scaffold with evidence, assumptions, and limitations",
+            "verification": "Ensure no direct identifiers or raw values are exposed"
+          }
+        ]
+      },
+      {
+        "check": "reproducibility controls",
+        "pass": true,
+        "evidence": [
+          "Use fixed random seed for any stochastic operations",
+          "Document all analysis steps in a script",
+          "Report software versions (Python, pandas, NumPy)",
+          "Store raw data read-only and derive artifacts separately"
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 5,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "preserve raw data",
+        "pass": true,
+        "evidence": [
+          "read-only",
+          "preserve raw",
+          "raw data"
+        ]
+      },
+      {
+        "check": "split before learned transforms",
+        "pass": false,
+        "evidence": [
+          "training data only",
+          "training split",
+          "before preprocessing"
+        ]
+      },
+      {
+        "check": "record scope or provenance",
+        "pass": false,
+        "evidence": [
+          "scope",
+          "provenance",
+          "scan"
+        ]
+      },
+      {
+        "check": "report uncertainty or limitations",
+        "pass": true,
+        "evidence": [
+          "uncertainty",
+          "limitation"
+        ]
+      }
+    ],
+    "quality_score": 2,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

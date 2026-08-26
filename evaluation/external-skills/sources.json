@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-08-23",
+  "sources": [
+    {
+      "id": "agent-skills-standard",
+      "repository": "agentskills/agentskills",
+      "tier": "A",
+      "role": "standard",
+      "license": "Apache-2.0 code; CC-BY-4.0 documentation",
+      "compatibility": ["skills-compatible-agents"],
+      "focus": ["skill-format", "progressive-disclosure", "portability"],
+      "observed_claim": "Open Agent Skills format; SKILL.md with optional scripts/references/assets; progressive disclosure",
+      "import_policy": "specification-reference",
+      "auto_execute_external_scripts": false
+    },
+    {
+      "id": "anthropic-reference-skills",
+      "repository": "anthropics/skills",
+      "tier": "A",
+      "role": "official-reference",
+      "license": "mixed; many Apache-2.0 examples; document creation skills are source-available reference",
+      "compatibility": ["claude"],
+      "focus": ["documents", "pdf", "pptx", "xlsx", "creative", "development", "enterprise-communication"],
+      "observed_claim": "Official implementation/reference repository with production document skill references",
+      "import_policy": "per-skill-license-review; reference-only-by-default-for-source-available-items",
+      "auto_execute_external_scripts": false
+    },
+    {
+      "id": "nvidia-verified-skills",
+      "repository": "NVIDIA/skills",
+      "tier": "A",
+      "role": "vendor-verified",
+      "license": "Apache-2.0 AND CC-BY-4.0",
+      "compatibility": ["codex", "claude-code", "cursor", "other-skills-clients"],
+      "focus": ["gpu", "cudf", "data", "deepstream", "vision", "robotics", "cuda", "optimization", "nvidia-platform"],
+      "observed_claim": "NVIDIA-verified Agent Skills catalog explicitly listing Codex support",
+      "import_policy": "per-skill-review",
+      "auto_execute_external_scripts": false
+    },
+    {
+      "id": "k-dense-scientific",
+      "repository": "K-Dense-AI/scientific-agent-skills",
+      "tier": "B",
+      "role": "specialist-library",
+      "license": "MIT",
+      "compatibility": ["codex", "cursor", "claude-code", "skills-compatible-agents"],
+      "focus": ["data-analysis", "statistics", "machine-learning", "time-series", "scientific-research", "bioinformatics", "chemistry", "geospatial", "scientific-writing", "presentation"],
+      "observed_claim": "README reports 163 scientific/research skills with tests for skills shipping scripts",
+      "import_policy": "per-skill-review",
+      "auto_execute_external_scripts": false
+    },
+    {
+      "id": "ecc",
+      "repository": "affaan-m/ECC",
+      "tier": "C",
+      "role": "engineering-harness-library",
+      "license": "MIT",
+      "compatibility": ["codex", "claude-code", "opencode", "other-adapters"],
+      "focus": ["engineering", "testing", "security", "documentation", "frontend", "data", "ml", "operations", "harness"],
+      "observed_claim": "README reports 286 skills and 68 agents with a Codex path",
+      "import_policy": "pattern-extract-or-per-skill-review; never full-harness auto-install",
+      "auto_execute_external_scripts": false
+    },
+    {
+      "id": "alirezarezvani-claude-skills",
+      "repository": "alirezarezvani/claude-skills",
+      "tier": "C",
+      "role": "broad-multidomain-library",
+      "license": "MIT",
+      "compatibility": ["codex", "claude-code", "gemini-cli", "opencode", "cursor", "other-tools"],
+      "focus": ["engineering", "devops", "security", "data", "ml", "product", "marketing", "research", "compliance", "project-management"],
+      "observed_claim": "README reports 364 skills across 18 domains and explicit OpenAI Codex support",
+      "import_policy": "per-skill-review",
+      "auto_execute_external_scripts": false
+    },
+    {
+      "id": "voltagent-awesome-agent-skills",
+      "repository": "VoltAgent/awesome-agent-skills",
+      "tier": "discovery",
+      "role": "index-only",
+      "license": "verify per linked source",
+      "compatibility": [],
+      "focus": ["discovery"],
+      "observed_claim": "Curated discovery index for Agent Skills repositories",
+      "import_policy": "discovery-only; linked source must be registered and inspected separately",
+      "auto_execute_external_scripts": false
+    }
+  ]
+}

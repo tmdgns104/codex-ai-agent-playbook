@@ -1,0 +1,352 @@
+{
+  "definition": {
+    "adapted_capability_id": "fixture-data-quality-guidance",
+    "applicability": {
+      "domains": [
+        "data-analysis"
+      ],
+      "exclusions": [
+        "runtime-control"
+      ],
+      "prerequisites": [
+        "labeled-data"
+      ],
+      "task_triggers": [
+        "classification-evaluation"
+      ]
+    },
+    "budget": {
+      "token_count_or_null": null,
+      "tokenizer_id_or_null": null,
+      "unavailable_reason_or_null": "No tokenizer is used by the offline fixture.",
+      "utf8_bytes": 210
+    },
+    "cache_key": "b5ac59d73da7d7bd948fb38f2c4adb8a1b753c253b893a00ea6dad9d8c820210",
+    "candidate_id": "fixture-candidate-001",
+    "content_sha256": "cb0a7b8a60e9c3ae9d35d9aea6c595bc76e5cf830e0929337f2e5020b873d4c7",
+    "contract_id": "v8.4-adapted-capability-definition-v1",
+    "knowledge_units": [
+      {
+        "content": "불균형 분류에서는 정확도만으로 판단하지 않고 PR-AUC와 재현율을 함께 검증한다.",
+        "content_sha256": "a5ec3be7e6f51d9cef06af7fb26dc764bc7075ee1a8c541b9b63085b98a00154",
+        "failure_modes": [
+          "accuracy-only conclusion"
+        ],
+        "kind": "RULE",
+        "prerequisites": [],
+        "priority": 0,
+        "required": true,
+        "safety_constraints": [
+          "do not infer missing metrics"
+        ],
+        "source_claim_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "source_locator": "SKILL.md#evaluation",
+        "task_tags": [
+          "classification-evaluation"
+        ],
+        "unit_id": "unit-evaluation",
+        "verification_requirements": [
+          "report class-sensitive metrics"
+        ]
+      },
+      {
+        "content": "전처리는 학습 데이터에만 적합하고 검증 데이터에는 동일 변환을 적용한다.",
+        "content_sha256": "76f05122fa6b02a9f43d0929c3cd5906fd051d765f09dc1a6aa9cdb71856876e",
+        "failure_modes": [
+          "validation leakage"
+        ],
+        "kind": "PROCEDURE",
+        "prerequisites": [
+          "unit-evaluation"
+        ],
+        "priority": 1,
+        "required": true,
+        "safety_constraints": [
+          "preserve split boundaries"
+        ],
+        "source_claim_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "source_locator": "SKILL.md#preprocessing",
+        "task_tags": [
+          "classification-evaluation"
+        ],
+        "unit_id": "unit-preprocessing",
+        "verification_requirements": [
+          "fit transforms on training data"
+        ]
+      }
+    ],
+    "permissions": {
+      "effective_gate": "NETWORK_REVIEW",
+      "forbidden_actions": [
+        "network access",
+        "credential access",
+        "runtime mutation"
+      ],
+      "permission_policy_version": "permission-union-v1",
+      "removal_justification": "The adapted reference needs no network access.",
+      "removed_permissions": [
+        "network"
+      ],
+      "retained_permissions": [
+        "local_read"
+      ],
+      "source_permissions": [
+        "local_read",
+        "network"
+      ]
+    },
+    "schema_version": 1,
+    "source": {
+      "inspection_evidence": [
+        "evidence/fixture-source-inspection.json"
+      ],
+      "license_id": "fixture-only",
+      "snapshot_path": "evaluation/external-skills/snapshots/fixture/SKILL.md",
+      "snapshot_revision": "fixture-revision-001",
+      "snapshot_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    "status": "APPROVED",
+    "transformation": {
+      "created_at_utc": "2029-12-31T00:00:00Z",
+      "extractor_version": "fixture-extractor-v1",
+      "method": "DETERMINISTIC_EXTRACTION",
+      "policy_version": "adaptation-policy-v1",
+      "reviewer": "offline-fixture-reviewer",
+      "tool_or_model_id_or_null": null
+    },
+    "verification": {
+      "fixture_evidence": [
+        "evidence/fixture-validation.json"
+      ],
+      "fixture_pass": "PASS",
+      "holdout_evidence": [
+        "evidence/fixture-holdout.json"
+      ],
+      "holdout_pass": "PASS",
+      "provenance_pass": "PASS",
+      "safety_pass": "PASS",
+      "schema_pass": "PASS"
+    },
+    "version": "1.0.0"
+  },
+  "envelope": {
+    "adaptation_versions": [
+      "1.0.0"
+    ],
+    "cache_key_or_null": "b5ac59d73da7d7bd948fb38f2c4adb8a1b753c253b893a00ea6dad9d8c820210",
+    "cleanup_required": true,
+    "context_sha256": "462963a437bf9bbd4c4f5d6bb55edc8bd4ece7bcbbac8c9aa83049011f4fd668",
+    "context_text": "{\"content\":\"불균형 분류에서는 정확도만으로 판단하지 않고 PR-AUC와 재현율을 함께 검증한다.\",\"unit_id\":\"unit-evaluation\"}\n{\"content\":\"전처리는 학습 데이터에만 적합하고 검증 데이터에는 동일 변환을 적용한다.\",\"unit_id\":\"unit-preprocessing\"}",
+    "contract_id": "v8.4-runtime-context-envelope-v1",
+    "definition_content_hashes": [
+      "cb0a7b8a60e9c3ae9d35d9aea6c595bc76e5cf830e0929337f2e5020b873d4c7"
+    ],
+    "effective_permissions": [
+      "external_write",
+      "local_read",
+      "network"
+    ],
+    "loaded_context_bytes": 298,
+    "materialized_at_utc": "2030-01-01T00:00:00Z",
+    "prompt_token_count_or_null": null,
+    "required_gates": [
+      "HUMAN_GATE_REQUIRED"
+    ],
+    "schema_version": 1,
+    "selected_capabilities": [
+      "fixture-data-quality-guidance"
+    ],
+    "selected_unit_ids": [
+      "unit-evaluation",
+      "unit-preprocessing"
+    ],
+    "selected_units": [
+      {
+        "content_sha256": "a5ec3be7e6f51d9cef06af7fb26dc764bc7075ee1a8c541b9b63085b98a00154",
+        "required": true,
+        "unit_id": "unit-evaluation",
+        "utf8_bytes": 108
+      },
+      {
+        "content_sha256": "76f05122fa6b02a9f43d0929c3cd5906fd051d765f09dc1a6aa9cdb71856876e",
+        "required": true,
+        "unit_id": "unit-preprocessing",
+        "utf8_bytes": 102
+      }
+    ],
+    "session_id": "fixture-session-001",
+    "source_snapshot_hashes": [
+      "1111111111111111111111111111111111111111111111111111111111111111"
+    ],
+    "task_fingerprint": "d4ad15fddcc531d912d0dcbec066921ba0229f66156e75c2377d9bef1625d3dd",
+    "token_unavailable_reason_or_null": "No tokenizer is used by the offline fixture.",
+    "tokenizer_id_or_null": null,
+    "trust_label": "untrusted-derived-approved-reference"
+  },
+  "expected_task_text": "분리된 적응 컨텍스트를 사용해 이 작업을 검증한다.",
+  "fixture_id": "compliant",
+  "probe": {
+    "adapter_id": "pure-fake-adapter",
+    "adapter_version": "1.0.0",
+    "backend_id": "pure-fake-backend",
+    "backend_version": "1.0.0",
+    "context_channel_separate": true,
+    "contract_id": "v8.4-backend-capability-probe-v1",
+    "evidence_refs": [
+      "evidence/fake-probe.json"
+    ],
+    "expires_at_utc": "2099-01-01T00:00:00Z",
+    "external_access_performed": false,
+    "probe_id": "fake-probe-001",
+    "probed_at_utc": "2029-12-31T00:00:00Z",
+    "schema_version": 1,
+    "support_status": "SUPPORTED",
+    "supported_transport_modes": [
+      "SEPARATE_VERIFIED_CONTEXT_V1"
+    ],
+    "supports_separate_verified_context": true,
+    "task_channel_separate": true
+  },
+  "request": {
+    "adapted_context": {
+      "adapted_definition_hashes": [
+        "f3172c3bee857c198a4508f6244e08a58e6b071f5d5ab0fb6c349fc6be7f0880"
+      ],
+      "adapted_definition_ids": [
+        "fixture-data-quality-guidance"
+      ],
+      "adapted_definition_versions": [
+        "1.0.0"
+      ],
+      "budget": {
+        "budget_policy_version": "context-budget-v1",
+        "max_prompt_tokens_or_null": null,
+        "max_utf8_bytes": 4096,
+        "required_only": true
+      },
+      "cache_key_or_null": "b5ac59d73da7d7bd948fb38f2c4adb8a1b753c253b893a00ea6dad9d8c820210",
+      "content_sha256": "462963a437bf9bbd4c4f5d6bb55edc8bd4ece7bcbbac8c9aa83049011f4fd668",
+      "envelope_relative_path": "contexts/envelope.json",
+      "envelope_sha256": "437fc69ab579485c5d1b2849c5715976e1a8ba67d592230002e28050f3591618",
+      "loaded_context_bytes": 298,
+      "prompt_token_count_or_null": null,
+      "selected_unit_ids": [
+        "unit-evaluation",
+        "unit-preprocessing"
+      ],
+      "source_snapshot_hashes": [
+        "1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      "token_unavailable_reason_or_null": "No tokenizer is used by the offline fixture.",
+      "tokenizer_id_or_null": null,
+      "trust_label": "untrusted-derived-approved-reference"
+    },
+    "backend": {
+      "adapter_id": "pure-fake-adapter",
+      "adapter_version": "1.0.0",
+      "capability_probe_id": "fake-probe-001",
+      "capability_probe_sha256": "3b122e6a07a4dfa3aa9d31e048523371be46351c71a2bc5a56c95ecec3e257ae",
+      "transport_binding": "FAKE_BACKEND_ONLY"
+    },
+    "cleanup": {
+      "bridge_cleanup_required": true,
+      "context_cleanup_required": true,
+      "owner": "fake-backend-harness",
+      "policy_id": "session-cleanup-v1",
+      "quarantine_on_failure": true
+    },
+    "contract_id": "v8.4-context-launch-v1",
+    "current_plan": {
+      "permissions": [
+        "external_write",
+        "local_read"
+      ],
+      "required_gates": [
+        "HUMAN_GATE_REQUIRED"
+      ],
+      "router_result": "READY",
+      "selected_capability_ids": [
+        "base-fixture-capability"
+      ],
+      "verification_profile": "STANDARD"
+    },
+    "execution_policy": {
+      "context_injection_attempt_limit": 1,
+      "fallback_policy_id": "fail-closed-v1",
+      "retry_count": 0,
+      "task_occurrence_limit": 1
+    },
+    "mode": "SEPARATE_VERIFIED_CONTEXT_V1",
+    "permission_decision": {
+      "adapted_effective_permissions": [
+        "local_read",
+        "network"
+      ],
+      "adapted_source_permissions": [
+        "local_read",
+        "network"
+      ],
+      "approval_refs": [
+        "approval/fake-human-gate.json"
+      ],
+      "current_permissions": [
+        "external_write",
+        "local_read"
+      ],
+      "effective_permissions": [
+        "external_write",
+        "local_read",
+        "network"
+      ],
+      "strongest_gate": "HUMAN_GATE_REQUIRED",
+      "verified_at_utc": "2030-01-01T00:00:00Z"
+    },
+    "schema_version": 1,
+    "session_id": "fixture-session-001",
+    "task": {
+      "required_occurrence_count": 1,
+      "text": "분리된 적응 컨텍스트를 사용해 이 작업을 검증한다.",
+      "utf8_sha256": "d4ad15fddcc531d912d0dcbec066921ba0229f66156e75c2377d9bef1625d3dd"
+    }
+  },
+  "result": {
+    "backend_receipt": {
+      "adapter_id": "pure-fake-adapter",
+      "adapter_version": "1.0.0",
+      "capability_probe_sha256": "3b122e6a07a4dfa3aa9d31e048523371be46351c71a2bc5a56c95ecec3e257ae",
+      "context_channel_sha256_or_null": "462963a437bf9bbd4c4f5d6bb55edc8bd4ece7bcbbac8c9aa83049011f4fd668",
+      "task_channel_sha256": "d4ad15fddcc531d912d0dcbec066921ba0229f66156e75c2377d9bef1625d3dd",
+      "task_context_channels_separate": true
+    },
+    "bridge_cleanup_result": "PASS",
+    "budget_result": "PASS",
+    "child_exit_code_or_null": 0,
+    "child_spawned": true,
+    "context_cleanup_result": "PASS",
+    "context_injection_attempt_count": 1,
+    "context_injection_count": 1,
+    "contract_id": "v8.4-context-launch-result-v1",
+    "degraded_fallback_used": false,
+    "degraded_reason_or_null": null,
+    "evidence_path": "evidence/fake-backend-result.json",
+    "failure_code_or_null": null,
+    "finished_at_utc": "2030-01-01T00:00:02Z",
+    "integrity_result": "PASS",
+    "permission_result": "PASS",
+    "quarantine_paths": [],
+    "request_sha256": "1828e31e6df56d2cf006e57e4b1fb77ccf5b63d9ae6b217a85474442778a0156",
+    "result_sha256": "734306f05399b193c55d21c233d6ede7fc89a50412be5046e83abe95874c1fb4",
+    "schema_version": 1,
+    "session_id": "fixture-session-001",
+    "side_effects": {
+      "credentials": false,
+      "destructive": false,
+      "external_access": false,
+      "external_write": false
+    },
+    "started_at_utc": "2030-01-01T00:00:01Z",
+    "task_occurrence_count": 1,
+    "transport_status": "PASS"
+  },
+  "validation_time_utc": "2030-01-01T00:00:00Z"
+}

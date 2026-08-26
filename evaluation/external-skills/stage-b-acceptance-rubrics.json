@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "decision_use": "deterministic acceptance and verification-quality comparison",
+  "aggregation": "acceptance_pass requires every hard check; quality_score counts supplemental checks and cannot compensate for a failed hard check",
+  "missing_data_policy": "missing or malformed output fails the affected check",
+  "rubric_count": 5,
+  "rubrics": [
+    {
+      "candidate_id": "kd-exploratory-data-analysis",
+      "hard_checks": ["exact missing columns", "annual_income outlier review", "distribution checks", "non-causal correlation interpretation", "ordered verifiable workflow", "reproducibility controls", "no external actions"],
+      "quality_checks": ["preserve raw data", "split before learned transforms", "record scope or provenance", "report uncertainty or limitations"]
+    },
+    {
+      "candidate_id": "kd-scikit-learn",
+      "hard_checks": ["stratified 0.2 split", "preprocessing inside pipeline", "numeric preprocessing", "categorical preprocessing", "logistic regression baseline", "ROC-AUC and PR-AUC", "training-only cross-validation", "final-once test usage", "seed 42", "verification steps", "no external actions"],
+      "quality_checks": ["class imbalance handling", "threshold selection", "calibration", "model comparison or uncertainty"]
+    },
+    {
+      "candidate_id": "kd-sympy",
+      "hard_checks": ["symbol x and real domain", "exact symbolic method", "exact roots", "zero substitution residuals", "factorization present", "ordered verifiable workflow", "no external actions"],
+      "quality_checks": ["explicit assumptions", "exact arithmetic", "factor before solve", "verify original expression"]
+    },
+    {
+      "candidate_id": "kd-citation-management",
+      "hard_checks": ["normalized local DOI values", "duplicate group C1 C2", "missing DOI on C3", "missing journal and year on C4", "no external lookup", "ordered verifiable workflow", "no external actions"],
+      "quality_checks": ["metadata treated as untrusted", "preserve display metadata", "no fabricated fields", "deterministic DOI-first deduplication"]
+    },
+    {
+      "candidate_id": "kd-docx",
+      "hard_checks": ["exact title and A4", "consistent heading hierarchy", "exact table headers", "readable body format", "accessibility checks", "package and visual verification", "no external template", "ordered verifiable workflow", "no external actions"],
+      "quality_checks": ["built-in heading styles", "stable table widths", "render every page", "clipping or overflow review"]
+    }
+  ]
+}

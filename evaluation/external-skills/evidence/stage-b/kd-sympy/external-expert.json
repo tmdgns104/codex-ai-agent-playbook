@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-sympy",
+  "fixture_id": "bench004-06",
+  "variant": "external-expert",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:39:33.432Z",
+    "execution_end_utc": "2026-08-24T04:39:49.603Z",
+    "wall_time_ms": 16170.434
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 9824,
+    "loaded_context_sha256": "5445c2f5dadb95d6653681c30060b4ab9686fe02ab6729d8fc41f4a2c19a90cf",
+    "selected_capabilities": [
+      "kd-sympy"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "32e8d4085031fc6853bcc5ec6ed68a68d70fb4ea5cbd725515983bc12af0c6e2",
+    "response_schema_sha256": "7d474c771ef4f10fbf24eb3b7005b46e1070d270bfbef6ca368efa780d614dda"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 3981,
+    "output_token_count_available": true,
+    "output_token_count": 472
+  },
+  "provider_duration": {
+    "total_duration_ns": 16144462400,
+    "load_duration_ns": 518765300,
+    "prompt_eval_duration_ns": 1636637000,
+    "eval_duration_ns": 13972558000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"symbol\": \"x\",\n  \"domain\": \"real\",\n  \"method\": \"Symbolic factorization followed by exact root extraction using SymPy's solveset and simplify functions, with verification via residual evaluation.\",\n  \"factorization\": \"(x - 1)*(x + 2)*(x - 2)\",\n  \"exact_roots\": [\n     \"/\",\n     \"/\",\n     \"/\"\n  ],\n  \"verification_residuals\": {\n    \"method\": \"Substitute each root into the original expression and simplify to confirm zero.\",\n    \"expected_result\": \"All residuals must equal exactly 0.\"\n  },\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Define symbol x with real domain assumption using sympy.symbols('x', real=True).\",\n      \"verification\": \"Confirm x is defined and has real=True attribute.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Construct expression expr = x**4 - 5*x**2 + 4.\",\n      \"verification\": \"Print expr to confirm it matches the input polynomial.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Factorize expr using sympy.factor(expr).\",\n      \"verification\": \"Confirm factorization yields (x - 1)*(x + 2)*(x - 2).\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Solve equation expr = 0 for x using sympy.solve or sympy.solveset.\",\n      \"verification\": \"Confirm solutions are [1, -2, 2].\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Verify each root by substituting into expr and simplifying to zero.\",\n      \"verification\": \"All residuals must be exactly 0.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Use sympy.simplify on substituted expressions to ensure exact zero verification.\",\n    \"Avoid floating-point approximations; use Rational or exact arithmetic throughout.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "symbol": "x",
+    "domain": "real",
+    "method": "Symbolic factorization followed by exact root extraction using SymPy's solveset and simplify functions, with verification via residual evaluation.",
+    "factorization": "(x - 1)*(x + 2)*(x - 2)",
+    "exact_roots": [
+      "/",
+      "/",
+      "/"
+    ],
+    "verification_residuals": {
+      "method": "Substitute each root into the original expression and simplify to confirm zero.",
+      "expected_result": "All residuals must equal exactly 0."
+    },
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Define symbol x with real domain assumption using sympy.symbols('x', real=True).",
+        "verification": "Confirm x is defined and has real=True attribute."
+      },
+      {
+        "order": 2,
+        "action": "Construct expression expr = x**4 - 5*x**2 + 4.",
+        "verification": "Print expr to confirm it matches the input polynomial."
+      },
+      {
+        "order": 3,
+        "action": "Factorize expr using sympy.factor(expr).",
+        "verification": "Confirm factorization yields (x - 1)*(x + 2)*(x - 2)."
+      },
+      {
+        "order": 4,
+        "action": "Solve equation expr = 0 for x using sympy.solve or sympy.solveset.",
+        "verification": "Confirm solutions are [1, -2, 2]."
+      },
+      {
+        "order": 5,
+        "action": "Verify each root by substituting into expr and simplifying to zero.",
+        "verification": "All residuals must be exactly 0."
+      }
+    ],
+    "additional_controls": [
+      "Use sympy.simplify on substituted expressions to ensure exact zero verification.",
+      "Avoid floating-point approximations; use Rational or exact arithmetic throughout."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "symbol x and real domain",
+        "pass": true,
+        "evidence": [
+          "x",
+          "real"
+        ]
+      },
+      {
+        "check": "exact symbolic method",
+        "pass": true,
+        "evidence": "Symbolic factorization followed by exact root extraction using SymPy's solveset and simplify functions, with verification via residual evaluation."
+      },
+      {
+        "check": "exact roots",
+        "pass": false,
+        "evidence": [
+          "/",
+          "/",
+          "/"
+        ]
+      },
+      {
+        "check": "zero substitution residuals",
+        "pass": false,
+        "evidence": {
+          "method": "Substitute each root into the original expression and simplify to confirm zero.",
+          "expected_result": "All residuals must equal exactly 0."
+        }
+      },
+      {
+        "check": "factorization present",
+        "pass": true,
+        "evidence": "(x - 1)*(x + 2)*(x - 2)"
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Define symbol x with real domain assumption using sympy.symbols('x', real=True).",
+            "verification": "Confirm x is defined and has real=True attribute."
+          },
+          {
+            "order": 2,
+            "action": "Construct expression expr = x**4 - 5*x**2 + 4.",
+            "verification": "Print expr to confirm it matches the input polynomial."
+          },
+          {
+            "order": 3,
+            "action": "Factorize expr using sympy.factor(expr).",
+            "verification": "Confirm factorization yields (x - 1)*(x + 2)*(x - 2)."
+          },
+          {
+            "order": 4,
+            "action": "Solve equation expr = 0 for x using sympy.solve or sympy.solveset.",
+            "verification": "Confirm solutions are [1, -2, 2]."
+          },
+          {
+            "order": 5,
+            "action": "Verify each root by substituting into expr and simplifying to zero.",
+            "verification": "All residuals must be exactly 0."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 5,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "explicit assumptions",
+        "pass": true,
+        "evidence": [
+          "assumption",
+          "real domain"
+        ]
+      },
+      {
+        "check": "exact arithmetic",
+        "pass": true,
+        "evidence": [
+          "exact arithmetic",
+          "no floating",
+          "integer"
+        ]
+      },
+      {
+        "check": "factor before solve",
+        "pass": false,
+        "evidence": [
+          "factor before",
+          "factor the"
+        ]
+      },
+      {
+        "check": "verify original expression",
+        "pass": true,
+        "evidence": [
+          "original expression",
+          "substitut"
+        ]
+      }
+    ],
+    "quality_score": 3,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

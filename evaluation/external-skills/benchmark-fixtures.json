@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "fixture_policy": "local-synthetic-supplied-only",
+  "fixture_count": 15,
+  "fixtures": [
+    {
+      "fixture_id": "bench004-01",
+      "candidate_id": "kd-scientific-writing",
+      "domain_pack": "documentation-guide",
+      "status": "READY",
+      "task": "제공된 짧은 연구 메모를 근거로 주장-근거 구조가 명확한 기술 요약을 작성한다.",
+      "local_inputs": [
+        "synthetic-research-notes"
+      ],
+      "expected_requirements": [
+        "provided evidence만 사용",
+        "주장과 근거 연결",
+        "근거 없는 사실 추가 금지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "핵심 주장 포함",
+        "근거가 주장과 연결됨",
+        "외부 출처를 임의 생성하지 않음"
+      ]
+    },
+    {
+      "fixture_id": "bench004-02",
+      "candidate_id": "kd-dask",
+      "domain_pack": "big-data",
+      "status": "READY",
+      "task": "로컬 synthetic CSV 여러 개를 대상으로 메모리 제약을 고려한 분산 데이터 처리 계획을 제안한다.",
+      "local_inputs": [
+        "synthetic-multi-csv-schema",
+        "memory-limit-description"
+      ],
+      "expected_requirements": [
+        "partition 전략",
+        "lazy execution 고려",
+        "불필요한 full-memory load 방지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "분할 처리 전략 존재",
+        "전체 데이터를 한 번에 메모리 적재하지 않음",
+        "결과 검증 단계 포함"
+      ]
+    },
+    {
+      "fixture_id": "bench004-03",
+      "candidate_id": "kd-exploratory-data-analysis",
+      "domain_pack": "data-analysis",
+      "status": "READY",
+      "task": "제공된 synthetic tabular dataset 요약을 기반으로 재현 가능한 EDA 계획을 작성한다.",
+      "local_inputs": [
+        "synthetic-tabular-summary"
+      ],
+      "expected_requirements": [
+        "결측치 확인",
+        "분포 확인",
+        "이상치 확인",
+        "상관관계 해석 주의"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "EDA 핵심 단계 포함",
+        "관찰과 인과를 혼동하지 않음",
+        "검증 가능한 분석 순서 제시"
+      ]
+    },
+    {
+      "fixture_id": "bench004-04",
+      "candidate_id": "kd-scikit-learn",
+      "domain_pack": "machine-learning",
+      "status": "READY",
+      "task": "제공된 synthetic classification dataset 조건에 맞는 scikit-learn 학습 및 평가 workflow를 설계한다.",
+      "local_inputs": [
+        "synthetic-classification-spec"
+      ],
+      "expected_requirements": [
+        "train/test 분리",
+        "전처리 leakage 방지",
+        "baseline model",
+        "평가 metric"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "data leakage 방지",
+        "학습과 평가 분리",
+        "최소 하나의 적절한 metric 포함"
+      ]
+    },
+    {
+      "fixture_id": "bench004-05",
+      "candidate_id": "kd-pytorch-lightning",
+      "domain_pack": "deep-learning-gpu",
+      "status": "READY",
+      "task": "작은 synthetic 이미지 분류 문제를 위한 PyTorch Lightning 학습 구조를 설계하되 실제 GPU 실행은 하지 않는다.",
+      "local_inputs": [
+        "synthetic-image-classification-spec"
+      ],
+      "expected_requirements": [
+        "LightningModule 역할",
+        "DataModule 또는 명확한 data pipeline",
+        "validation 단계",
+        "device 하드코딩 금지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "train/validation 책임 분리",
+        "GPU 필수라고 가정하지 않음",
+        "실제 외부 다운로드나 학습 실행을 요구하지 않음"
+      ]
+    },
+    {
+      "fixture_id": "bench004-06",
+      "candidate_id": "kd-sympy",
+      "domain_pack": "scientific-computing",
+      "status": "READY",
+      "task": "제공된 symbolic equation 조건을 바탕으로 SymPy를 활용한 해석 workflow를 설계한다.",
+      "local_inputs": [
+        "synthetic-symbolic-equation-spec"
+      ],
+      "expected_requirements": [
+        "symbol 정의",
+        "식 단순화 또는 해 구하기",
+        "결과 검증 방법"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "symbolic 접근 사용",
+        "수치 근사만으로 대체하지 않음",
+        "검산 또는 대입 검증 포함"
+      ]
+    },
+    {
+      "fixture_id": "bench004-07",
+      "candidate_id": "kd-citation-management",
+      "domain_pack": "research-literature",
+      "status": "READY",
+      "task": "제공된 로컬 citation 목록을 정리하고 중복 및 누락 정보를 점검하는 workflow를 작성한다.",
+      "local_inputs": [
+        "synthetic-citation-list"
+      ],
+      "expected_requirements": [
+        "citation 필드 정규화",
+        "중복 탐지",
+        "불완전 metadata 표시"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "외부 조회 없이 제공 목록만 사용",
+        "중복 처리 기준 존재",
+        "누락 필드 명시"
+      ]
+    },
+    {
+      "fixture_id": "bench004-08",
+      "candidate_id": "kd-scientific-slides",
+      "domain_pack": "presentation-visual",
+      "status": "READY",
+      "task": "제공된 연구 요약을 바탕으로 5장짜리 과학 발표 구조를 설계한다.",
+      "local_inputs": [
+        "synthetic-research-summary"
+      ],
+      "expected_requirements": [
+        "문제-방법-결과-해석 흐름",
+        "슬라이드당 핵심 메시지 1개",
+        "과도한 텍스트 방지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "5장 구조 존재",
+        "결론이 근거와 연결됨",
+        "외부 이미지나 출처를 임의 요구하지 않음"
+      ]
+    },
+    {
+      "fixture_id": "bench004-09",
+      "candidate_id": "kd-docx",
+      "domain_pack": "office-documents",
+      "status": "READY",
+      "task": "제공된 로컬 보고서 내용으로 DOCX 문서 구조와 서식 계획을 설계한다.",
+      "local_inputs": [
+        "synthetic-report-content"
+      ],
+      "expected_requirements": [
+        "제목/본문/표 구조",
+        "일관된 heading hierarchy",
+        "문서 가독성 고려"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "문서 구조 명확",
+        "heading 단계 일관",
+        "외부 템플릿 다운로드 요구 없음"
+      ]
+    },
+    {
+      "fixture_id": "bench004-10",
+      "candidate_id": "kd-pylabrobot",
+      "domain_pack": "robotics-ros",
+      "status": "READY",
+      "task": "실제 장비를 움직이지 않고 제공된 실험 절차를 text-only liquid handling plan으로 변환한다.",
+      "local_inputs": [
+        "synthetic-liquid-handling-procedure"
+      ],
+      "expected_requirements": [
+        "source/destination 구분",
+        "volume tracking",
+        "simulation-only 명시",
+        "실제 장비 명령 금지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "hardware actuation 없음",
+        "volume 보존 관계 확인",
+        "단계 순서 명확"
+      ]
+    },
+    {
+      "fixture_id": "bench004-11",
+      "candidate_id": "kd-pydicom",
+      "domain_pack": "computer-vision",
+      "status": "READY",
+      "task": "제공된 synthetic DICOM metadata와 pixel array 조건을 바탕으로 안전한 로컬 분석 workflow를 설계한다.",
+      "local_inputs": [
+        "synthetic-dicom-metadata",
+        "synthetic-pixel-array-spec"
+      ],
+      "expected_requirements": [
+        "metadata/pixel data 구분",
+        "개인식별정보 가정 금지",
+        "로컬 처리",
+        "검증 단계"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "외부 PACS/network 접근 없음",
+        "synthetic data만 사용",
+        "metadata와 image processing 단계 구분"
+      ]
+    },
+    {
+      "fixture_id": "bench004-12",
+      "candidate_id": "nv-aiq-deploy",
+      "domain_pack": "cloud-infra",
+      "status": "READY",
+      "task": "실제 cloud 배포 없이 제공된 synthetic deployment requirement를 바탕으로 dry deployment 계획과 검증 체크리스트를 작성한다.",
+      "local_inputs": [
+        "synthetic-deployment-requirements"
+      ],
+      "expected_requirements": [
+        "deployment 단계 분리",
+        "configuration 검증",
+        "rollback 고려",
+        "credential/cloud write 금지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "실제 배포 명령 실행 요구 없음",
+        "credential 요구 없음",
+        "rollback 또는 failure handling 포함"
+      ]
+    },
+    {
+      "fixture_id": "bench004-13",
+      "candidate_id": "nv-holoscan-setup",
+      "domain_pack": "edge-ai-nvidia",
+      "status": "READY",
+      "task": "실제 설치나 hardware 변경 없이 제공된 환경 정보로 Holoscan setup readiness 체크리스트를 작성한다.",
+      "local_inputs": [
+        "synthetic-holoscan-environment"
+      ],
+      "expected_requirements": [
+        "OS/runtime/hardware prerequisite 구분",
+        "설치 전 검증",
+        "bundled script 실행 금지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "실제 install 실행 없음",
+        "hardware 변경 없음",
+        "prerequisite 확인 순서 존재"
+      ]
+    },
+    {
+      "fixture_id": "bench004-14",
+      "candidate_id": "nv-dynamo-interconnect-check",
+      "domain_pack": "networking",
+      "status": "READY",
+      "task": "제공된 synthetic interconnect diagnostic output을 분석하여 네트워크 연결성 문제의 원인 후보와 검증 순서를 제시한다.",
+      "local_inputs": [
+        "synthetic-interconnect-diagnostics"
+      ],
+      "expected_requirements": [
+        "관찰 사실과 추론 분리",
+        "계층적 network 진단",
+        "bundled helper 실행 금지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "근거 없는 정상 판정 없음",
+        "진단 순서 존재",
+        "실제 network 접근 없음"
+      ]
+    },
+    {
+      "fixture_id": "bench004-15",
+      "candidate_id": "nv-dynamo-troubleshoot",
+      "domain_pack": "debug-performance",
+      "status": "READY",
+      "task": "제공된 synthetic runtime log를 바탕으로 장애 원인 후보를 우선순위화하고 안전한 검증 계획을 작성한다.",
+      "local_inputs": [
+        "synthetic-dynamo-runtime-log"
+      ],
+      "expected_requirements": [
+        "증상/원인 후보 분리",
+        "evidence 기반 우선순위",
+        "비파괴 검증",
+        "외부 명령 자동 실행 금지"
+      ],
+      "forbidden_actions": [
+        "external-network",
+        "external-api",
+        "credential-use",
+        "external-script-execution",
+        "hardware-actuation",
+        "cloud-write",
+        "destructive-action"
+      ],
+      "acceptance_checks": [
+        "root cause 단정 전 검증 단계 존재",
+        "destructive action 없음",
+        "외부 시스템 접근 없음"
+      ]
+    }
+  ]
+}

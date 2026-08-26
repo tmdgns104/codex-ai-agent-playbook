@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "domain_packs": [
+    {"id":"documentation-guide","label":"Documentation / Guide Writing","desired_capabilities":["technical-writing","tutorial-writing","readme","api-documentation","user-guide","runbook","knowledge-base"]},
+    {"id":"presentation-visual","label":"Presentation / Visual Communication","desired_capabilities":["technical-slides","presentation-design","architecture-diagram","infographic","mermaid","poster"]},
+    {"id":"data-analysis","label":"Data Analysis / EDA / Statistics","desired_capabilities":["pandas","eda","statistics","hypothesis-testing","visualization","data-cleaning","feature-analysis"]},
+    {"id":"big-data","label":"Big Data / ETL / Distributed Data","desired_capabilities":["pyspark","spark","dask","cudf","parquet","etl","data-pipeline","data-quality","distributed-dataframe"]},
+    {"id":"machine-learning","label":"Machine Learning","desired_capabilities":["scikit-learn","feature-engineering","model-evaluation","cross-validation","hyperparameter-tuning","shap","imbalanced-learning"]},
+    {"id":"deep-learning-gpu","label":"Deep Learning / GPU","desired_capabilities":["pytorch","tensorflow","training-debugging","mixed-precision","gpu-profiling","distributed-training"]},
+    {"id":"computer-vision","label":"Computer Vision","desired_capabilities":["opencv","image-processing","object-detection","segmentation","tracking","camera-calibration","vision-evaluation"]},
+    {"id":"edge-ai-nvidia","label":"Edge AI / NVIDIA","desired_capabilities":["jetson","tensorrt","onnx","deepstream","cuda","holoscan","edge-inference"]},
+    {"id":"rag-llm-agent","label":"RAG / LLM / Agent Engineering","desired_capabilities":["rag-design","retrieval-evaluation","embedding","vector-database","prompt-evaluation","agent-design","mcp","llmops"]},
+    {"id":"backend-api","label":"Backend / API","desired_capabilities":["fastapi","django","flask","rest-api","openapi","graphql","api-contract"]},
+    {"id":"database-sql","label":"Database / SQL","desired_capabilities":["sql-optimization","postgresql","mysql","schema-design","migration","transaction","indexing"]},
+    {"id":"devops-container","label":"DevOps / Containers / Kubernetes","desired_capabilities":["docker","docker-compose","kubernetes","helm","ci-cd","github-actions","release-engineering"]},
+    {"id":"cloud-infra","label":"Cloud / Infrastructure","desired_capabilities":["aws","azure","gcp","terraform","iac","deployment","networking-cloud","observability-cloud"]},
+    {"id":"testing-qa","label":"Testing / QA","desired_capabilities":["pytest","unit-test","integration-test","e2e","regression","test-design","acceptance-testing","playwright"]},
+    {"id":"debug-performance","label":"Debugging / Performance","desired_capabilities":["root-cause-analysis","log-analysis","profiling","benchmark","memory-debugging","concurrency-debugging"]},
+    {"id":"security-auth","label":"Security / Auth","desired_capabilities":["security-review","jwt","oauth","secrets","api-security","dependency-security","threat-modeling"]},
+    {"id":"reliability-observability","label":"Reliability / Observability","desired_capabilities":["retry","timeout","circuit-breaker","idempotency","logging","metrics","tracing","slo"]},
+    {"id":"git-delivery","label":"Git / Delivery / Release","desired_capabilities":["git-workflow","pull-request","code-review","release","changelog","versioning"]},
+    {"id":"embedded-iot","label":"Embedded / IoT / CAN / Serial","desired_capabilities":["mcu","serial","can","canopen","mqtt","sensor-integration","firmware-debugging"]},
+    {"id":"robotics-ros","label":"Robotics / ROS2","desired_capabilities":["ros2","navigation","perception","sensor-fusion","robot-control","simulation"]},
+    {"id":"industrial-automation","label":"Industrial Automation / PLC / MES","desired_capabilities":["plc","ladder","opc-ua","modbus","mes","scada","industrial-networking"]},
+    {"id":"networking","label":"Networking / Troubleshooting","desired_capabilities":["tcp-ip","routing","dns","packet-analysis","wireshark","network-troubleshooting"]},
+    {"id":"research-literature","label":"Scientific Research / Literature / Citation","desired_capabilities":["literature-review","citation-management","evidence-synthesis","hypothesis-generation","experiment-design","peer-review"]},
+    {"id":"scientific-computing","label":"Scientific Computing / Optimization / Simulation","desired_capabilities":["numerical-analysis","optimization","simulation","symbolic-math","time-series-forecasting","geospatial"]},
+    {"id":"office-documents","label":"Office / PDF / DOCX / XLSX","desired_capabilities":["pdf","docx","xlsx","spreadsheet-analysis","document-conversion","form-processing"]}
+  ]
+}

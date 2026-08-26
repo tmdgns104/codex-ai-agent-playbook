@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-sympy",
+  "fixture_id": "bench004-06",
+  "variant": "adapted-playbook",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:47:55.783Z",
+    "execution_end_utc": "2026-08-24T05:48:08.765Z",
+    "wall_time_ms": 12982.18
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 477,
+    "loaded_context_sha256": "c83353dc06d2989203048e0512730262e2c66c590a7cbe7621ed914d2523f1a3",
+    "selected_capabilities": [
+      "adapted:kd-sympy"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "da9ff9b4db3431a398e3decce4bd242cf15e8a4c3ddf4ea4f87ac298bd815dca",
+    "response_schema_sha256": "27a50d1cc41f15227425d2a7d48ad184c775d11a794c36713cd3280b8efb7f45",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1363,
+    "output_token_count_available": true,
+    "output_token_count": 417
+  },
+  "provider_duration": {
+    "total_duration_ns": 12963735000,
+    "load_duration_ns": 488625800,
+    "prompt_eval_duration_ns": 307898000,
+    "eval_duration_ns": 12063418000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"symbol\": \"x\",\n  \"domain\": \"real\",\n  \"method\": \"factorization_and_exact_solve\",\n  \"factorization\": \"(x - 1)*(x + 1)*(x - 2)*(x + 2)\",\n  \"exact_roots\": [\n    \"-2\",\n    \"-1\",\n    \"1\",\n    \"2\"\n  ],\n  \"verification_residuals\": {\n    \"-2\": \"0\",\n    \"-1\": \"0\",\n    \"1\": \"0\",\n    \"2\": \"0\"\n  },\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"symbol_definition\",\n      \"verification\": \"Symbol 'x' defined with real domain assumption.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"expression_construction\",\n      \"verification\": \"Expression x**4 - 5*x**2 + 4 constructed symbolically without floating-point literals.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"factorization\",\n      \"verification\": \"Expression factored into (x - 1)*(x + 1)*(x - 2)*(x + 2).\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"root_extraction\",\n      \"verification\": \"Roots extracted from factors: x = ±1, ±2.\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"verification_substitution\",\n      \"verification\": \"Each root substituted into original expression and simplified symbolically to zero.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Use exact arithmetic throughout; no floating-point approximations.\",\n    \"Verify each root by symbolic substitution before accepting it.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "symbol": "x",
+    "domain": "real",
+    "method": "factorization_and_exact_solve",
+    "factorization": "(x - 1)*(x + 1)*(x - 2)*(x + 2)",
+    "exact_roots": [
+      "-2",
+      "-1",
+      "1",
+      "2"
+    ],
+    "verification_residuals": {
+      "-2": "0",
+      "-1": "0",
+      "1": "0",
+      "2": "0"
+    },
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "symbol_definition",
+        "verification": "Symbol 'x' defined with real domain assumption."
+      },
+      {
+        "order": 2,
+        "action": "expression_construction",
+        "verification": "Expression x**4 - 5*x**2 + 4 constructed symbolically without floating-point literals."
+      },
+      {
+        "order": 3,
+        "action": "factorization",
+        "verification": "Expression factored into (x - 1)*(x + 1)*(x - 2)*(x + 2)."
+      },
+      {
+        "order": 4,
+        "action": "root_extraction",
+        "verification": "Roots extracted from factors: x = ±1, ±2."
+      },
+      {
+        "order": 5,
+        "action": "verification_substitution",
+        "verification": "Each root substituted into original expression and simplified symbolically to zero."
+      }
+    ],
+    "additional_controls": [
+      "Use exact arithmetic throughout; no floating-point approximations.",
+      "Verify each root by symbolic substitution before accepting it."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": true,
+    "hard_checks": [
+      {
+        "check": "symbol x and real domain",
+        "pass": true,
+        "evidence": [
+          "x",
+          "real"
+        ]
+      },
+      {
+        "check": "exact symbolic method",
+        "pass": true,
+        "evidence": "factorization_and_exact_solve"
+      },
+      {
+        "check": "exact roots",
+        "pass": true,
+        "evidence": [
+          "-2",
+          "-1",
+          "1",
+          "2"
+        ]
+      },
+      {
+        "check": "zero substitution residuals",
+        "pass": true,
+        "evidence": {
+          "-2": "0",
+          "-1": "0",
+          "1": "0",
+          "2": "0"
+        }
+      },
+      {
+        "check": "factorization present",
+        "pass": true,
+        "evidence": "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "symbol_definition",
+            "verification": "Symbol 'x' defined with real domain assumption."
+          },
+          {
+            "order": 2,
+            "action": "expression_construction",
+            "verification": "Expression x**4 - 5*x**2 + 4 constructed symbolically without floating-point literals."
+          },
+          {
+            "order": 3,
+            "action": "factorization",
+            "verification": "Expression factored into (x - 1)*(x + 1)*(x - 2)*(x + 2)."
+          },
+          {
+            "order": 4,
+            "action": "root_extraction",
+            "verification": "Roots extracted from factors: x = ±1, ±2."
+          },
+          {
+            "order": 5,
+            "action": "verification_substitution",
+            "verification": "Each root substituted into original expression and simplified symbolically to zero."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 7,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "explicit assumptions",
+        "pass": true,
+        "evidence": [
+          "assumption",
+          "real domain"
+        ]
+      },
+      {
+        "check": "exact arithmetic",
+        "pass": true,
+        "evidence": [
+          "exact arithmetic",
+          "no floating",
+          "integer"
+        ]
+      },
+      {
+        "check": "factor before solve",
+        "pass": false,
+        "evidence": [
+          "factor before",
+          "factor the"
+        ]
+      },
+      {
+        "check": "verify original expression",
+        "pass": true,
+        "evidence": [
+          "original expression",
+          "substitut"
+        ]
+      }
+    ],
+    "quality_score": 3,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

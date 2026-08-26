@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-sympy",
+  "fixture_id": "bench004-06",
+  "variant": "external-expert",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:47:41.913Z",
+    "execution_end_utc": "2026-08-24T05:47:55.774Z",
+    "wall_time_ms": 13860.651
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 9824,
+    "loaded_context_sha256": "5445c2f5dadb95d6653681c30060b4ab9686fe02ab6729d8fc41f4a2c19a90cf",
+    "selected_capabilities": [
+      "kd-sympy"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "c33e2db337d4aef4b69e24f9dc9319d4092f0863c83dcbb8aeecff1864bd120e",
+    "response_schema_sha256": "27a50d1cc41f15227425d2a7d48ad184c775d11a794c36713cd3280b8efb7f45",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 4059,
+    "output_token_count_available": true,
+    "output_token_count": 396
+  },
+  "provider_duration": {
+    "total_duration_ns": 13834947600,
+    "load_duration_ns": 488760100,
+    "prompt_eval_duration_ns": 1675209000,
+    "eval_duration_ns": 11652953000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"symbol\": \"x\",\n  \"domain\": \"real\",\n  \"method\": \"factorization_and_root_finding\",\n  \"factorization\": \"(x - 1)*(x + 1)*(x - 2)*(x + 2)\",\n  \"exact_roots\": [\n    \"-2\",\n    \"-1\",\n    \"1\",\n    \"2\"\n  ],\n  \"verification_residuals\": {\n    \"-2\": \"0\",\n    \"-1\": \"0\",\n    \"1\": \"0\",\n    \"2\": \"0\"\n  },\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"symbol_definition\",\n      \"verification\": \"Symbol 'x' defined using sympy.symbols()\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"expression_simplification\",\n      \"verification\": \"Expression x**4 - 5*x**2 + 4 factored into (x - 1)*(x + 1)*(x - 2)*(x + 2)\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"root_extraction\",\n      \"verification\": \"Roots extracted from factors: x = ±1, ±2\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"result_verification\",\n      \"verification\": \"Each root substituted back into original expression; all residuals equal 0\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Use exact arithmetic (Rational) to avoid floating-point errors\",\n    \"Verify roots by substitution and simplification to zero\",\n    \"Ensure domain is real as specified in input\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "symbol": "x",
+    "domain": "real",
+    "method": "factorization_and_root_finding",
+    "factorization": "(x - 1)*(x + 1)*(x - 2)*(x + 2)",
+    "exact_roots": [
+      "-2",
+      "-1",
+      "1",
+      "2"
+    ],
+    "verification_residuals": {
+      "-2": "0",
+      "-1": "0",
+      "1": "0",
+      "2": "0"
+    },
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "symbol_definition",
+        "verification": "Symbol 'x' defined using sympy.symbols()"
+      },
+      {
+        "order": 2,
+        "action": "expression_simplification",
+        "verification": "Expression x**4 - 5*x**2 + 4 factored into (x - 1)*(x + 1)*(x - 2)*(x + 2)"
+      },
+      {
+        "order": 3,
+        "action": "root_extraction",
+        "verification": "Roots extracted from factors: x = ±1, ±2"
+      },
+      {
+        "order": 4,
+        "action": "result_verification",
+        "verification": "Each root substituted back into original expression; all residuals equal 0"
+      }
+    ],
+    "additional_controls": [
+      "Use exact arithmetic (Rational) to avoid floating-point errors",
+      "Verify roots by substitution and simplification to zero",
+      "Ensure domain is real as specified in input"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "symbol x and real domain",
+        "pass": true,
+        "evidence": [
+          "x",
+          "real"
+        ]
+      },
+      {
+        "check": "exact symbolic method",
+        "pass": false,
+        "evidence": "factorization_and_root_finding"
+      },
+      {
+        "check": "exact roots",
+        "pass": true,
+        "evidence": [
+          "-2",
+          "-1",
+          "1",
+          "2"
+        ]
+      },
+      {
+        "check": "zero substitution residuals",
+        "pass": true,
+        "evidence": {
+          "-2": "0",
+          "-1": "0",
+          "1": "0",
+          "2": "0"
+        }
+      },
+      {
+        "check": "factorization present",
+        "pass": true,
+        "evidence": "(x - 1)*(x + 1)*(x - 2)*(x + 2)"
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "symbol_definition",
+            "verification": "Symbol 'x' defined using sympy.symbols()"
+          },
+          {
+            "order": 2,
+            "action": "expression_simplification",
+            "verification": "Expression x**4 - 5*x**2 + 4 factored into (x - 1)*(x + 1)*(x - 2)*(x + 2)"
+          },
+          {
+            "order": 3,
+            "action": "root_extraction",
+            "verification": "Roots extracted from factors: x = ±1, ±2"
+          },
+          {
+            "order": 4,
+            "action": "result_verification",
+            "verification": "Each root substituted back into original expression; all residuals equal 0"
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 6,
+    "hard_checks_total": 7,
+    "quality_checks": [
+      {
+        "check": "explicit assumptions",
+        "pass": false,
+        "evidence": [
+          "assumption",
+          "real domain"
+        ]
+      },
+      {
+        "check": "exact arithmetic",
+        "pass": true,
+        "evidence": [
+          "exact arithmetic",
+          "no floating",
+          "integer"
+        ]
+      },
+      {
+        "check": "factor before solve",
+        "pass": false,
+        "evidence": [
+          "factor before",
+          "factor the"
+        ]
+      },
+      {
+        "check": "verify original expression",
+        "pass": true,
+        "evidence": [
+          "original expression",
+          "substitut"
+        ]
+      }
+    ],
+    "quality_score": 2,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

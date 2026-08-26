@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "wave_id": "V8.3-2-validator-postfix",
+  "candidate_id": "kd-docx",
+  "fixture_id": "bench004-09",
+  "variant": "current-playbook",
+  "generation_attempt": 1,
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T05:49:29.125Z",
+    "execution_end_utc": "2026-08-24T05:49:49.239Z",
+    "wall_time_ms": 20113.23
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 231,
+    "loaded_context_sha256": "0a8259aaee04c4232bab95b20f260ae46a0acbd1083cff5d57dce5389a04dacb",
+    "selected_capabilities": [
+      "documentation-lookup"
+    ],
+    "routing_result": {
+      "task": "제공된 로컬 보고서 내용으로 DOCX 문서 구조와 서식 계획을 설계한다.",
+      "selected": [
+        {
+          "id": "documentation-lookup",
+          "type": "rest-wrapper",
+          "score": 6,
+          "threshold": 6,
+          "eligible": true,
+          "profile": "standard",
+          "approval": "none",
+          "context_cost": "low",
+          "risk": "medium",
+          "matched_triggers": [
+            "문서"
+          ],
+          "matched_domains": [],
+          "summary_overlap": []
+        }
+      ],
+      "profile": "standard",
+      "count": 1,
+      "result": "ROUTED"
+    },
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "d7e2cf2574898bc82fb1cf1ed9b7ead05f4c28cc0523d429ca1fb384675a9dcd",
+    "response_schema_sha256": "800fdac02df74b704cf4fcb1c961b545e1a719cbe3903a5443fe4a00c1874d96",
+    "local_input_contract_sha256": "75f137f7a241c2abfaa1fe91cc40ee67d9c0f16e7f5f616b2263c741adc9d6eb",
+    "acceptance_rubric_sha256": "12f1772661a32d268812373eb06717422c79ccba28acc6a384c67666c48e4aa5"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1482,
+    "output_token_count_available": true,
+    "output_token_count": 648
+  },
+  "provider_duration": {
+    "total_duration_ns": 20086215200,
+    "load_duration_ns": 482539800,
+    "prompt_eval_duration_ns": 385342000,
+    "eval_duration_ns": 19120498000,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"document_title\": \"Quarterly Safety Review\",\n  \"page_size\": \"A4\",\n  \"heading_hierarchy\": [\n    {\n      \"text\": \"Quarterly Safety Review\",\n      \"level\": \"Title\"\n    },\n    {\n      \"text\": \"Executive Summary\",\n      \"level\": \"Heading 1\"\n    },\n    {\n      \"text\": \"Findings\",\n      \"level\": \"Heading 1\"\n    },\n    {\n      \"text\": \"Recommendations\",\n      \"level\": \"Heading 1\"\n    }\n  ],\n  \"table_headers\": [\n    \"Control\",\n    \"Owner\",\n    \"Status\"\n  ],\n  \"body_format\": {\n    \"font\": \"Calibri or Arial\",\n    \"size_pt\": 11,\n    \"line_spacing\": 1.15\n  },\n  \"accessibility_checks\": [\n    \"Ensure sufficient contrast between text and background.\",\n    \"Verify table headers are properly associated with data cells.\"\n  ],\n  \"verification_plan\": [\n    \"Confirm all headings match the canonical hierarchy (Title, Heading 1).\",\n    \"Validate table structure matches the provided schema exactly.\"\n  ],\n  \"external_template_required\": false,\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Create new DOCX document with A4 page size.\",\n      \"verification\": \"Check page dimensions in properties.\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Insert 'Quarterly Safety Review' as Title style.\",\n      \"verification\": \"Confirm text content and style level.\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Insert 'Executive Summary' section with Heading 1 style.\",\n      \"verification\": \"Check heading hierarchy consistency.\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Insert body text for Executive Summary.\",\n      \"verification\": \"Verify text content accuracy.\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Insert 'Findings' section with Heading 1 style and body text.\",\n      \"verification\": \"Check heading hierarchy consistency.\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"Insert 'Recommendations' section with Heading 1 style and body text.\",\n      \"verification\": \"Check heading hierarchy consistency.\"\n    },\n    {\n      \"order\": 7,\n      \"action\": \"Insert table titled 'Control Status' with specified headers and rows.\",\n      \"verification\": \"Validate table content against provided data.\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Ensure no external network calls are made during document creation.\",\n    \"Verify all text is derived strictly from the local synthetic input.\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "document_title": "Quarterly Safety Review",
+    "page_size": "A4",
+    "heading_hierarchy": [
+      {
+        "text": "Quarterly Safety Review",
+        "level": "Title"
+      },
+      {
+        "text": "Executive Summary",
+        "level": "Heading 1"
+      },
+      {
+        "text": "Findings",
+        "level": "Heading 1"
+      },
+      {
+        "text": "Recommendations",
+        "level": "Heading 1"
+      }
+    ],
+    "table_headers": [
+      "Control",
+      "Owner",
+      "Status"
+    ],
+    "body_format": {
+      "font": "Calibri or Arial",
+      "size_pt": 11,
+      "line_spacing": 1.15
+    },
+    "accessibility_checks": [
+      "Ensure sufficient contrast between text and background.",
+      "Verify table headers are properly associated with data cells."
+    ],
+    "verification_plan": [
+      "Confirm all headings match the canonical hierarchy (Title, Heading 1).",
+      "Validate table structure matches the provided schema exactly."
+    ],
+    "external_template_required": false,
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Create new DOCX document with A4 page size.",
+        "verification": "Check page dimensions in properties."
+      },
+      {
+        "order": 2,
+        "action": "Insert 'Quarterly Safety Review' as Title style.",
+        "verification": "Confirm text content and style level."
+      },
+      {
+        "order": 3,
+        "action": "Insert 'Executive Summary' section with Heading 1 style.",
+        "verification": "Check heading hierarchy consistency."
+      },
+      {
+        "order": 4,
+        "action": "Insert body text for Executive Summary.",
+        "verification": "Verify text content accuracy."
+      },
+      {
+        "order": 5,
+        "action": "Insert 'Findings' section with Heading 1 style and body text.",
+        "verification": "Check heading hierarchy consistency."
+      },
+      {
+        "order": 6,
+        "action": "Insert 'Recommendations' section with Heading 1 style and body text.",
+        "verification": "Check heading hierarchy consistency."
+      },
+      {
+        "order": 7,
+        "action": "Insert table titled 'Control Status' with specified headers and rows.",
+        "verification": "Validate table content against provided data."
+      }
+    ],
+    "additional_controls": [
+      "Ensure no external network calls are made during document creation.",
+      "Verify all text is derived strictly from the local synthetic input."
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "exact title and A4",
+        "pass": true,
+        "evidence": [
+          "Quarterly Safety Review",
+          "A4"
+        ]
+      },
+      {
+        "check": "consistent heading hierarchy",
+        "pass": true,
+        "evidence": [
+          {
+            "text": "Quarterly Safety Review",
+            "level": "Title"
+          },
+          {
+            "text": "Executive Summary",
+            "level": "Heading 1"
+          },
+          {
+            "text": "Findings",
+            "level": "Heading 1"
+          },
+          {
+            "text": "Recommendations",
+            "level": "Heading 1"
+          }
+        ]
+      },
+      {
+        "check": "exact table headers",
+        "pass": true,
+        "evidence": [
+          "Control",
+          "Owner",
+          "Status"
+        ]
+      },
+      {
+        "check": "readable body format",
+        "pass": true,
+        "evidence": {
+          "font": "Calibri or Arial",
+          "size_pt": 11,
+          "line_spacing": 1.15
+        }
+      },
+      {
+        "check": "accessibility checks",
+        "pass": true,
+        "evidence": [
+          "Ensure sufficient contrast between text and background.",
+          "Verify table headers are properly associated with data cells."
+        ]
+      },
+      {
+        "check": "package and visual verification",
+        "pass": false,
+        "evidence": [
+          "Confirm all headings match the canonical hierarchy (Title, Heading 1).",
+          "Validate table structure matches the provided schema exactly."
+        ]
+      },
+      {
+        "check": "no external template",
+        "pass": true,
+        "evidence": false
+      },
+      {
+        "check": "ordered verifiable workflow",
+        "pass": true,
+        "evidence": [
+          {
+            "order": 1,
+            "action": "Create new DOCX document with A4 page size.",
+            "verification": "Check page dimensions in properties."
+          },
+          {
+            "order": 2,
+            "action": "Insert 'Quarterly Safety Review' as Title style.",
+            "verification": "Confirm text content and style level."
+          },
+          {
+            "order": 3,
+            "action": "Insert 'Executive Summary' section with Heading 1 style.",
+            "verification": "Check heading hierarchy consistency."
+          },
+          {
+            "order": 4,
+            "action": "Insert body text for Executive Summary.",
+            "verification": "Verify text content accuracy."
+          },
+          {
+            "order": 5,
+            "action": "Insert 'Findings' section with Heading 1 style and body text.",
+            "verification": "Check heading hierarchy consistency."
+          },
+          {
+            "order": 6,
+            "action": "Insert 'Recommendations' section with Heading 1 style and body text.",
+            "verification": "Check heading hierarchy consistency."
+          },
+          {
+            "order": 7,
+            "action": "Insert table titled 'Control Status' with specified headers and rows.",
+            "verification": "Validate table content against provided data."
+          }
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 8,
+    "hard_checks_total": 9,
+    "quality_checks": [
+      {
+        "check": "built-in heading styles",
+        "pass": true,
+        "evidence": [
+          "built-in heading",
+          "heading 1"
+        ]
+      },
+      {
+        "check": "stable table widths",
+        "pass": false,
+        "evidence": [
+          "column width",
+          "stable width",
+          "explicit width"
+        ]
+      },
+      {
+        "check": "render every page",
+        "pass": false,
+        "evidence": [
+          "every page",
+          "all pages"
+        ]
+      },
+      {
+        "check": "clipping or overflow review",
+        "pass": false,
+        "evidence": [
+          "clipping",
+          "overflow"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

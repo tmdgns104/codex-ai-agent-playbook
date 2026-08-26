@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_3-SKILL-BENCH-004",
+  "candidate_id": "kd-scikit-learn",
+  "fixture_id": "bench004-04",
+  "variant": "adapted-playbook",
+  "execution_status": "COMPLETED",
+  "runtime_metadata": {
+    "provider": "Ollama",
+    "locality": "local-only",
+    "local_endpoint": "127.0.0.1:11434",
+    "remote_network": false,
+    "remote_api": false,
+    "credentials": false,
+    "model_identifier": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "installed_model_size_bytes": 6594474711,
+    "model_context_capacity_tokens": 262144,
+    "runtime_context_limit_tokens": 16384,
+    "output_limit_tokens": 1024,
+    "generation_parameters": {
+      "temperature": 0,
+      "top_p": 0.95,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 42,
+      "think": false
+    },
+    "seed_policy": "fixed-seed-42-for-all-slots",
+    "timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_allowed": false,
+    "execution_start_utc": "2026-08-24T04:38:49.829Z",
+    "execution_end_utc": "2026-08-24T04:39:07.306Z",
+    "wall_time_ms": 17476.161
+  },
+  "context_evidence": {
+    "loaded_context_bytes": 591,
+    "loaded_context_sha256": "85d933d016c0508a233ec98bb672b9223ea99414fe1519c481031fc6b5b61f54",
+    "selected_capabilities": [
+      "adapted:kd-scikit-learn"
+    ],
+    "routing_result": null,
+    "system_sha256": "0ef95ca88e2f51e291415976c9dbd7cc7a726c3420571d30d961957c4b2607c2",
+    "prompt_sha256": "15ce6289bc65c505c1da98d310161ecacb9d708e1502bdcba859112b1099c2a9",
+    "response_schema_sha256": "b438c23c5b066e805e955dc18531dffce83a114b181e55902d55cb6745ea4273"
+  },
+  "token_measurement": {
+    "prompt_token_count_available": true,
+    "prompt_token_count": 1388,
+    "output_token_count_available": true,
+    "output_token_count": 571
+  },
+  "provider_duration": {
+    "total_duration_ns": 17469098600,
+    "load_duration_ns": 513727700,
+    "prompt_eval_duration_ns": 313334000,
+    "eval_duration_ns": 16554901999,
+    "done_reason": "stop"
+  },
+  "raw_response_text": "{\n  \"split_strategy\": \"Stratified train/test split\",\n  \"test_fraction\": 0.2,\n  \"preprocessing_location\": \"Inside Pipeline/ColumnTransformer fitted only on training data\",\n  \"numeric_preprocessing\": [\"Imputer(strategy='median')\", \"StandardScaler\"],\n  \"categorical_preprocessing\": [\"Imputer(strategy='most_frequent')\", \"OneHotEncoder(handle='drop', sparse_output=False)\"],\n  \"baseline_model\": \"LogisticRegression(random_state=42)\",\n  \"evaluation_metrics\": [\"ROC-AUC\", \"PR-AUC\", \"F1-score (weighted)\"],\n  \"cross_validation_scope\": \"Training data only\",\n  \"test_set_usage\": \"Single use for final evaluation after model selection and hyperparameter tuning\",\n  \"random_seed\": 42,\n  \"verification_steps\": [\"Confirm stratified split preserves class distribution in test set\", \"Verify no leakage from target to preprocessing steps\", \"Ensure ColumnTransformer is fit only on training folds\"],\n  \"workflow_steps\": [\n    {\n      \"order\": 1,\n      \"action\": \"Generate synthetic dataset with specified features and missing values\",\"verification\": \"Check sample count and feature counts match input\"\n    },\n    {\n      \"order\": 2,\n      \"action\": \"Perform stratified train/test split (test_fraction=0.2)\",\"verification\": \"Confirm test set size is ~24% of total and class balance is preserved\"\n    },\n    {\n      \"order\": 3,\n      \"action\": \"Construct Pipeline with ColumnTransformer for numeric/categorical preprocessing\",\"verification\": \"Ensure imputation and encoding are inside the pipeline\"\n    },\n    {\n      \"order\": 4,\n      \"action\": \"Instantiate LogisticRegression baseline model with random_state=42\",\"verification\": \"Confirm random seed is set correctly\"\n    },\n    {\n      \"order\": 5,\n      \"action\": \"Fit pipeline on training data only\",\"verification\": \"Ensure no access to test labels during fitting\"\n    },\n    {\n      \"order\": 6,\n      \"action\": \"Evaluate model on held-out test set using specified metrics\",\"verification\": \"Record ROC-AUC, PR-AUC, and F1-score without retraining or threshold tuning\"\n    }\n  ],\n  \"additional_controls\": [\n    \"Use `random_state=42` for all stochastic operations\",\n    \"Handle missing categorical values via 'most_frequent' strategy\",\n    \"Drop one-hot encoded categories with zero frequency to avoid sparse columns\"\n  ],\n  \"external_actions\": []\n}",
+  "parsed_output": {
+    "split_strategy": "Stratified train/test split",
+    "test_fraction": 0.2,
+    "preprocessing_location": "Inside Pipeline/ColumnTransformer fitted only on training data",
+    "numeric_preprocessing": [
+      "Imputer(strategy='median')",
+      "StandardScaler"
+    ],
+    "categorical_preprocessing": [
+      "Imputer(strategy='most_frequent')",
+      "OneHotEncoder(handle='drop', sparse_output=False)"
+    ],
+    "baseline_model": "LogisticRegression(random_state=42)",
+    "evaluation_metrics": [
+      "ROC-AUC",
+      "PR-AUC",
+      "F1-score (weighted)"
+    ],
+    "cross_validation_scope": "Training data only",
+    "test_set_usage": "Single use for final evaluation after model selection and hyperparameter tuning",
+    "random_seed": 42,
+    "verification_steps": [
+      "Confirm stratified split preserves class distribution in test set",
+      "Verify no leakage from target to preprocessing steps",
+      "Ensure ColumnTransformer is fit only on training folds"
+    ],
+    "workflow_steps": [
+      {
+        "order": 1,
+        "action": "Generate synthetic dataset with specified features and missing values",
+        "verification": "Check sample count and feature counts match input"
+      },
+      {
+        "order": 2,
+        "action": "Perform stratified train/test split (test_fraction=0.2)",
+        "verification": "Confirm test set size is ~24% of total and class balance is preserved"
+      },
+      {
+        "order": 3,
+        "action": "Construct Pipeline with ColumnTransformer for numeric/categorical preprocessing",
+        "verification": "Ensure imputation and encoding are inside the pipeline"
+      },
+      {
+        "order": 4,
+        "action": "Instantiate LogisticRegression baseline model with random_state=42",
+        "verification": "Confirm random seed is set correctly"
+      },
+      {
+        "order": 5,
+        "action": "Fit pipeline on training data only",
+        "verification": "Ensure no access to test labels during fitting"
+      },
+      {
+        "order": 6,
+        "action": "Evaluate model on held-out test set using specified metrics",
+        "verification": "Record ROC-AUC, PR-AUC, and F1-score without retraining or threshold tuning"
+      }
+    ],
+    "additional_controls": [
+      "Use `random_state=42` for all stochastic operations",
+      "Handle missing categorical values via 'most_frequent' strategy",
+      "Drop one-hot encoded categories with zero frequency to avoid sparse columns"
+    ],
+    "external_actions": []
+  },
+  "acceptance": {
+    "acceptance_pass": false,
+    "hard_checks": [
+      {
+        "check": "stratified 0.2 split",
+        "pass": true,
+        "evidence": [
+          "Stratified train/test split",
+          0.2
+        ]
+      },
+      {
+        "check": "preprocessing inside pipeline",
+        "pass": true,
+        "evidence": "Inside Pipeline/ColumnTransformer fitted only on training data"
+      },
+      {
+        "check": "numeric preprocessing",
+        "pass": true,
+        "evidence": [
+          "Imputer(strategy='median')",
+          "StandardScaler"
+        ]
+      },
+      {
+        "check": "categorical preprocessing",
+        "pass": true,
+        "evidence": [
+          "Imputer(strategy='most_frequent')",
+          "OneHotEncoder(handle='drop', sparse_output=False)"
+        ]
+      },
+      {
+        "check": "logistic regression baseline",
+        "pass": true,
+        "evidence": "LogisticRegression(random_state=42)"
+      },
+      {
+        "check": "ROC-AUC and PR-AUC",
+        "pass": true,
+        "evidence": [
+          "ROC-AUC",
+          "PR-AUC",
+          "F1-score (weighted)"
+        ]
+      },
+      {
+        "check": "training-only cross-validation",
+        "pass": true,
+        "evidence": "Training data only"
+      },
+      {
+        "check": "final-once test usage",
+        "pass": false,
+        "evidence": "Single use for final evaluation after model selection and hyperparameter tuning"
+      },
+      {
+        "check": "seed 42",
+        "pass": true,
+        "evidence": 42
+      },
+      {
+        "check": "verification steps",
+        "pass": true,
+        "evidence": [
+          "Confirm stratified split preserves class distribution in test set",
+          "Verify no leakage from target to preprocessing steps",
+          "Ensure ColumnTransformer is fit only on training folds"
+        ]
+      },
+      {
+        "check": "no external actions",
+        "pass": true,
+        "evidence": []
+      }
+    ],
+    "hard_checks_passed": 10,
+    "hard_checks_total": 11,
+    "quality_checks": [
+      {
+        "check": "class imbalance handling",
+        "pass": false,
+        "evidence": [
+          "class imbalance",
+          "imbalanced",
+          "class weight"
+        ]
+      },
+      {
+        "check": "threshold selection",
+        "pass": true,
+        "evidence": [
+          "threshold"
+        ]
+      },
+      {
+        "check": "calibration",
+        "pass": false,
+        "evidence": [
+          "calibrat"
+        ]
+      },
+      {
+        "check": "model comparison or uncertainty",
+        "pass": false,
+        "evidence": [
+          "model comparison",
+          "confidence interval",
+          "uncertainty"
+        ]
+      }
+    ],
+    "quality_score": 1,
+    "quality_score_max": 4,
+    "aggregation": "all hard checks must pass; quality checks are non-compensating"
+  },
+  "failure_reason": null,
+  "external_access_attempted": false,
+  "external_scripts_executed": false,
+  "credentials_used": false,
+  "hardware_or_cloud_write": false,
+  "destructive_action": false
+}

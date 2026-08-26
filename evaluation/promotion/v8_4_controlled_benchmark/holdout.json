@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "task_id": "V8_4-EXPERT-CONTEXT-007",
+  "status": "PRE_REGISTERED_FROZEN_HOLDOUT_NOT_EXECUTED",
+  "visibility_note": "Repository-visible pre-registered holdout; no result-driven tuning is allowed after this freeze.",
+  "development_fixture_prefix": "bench004-",
+  "holdout_fixture_prefix": "v84007-h",
+  "fixture_count": 12,
+  "category_count": 4,
+  "candidate_ids": [
+    "kd-citation-management",
+    "kd-sympy"
+  ],
+  "fixtures": [
+    {
+      "fixture_id": "v84007-h01",
+      "candidate_id": "kd-sympy",
+      "category": "symbolic-algebra",
+      "status": "FROZEN_HOLDOUT",
+      "task": "다항식 (x-2)(x+3)=0을 SymPy로 풀고 각 해를 원식에 대입해 검산하는 절차를 작성한다.",
+      "task_sha256": "820a50ddac0a645e68f4072f9305bab1bab2e9b4c611122fbeb6e0d43d1b865b",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h02",
+      "candidate_id": "kd-sympy",
+      "category": "symbolic-algebra",
+      "status": "FROZEN_HOLDOUT",
+      "task": "두 연립방정식 2x+y=7, x-y=2를 SymPy로 풀고 해의 일관성을 확인하는 절차를 작성한다.",
+      "task_sha256": "795cbb0ed2d7ee226905cc6af9aa5c860590601e4b0c3f7a19f5898887ddd99f",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h03",
+      "candidate_id": "kd-sympy",
+      "category": "symbolic-algebra",
+      "status": "FROZEN_HOLDOUT",
+      "task": "식 (x^2-1)/(x-1)을 SymPy로 단순화할 때 정의역 예외 x=1을 놓치지 않는 검증 절차를 작성한다.",
+      "task_sha256": "cb35c3db24f047708cd47840548492121eb933370ee534959c958a69e27cb4cd",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h04",
+      "candidate_id": "kd-sympy",
+      "category": "symbolic-calculus",
+      "status": "FROZEN_HOLDOUT",
+      "task": "f(x)=x^3-3x의 도함수와 임계점을 SymPy로 구하고 결과를 직접 미분식과 대조하는 절차를 작성한다.",
+      "task_sha256": "ee29a26beaab24c7923a05a1aaed35adbed7e642bf98870bb3e17f44ccfc75a6",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h05",
+      "candidate_id": "kd-sympy",
+      "category": "symbolic-calculus",
+      "status": "FROZEN_HOLDOUT",
+      "task": "sin(x)^2+cos(x)^2 항등식을 SymPy로 단순화하고 symbolic 검증 결과를 설명하는 절차를 작성한다.",
+      "task_sha256": "208926fc3a3b23ca3521c4fe7214ba220d37558b7d6348f6f15c064fb1726a1d",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h06",
+      "candidate_id": "kd-sympy",
+      "category": "symbolic-calculus",
+      "status": "FROZEN_HOLDOUT",
+      "task": "적분 ∫(2x+1)dx를 SymPy로 구한 뒤 미분으로 원 integrand가 복원되는지 확인하는 절차를 작성한다.",
+      "task_sha256": "6eec94d6029e63cc6c05c09bfafbefeb7291e1a31989719dc403642c94fc70ce",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h07",
+      "candidate_id": "kd-citation-management",
+      "category": "citation-normalization",
+      "status": "FROZEN_HOLDOUT",
+      "task": "제공된 로컬 citation 6개에서 저자명 표기와 연도 형식을 정규화하되 없는 DOI를 만들어내지 않는 절차를 작성한다.",
+      "task_sha256": "b3bfbb0a7789f564887d562024f140683906176a76c3d1c7c69f810ba5c0b605",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h08",
+      "candidate_id": "kd-citation-management",
+      "category": "citation-normalization",
+      "status": "FROZEN_HOLDOUT",
+      "task": "제공된 로컬 bibliography에서 title 대소문자와 journal 필드 형식을 일관되게 정리하고 원문 필드 손실을 점검하는 절차를 작성한다.",
+      "task_sha256": "c588e672be1f58ca0af5681cda911b1440da47a4549c74c647a6b751999d9e0f",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h09",
+      "candidate_id": "kd-citation-management",
+      "category": "citation-normalization",
+      "status": "FROZEN_HOLDOUT",
+      "task": "BibTeX 형태의 로컬 5개 항목을 정규화하면서 필수 필드 누락을 별도로 표시하는 절차를 작성한다.",
+      "task_sha256": "0e3e3f901952905621e885a2ca1958f4bb3d1258e94452c2561250791d30089c",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h10",
+      "candidate_id": "kd-citation-management",
+      "category": "citation-integrity",
+      "status": "FROZEN_HOLDOUT",
+      "task": "제공된 citation 목록에서 제목/저자/연도가 거의 같은 중복 후보를 찾되 자동 병합 전 검토 조건을 제시한다.",
+      "task_sha256": "cba84bf51239524735af72dddaac3f80be1bb4f3aee91440db74f94fd2cf165b",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h11",
+      "candidate_id": "kd-citation-management",
+      "category": "citation-integrity",
+      "status": "FROZEN_HOLDOUT",
+      "task": "로컬 참고문헌 목록의 본문 인용 key와 bibliography key를 비교해 누락/고아 인용을 찾는 절차를 작성한다.",
+      "task_sha256": "85cca06f7a9dcf4903fbe12ad0a208ec9c2d9b274fbd24521b613b88207ccbb2",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    },
+    {
+      "fixture_id": "v84007-h12",
+      "candidate_id": "kd-citation-management",
+      "category": "citation-integrity",
+      "status": "FROZEN_HOLDOUT",
+      "task": "서로 충돌하는 연도나 페이지 정보가 있는 로컬 citation을 표시하고 외부 조회 없이 불확실성을 보존하는 절차를 작성한다.",
+      "task_sha256": "bb7c76af8b7c7512011996ab0df6f48af022e5d0df99b1c950eb4996843cb65e",
+      "local_inputs": ["synthetic-local-only"],
+      "forbidden_actions": ["external-network","external-api","credential-use","external-script-execution","hardware-actuation","cloud-write","destructive-action"]
+    }
+  ]
+}

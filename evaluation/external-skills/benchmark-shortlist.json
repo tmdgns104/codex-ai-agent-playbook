@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "status": "READY_FOR_WINDOWS_BENCHMARK_FIXTURES",
+  "selection_policy": "static-inspection-cleared-evaluation-only",
+  "entries": [
+    {"candidate_id":"kd-scientific-writing","reason":"Protected documentation-guide candidate with confirmed MIT license and low dependency burden."},
+    {"candidate_id":"kd-dask","reason":"Protected big-data candidate covering distributed dataframe workflows with a compact upstream skill."},
+    {"candidate_id":"kd-exploratory-data-analysis","reason":"Low-dependency data-analysis candidate suitable for deterministic supplied-data fixtures."},
+    {"candidate_id":"kd-scikit-learn","reason":"Broad machine-learning workflow candidate with a well-bounded Python dependency."},
+    {"candidate_id":"kd-pytorch-lightning","reason":"Deep-learning/GPU guidance candidate selected to measure value versus dependency burden."},
+    {"candidate_id":"kd-sympy","reason":"Scientific-computing candidate that supports deterministic local benchmark problems."},
+    {"candidate_id":"kd-citation-management","reason":"Research-literature candidate that can be tested with supplied citations without web access."},
+    {"candidate_id":"kd-scientific-slides","reason":"Presentation candidate selected for comparison against existing presentation guidance."},
+    {"candidate_id":"kd-docx","reason":"MIT office-document candidate suitable for comparing instructions without importing upstream scripts."},
+    {"candidate_id":"kd-pylabrobot","reason":"Robotics candidate retained for simulation/text-only benchmark coverage without physical actuation."},
+    {"candidate_id":"kd-pydicom","reason":"Computer-vision/data candidate that can be tested safely with synthetic DICOM fixtures."},
+    {"candidate_id":"nv-aiq-deploy","reason":"Official vendor cloud-infra candidate selected to measure specialized deployment guidance using dry fixtures."},
+    {"candidate_id":"nv-holoscan-setup","reason":"Official embedded/edge candidate with bundled scripts explicitly excluded from benchmark execution."},
+    {"candidate_id":"nv-dynamo-interconnect-check","reason":"Networking candidate selected for synthetic diagnostic-output evaluation; bundled helper remains unexecuted."},
+    {"candidate_id":"nv-dynamo-troubleshoot","reason":"Debug/performance candidate selected for synthetic log evaluation against current debugging capabilities."}
+  ],
+  "candidate_count": 15,
+  "source_count": 2,
+  "domain_pack_count": 15,
+  "protected_domain_packs": ["documentation-guide", "big-data"],
+  "active_import_count": 0,
+  "external_scripts_executed": false,
+  "notes": "Shortlist is evaluation-only. BENCHMARK_READY is not promotion or runtime activation. Script-bearing candidates may only be evaluated with synthetic/static fixtures unless a later gate explicitly approves execution."
+}
