@@ -1,0 +1,36 @@
+{
+  "evidence_id": "V8.4-006A-UPSTREAM-CODEX-SOURCE-CHECK",
+  "checked_date": "2026-08-26",
+  "upstream_repository": "openai/codex",
+  "upstream_commit": "a26f1806a4f4b8cfec2ea1be129963815a61e58c",
+  "scope": "Codex exec CLI input/attachment surface relevant to SEPARATE_VERIFIED_CONTEXT_V1",
+  "sources": [
+    {
+      "path": "codex-rs/exec/src/cli.rs",
+      "observations": [
+        "codex exec accepts an optional positional PROMPT as the initial instructions",
+        "when stdin is piped while PROMPT is present, stdin is appended as a <stdin> block",
+        "the inspected exec CLI surface has no generic separate verified text-context file/input argument"
+      ]
+    },
+    {
+      "path": "codex-rs/utils/cli/src/shared_options.rs",
+      "observations": [
+        "--image attaches image files to the initial prompt",
+        "--add-dir only adds directories writable alongside the primary workspace",
+        "the inspected shared CLI surface has no generic separate verified text-context attachment argument"
+      ]
+    }
+  ],
+  "v8_4_contract": "C_VERSIONED_OPT_IN_LAUNCHER_CONTRACT",
+  "v8_4_mode": "SEPARATE_VERIFIED_CONTEXT_V1",
+  "classification": "unsupported",
+  "transport_conformance": false,
+  "production_transport_approved": false,
+  "reason": "The current codex exec CLI surface does not expose the independent verified text-context channel required by V8.4; prompt and piped stdin are prompt content, image is image-only, and add-dir is workspace access rather than context injection.",
+  "limitations": [
+    "This is upstream source inspection, not execution of the user's locally installed Codex binary.",
+    "Before any future real conformance attempt, record local codex --version and codex exec --help and compare them with this upstream surface.",
+    "A different API/app-server adapter may expose richer structured inputs, but adopting one is an architecture change and is not implied by this evidence."
+  ]
+}
