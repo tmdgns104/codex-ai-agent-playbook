@@ -1,0 +1,81 @@
+{
+  "api_used": false,
+  "contract": "C_VERSIONED_OPT_IN_LAUNCHER_CONTRACT",
+  "mode": "SEPARATE_VERIFIED_CONTEXT_V1",
+  "model_used": false,
+  "network_used": false,
+  "production_integration_used": false,
+  "promotion_evidence": {
+    "blocking_reason": "codex-cli-current has no proven SEPARATE_VERIFIED_CONTEXT_V1 binding; simulation controls cannot satisfy the real transport gate.",
+    "classifier_simulation": "PASS",
+    "production_transport_approved": false,
+    "transport_conformance": false
+  },
+  "results": [
+    {
+      "adapter": "codex-cli-current",
+      "checks": {
+        "cleanup_control": false,
+        "deterministic_context_binding": false,
+        "failure_control": true,
+        "preserves_exact_task_once": true,
+        "supports_separate_verified_context": false,
+        "verifies_hash_size_permission_before_spawn": false
+      },
+      "classification": "unsupported",
+      "contract": "C_VERSIONED_OPT_IN_LAUNCHER_CONTRACT",
+      "evidence_digest": "550bed09842ab8834535d0f0218e6a76bf6d5fd50b9fe805da2878030815e7a7",
+      "missing": [
+        "supports_separate_verified_context",
+        "deterministic_context_binding",
+        "verifies_hash_size_permission_before_spawn",
+        "cleanup_control"
+      ],
+      "mode": "SEPARATE_VERIFIED_CONTEXT_V1",
+      "notes": "Repository evidence shows exact task positional delivery but no proven separate verified-context channel."
+    },
+    {
+      "adapter": "simulated-separate-context-complete",
+      "checks": {
+        "cleanup_control": true,
+        "deterministic_context_binding": true,
+        "failure_control": true,
+        "preserves_exact_task_once": true,
+        "supports_separate_verified_context": true,
+        "verifies_hash_size_permission_before_spawn": true
+      },
+      "classification": "compatible",
+      "contract": "C_VERSIONED_OPT_IN_LAUNCHER_CONTRACT",
+      "evidence_digest": "67260999d0324ba9b924f7c6f48ee900144c294cf51950a91475f3a9b058d424",
+      "missing": [],
+      "mode": "SEPARATE_VERIFIED_CONTEXT_V1",
+      "notes": "Positive control only; deterministic simulation, not backend evidence."
+    },
+    {
+      "adapter": "simulated-separate-context-partial",
+      "checks": {
+        "cleanup_control": true,
+        "deterministic_context_binding": true,
+        "failure_control": true,
+        "preserves_exact_task_once": true,
+        "supports_separate_verified_context": true,
+        "verifies_hash_size_permission_before_spawn": false
+      },
+      "classification": "partial",
+      "contract": "C_VERSIONED_OPT_IN_LAUNCHER_CONTRACT",
+      "evidence_digest": "dd2032785479a75d00624e6ef82fad06db6364fa60aec5e1580e9b00facb0f82",
+      "missing": [
+        "verifies_hash_size_permission_before_spawn"
+      ],
+      "mode": "SEPARATE_VERIFIED_CONTEXT_V1",
+      "notes": "Partial control: separate context exists but final pre-spawn verification is incomplete."
+    }
+  ],
+  "scope": "non-inference transport conformance simulation",
+  "summary": {
+    "compatible": 1,
+    "partial": 1,
+    "unsupported": 1
+  },
+  "task_id": "V8_4-EXPERT-CONTEXT-006A"
+}
